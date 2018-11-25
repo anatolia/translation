@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="EnumerationTests\" />
-    <Folder Include="DomainTests\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Source\Cheviri.Common\Cheviri.Common.csproj" />
+    <ProjectReference Include="..\..\Source\Cheviri.Data\Cheviri.Data.csproj" />
   </ItemGroup>
 
 </Project>
