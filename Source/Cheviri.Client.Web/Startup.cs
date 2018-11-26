@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,28 +11,39 @@ namespace Cheviri.Client.Web
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+            services.AddMvcCore(x =>
+                {
+                    x.Filters.Add(new RequireHttpsAttribute());
+                    x.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                }).AddViews()
+                .AddRazorViewEngine()
+                .AddAuthorization();
 
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(x =>
+                {
+                    x.Cookie.Name = "cheviri";
+                    x.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    x.Cookie.SameSite = SameSiteMode.Strict;
+                    x.Cookie.HttpOnly = true;
+                    x.Cookie.IsEssential = true;
+                    x.SlidingExpiration = true;
+                    x.ExpireTimeSpan = TimeSpan.FromHours(8);
+                    x.LoginPath = "/User/LogOn";
+                    x.LogoutPath = "/User/LogOff";
+                    x.AccessDeniedPath = "/User/AccessDenied";
+                });
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -44,20 +52,20 @@ namespace Cheviri.Client.Web
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
+                app.UseExceptionHandler(x =>
+                {
+                    x.UseStaticFiles();
+                    x.Use((context, next) =>
+                    {
+                        context.Request.Path = new PathString("/views/error.html");
+                        return next();
+                    });
+                });
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseAuthentication();
+            app.UseMvc(x => { x.MapRoute("default", "{controller=Home}/{action=Index}/{id?}"); });
         }
     }
 }
