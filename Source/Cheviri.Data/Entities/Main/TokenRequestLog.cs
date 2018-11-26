@@ -9,7 +9,7 @@ namespace Cheviri.Data.Entities.Main
 
         public string Ip { get; set; }
         public string IpLocation { get; set; }
-        public string Method { get; set; }
+        public string HttpMethod { get; set; }
         public string Request { get; set; }
         public string Response { get; set; }
         public string ResponseCode { get; set; }

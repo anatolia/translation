@@ -30,8 +30,10 @@ namespace Cheviri.Data.Entities.Main
         public bool IsActive { get; set; }
         public bool IsAdmin { get; set; }
 
+        public int TranslatedLabelCount { get; set; }
+        public int AddedLabelCount { get; set; }
+
         public Organization Organization { get; set; }
-        public Language ActiveLanguage { get; set; }
         public List<Role> Roles { get; set; }
 
         public User()

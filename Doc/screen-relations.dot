@@ -1,0 +1,51 @@
+digraph {  
+    rankdir=RL;   
+    node [shape=box, fontsize=19];
+	
+	UserValidateEmail[shape=oval];
+	TranslatorInviteAcceptEmail[shape=oval];
+	UserDemandPasswordResetEmail[shape=oval];
+
+	UserSignUp -> Home;
+	UserLogOn -> Home;
+	UserSignUp -> UserValidateEmail[style=dashed;color=blue];
+	UserValidateEmail -> UserValidateDone;
+	UserValidateDone ->  Home;
+	UserDemandPasswordResetEmail -> UserResetPassword;
+	UserDemandPasswordReset -> UserDemandPasswordResetDone;
+	UserDemandPasswordResetDone-> UserDemandPasswordResetEmail[style=dashed;color=blue];
+	UserProfile -> UserChangePassword;
+	UserProfile -> UserLoginLogs;	
+	UserLogOn -> UserDemandPasswordReset;
+	UserSignUp -> UserDemandPasswordReset;
+	OrganizationDetail -> ProjectCreate;
+	ProjectCreate -> ProjectDetail;
+	OrganizationDetail -> IntegrationCreate;
+	IntegrationCreate -> IntegrationDetail;
+	OrganizationDetail ->  TranslatorInvite;
+	TranslatorInvite -> TranslatorInviteAcceptEmail[style=dashed;color=blue];
+	TranslatorInviteAcceptEmail -> TranslatorAcceptInvite;
+	TranslatorAcceptInvite -> Home;	
+	OrganizationDetail -> UserProfile;	
+	Home -> OrganizationDetail;
+	OrganizationDetail -> ProjectDetail;
+	OrganizationDetail -> IntegrationDetail;
+	ProjectDetail -> LabelCreate;
+	LabelCreate -> LabelDetail;
+	LabelDetail -> LabelTranslationCreate;
+	IntegrationDetail -> TokenUsageLogs;
+	AdminDashboard -> LanguageList;
+	LanguageList -> LanguageCreate;
+	AdminDashboard -> PermissionLogs;
+	AdminDashboard -> Journal;	
+	AdminDashboard -> TokenUsageLogs;
+	AdminDashboard -> UserLoginLogs;
+	Home -> AdminDashboard;
+	UserResetPassword -> UserResetPasswordDone;
+	UserResetPasswordDone -> UserLogOn;	
+	UserSignUp -> UserLogOn;
+	UserLogOn -> UserSignUp;
+	TranslatorAcceptInvite -> OrganizationDetail;
+	LabelTranslationCreate -> LabelDetail;
+	LanguageCreate -> LanguageList;
+}
