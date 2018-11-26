@@ -9,10 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Base\" />
     <Folder Include="Models\DataTransferObjects\" />
     <Folder Include="Models\Responses\" />
-    <Folder Include="Models\Requests\" />
   </ItemGroup>
 
 </Project>
