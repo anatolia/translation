@@ -16,4 +16,8 @@
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Cheviri.Common\Cheviri.Common.csproj" />
+  </ItemGroup>
+
 </Project>
