@@ -1,0 +1,15 @@
+﻿@model FileInputModel
+
+<div class="file">
+
+    <label for="@Model.Name">@Localizer.Localize(Model.LabelKey)</label>
+    <input type="file"
+           id="@Model.Name"
+           name="@Model.Name"
+           @Html.Raw(Model.IsRequired ? "required" : "") />
+
+    @if (Model.ErrorMessage.IsNotEmpty())
+    {
+        <div class="error">@Model.ErrorMessage</div>
+    }
+</div>

@@ -1,0 +1,25 @@
+﻿@model SelectInputModel
+
+<div class="select">
+
+    <label for="@Model.Name">@Localizer.Localize(Model.LabelKey)</label>
+    <select id="@Model.Name" name="@Model.Name">
+        <option>@Localizer.Localize("please_select")</option>
+        @foreach (var item in Model.Items)
+        {
+            if (item == Model.Value)
+            {
+                <option selected>@item</option>
+            }
+            else
+            {
+                <option>@item</option>
+            }
+        }
+    </select>
+
+    @if (Model.ErrorMessage.IsNotEmpty())
+    {
+        <div class="error">@Model.ErrorMessage</div>
+    }
+</div>

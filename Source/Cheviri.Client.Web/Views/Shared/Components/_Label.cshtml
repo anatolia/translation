@@ -1,0 +1,11 @@
+﻿@model ReadOnlyInputModel
+
+<div class="label">
+
+    <label for="@Model.Name">@Localizer.Localize(Model.LabelKey)</label>
+    <input type="text"
+           id="@Model.Name"
+           name="@Model.Name"
+           value="@Model.Value"
+           readonly />
+</div>

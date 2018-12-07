@@ -1,0 +1,16 @@
+﻿@model EmailInputModel
+
+<div class="email">
+
+    <label for="@Model.Name">@Localizer.Localize(Model.LabelKey)</label>
+    <input type="email"
+           id="@Model.Name"
+           name="@Model.Name"
+           value="@Model.Value"
+           @Html.Raw(Model.IsRequired ? "required" : "") />
+
+    @if (Model.ErrorMessage.IsNotEmpty())
+    {
+        <div class="error">@Model.ErrorMessage</div>
+    }
+</div>
