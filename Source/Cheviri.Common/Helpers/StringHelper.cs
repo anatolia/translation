@@ -26,6 +26,11 @@ namespace Cheviri.Common.Helpers
             return isValidated;
         }
 
+        public static bool IsNotValidPassword(this string text)
+        {
+            return !IsValidPassword(text);
+        }
+
         public static bool IsEmail(this string text)
         {
             try
