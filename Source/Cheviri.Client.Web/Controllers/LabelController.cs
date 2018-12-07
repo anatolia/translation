@@ -34,7 +34,7 @@ namespace Cheviri.Client.Web.Controllers
         [HttpGet]
         public JsonResult Items()
         {
-            return View();
+            return Json(null);
         }
     }
 }

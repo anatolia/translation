@@ -22,7 +22,7 @@ namespace Cheviri.Client.Web.Controllers
         [HttpGet]
         public JsonResult Items(string term, int skip = 0, int take = 20)
         {
-            return View();
+            return Json(null);
         }
     }
 }

@@ -1,1 +1,13 @@
-﻿
+﻿@model ProjectCreateModel
+
+<h1>@Model.Title</h1>
+
+<form method="post">
+    <partial name="Components/_Input" model="@Model.NameInput" />
+    <partial name="Components/_Url" model="@Model.UrlInput" />
+    <partial name="Components/_LongInput" model="@Model.DescriptionInput" />
+
+    <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
+
+    <button type="submit">@Localizer.Localize("create_project_button")</button>
+</form>

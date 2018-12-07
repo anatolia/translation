@@ -1,1 +1,13 @@
-﻿
+﻿@model LabelTranslationCreateModel
+
+<h1>@Model.Title</h1>
+
+<form method="post">
+    <partial name="Components/_Label" model="@Model.LabelInput" />
+    <partial name="Components/_Select" model="@Model.LanguageInput" />
+    <partial name="Components/_Textarea" model="@Model.LabelTranslationInput" />
+
+    <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
+
+    <button type="submit">@Localizer.Localize("create_label_translation_button")</button>
+</form>

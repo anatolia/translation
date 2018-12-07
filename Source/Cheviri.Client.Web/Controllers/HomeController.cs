@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Cheviri.Client.Web.Helpers;
 using Cheviri.Client.Web.Models;
 
 namespace Cheviri.Client.Web.Controllers
@@ -17,8 +16,7 @@ namespace Cheviri.Client.Web.Controllers
         [HttpGet, AllowAnonymous]
         public IActionResult AccessDenied()
         {
-            var model = new BaseModel();
-            model.Title = Localizer.Localize("access_denied_title");
+            var model = new AccessDeniedModel();
             return View(model);
         }
     }

@@ -14,7 +14,15 @@ namespace Cheviri.Client.Web.Controllers
         [HttpGet, AllowAnonymous]
         public IActionResult SignUp()
         {
-            return View();
+            var model = new SignUpModel();
+            return View(model);
+        }
+
+        [HttpPost, AllowAnonymous]
+        public IActionResult SignUp(SignUpModel model)
+        {
+            
+            return View(model);
         }
 
         [HttpGet, AllowAnonymous]

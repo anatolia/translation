@@ -1,1 +1,15 @@
-﻿
+﻿@model LanguageCreateModel
+
+<h1>@Model.Title</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <partial name="Components/_Input" model="@Model.NameInput" />
+    <partial name="Components/_ShortInput" model="@Model.IsoCode2Input" />
+    <partial name="Components/_ShortInput" model="@Model.IsoCode3Input" />
+    <partial name="Components/_File" model="@Model.IconInput" />
+    <partial name="Components/_LongInput" model="@Model.DescriptionInput" />
+
+    <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
+
+    <button type="submit">@Localizer.Localize("create_language_button")</button>
+</form>

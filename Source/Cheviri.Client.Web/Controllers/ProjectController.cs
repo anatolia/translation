@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 using Cheviri.Client.Web.Helpers;
 using Cheviri.Client.Web.Models;
+using Cheviri.Client.Web.Models.InputModels;
 using Cheviri.Common.Helpers;
 
 namespace Cheviri.Client.Web.Controllers
@@ -11,6 +13,23 @@ namespace Cheviri.Client.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            var model = new ProjectCreateModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(ProjectCreateModel model)
+        {
+            if (!model.Validate())
+            {
+                return View(model);
+            }
+
+            //todo: map request and post
+
+            var uid = "";
+            return RedirectToAction("Detail", "Project", uid);
+
             return View();
         }
 
@@ -28,7 +47,7 @@ namespace Cheviri.Client.Web.Controllers
         [HttpGet]
         public JsonResult Items()
         {
-            return View();
+            return Json(null);
         }
     }
 }

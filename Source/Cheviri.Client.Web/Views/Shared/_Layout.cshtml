@@ -1,10 +1,11 @@
 ﻿@model BaseModel
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@Model?.Title</title>
+    <title>@Model?.Title / @ConstantHelper.APP_NAME</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -14,7 +15,7 @@
     </environment>
 </head>
 <body>
-<header><a href="/">cheviri</a></header>
+<header><a href="/">@ConstantHelper.APP_NAME</a></header>
 
 <main role="main">
     @RenderBody()
