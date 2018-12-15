@@ -46,44 +46,44 @@ namespace Cheviri.Client.Web.Models
         {
             if (Email.IsEmpty())
             {
-                EmailInput.ErrorMessage = "email_required_error_message";
-                ErrorMessages.Add(EmailInput.ErrorMessage);
+                EmailInput.ErrorMessage.Add("email_required_error_message");
+                ErrorMessages.AddRange(EmailInput.ErrorMessage);
             }
 
             if (Email.IsNotEmail())
             {
-                EmailInput.ErrorMessage = "email_is_not_valid_error_message";
-                ErrorMessages.Add(EmailInput.ErrorMessage);
+                EmailInput.ErrorMessage.Add("email_is_not_valid_error_message");
+                ErrorMessages.AddRange(EmailInput.ErrorMessage);
             }
 
             if (FirstName.IsEmpty())
             {
-                FirstNameInput.ErrorMessage = "first_name_required_error_message";
-                ErrorMessages.Add(FirstNameInput.ErrorMessage);
+                FirstNameInput.ErrorMessage.Add("first_name_required_error_message");
+                ErrorMessages.AddRange(FirstNameInput.ErrorMessage);
             }
 
             if (LastName.IsEmpty())
             {
-                LastNameInput.ErrorMessage = "last_name_required_error_message";
-                ErrorMessages.Add(LastNameInput.ErrorMessage);
+                LastNameInput.ErrorMessage.Add("last_name_required_error_message");
+                ErrorMessages.AddRange(LastNameInput.ErrorMessage);
             }
 
             if (OrganizationName.IsEmpty())
             {
-                OrganizationNameInput.ErrorMessage = "organization_name_required_error_message";
-                ErrorMessages.Add(OrganizationNameInput.ErrorMessage);
+                OrganizationNameInput.ErrorMessage.Add("organization_name_required_error_message");
+                ErrorMessages.AddRange(OrganizationNameInput.ErrorMessage);
             }
 
             if (Password.IsNotValidPassword())
             {
-                OrganizationNameInput.ErrorMessage = "password_is_not_valid_error_message";
-                ErrorMessages.Add(OrganizationNameInput.ErrorMessage);
+                OrganizationNameInput.ErrorMessage.Add("password_is_not_valid_error_message");
+                ErrorMessages.AddRange(OrganizationNameInput.ErrorMessage);
             }
 
             if (!IsTermsAccepted)
             {
-                OrganizationNameInput.ErrorMessage = "you_must_accept_terms_error_message";
-                ErrorMessages.Add(OrganizationNameInput.ErrorMessage);
+                OrganizationNameInput.ErrorMessage.Add("you_must_accept_terms_error_message");
+                ErrorMessages.AddRange(OrganizationNameInput.ErrorMessage);
             }
         }
     }

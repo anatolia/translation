@@ -34,15 +34,15 @@ namespace Cheviri.Client.Web.Models
         {
             if (Name.IsEmpty())
             {
-                NameInput.ErrorMessage = "name_required_error_message";
-                ErrorMessages.Add(NameInput.ErrorMessage);
+                NameInput.ErrorMessage.Add("name_required_error_message");
+                ErrorMessages.AddRange(NameInput.ErrorMessage);
             }
 
             if (Url.IsNotEmpty()
                 && Url.IsNotUrl())
             {
-                UrlInput.ErrorMessage = "url_is_not_valid_error_message";
-                ErrorMessages.Add(UrlInput.ErrorMessage);
+                UrlInput.ErrorMessage.Add("url_is_not_valid_error_message");
+                ErrorMessages.AddRange(UrlInput.ErrorMessage);
             }
         }
     }

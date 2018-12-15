@@ -18,8 +18,13 @@
         }
     </select>
 
-    @if (Model.ErrorMessage.IsNotEmpty())
+    @if (Model.ErrorMessage.Any())
     {
-        <div class="error">@Model.ErrorMessage</div>
+        <ul class="error">
+            @foreach (var msg in Model.ErrorMessage)
+            {
+                <li>@msg</li>
+            }
+        </ul>
     }
 </div>

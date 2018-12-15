@@ -34,20 +34,20 @@ namespace Cheviri.Client.Web.Models
         {
             if (Label.IsEmpty())
             {
-                LabelInput.ErrorMessage = "name_required_error_message";
-                ErrorMessages.Add(LabelInput.ErrorMessage);
+                LabelInput.ErrorMessage.Add("name_required_error_message");
+                ErrorMessages.AddRange(LabelInput.ErrorMessage);
             }
 
             if (Language.IsEmpty())
             {
-                LanguageInput.ErrorMessage = "language_required_error_message";
-                ErrorMessages.Add(LanguageInput.ErrorMessage);
+                LanguageInput.ErrorMessage.Add("language_required_error_message");
+                ErrorMessages.AddRange(LanguageInput.ErrorMessage);
             }
 
             if (LabelTranslation.IsEmpty())
             {
-                LabelTranslationInput.ErrorMessage = "label_translation_required_error_message";
-                ErrorMessages.Add(LabelTranslationInput.ErrorMessage);
+                LabelTranslationInput.ErrorMessage.Add("label_translation_required_error_message");
+                ErrorMessages.AddRange(LabelTranslationInput.ErrorMessage);
             }
         }
     }

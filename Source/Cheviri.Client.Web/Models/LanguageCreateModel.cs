@@ -43,20 +43,20 @@ namespace Cheviri.Client.Web.Models
         {
             if (Name.IsEmpty())
             {
-                NameInput.ErrorMessage = "name_required_error_message";
-                ErrorMessages.Add(NameInput.ErrorMessage);
+                NameInput.ErrorMessage.Add("name_required_error_message");
+                ErrorMessages.AddRange(NameInput.ErrorMessage);
             }
 
             if (IsoCode2.IsEmpty())
             {
-                IsoCode2Input.ErrorMessage = "iso_code_2_required_error_message";
-                ErrorMessages.Add(IsoCode2Input.ErrorMessage);
+                IsoCode2Input.ErrorMessage.Add("iso_code_2_required_error_message");
+                ErrorMessages.AddRange(IsoCode2Input.ErrorMessage);
             }
 
             if (IsoCode3.IsEmpty())
             {
-                IsoCode3Input.ErrorMessage = "iso_code_3_required_error_message";
-                ErrorMessages.Add(IsoCode3Input.ErrorMessage);
+                IsoCode3Input.ErrorMessage.Add("iso_code_3_required_error_message");
+                ErrorMessages.AddRange(IsoCode3Input.ErrorMessage);
             }
         }
     }

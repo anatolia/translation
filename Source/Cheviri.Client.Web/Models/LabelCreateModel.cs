@@ -34,14 +34,14 @@ namespace Cheviri.Client.Web.Models
         {
             if (Name.IsEmpty())
             {
-                NameInput.ErrorMessage = "name_required_error_message";
-                ErrorMessages.Add(NameInput.ErrorMessage);
+                NameInput.ErrorMessage.Add("name_required_error_message");
+                ErrorMessages.AddRange(NameInput.ErrorMessage);
             }
 
             if (Project.IsEmpty())
             {
-                ProjectInput.ErrorMessage = "project_required_error_message";
-                ErrorMessages.Add(ProjectInput.ErrorMessage);
+                ProjectInput.ErrorMessage.Add("project_required_error_message");
+                ErrorMessages.AddRange(ProjectInput.ErrorMessage);
             }
         }
     }
