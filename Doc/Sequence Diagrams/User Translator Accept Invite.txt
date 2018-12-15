@@ -1,0 +1,27 @@
+title Translator Accept Invite Flow
+
+activate User
+activate System
+
+User-->User:clicks accept invite link from email
+
+User->System:visits page
+
+System-->System:gets invited user info
+System->User:loads page
+space 
+
+User-->User:fills form
+note left of User#lightgreen:First Name\nLast Name\nPassword\nRe-enter Password
+
+User->System:submits form
+
+System-->System:validates
+note right of System#PaleGoldenrod:First Name is mandatory\nLast Name is mandatory\nPassword is valid
+
+System-->System:activates user
+
+System->User:redirects to home page
+
+
+deactivateafter System

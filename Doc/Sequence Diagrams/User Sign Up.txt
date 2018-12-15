@@ -1,0 +1,34 @@
+title Sign Up Flow
+
+group signup
+
+activate User
+activate System
+User->System:visits page
+System->User:loads page
+space 
+
+User-->User:fills form
+note left of User#lightgreen:First Name\nLast Name\nOrganization Name\nEmail\nPassword
+
+User->System:submits form
+
+System-->System:validates
+note right of System#PaleGoldenrod:Email is valid\nNot already signed up\nPassword is valid\nOrganization Name Mandatory\nFirst Name mandatory\nLast Name mandatory
+System-->System:creates account
+System->User:redirects to home page
+System-->User:sends welcome email
+deactivateafter System
+
+end
+space
+group email validation
+
+
+User->System:clicks the validate email link
+activate System
+System-->System:validates
+System->User:redirects to home page
+deactivateafter System
+
+end

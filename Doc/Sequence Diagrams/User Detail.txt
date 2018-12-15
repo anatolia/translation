@@ -1,0 +1,27 @@
+title User Detail Flow
+
+activate User
+activate System
+
+User->System:visits page
+System-->System:gets user info
+System->User:loads page
+space 
+space 
+
+User->System:clicks organization name link
+System->User:redirects to organization detail page
+space 
+space 
+
+
+User->System:clicks change password link
+System->User:redirects to change password  page
+space 
+space 
+
+User->System:clicks login logs link
+System->User:redirects to login logs page
+space 
+
+deactivateafter System
