@@ -1,0 +1,22 @@
+title Project Create Page
+
+activate User
+activate System
+
+User->System:visits page
+System->User:loads page
+space 
+
+User-->User:fills form
+note left of User #LightGreen:Project Name\nUrl\nDescription
+User->System:submits form
+
+System-->System: validates
+note right of System#PaleGoldenrod:Project Name is mandatory\nUrl is valid if entered
+
+System-->System:creates project
+
+System->User:redirects to detail page
+
+deactivateafter User
+deactivateafter System

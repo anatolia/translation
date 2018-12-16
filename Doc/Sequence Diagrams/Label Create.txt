@@ -1,0 +1,22 @@
+title Label Create
+
+activate User
+activate System
+
+User->System:visits page
+System->User:loads page
+space 
+
+User->System:fills form
+note left of User#LightGreen:Project\nLabel name\nDescription
+User->System:submit form
+System-->System:validates
+
+note right of System#PaleGoldenrod:Project is mandatory\nLabel name is mandatory
+
+System-->System:creates label
+System->User:redirects to detail page
+
+deactivateafter User
+deactivateafter System
+

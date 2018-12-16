@@ -1,0 +1,22 @@
+title Integration Create
+
+activate User
+activate System
+
+User->System:visits page
+System->User:loads page
+space 
+
+User->System:fills form
+note left of User#LightGreen:Integration Name\nDescription
+User->System:submit form
+System-->System:validates
+
+note right of System#PaleGoldenrod:Integration Name is mandatory
+
+System-->System:creates integration
+System->User:redirects to detail page
+
+deactivateafter User
+deactivateafter System
+

@@ -1,0 +1,44 @@
+title Label Detail Flow
+
+activate User
+activate System
+
+User->System:visits page
+
+System-->System:gets label info
+
+note right of System#PaleGoldenrod: Label Name\nDescription
+
+note right of System#PaleGoldenrod:Name\n- Language\n- Url\n- Translation\n- Edit
+
+System->User:loads view
+
+space
+
+User->System:clicks the organization name link
+System->User:redirects to create organization view
+
+space 
+User->System:clicks the project name link
+System->User:redirects to create project view
+
+space 
+User->System:clicks upload translations from excel link
+System->User:redirects to upload translations from excel view
+
+space 
+
+User->System:clicks create label translation link
+System->User:redirects create label translations view
+
+space
+
+User->System:clicks edit link
+System->User:redirects to edit view
+space
+
+User->System:clicks download translation to excel button
+System->User:downloads translations excel file
+
+deactivateafter User
+deactivateafter System

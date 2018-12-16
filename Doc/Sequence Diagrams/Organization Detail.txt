@@ -1,0 +1,43 @@
+title Organization Detail Flow
+
+activate User
+activate System
+
+User->System:visits page
+
+System-->System:gets organization info
+
+note right of System#PaleGoldenrod: Name\nDescription
+
+note right of System#PaleGoldenrod:Projects\n- Project Name\n- Url\n- Description\n- Label Count\n- IsActive
+
+note right of System#PaleGoldenrod:Integrations\n- Integration Name\n- Description\n- Is Active
+
+note right of System#PaleGoldenrod:Users\n- User Name\n- Email\n- Is Email Validated\n- Is Admin\n- Is Active
+
+System->User:loads view
+
+
+space
+
+User->System:clicks create project link
+System->User:redirects to create project view
+
+space
+
+User->System:clicks create integration link
+System->User:redirects to create integration view
+
+space
+
+User->System:clicks invite translator link
+System->User:redirects to user invite view
+
+space
+
+User->System:clicks edit link
+System->User:redirects to edit view
+space
+
+deactivateafter User
+deactivateafter System

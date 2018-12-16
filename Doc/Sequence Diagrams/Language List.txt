@@ -1,0 +1,16 @@
+title Language List
+
+activate User
+activate System
+
+User->System:visits page
+note right of System#PaleGoldenrod:Language Name\n2 Char Code\n3 Char Code\nDescription\nIcon\nEdit
+System->User:load language list
+space 
+
+User->System:clicks edit_link
+System->User:redirects Language Create page
+
+deactivateafter User
+deactivateafter System
+

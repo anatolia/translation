@@ -1,0 +1,22 @@
+title Upload Label Translations From Excel File
+
+activate User
+activate System
+
+User->System:visits page
+System->User:loads page
+space 
+
+User->System:fills form
+note left of User#LightGreen:Label\nExcel File
+User->System:submit form
+System-->System:validates
+
+note right of System#PaleGoldenrod:Label is mandatory\nExcel File is mandatory
+
+System-->System:uploads excel file
+System->User:redirects to detail page
+
+deactivateafter User
+deactivateafter System
+

@@ -1,0 +1,21 @@
+title Language Create / Edit
+
+activate User
+activate System
+
+User->System:visits page
+System->User:loads page
+space 
+
+User->System:fills form
+note left of User#LightGreen:Language name\nIso code 2 char(ISO 639-1)\nIso code 3 char(ISO 639-2)\nIcon\nDescription
+User->System:submit form
+System-->System:validates
+
+note right of System#PaleGoldenrod:Language name is mandatory\nIso code 2 char(ISO 639-1) is mandatory\nIso code 3 char(ISO 639-2) is mandatory\nIcon is mandatory 
+
+System-->System:creates language
+System->User:redirects to detail page
+
+deactivateafter User
+deactivateafter System

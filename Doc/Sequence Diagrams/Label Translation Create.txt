@@ -1,0 +1,22 @@
+title Label Translation Create
+
+activate User
+activate System
+
+User->System:visits page
+System->User:loads page
+space 
+
+User->System:fills form
+note left of User#LightGreen:Label\nLanguage\nLabel Translation
+User->System:submit form
+System-->System:validates
+
+note right of System#PaleGoldenrod:Label is mandatory\nLanguage is mandatory\nLabel Translationi is mandatory
+
+System-->System:creates label 
+System->User:redirects to detail page
+
+deactivateafter User
+deactivateafter System
+
