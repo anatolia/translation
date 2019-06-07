@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 
@@ -15,14 +14,26 @@ namespace Translation.Common.Helpers
             return isValidated;
         }
 
+        /// <summary>
+        /// Checks if a string contains number, upper case, lower case and more than 7 character 
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public static bool IsValidPassword(this string text)
         {
-            var hasNumber = new Regex(@"[0-9]+");
-            var hasUpperChar = new Regex(@"[A-Z]+");
+            if (string.IsNullOrWhiteSpace(text)
+                || text.Length < 8)
+            {
+                return false;
+            }
+
+            var hasNumber = new Regex(@"[0-9]+", RegexOptions.Compiled);
+            var hasLowerChar = new Regex(@"[a-z]+", RegexOptions.Compiled);
+            var hasUpperChar = new Regex(@"[A-Z]+", RegexOptions.Compiled);
 
             var isValidated = hasNumber.IsMatch(text)
                               && hasUpperChar.IsMatch(text)
-                              && text.Length > 7;
+                              && hasLowerChar.IsMatch(text);
             return isValidated;
         }
 
@@ -49,35 +60,6 @@ namespace Translation.Common.Helpers
             return !IsEmail(text);
         }
 
-        public static bool IsUid(this string text)
-        {
-            var isValid = Guid.TryParse(text, out Guid uid);
-            return isValid;
-        }
-
-        public static bool IsNotUid(this string text)
-        {
-            return !IsUid(text);
-        }
-
-        public static void ValidateUid(this string text)
-        {
-            if (IsUid(text))
-            {
-                return;
-            }
-
-            var method = new StackTrace().GetFrame(1).GetMethod();
-
-            throw new ArgumentException($"the uid is not valid > {text} [{method.DeclaringType}.{method.Name}]");
-        }
-
-        public static string GetNewUid()
-        {
-            var uid = Guid.NewGuid().ToString("N").ToUpper();
-            return uid;
-        }
-
         public static bool IsEmpty(this string text)
         {
             return string.IsNullOrWhiteSpace(text);
@@ -99,6 +81,28 @@ namespace Translation.Common.Helpers
         public static bool IsNotUrl(this string text)
         {
             return !IsUrl(text);
+        }
+
+        public static string TrimOrDefault(this string text)
+        {
+            return text == null ? string.Empty : text.Trim();
+        }
+
+        /// <summary>
+        /// checks if .xls, .xlsx or .csv
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static bool IsBasicDataUploadExtension(this string text)
+        {
+            return text == ".csv"
+                   || text == ".xls"
+                   || text == ".xlsx";
+        }
+
+        public static bool IsNotBasicDataUploadExtension(this string text)
+        {
+            return !IsBasicDataUploadExtension(text);
         }
     }
 }
