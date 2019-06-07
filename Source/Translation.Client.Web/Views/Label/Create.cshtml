@@ -1,0 +1,13 @@
+﻿@model LabelCreateModel
+
+<h1>@Model.Title</h1>
+
+<form method="post">
+    <partial name="Components/_Select" model="@Model.ProjectInput" />
+    <partial name="Components/_Input" model="@Model.NameInput" />
+    <partial name="Components/_LongInput" model="@Model.DescriptionInput" />
+
+    <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
+
+    <button type="submit">@Localizer.Localize("create_label_button")</button>
+</form>

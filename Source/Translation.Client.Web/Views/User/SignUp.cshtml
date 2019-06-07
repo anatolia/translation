@@ -1,0 +1,16 @@
+﻿@model SignUpModel
+
+<h1>@Model.Title</h1>
+
+<form method="post">
+    <partial name="Components/_Email" model="@Model.EmailInput" />
+    <partial name="Components/_Input" model="@Model.FirstNameInput" />
+    <partial name="Components/_Input" model="@Model.LastNameInput" />
+    <partial name="Components/_LongInput" model="@Model.OrganizationNameInput" />
+    <partial name="Components/_Password" model="@Model.PasswordInput" />
+    <partial name="Components/_Checkbox" model="@Model.IsTermsAcceptedInput" />
+
+    <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
+
+    <button type="submit">@Localizer.Localize("sign_up_button")</button>
+</form>
