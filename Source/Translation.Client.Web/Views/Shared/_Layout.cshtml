@@ -1,4 +1,4 @@
-﻿@model BaseModel
+﻿@model Translation.Client.Web.Models.Base.BaseModel
 
 <!DOCTYPE html>
 <html>
@@ -13,33 +13,41 @@
     <link rel="stylesheet" href="~/plugins/table/css/table.css" asp-append-version="true" />
 </head>
 <body>
-<header>
-    <a href="/">@ConstantHelper.APP_NAME</a>
+    <header>
+        <a href="/">@ConstantHelper.APP_NAME</a>
 
-    @if (User.Identity.IsAuthenticated)
-    {
+        @if (User.Identity.IsAuthenticated)
+        {
         <div style="float: right">
             <form action="/User/LogOff" method="post">
                 @Html.AntiForgeryToken()
                 <button type="submit" data-translation="log_off">log_off</button>
             </form>
         </div>
+        }
+    </header>
+
+    @if (!User.Identity.IsAuthenticated)
+    {
+    <div style="float: right;margin-top: -55px;margin-right: 55px;">
+        <a href="/User/LogOn" data-translation="log_on_link">log_on_link</a>
+        <a href="/User/SignUp" data-translation="sign_up_link">sign_up_link</a>
+    </div>
     }
-</header>
 
-<main role="main">
-    @RenderBody()
-</main>
+    <main role="main">
+        @RenderBody()
+    </main>
 
-<footer></footer>
-<partial name="_Popup" />
-@Html.AntiForgeryToken()
+    <footer></footer>
+    <partial name="_Popup" />
+    @Html.AntiForgeryToken()
 
-<script src="~/js/site.js" asp-append-version="true"></script>
-<script src="~/plugins/popup/popup.js" asp-append-version="true"></script>
-<script src="~/plugins/select/select.js" asp-append-version="true"></script>
-<script src="~/plugins/table/table.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/plugins/popup/popup.js" asp-append-version="true"></script>
+    <script src="~/plugins/select/select.js" asp-append-version="true"></script>
+    <script src="~/plugins/table/table.js" asp-append-version="true"></script>
 
-@RenderSection("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,34 @@
+﻿@model SelectInputModel
+
+<div>
+<label for="@Model.Name" data-translation="@Model.LabelKey">
+    @Model.LabelKey
+    @if (Model.InfoText.IsNotEmpty())
+    {
+        <span>@Model.InfoText</span>
+    }
+    @if (Model.IsAddNewEnabled)
+    {
+        <a href="@Model.AddNewUrl" target="_blank" class="plus">+</a>
+    }
+</label>
+<div class="select @(Model.IsMultiple ? "multiple-select" : "single-select") @(Model.IsAllOptionsVisible ? "radio-select" : string.Empty)"
+     id="select-@Model.Name" name="select-@Model.Name" data-name="@Model.Name" data-name-text="@Model.TextFieldName"
+     data-type="@(Model.IsOptionTypeContent ? "content" : "text")"
+     data-detail="@Model.IsHavingDetailInfo" data-detail-url="@Model.DetailInfoDataUrl"
+     data-url="@Model.DataUrl"
+     data-parent="@Model.Parent"
+     data-set-first-item="@Model.IsSetFirstItem"
+     data-value="@Model.Value" data-text="@Model.Text">
+</div>
+
+@if (Model.ErrorMessage.Any())
+{
+    <ul class="error">
+        @foreach (var msg in Model.ErrorMessage)
+        {
+            <li data-translation="@msg">@msg</li>
+        }
+    </ul>
+}
+</div>

@@ -1,0 +1,21 @@
+﻿@model UrlInputModel
+
+<div>
+    <label for="@Model.Name" data-translation="@Model.LabelKey">@Model.LabelKey
+    @if (Model.InfoText.IsNotEmpty())
+    {
+        <span>@Model.InfoText</span>
+    }
+</label>
+<input type="url" id="@Model.Name" name="@Model.Name" value="@Model.Value" @Html.Raw(Model.IsRequired ? "required" : "") />
+
+@if (Model.ErrorMessage.Any())
+{
+    <ul class="error">
+        @foreach (var msg in Model.ErrorMessage)
+        {
+            <li data-translation="@msg">@msg</li>
+        }
+    </ul>
+}
+</div>

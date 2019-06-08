@@ -1,0 +1,28 @@
+﻿@model CheckboxInputModel
+
+<div data-input="@Model.LabelKey">
+    <label for="@Model.Name" data-translation="@Model.LabelKey">@Model.LabelKey
+    @if (Model.InfoText.IsNotEmpty())
+    {
+        <span>@Model.InfoText</span>
+    }
+</label>
+<input type="checkbox"
+       id="@Model.Name" name="@Model.Name"
+       @Html.Raw(Model.IsReadOnly ? "disabled=disabled" : "")
+       @Html.Raw(Model.IsRequired ? "required=required" : "")
+       @Html.Raw(Model.Value ? "checked=checked" : "")
+       value="@Model.Value" />
+
+<script>document.getElementById('@Model.Name').onchange = function() { this.value = this.checked; };</script>
+
+@if (Model.ErrorMessage.Any())
+{
+    <ul class="error">
+        @foreach (var msg in Model.ErrorMessage)
+        {
+            <li data-translation="@msg">@msg</li>
+        }
+    </ul>
+}
+</div>

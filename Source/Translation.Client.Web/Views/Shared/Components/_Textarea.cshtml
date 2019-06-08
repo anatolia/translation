@@ -1,0 +1,22 @@
+﻿@model TextareaInputModel
+
+<div>
+    <label for="@Model.Name" data-translation="@Model.LabelKey">
+        @Model.LabelKey
+    @if (Model.InfoText.IsNotEmpty())
+    {
+    <span>@Model.InfoText</span>
+    }
+</label>
+<textarea id="@Model.Name" name="@Model.Name" @Html.Raw(Model.IsRequired ? "required" : "") rows="@Model.Rows" cols="@Model.Cols">@Model.Value</textarea>
+
+@if (Model.ErrorMessage.Any())
+{
+<ul class="error">
+    @foreach (var msg in Model.ErrorMessage)
+        {
+    <li data-translation="@msg">@msg</li>
+        }
+</ul>
+}
+</div>
