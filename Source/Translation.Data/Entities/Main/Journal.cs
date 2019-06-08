@@ -1,14 +1,22 @@
-﻿using Translation.Data.Entities.Base;
-using Translation.Data.Entities.Base.Schemas;
-using Translation.Data.Entities.Project;
+﻿using System;
+using StandardRepository.Models.Entities;
+using StandardRepository.Models.Entities.Schemas;
 
 namespace Translation.Data.Entities.Main
 {
     public class Journal : BaseEntity, ISchemaMain
     {
-        public Organization Organization { get; set; }
-        public Token Token { get; set; }
-        public User User { get; set; }
+        public long OrganizationId { get; set; }
+        public Guid OrganizationUid { get; set; }
+        public string OrganizationName { get; set; }
+
+        public long IntegrationId { get; set; }
+        public Guid IntegrationUid { get; set; }
+        public string IntegrationName { get; set; }
+
+        public long UserId { get; set; }
+        public Guid UserUid { get; set; }
+        public string UserName { get; set; }
 
         public string Message { get; set; }
     }

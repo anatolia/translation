@@ -1,11 +1,10 @@
-﻿using Translation.Data.Entities.Base;
-using Translation.Data.Entities.Base.Schemas;
+﻿using StandardRepository.Models.Entities;
+using StandardRepository.Models.Entities.Schemas;
 
 namespace Translation.Data.Entities.Parameter
 {
     public class Language : BaseEntity, ISchemaParameter
     {
-        public string Name { get; set; }
         /// <summary>
         /// ISO 639-1 
         /// </summary>
@@ -14,6 +13,7 @@ namespace Translation.Data.Entities.Parameter
         /// ISO 639-2 
         /// </summary>
         public string IsoCode3Char { get; set; }
+        public string OriginalName { get; set; }
         public string Description { get; set; }
         public string IconUrl { get; set; }
     }

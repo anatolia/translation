@@ -1,44 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using Translation.Data.Entities.Base;
-using Translation.Data.Entities.Base.Schemas;
-using Translation.Data.Entities.Parameter;
-using Translation.Data.Entities.Project;
+using NodaTime;
+using StandardRepository.Models.Entities;
+using StandardRepository.Models.Entities.Schemas;
 
 namespace Translation.Data.Entities.Main
 {
     public class User : BaseEntity, ISchemaMain
     {
+        public long OrganizationId { get; set; }
+        public Guid OrganizationUid { get; set; }
+        public string OrganizationName { get; set; }
+
         public string Email { get; set; }
-        public string EmailValidationToken { get; set; }
-        public DateTime EmailValidatedAt { get; set; }
+        public Guid EmailValidationToken { get; set; }
+        public Instant? EmailValidatedAt { get; set; }
         public bool IsEmailValidated { get; set; }
 
         public string PasswordHash { get; set; }
-        public string PasswordResetToken { get; set; }
-        public DateTime? PasswordResetRequestedAt { get; set; }
+        public string ObfuscationSalt { get; set; }
+        public Guid? PasswordResetToken { get; set; }
+        public Instant? PasswordResetRequestedAt { get; set; }
 
-        public DateTime? LastLoginAt { get; set; }
+        public Instant? LastLoginAt { get; set; }
+        public Instant? LastLoginTryAt { get; set; }
         public int LoginTryCount { get; set; }
 
-        public string Name { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Description { get; set; }
-        
+
         public bool IsActive { get; set; }
         public bool IsAdmin { get; set; }
+        public bool IsSuperAdmin { get; set; }
 
-        public int TranslatedLabelCount { get; set; }
-        public int AddedLabelCount { get; set; }
+        public Instant? InvitedAt { get; set; }
+        public long? InvitedByUserId { get; set; }
+        public Guid? InvitedByUserUid { get; set; }
+        public string InvitedByUserName { get; set; }
+        public Guid? InvitationToken { get; set; }
 
-        public Organization Organization { get; set; }
-        public List<Role> Roles { get; set; }
-
-        public User()
-        {
-            Roles = new List<Role>();
-        }
+        public int LabelCount { get; set; }
+        public int LabelTranslationCount { get; set; }
     }
 }

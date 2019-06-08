@@ -1,5 +1,7 @@
-﻿using Translation.Data.Entities.Base;
-using Translation.Data.Entities.Base.Schemas;
+﻿using System;
+
+using StandardRepository.Models.Entities;
+using StandardRepository.Models.Entities.Schemas;
 
 namespace Translation.Data.Entities.Parameter
 {
@@ -7,6 +9,8 @@ namespace Translation.Data.Entities.Parameter
     {
         public string Text { get; set; }
 
-        public Language Language { get; set; }
+        public long LanguageId { get; set; }
+        public Guid LanguageUid { get; set; }
+        public string LanguageName { get; set; }
     }
 }
