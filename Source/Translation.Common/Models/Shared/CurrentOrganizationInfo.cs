@@ -1,17 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace Translation.Common.Models.Shared
 {
-    public class CurrentOrganizationInfo
+    public class CurrentOrganization
     {
-        public string Uid { get; set; }
+        public long Id { get; set; }
+        public Guid Uid { get; set; }
         public string Name { get; set; }
-
-        public List<OnlineUserInfo> OnlineUsers { get; set; }
-
-        public CurrentOrganizationInfo()
-        {
-            OnlineUsers = new List<OnlineUserInfo>();
-        }
     }
 }
