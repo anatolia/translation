@@ -44,6 +44,16 @@ namespace Translation.Common.Helpers
             return GetRandomData(128);
         }
 
+        public string GetKeyAsString()
+        {
+            return Convert.ToBase64String(GetKey());
+        }
+
+        public string GetIVAsString()
+        {
+            return Convert.ToBase64String(GetIV());
+        }
+
         public string GetSaltAsString()
         {
             return Convert.ToBase64String(GetSalt());
