@@ -1,21 +1,65 @@
-﻿using Translation.Common.Enumerations;
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Translation.Common.Enumerations;
+using Translation.Common.Models.Shared;
 
 namespace Translation.Common.Models.Base
 {
-    public abstract class BaseResponse<T> where T : BaseDto
+    public class BaseResponse
     {
-        public ResponseStatus ResponseStatus { get; set; }
+        public ResponseStatus Status { get; set; }
         public List<string> ErrorMessages { get; set; }
-        public T Result { get; set; }
-        public List<T> ListResult { get; set; }
+        public List<string> SuccessMessages { get; set; }
+        public List<string> WarningMessages { get; set; }
+        public List<string> InfoMessages { get; set; }
 
         protected BaseResponse()
         {
-            ResponseStatus = ResponseStatus.Unknown;
+            Status = ResponseStatus.Unknown;
+
             ErrorMessages = new List<string>();
-            ListResult = new List<T>();
+            SuccessMessages = new List<string>();
+            WarningMessages = new List<string>();
+            InfoMessages = new List<string>();
+        }
+
+        public void SetInvalid()
+        {
+            Status = ResponseStatus.Invalid;
+            ErrorMessages.Add(ResponseStatus.Invalid.Description);
+        }
+
+        public void SetInvalidBecauseEntityNotFound()
+        {
+            Status = ResponseStatus.InvalidBecauseEntityNotFound;
+            ErrorMessages.Add(ResponseStatus.InvalidBecauseEntityNotFound.Description);
+        }
+
+        public void SetInvalidForDeleteBecauseHasChildren()
+        {
+            Status = ResponseStatus.Invalid;
+            ErrorMessages.Add("can_not_delete_because_has_children_entity");
+        }
+
+        public void SetFailed()
+        {
+            Status = ResponseStatus.Failed;
+            ErrorMessages.Add(ResponseStatus.Failed.Description);
+        }
+    }
+
+    public abstract class BaseResponse<T> : BaseResponse where T : BaseDto, new()
+    {
+        public T Item { get; set; }
+        public List<T> Items { get; set; }
+
+        public PagingInfo PagingInfo { get; set; }
+
+        protected BaseResponse()
+        {
+            Item = new T();
+            Items = new List<T>();
+
+            PagingInfo = new PagingInfo();
         }
     }
 }

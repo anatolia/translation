@@ -1,12 +1,12 @@
-﻿namespace Translation.Common.Models.Base
+﻿using System;
+
+namespace Translation.Common.Models.Base
 {
     public abstract class BaseRequest
     {
-        public abstract bool IsValid();
-
-        public bool IsNotValid()
+        public void ThrowArgumentException(string argumentName, object value)
         {
-            return !IsValid();
+            throw new ArgumentException(argumentName + " => " + value);
         }
     }
 }
