@@ -1,0 +1,82 @@
+﻿
+table {
+    border-collapse: collapse;
+    margin-top: 8px;
+    margin-bottom: 34px;
+    width: 89%;
+}
+
+    table thead th {
+        background: #84cae6;
+        padding: 5px;
+        margin: 0;
+        border-bottom: 2px solid #222;
+        text-align: left;
+    }
+
+    table tbody td {
+        padding: 3px;
+        padding-left: 8px;
+        vertical-align: middle;
+    }
+
+    table tbody a {
+        margin: 3px;
+        color: #333;
+    }
+
+    table tbody tr img {
+        width: 55px;
+        vertical-align: middle;
+    }
+
+    table tbody tr:nth-child(even) {
+        background-color: #f2f2f2
+    }
+
+
+.tbl {
+    margin-bottom: 13px;
+    min-height: 111px;
+}
+
+.pagination {
+    margin-top: -34px;
+}
+
+    .pagination button {
+        margin-right: 3px;
+    }
+
+    .pagination span {
+        font-size: 15px;
+        padding: 5px;
+        color: #84cae6;
+        font-weight: bold;
+        text-align: center;
+    }
+
+        .pagination span:last-of-type {
+            color: #333;
+        }
+
+.tbl input {
+    display: inline;
+    width: 34px;
+    font-size: 11px;
+    line-height: 13px;
+    margin-left: 5px;
+    margin-bottom: 8px;
+}
+
+.tbl button {
+    display: inline;
+    font-size: 11px;
+    line-height: 10px;
+    margin-left: 5px;
+}
+
+
+table .selectable {
+    width: 34px;
+}

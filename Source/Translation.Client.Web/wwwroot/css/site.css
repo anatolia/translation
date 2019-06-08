@@ -4,7 +4,7 @@
     border: 0;
     font-family: Arial;
     color: #333;
-    font-size: 21px;
+    font-size: 15px;
     background-color: #ffe;
 }
 
@@ -17,35 +17,50 @@ main, footer, header {
     margin: 34px auto;
 }
 
-header a {
-    font-size: 55px;
-    margin: 21px auto;
-    color: #900C3F;
-    text-decoration: none;
-}
+    header a {
+        font-size: 45px;
+        margin: 21px auto;
+        color: #900C3F;
+        text-decoration: none;
+        margin-left: -10px;
+    }
 
 a {
-    margin: 5px;
-    color: cadetblue;
+    margin-top: 5px;
+    margin-bottom: 8px;
+    margin-right: 5px;
+    color: #3d839f;
 }
 
 h1 {
-    font-size: 34px;
+    font-size: 29px;
     margin-bottom: 21px;
     color: #212F3D;
+    letter-spacing: 1px;
 }
 
 h2 {
-    margin: 13px;
+    margin-bottom: 13px;
     font-size: 21px;
     letter-spacing: 2px;
     color: coral;
     text-decoration: underline;
 }
 
+select {
+    border-bottom: 1px solid #999;
+    padding: 5px 13px 5px 0;
+    cursor: pointer;
+}
+
+label {
+    font-weight: bold;
+}
+
 label, input, button {
     display: block;
-    margin: 3px;
+    margin-top: 1px;
+    margin-bottom: 3px;
     margin-top: 8px;
 }
 
@@ -55,6 +70,13 @@ label, input, button {
     font-size: 13px;
     font-style: italic;
 }
+
+    .error li {
+        color: red;
+        font-weight: normal;
+        margin: 6px;
+        list-style-type: square;
+    }
 
 input {
     font-size: 13px;
@@ -83,8 +105,8 @@ button {
     font-weight: bold;
     padding: 8px;
     margin-top: 21px;
-    background-color: #0A7CD5;
-    color: #fff;
+    background-color: #84cae6;
+    color: #3d839f;
     border-radius: 3px;
     cursor: pointer;
 }
@@ -94,7 +116,35 @@ button {
     padding-left: 34px;
 }
 
-.error-messages li {
-    color: red;
-    list-style-type: square;
+    .error-messages li {
+        color: red;
+        list-style-type: square;
+    }
+
+.bottom-links {
+    margin-top: 21px;
+}
+
+    .bottom-links a {
+        display: block;
+        margin-top: 21px;
+    }
+
+
+main div {
+    min-height: 39px;
+}
+
+button[type=submit] {
+    margin-bottom: 8px;
+}
+
+.btnGreen {
+    background: #36b036;
+    color: #fff;
+}
+
+.btnRed {
+    background: #a5221e;
+    color: #fff;
 }
