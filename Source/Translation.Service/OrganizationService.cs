@@ -1,10 +1,837 @@
-﻿using Translation.Common.Contracts;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+
+using NodaTime;
+using StandardRepository.Helpers;
+
+using Translation.Common.Contracts;
+using Translation.Common.Enumerations;
+using Translation.Common.Helpers;
+using Translation.Common.Models.Requests.Organization;
+using Translation.Common.Models.Requests.User;
+using Translation.Common.Models.Requests.User.LoginLog;
+using Translation.Common.Models.Responses.Organization;
+using Translation.Common.Models.Responses.User;
+using Translation.Common.Models.Responses.User.LoginLog;
+using Translation.Common.Models.Shared;
+using Translation.Data.Entities.Main;
+using Translation.Data.Factories;
+using Translation.Data.Repositories.Contracts;
+using Translation.Data.UnitOfWorks.Contracts;
+using Translation.Service.Managers;
 
 namespace Translation.Service
 {
     public class OrganizationService : IOrganizationService
     {
+        private readonly CacheManager _cacheManager;
+        private readonly CryptoHelper _cryptoHelper;
+        private readonly IDatetimeHelper _datetimeHelper;
+        private readonly ISignUpUnitOfWork _signUpUnitOfWork;
+        private readonly ILogOnUnitOfWork _logOnUnitOfWork;
+        private readonly IUserRepository _userRepository;
+        private readonly UserFactory _userFactory;
+        private readonly IOrganizationRepository _organizationRepository;
+        private readonly OrganizationFactory _organizationFactory;
+        private readonly IUserLoginLogRepository _userLoginLogRepository;
+        private readonly UserLoginLogFactory _userLoginLogFactory;
 
+        public OrganizationService(CacheManager cacheManager, CryptoHelper cryptoHelper, IDatetimeHelper datetimeHelper,
+                                   ISignUpUnitOfWork signUpUnitOfWork,
+                                   ILogOnUnitOfWork logOnUnitOfWork,
+                                   IUserRepository userRepository, UserFactory userFactory,
+                                   IOrganizationRepository organizationRepository, OrganizationFactory organizationFactory,
+                                   IUserLoginLogRepository userLoginLogRepository, UserLoginLogFactory userLoginLogFactory)
+        {
+            _cacheManager = cacheManager;
+            _cryptoHelper = cryptoHelper;
+            _datetimeHelper = datetimeHelper;
+            _signUpUnitOfWork = signUpUnitOfWork;
+            _logOnUnitOfWork = logOnUnitOfWork;
+            _userRepository = userRepository;
+            _userFactory = userFactory;
+            _organizationRepository = organizationRepository;
+            _organizationFactory = organizationFactory;
+            _userLoginLogRepository = userLoginLogRepository;
+            _userLoginLogFactory = userLoginLogFactory;
+        }
+
+        public async Task<SignUpResponse> CreateOrganizationWithAdmin(SignUpRequest request)
+        {
+            var response = new SignUpResponse();
+
+            var user = await _userRepository.Select(x => x.Email == request.Email);
+            if (user.IsExist())
+            {
+                response.ErrorMessages.Add("email_already_exist");
+                response.Status = ResponseStatus.Invalid;
+                return response;
+            }
+
+            var organization = await _organizationRepository.Select(x => x.Name == request.OrganizationName);
+            if (organization.IsExist())
+            {
+                response.ErrorMessages.Add("organization_name_already_exist");
+                response.Status = ResponseStatus.Invalid;
+                return response;
+            }
+            
+            organization = _organizationFactory.CreateEntityFromRequest(request, _cryptoHelper.GetKeyAsString(), _cryptoHelper.GetIVAsString());
+
+            var salt = _cryptoHelper.GetSaltAsString();
+            var passwordHash = _cryptoHelper.Hash(request.Password, salt);
+            user = _userFactory.CreateEntityFromRequest(request, organization, salt, passwordHash);
+
+            var loginLog = _userLoginLogFactory.CreateEntityFromRequest(request);
+
+            var (uowResult,
+                 insertedOrganization,
+                 insertedUser) = await _signUpUnitOfWork.DoWork(organization, user, loginLog);
+
+            if (uowResult)
+            {
+                // todo:send welcome email
+
+                // todo:send email log
+
+                _cacheManager.UpsertUserCache(insertedUser, _userFactory.MapCurrentUser(insertedUser));
+                _cacheManager.UpsertOrganizationCache(insertedOrganization, _organizationFactory.MapCurrentOrganization(insertedOrganization));
+
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public OrganizationReadResponse GetOrganization(OrganizationReadRequest request)
+        {
+            var response = new OrganizationReadResponse();
+
+            var entity = _cacheManager.GetCachedOrganization(request.OrganizationUid);
+
+            response.Item = _organizationFactory.CreateDtoFromEntity(entity);
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
+        public async Task<OrganizationReadListResponse> GetOrganizations(OrganizationReadListRequest request)
+        {
+            var response = new OrganizationReadListResponse();
+
+            Expression<Func<Organization, object>> orderByColumn = x => x.Id;
+            Expression<Func<Organization, bool>> filter = null;
+            if (request.SearchTerm.IsNotEmpty())
+            {
+                filter = x => x.Name.Contains(request.SearchTerm);
+            }
+
+            List<Organization> entities;
+            if (request.PagingInfo.Skip < 1)
+            {
+                entities = await _organizationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            }
+            else
+            {
+                entities = await _organizationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            }
+
+            if (entities != null)
+            {
+                for (var i = 0; i < entities.Count; i++)
+                {
+                    var entity = entities[i];
+                    var dto = _organizationFactory.CreateDtoFromEntity(entity);
+                    response.Items.Add(dto);
+                }
+            }
+
+            response.PagingInfo.Skip = request.PagingInfo.Skip;
+            response.PagingInfo.Take = request.PagingInfo.Take;
+            response.PagingInfo.LastUid = request.PagingInfo.LastUid;
+            response.PagingInfo.IsAscending = request.PagingInfo.IsAscending;
+            response.PagingInfo.TotalItemCount = await _organizationRepository.Count(filter);
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
+        public async Task<OrganizationEditResponse> EditOrganization(OrganizationEditRequest request)
+        {
+            var response = new OrganizationEditResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (!currentUser.IsAdmin)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalidBecauseParentNotActive();
+                return response;
+            }
+
+            var entity = _cacheManager.GetCachedOrganization(currentUser.OrganizationUid);
+            if (entity.Id != currentUser.OrganizationId)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            if (await _organizationRepository.Any(x => x.Name == request.Name && x.Id != currentUser.OrganizationId))
+            {
+                response.ErrorMessages.Add("organization_name_already_exist");
+                response.Status = ResponseStatus.Invalid;
+            }
+
+            var updatedEntity = _organizationFactory.CreateEntityFromRequest(request, entity);
+            var result = await _organizationRepository.Update(request.CurrentUserId, updatedEntity);
+            if (result)
+            {
+                _cacheManager.UpsertOrganizationCache(updatedEntity, _organizationFactory.MapCurrentOrganization(updatedEntity));
+
+                response.Item = _organizationFactory.CreateDtoFromEntity(updatedEntity);
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<ValidateEmailResponse> ValidateEmail(ValidateEmailRequest request)
+        {
+            var response = new ValidateEmailResponse();
+
+            var user = await _userRepository.Select(x => x.EmailValidationToken == request.Token && x.Email == request.Email);
+            if (user != null
+                && user.Id > 0)
+            {
+                user.EmailValidationToken = Guid.Empty;
+                user.EmailValidatedAt = _datetimeHelper.GetNow();
+                user.IsEmailValidated = true;
+
+                var result = await _userRepository.Update(user.Id, user);
+                if (result)
+                {
+                    response.Status = ResponseStatus.Success;
+                    return response;
+                }
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<LogOnResponse> LogOn(LogOnRequest request)
+        {
+            var response = new LogOnResponse();
+
+            var user = await _userRepository.Select(x => x.Email == request.Email);
+            if (user.IsNotExist()
+                || !user.IsActive)
+            {
+                response.ErrorMessages.Add("user_not_found_or_not_active");
+                response.Status = ResponseStatus.Invalid;
+                return response;
+            }
+
+            if (_cryptoHelper.Hash(request.Password, user.ObfuscationSalt) == user.PasswordHash)
+            {
+                if (user.LoginTryCount < 6
+                    || (user.LastLoginTryAt.HasValue && user.LastLoginTryAt.Value.Plus(Duration.FromHours(1)) < _datetimeHelper.GetNow()))
+                {
+                    user.LastLoginAt = _datetimeHelper.GetNow();
+                    user.LoginTryCount = 0;
+
+                    var loginLog = _userLoginLogFactory.CreateEntityFromRequest(request, user);
+                    var uowResult = await _logOnUnitOfWork.DoWork(user, loginLog);
+                    if (uowResult)
+                    {
+                        _cacheManager.UpsertUserCache(user, _userFactory.MapCurrentUser(user));
+
+                        response.Status = ResponseStatus.Success;
+                        response.Item.OrganizationUid = user.OrganizationUid;
+                        response.Item.Name = user.Name;
+                        response.Item.Email = user.Email;
+                        return response;
+                    }
+                }
+            }
+
+            user.LastLoginAt = null;
+            user.LastLoginTryAt = _datetimeHelper.GetNow();
+            user.LoginTryCount++;
+
+            await _userRepository.Update(user.Id, user);
+
+            response.ErrorMessages.Add("password_invalid");
+            response.Status = ResponseStatus.Failed;
+            return response;
+        }
+
+        public async Task<DemandPasswordResetResponse> DemandPasswordReset(DemandPasswordResetRequest request)
+        {
+            var response = new DemandPasswordResetResponse();
+
+            var user = await _userRepository.Select(x => x.Email == request.Email);
+            if (!user.IsExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            if (!user.IsActive)
+            {
+                response.ErrorMessages.Add("user_is_not_active");
+                response.Status = ResponseStatus.Invalid;
+                return response;
+            }
+
+            if (user.PasswordResetRequestedAt.HasValue
+                && user.PasswordResetRequestedAt.Value.Plus(Duration.FromMinutes(2)) < _datetimeHelper.GetNow())
+            {
+                response.ErrorMessages.Add("already_requested_password_reset_in_last_two_minutes");
+                response.Status = ResponseStatus.Invalid;
+                return response;
+            }
+
+            user.PasswordResetRequestedAt = _datetimeHelper.GetNow();
+            user.PasswordResetToken = Guid.NewGuid();
+
+            var result = await _userRepository.Update(user.Id, user);
+            if (result)
+            {
+                //todo:send email
+
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<PasswordResetValidateResponse> ValidatePasswordReset(PasswordResetValidateRequest request)
+        {
+            var response = new PasswordResetValidateResponse();
+
+            var user = await _userRepository.Select(x => x.PasswordResetToken == request.Token && x.Email == request.Email);
+            if (user.IsExist()
+                && user.PasswordResetRequestedAt.HasValue
+                && user.PasswordResetRequestedAt.Value.Plus(Duration.FromDays(1)) > _datetimeHelper.GetNow())
+            {
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<PasswordResetResponse> PasswordReset(PasswordResetRequest request)
+        {
+            var response = new PasswordResetResponse();
+
+            var user = await _userRepository.Select(x => x.PasswordResetToken == request.Token && x.Email == request.Email);
+            if (user.IsExist()
+                && user.IsActive
+                && user.PasswordResetRequestedAt.HasValue
+                && user.PasswordResetRequestedAt.Value.Plus(Duration.FromDays(1)) > _datetimeHelper.GetNow())
+            {
+                user.PasswordHash = _cryptoHelper.Hash(request.Password, user.ObfuscationSalt);
+                user.LoginTryCount = 0;
+                user.PasswordResetRequestedAt = null;
+                user.PasswordResetToken = null;
+
+                var result = await _userRepository.Update(user.Id, user);
+                if (result)
+                {
+                    //todo:send email
+
+                    response.Status = ResponseStatus.Success;
+                    return response;
+                }
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<PasswordChangeResponse> ChangePassword(PasswordChangeRequest request)
+        {
+            var response = new PasswordChangeResponse();
+
+            var user = await _userRepository.Select(x => x.Id == request.CurrentUserId);
+            if (!user.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            if (!user.IsActive)
+            {
+                response.ErrorMessages.Add("user_is_not_active");
+                response.Status = ResponseStatus.Invalid;
+                return response;
+            }
+
+            if (user.PasswordHash != _cryptoHelper.Hash(request.OldPassword, user.ObfuscationSalt))
+            {
+                response.ErrorMessages.Add("old_password_is_not_right");
+                response.Status = ResponseStatus.Failed;
+                return response;
+            }
+
+            var passwordHash = _cryptoHelper.Hash(request.NewPassword, user.ObfuscationSalt);
+
+            var revisions = await _userRepository.SelectRevisions(user.Id);
+            var last2Password = revisions.ToList().Select(x => x.Entity.PasswordHash).Distinct().Take(2);
+            if (last2Password.Contains(passwordHash))
+            {
+                response.ErrorMessages.Add("choose_other_password_different_then_last_2");
+                response.Status = ResponseStatus.Failed;
+                return response;
+            }
+
+            user.PasswordHash = passwordHash;
+            user.LoginTryCount = 0;
+            user.PasswordResetRequestedAt = null;
+            user.PasswordResetToken = null;
+
+            var result = await _userRepository.Update(user.Id, user);
+            if (result)
+            {
+                //todo:send email
+
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<UserChangeActivationResponse> ChangeActivationForUser(UserChangeActivationRequest request)
+        {
+            var response = new UserChangeActivationResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (!currentUser.IsAdmin)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalidBecauseParentNotActive();
+                return response;
+            }
+
+            var entity = _cacheManager.GetCachedUser(request.UserUid);
+            if (entity.OrganizationId != currentUser.OrganizationId)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            entity.IsActive = !entity.IsActive;
+
+            var result = await _userRepository.Update(request.CurrentUserId, entity);
+            if (result)
+            {
+                _cacheManager.UpsertUserCache(entity, currentUser);
+
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<UserEditResponse> EditUser(UserEditRequest request)
+        {
+            var response = new UserEditResponse();
+            
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (!currentUser.IsAdmin)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalidBecauseParentNotActive();
+                return response;
+            }
+
+            var entity = _cacheManager.GetCachedUser(request.UserUid);
+            if (entity.OrganizationId != currentUser.OrganizationId)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            var updatedEntity = _userFactory.CreateEntityFromRequest(request, entity);
+            var result = await _userRepository.Update(request.CurrentUserId, updatedEntity);
+            if (result)
+            {
+                _cacheManager.UpsertUserCache(entity, _userFactory.MapCurrentUser(entity));
+
+                response.Item = _userFactory.CreateDtoFromEntity(entity);
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<UserDeleteResponse> DeleteUser(UserDeleteRequest request)
+        {
+            var response = new UserDeleteResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (!currentUser.IsAdmin)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalidBecauseParentNotActive();
+                return response;
+            }
+
+            var entity = _cacheManager.GetCachedUser(request.UserUid);
+            if (entity.OrganizationId != currentUser.OrganizationId)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            var result = await _userRepository.Delete(request.CurrentUserId, entity.Id);
+            if (result)
+            {
+                _cacheManager.RemoveUser(entity);
+
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<UserInviteResponse> InviteUser(UserInviteRequest request)
+        {
+            var response = new UserInviteResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (!currentUser.IsAdmin)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalidBecauseParentNotActive();
+                return response;
+            }
+
+            var user = await _userRepository.Select(x => x.Email == request.Email);
+            if (user.IsExist())
+            {
+                response.ErrorMessages.Add("email_already_invited");
+                response.Status = ResponseStatus.Invalid;
+                return response;
+            }
+
+            var invitedUser = _userFactory.CreateEntityFromRequest(request, currentUser.Organization, _cryptoHelper.GetSaltAsString());
+            invitedUser.InvitationToken = Guid.NewGuid();
+            invitedUser.InvitedAt = _datetimeHelper.GetNow();
+            invitedUser.InvitedByUserId = currentUser.Id;
+            invitedUser.InvitedByUserUid = currentUser.Uid;
+            invitedUser.InvitedByUserName = currentUser.Name;
+
+            var id = await _userRepository.Insert(request.CurrentUserId, invitedUser);
+            if (id > 0)
+            {
+                //todo:send invite email
+
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.Status = ResponseStatus.Failed;
+            return response;
+        }
+
+        public async Task<UserInviteValidateResponse> ValidateUserInvitation(UserInviteValidateRequest request)
+        {
+            var response = new UserInviteValidateResponse();
+
+            var user = await _userRepository.Select(x => x.InvitationToken == request.Token && x.Email == request.Email);
+            if (user.IsExist()
+                && user.InvitedAt.HasValue
+                && user.InvitedAt.Value.Plus(Duration.FromDays(2)) > _datetimeHelper.GetNow())
+            {
+                response.Item.FirstName = user.FirstName;
+                response.Item.LastName = user.LastName;
+                response.Item.Email = user.Email;
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<UserAcceptInviteResponse> AcceptInvitation(UserAcceptInviteRequest request)
+        {
+            var response = new UserAcceptInviteResponse();
+
+            var user = await _userRepository.Select(x => x.InvitationToken == request.Token && x.Email == request.Email);
+            if (user.IsExist()
+                && user.InvitedAt.HasValue
+                && user.InvitedAt.Value.Plus(Duration.FromDays(2)) > _datetimeHelper.GetNow())
+            {
+                user.FirstName = request.FirstName;
+                user.LastName = request.LastName;
+                user.PasswordHash = _cryptoHelper.Hash(request.Password, user.ObfuscationSalt);
+
+                //todo:send welcome email
+
+                //todo uow
+
+                var result = await _userRepository.Update(user.Id, user);
+                if (result)
+                {
+                    var organization = _cacheManager.GetCachedOrganization(user.OrganizationUid);
+                    organization.UserCount++;
+                    result = await _organizationRepository.Update(user.Id, organization);
+
+                    if (result)
+                    {
+                        _cacheManager.UpsertOrganizationCache(organization, _organizationFactory.MapCurrentOrganization(organization));
+
+                        response.Status = ResponseStatus.Success;
+                        return response;
+                    }
+                }
+            }
+
+            response.Status = ResponseStatus.Failed;
+            return response;
+        }
+
+        public UserReadResponse GetUser(UserReadRequest request)
+        {
+            var response = new UserReadResponse();
+
+            var entity = _cacheManager.GetCachedUser(request.UserUid);
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            if (entity.OrganizationId != currentUser.OrganizationId)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            response.Item = _userFactory.CreateDtoFromEntity(entity);
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
+        public async Task<UserReadListResponse> GetUsers(UserReadListRequest request)
+        {
+            var response = new UserReadListResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            Expression<Func<User, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
+            Expression<Func<User, object>> orderByColumn = x => x.Id;
+            if (request.SearchTerm.IsNotEmpty())
+            {
+                filter = x => x.OrganizationId == currentUser.OrganizationId && x.Name.Contains(request.SearchTerm);
+            }
+
+            List<User> entities;
+            if (request.PagingInfo.Skip < 1)
+            {
+                entities = await _userRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            }
+            else
+            {
+                entities = await _userRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            }
+
+            if (entities != null)
+            {
+                for (var i = 0; i < entities.Count; i++)
+                {
+                    var entity = entities[i];
+                    var dto = _userFactory.CreateDtoFromEntity(entity);
+                    response.Items.Add(dto);
+                }
+            }
+
+            response.PagingInfo.Skip = request.PagingInfo.Skip;
+            response.PagingInfo.Take = request.PagingInfo.Take;
+            response.PagingInfo.LastUid = request.PagingInfo.LastUid;
+            response.PagingInfo.IsAscending = request.PagingInfo.IsAscending;
+            response.PagingInfo.TotalItemCount = await _userRepository.Count(filter);
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
+        public async Task<UserLoginLogReadListResponse> GetUserLoginLogs(UserLoginLogReadListRequest request)
+        {
+            var response = new UserLoginLogReadListResponse();
+
+            var user = _cacheManager.GetCachedUser(request.UserUid);
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            if (user.OrganizationId != currentUser.OrganizationId)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            Expression<Func<UserLoginLog, bool>> filter = x => x.OrganizationId == user.OrganizationId && x.UserId == user.Id;
+            Expression<Func<UserLoginLog, object>> orderByColumn = x => x.Id;
+            if (request.SearchTerm.IsNotEmpty())
+            {
+                filter = x => x.Name.Contains(request.SearchTerm) && x.OrganizationId == user.OrganizationId && x.UserId == user.Id;
+            }
+
+            List<UserLoginLog> entities;
+            if (request.PagingInfo.Skip < 1)
+            {
+                entities = await _userLoginLogRepository.SelectAfter(filter,request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            }
+            else
+            {
+                entities = await _userLoginLogRepository.SelectMany(filter,request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            }
+
+            if (entities != null)
+            {
+                for (var i = 0; i < entities.Count; i++)
+                {
+                    var entity = entities[i];
+                    var dto = _userLoginLogFactory.CreateDtoFromEntity(entity);
+                    response.Items.Add(dto);
+                }
+            }
+
+            response.PagingInfo.Skip = request.PagingInfo.Skip;
+            response.PagingInfo.Take = request.PagingInfo.Take;
+            response.PagingInfo.LastUid = request.PagingInfo.LastUid;
+            response.PagingInfo.IsAscending = request.PagingInfo.IsAscending;
+            response.PagingInfo.TotalItemCount = await _userLoginLogRepository.Count(filter);
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
+        public async Task<OrganizationLoginLogReadListResponse> GetUserLoginLogsOfOrganization(OrganizationLoginLogReadListRequest request)
+        {
+            var response = new OrganizationLoginLogReadListResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            var organization = _cacheManager.GetCachedOrganization(request.OrganizationUid);
+
+            if (currentUser.OrganizationId != organization.Id)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            Expression<Func<UserLoginLog, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
+            Expression<Func<UserLoginLog, object>> orderByColumn = x => x.Id;
+            if (request.SearchTerm.IsNotEmpty())
+            {
+                filter = x => x.Name.Contains(request.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
+            }
+
+            List<UserLoginLog> entities;
+            if (request.PagingInfo.Skip < 1)
+            {
+                entities = await _userLoginLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            }
+            else
+            {
+                entities = await _userLoginLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            }
+
+            if (entities != null)
+            {
+                for (var i = 0; i < entities.Count; i++)
+                {
+                    var entity = entities[i];
+                    var dto = _userLoginLogFactory.CreateDtoFromEntity(entity);
+                    response.Items.Add(dto);
+                }
+            }
+
+            response.PagingInfo.Skip = request.PagingInfo.Skip;
+            response.PagingInfo.Take = request.PagingInfo.Take;
+            response.PagingInfo.LastUid = request.PagingInfo.LastUid;
+            response.PagingInfo.IsAscending = request.PagingInfo.IsAscending;
+            response.PagingInfo.TotalItemCount = await _userLoginLogRepository.Count(filter);
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
+        public CurrentUser GetCurrentUser(CurrentUserRequest request)
+        {
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.Email);
+            if (currentUser == null)
+            {
+                throw new ApplicationException("Current user not mapped!");
+            }
+
+            return currentUser;
+        }
+
+        public async Task<bool> LoadOrganizationsToCache()
+        {
+            var organizations = await _organizationRepository.SelectAll(x => x.IsActive);
+
+            for (var i = 0; i < organizations.Count; i++)
+            {
+                var organization = organizations[i];
+                _cacheManager.UpsertOrganizationCache(organization, _organizationFactory.MapCurrentOrganization(organization));
+            }
+
+            return true;
+        }
+
+        public async Task<bool> LoadUsersToCache()
+        {
+            var users = await _userRepository.SelectAll(x => x.IsActive);
+
+            for (var i = 0; i < users.Count; i++)
+            {
+                var user = users[i];
+                _cacheManager.UpsertUserCache(user, _userFactory.MapCurrentUser(user));
+            }
+
+            return true;
+        }
     }
 }
