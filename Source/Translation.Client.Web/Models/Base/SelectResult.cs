@@ -1,0 +1,22 @@
+﻿namespace Translation.Client.Web.Models.Base
+{
+    public class SelectResult
+    {
+        public string Value { get; set; }
+        public string Text { get; set; }
+        public string Image { get; set; }
+
+        public SelectResult(string value, string text, string image)
+        {
+            Value = value;
+            Text = text;
+            Image = image;
+        }
+
+        public SelectResult(string value, string text)
+        {
+            Value = value;
+            Text = text;
+        }
+    }
+}
