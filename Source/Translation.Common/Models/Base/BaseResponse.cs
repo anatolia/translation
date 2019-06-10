@@ -40,6 +40,12 @@ namespace Translation.Common.Models.Base
             ErrorMessages.Add("can_not_delete_because_has_children_entity");
         }
 
+        public void SetInvalidBecauseParentNotActive()
+        {
+            Status = ResponseStatus.Invalid;
+            ErrorMessages.Add("action_is_invalid_because_parent_entity_is_not_active");
+        }
+
         public void SetFailed()
         {
             Status = ResponseStatus.Failed;
