@@ -69,6 +69,10 @@ table {
     margin-bottom: 8px;
 }
 
+.tbl table tbody tr td input {
+    margin: 2px;
+}
+
 .tbl button {
     display: inline;
     font-size: 11px;

@@ -112,8 +112,9 @@ button {
 }
 
 .error-messages {
-    margin: 5px;
-    padding-left: 34px;
+    margin: 7px;
+    padding-left: 21px;
+    margin-left: 0;
 }
 
     .error-messages li {
@@ -123,6 +124,7 @@ button {
 
 .bottom-links {
     margin-top: 21px;
+    margin-bottom: 21px;
 }
 
     .bottom-links a {
