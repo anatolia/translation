@@ -78,8 +78,8 @@ table {
     font-size: 11px;
     line-height: 10px;
     margin-left: 5px;
+    margin-top: 3px;
 }
-
 
 table .selectable {
     width: 34px;

@@ -98,7 +98,7 @@
   }
 
   .select .select-info-wrapper .close-popover-btn {
-    margin: 0px;
+    margin: 0;
     float: right;
   }
 
@@ -109,7 +109,7 @@
   }
 
     .select .select-info-wrapper .select-info-header .select-info-img {
-      width: 30%;
+      width: 8%;
       background: none;
     }
 
@@ -118,9 +118,6 @@
       width: 70%;
       background: none;
     }
-
-  .select .select-info-wrapper .select-info-desc {
-  }
 
 .select .select-content {
   display: none;
@@ -204,41 +201,13 @@
   }
 }
 
-.select.multiple-select .active-item {
-  display: inline-block;
-  padding: 3px;
-  margin: 2px 5px 2px 0px;
-  border: 1px solid grey;
-  border-radius: 5px;
-  font-size: 12px;
-  background: lightslategrey;
-  color: white;
-  animation: fadeIn 1s;
-}
-
-  .select.multiple-select .active-item span {
-    color: white;
-    background: transparent;
-  }
-
-  .select.multiple-select .active-item .remove-active-item {
-    display: inline-block;
-    background: transparent;
-    color: white;
-    font-size: 12px;
-    border: none;
-    margin: 0px 5px;
-    padding: 2px;
-    cursor: pointer;
-  }
-
 .select .select-item.content-item {
   display: flex;
   align-items: center;
 }
 
   .select .select-item.content-item .select-item-image {
-    width: 30%;
+    width: 8%;
     background: transparent;
   }
 
@@ -255,54 +224,7 @@
     right: -365px;
   }
 
-.select-radio-item-btn {
-  padding: 5px;
-}
 
-.select-radio-items {
-}
-
-  .select-radio-items .select-radio-item-btn {
-    width: auto;
-    margin: 2px;
-    display: inline-block;
-    text-align: left;
-    background: transparent;
-    border: 1px solid green;
-    padding-right: 13px;
-    padding-left: 13px;
-    cursor: pointer;
-    transition: .2s all;
-  }
-
-    .select-radio-items .select-radio-item-btn:hover,
-    .select-radio-items .select-radio-item-btn .select-radio-item-content:hover,
-    .select-radio-items .select-radio-item-btn .select-radio-item-content label:hover {
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    .select-radio-items .select-radio-item-btn.active,
-    .select-radio-items .select-radio-item-btn.active .select-radio-item-content,
-    .select-radio-items .select-radio-item-btn.active .select-radio-item-content label {
-      background: green;
-      color: white;
-      text-decoration: none;
-      cursor: default;
-    }
-
-    .select-radio-items .select-radio-item-btn .select-radio-item-content {
-      display: flex;
-      align-items: center;
-    }
-
-    .select-radio-items .select-radio-item-btn img {
-      width: 30px;
-      padding: 2px;
-    }
-
-    .select-radio-items .select-radio-item-btn label {
-    }
 /* Overlay Style */
 .overlay {
   display: none;
@@ -314,45 +236,3 @@
   background: rgba(0, 0, 0, .4);
   z-index: 100;
 }
-/* Popup Style */
-.select-detail {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 500px;
-  height: 500px;
-  background: white;
-  animation: 0.5s fadeIn;
-  z-index: 101;
-}
-
-  .select-detail .popup-header {
-    padding: 5px;
-  }
-
-    .select-detail .popup-header .popup-title {
-      font-size: 20px;
-    }
-
-    .select-detail .popup-header .popup-close {
-      float: right;
-    }
-
-  .select-detail .popup-content {
-    padding: 5px;
-  }
-
-    .select-detail .popup-content .select-item-header {
-      display: flex;
-      align-items: center;
-    }
-
-      .select-detail .popup-content .select-item-header .select-item-image {
-        width: 100px;
-      }
-
-      .select-detail .popup-content .select-item-header .select-item-text {
-        margin-left: 20px;
-      }
