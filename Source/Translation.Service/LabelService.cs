@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using NodaTime;
 using StandardRepository.Helpers;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Helpers;
+using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
 using Translation.Common.Models.Responses.Label;
@@ -31,6 +33,7 @@ namespace Translation.Service
         private readonly ProjectFactory _projectFactory;
         private readonly IOrganizationRepository _organizationRepository;
         private readonly ILanguageRepository _languageRepository;
+        private readonly ITokenRepository _tokenRepository;
 
         public LabelService(CacheManager cacheManager,
                             ILabelUnitOfWork labelUnitOfWork,
@@ -38,7 +41,8 @@ namespace Translation.Service
                             ILabelTranslationRepository labelTranslationRepository, LabelTranslationFactory labelTranslationFactory,
                             IProjectRepository projectRepository, ProjectFactory projectFactory,
                             IOrganizationRepository organizationRepository,
-                            ILanguageRepository languageRepository)
+                            ILanguageRepository languageRepository,
+                            ITokenRepository tokenRepository)
         {
             _cacheManager = cacheManager;
             _labelUnitOfWork = labelUnitOfWork;
@@ -50,6 +54,7 @@ namespace Translation.Service
             _projectFactory = projectFactory;
             _organizationRepository = organizationRepository;
             _languageRepository = languageRepository;
+            _tokenRepository = tokenRepository;
         }
 
         public async Task<LabelCreateResponse> CreateLabel(LabelCreateRequest request)
@@ -91,6 +96,57 @@ namespace Translation.Service
 
             var label = _labelFactory.CreateEntityFromRequest(request, project);
             var uowResult = await _labelUnitOfWork.DoCreateWork(request.CurrentUserId, label);
+            if (uowResult)
+            {
+                response.Item = _labelFactory.CreateDtoFromEntity(label);
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<LabelCreateResponse> CreateLabel(LabelCreateWithTokenRequest request)
+        {
+            var response = new LabelCreateResponse();
+
+            var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid && x.IsActive);
+            if (project.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            var now = DateTime.UtcNow;
+            var token = await _tokenRepository.Select(x => x.AccessToken == request.Token && x.ExpiresAt > now);
+            if (token.IsNotExist())
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            if (token.OrganizationId != project.OrganizationId)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            if (await _organizationRepository.Any(x => x.Id == project.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            if (await _labelRepository.Any(x => x.Key == request.LabelKey && x.ProjectId == project.Id))
+            {
+                response.ErrorMessages.Add("label_key_must_be_unique");
+                response.Status = ResponseStatus.Failed;
+                return response;
+            }
+
+            var label = _labelFactory.CreateEntityFromRequest(request.LabelKey, project);
+            var uowResult = await _labelUnitOfWork.DoCreateWork(token.CreatedBy, label);
             if (uowResult)
             {
                 response.Item = _labelFactory.CreateDtoFromEntity(label);
@@ -273,6 +329,83 @@ namespace Translation.Service
             response.PagingInfo.LastUid = request.PagingInfo.LastUid;
             response.PagingInfo.IsAscending = request.PagingInfo.IsAscending;
             response.PagingInfo.TotalItemCount = await _labelRepository.Count(filter);
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
+        public async Task<AllLabelReadListResponse> GetLabelsWithTranslations(AllLabelReadListRequest request)
+        {
+            var response = new AllLabelReadListResponse();
+
+            var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid && x.IsActive);
+            if (project.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            var now = DateTime.UtcNow;
+            var token = await _tokenRepository.Select(x => x.AccessToken == request.Token && x.ExpiresAt > now);
+            if (token.IsNotExist())
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            if (token.OrganizationId != project.OrganizationId)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            if (await _organizationRepository.Any(x => x.Id == project.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            var translations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == project.Id && x.IsActive);
+            var languages = await _languageRepository.SelectAll(null);
+
+            var entities = await _labelRepository.SelectAll(x => x.ProjectId == project.Id && x.IsActive);
+            if (translations != null)
+            {
+                for (var i = 0; i < entities.Count; i++)
+                {
+                    var entity = entities[i];
+                    var labelTranslations = translations.Where(x => x.LabelId == entity.Id).ToList();
+                    if (!labelTranslations.Any())
+                    {
+                        continue;
+                    }
+
+                    var dto = new LabelFatDto
+                    {
+                        Uid = entity.Uid,
+                        Key = entity.Key
+                    };
+
+                    for (var j = 0; j < labelTranslations.Count; j++)
+                    {
+                        var labelTranslation = labelTranslations[j];
+                        var language = languages.Find(x => x.Id == labelTranslation.LanguageId);
+                        if (language == null)
+                        {
+                            continue;
+                        }
+
+                        dto.Translations.Add(new LabelTranslationSlimDto
+                        {
+                            LabelKey = entity.Key,
+                            Translation = labelTranslation.Translation,
+                            LanguageIsoCode2 = language.IsoCode2Char
+                        });
+                    }
+
+                    response.Labels.Add(dto);
+                }
+            }
 
             response.Status = ResponseStatus.Success;
             return response;

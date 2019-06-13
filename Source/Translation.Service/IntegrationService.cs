@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using NodaTime;
 using StandardRepository.Helpers;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
@@ -32,13 +33,15 @@ namespace Translation.Service
         private readonly TokenFactory _tokenFactory;
         private readonly ITokenRequestLogRepository _tokenRequestLogRepository;
         private readonly TokenRequestLogFactory _tokenRequestLogFactory;
+        private readonly IProjectRepository _projectRepository;
 
         public IntegrationService(CacheManager cacheManager,
                                   IOrganizationRepository organizationRepository,
                                   IIntegrationRepository integrationRepository, IntegrationFactory integrationFactory,
                                   IIntegrationClientRepository integrationClientRepository, IntegrationClientFactory integrationClientFactory,
                                   ITokenRepository tokenRepository, TokenFactory tokenFactory,
-                                  ITokenRequestLogRepository tokenRequestLogRepository, TokenRequestLogFactory tokenRequestLogFactory)
+                                  ITokenRequestLogRepository tokenRequestLogRepository, TokenRequestLogFactory tokenRequestLogFactory,
+                                  IProjectRepository projectRepository)
         {
             _cacheManager = cacheManager;
             _organizationRepository = organizationRepository;
@@ -50,6 +53,7 @@ namespace Translation.Service
             _tokenFactory = tokenFactory;
             _tokenRequestLogRepository = tokenRequestLogRepository;
             _tokenRequestLogFactory = tokenRequestLogFactory;
+            _projectRepository = projectRepository;
         }
 
         #region Integration
@@ -634,13 +638,49 @@ namespace Translation.Service
             return response;
         }
 
+        public async Task<TokenValidateResponse> ValidateToken(TokenValidateRequest request)
+        {
+            var response = new TokenValidateResponse();
+
+            var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid && x.IsActive);
+            if (project.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            var now = DateTime.UtcNow;
+            var token = await _tokenRepository.Select(x => x.AccessToken == request.Token && x.ExpiresAt > now);
+            if (token.IsNotExist())
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            if (token.OrganizationId != project.OrganizationId)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            if (await _organizationRepository.Any(x => x.Id == project.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
         public async Task<OrganizationActiveTokenReadListResponse> GetActiveTokensOfOrganization(OrganizationActiveTokenReadListRequest request)
         {
             var response = new OrganizationActiveTokenReadListResponse();
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
-            var entities = await _tokenRepository.SelectMany(x => x.OrganizationId == currentUser.OrganizationId, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+            var now = DateTime.UtcNow;
+            var entities = await _tokenRepository.SelectMany(x => x.OrganizationId == currentUser.OrganizationId && x.ExpiresAt > now, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             if (entities != null)
             {
                 for (var i = 0; i < entities.Count; i++)
@@ -661,7 +701,10 @@ namespace Translation.Service
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
-            var entities = await _tokenRepository.SelectMany(x => x.IntegrationUid == request.IntegrationUid && x.OrganizationId == currentUser.OrganizationId, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+            var now = DateTime.UtcNow;
+            var entities = await _tokenRepository.SelectMany(x => x.IntegrationUid == request.IntegrationUid 
+                                                                       && x.OrganizationId == currentUser.OrganizationId
+                                                                       && x.ExpiresAt > now, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             if (entities != null)
             {
                 for (var i = 0; i < entities.Count; i++)
@@ -682,7 +725,10 @@ namespace Translation.Service
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
-            var entities = await _tokenRepository.SelectMany(x => x.IntegrationClientUid == request.IntegrationClientUid && x.OrganizationId == currentUser.OrganizationId, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+            var now = DateTime.UtcNow;
+            var entities = await _tokenRepository.SelectMany(x => x.IntegrationClientUid == request.IntegrationClientUid 
+                                                                       && x.OrganizationId == currentUser.OrganizationId
+                                                                       && x.ExpiresAt > now, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             if (entities != null)
             {
                 for (var i = 0; i < entities.Count; i++)

@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="StandardRepository" Version="1.0.0.5" />
-    <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.0.5" />
+    <PackageReference Include="StandardRepository" Version="1.0.1" />
+    <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>

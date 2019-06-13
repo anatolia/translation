@@ -29,7 +29,7 @@ namespace Translation.Service
     {
         private readonly CacheManager _cacheManager;
         private readonly CryptoHelper _cryptoHelper;
-        private readonly IDatetimeHelper _datetimeHelper;
+        
         private readonly ISignUpUnitOfWork _signUpUnitOfWork;
         private readonly ILogOnUnitOfWork _logOnUnitOfWork;
         private readonly IUserRepository _userRepository;
@@ -39,7 +39,7 @@ namespace Translation.Service
         private readonly IUserLoginLogRepository _userLoginLogRepository;
         private readonly UserLoginLogFactory _userLoginLogFactory;
 
-        public OrganizationService(CacheManager cacheManager, CryptoHelper cryptoHelper, IDatetimeHelper datetimeHelper,
+        public OrganizationService(CacheManager cacheManager, CryptoHelper cryptoHelper, 
                                    ISignUpUnitOfWork signUpUnitOfWork,
                                    ILogOnUnitOfWork logOnUnitOfWork,
                                    IUserRepository userRepository, UserFactory userFactory,
@@ -48,7 +48,7 @@ namespace Translation.Service
         {
             _cacheManager = cacheManager;
             _cryptoHelper = cryptoHelper;
-            _datetimeHelper = datetimeHelper;
+            
             _signUpUnitOfWork = signUpUnitOfWork;
             _logOnUnitOfWork = logOnUnitOfWork;
             _userRepository = userRepository;
@@ -85,7 +85,7 @@ namespace Translation.Service
             var passwordHash = _cryptoHelper.Hash(request.Password, salt);
             user = _userFactory.CreateEntityFromRequest(request, organization, salt, passwordHash);
 
-            var loginLog = _userLoginLogFactory.CreateEntityFromRequest(request);
+            var loginLog = _userLoginLogFactory.CreateEntityFromRequest(request, user);
 
             var (uowResult,
                  insertedOrganization,
@@ -214,7 +214,7 @@ namespace Translation.Service
                 && user.Id > 0)
             {
                 user.EmailValidationToken = Guid.Empty;
-                user.EmailValidatedAt = _datetimeHelper.GetNow();
+                user.EmailValidatedAt = DateTime.UtcNow;
                 user.IsEmailValidated = true;
 
                 var result = await _userRepository.Update(user.Id, user);
@@ -245,9 +245,9 @@ namespace Translation.Service
             if (_cryptoHelper.Hash(request.Password, user.ObfuscationSalt) == user.PasswordHash)
             {
                 if (user.LoginTryCount < 6
-                    || (user.LastLoginTryAt.HasValue && user.LastLoginTryAt.Value.Plus(Duration.FromHours(1)) < _datetimeHelper.GetNow()))
+                    || user.LastLoginTryAt.HasValue && user.LastLoginTryAt.Value.AddHours(1) < DateTime.UtcNow)
                 {
-                    user.LastLoginAt = _datetimeHelper.GetNow();
+                    user.LastLoginAt = DateTime.UtcNow;
                     user.LoginTryCount = 0;
 
                     var loginLog = _userLoginLogFactory.CreateEntityFromRequest(request, user);
@@ -266,7 +266,7 @@ namespace Translation.Service
             }
 
             user.LastLoginAt = null;
-            user.LastLoginTryAt = _datetimeHelper.GetNow();
+            user.LastLoginTryAt = DateTime.UtcNow;
             user.LoginTryCount++;
 
             await _userRepository.Update(user.Id, user);
@@ -295,14 +295,14 @@ namespace Translation.Service
             }
 
             if (user.PasswordResetRequestedAt.HasValue
-                && user.PasswordResetRequestedAt.Value.Plus(Duration.FromMinutes(2)) < _datetimeHelper.GetNow())
+                && user.PasswordResetRequestedAt.Value.AddMinutes(2) < DateTime.UtcNow)
             {
                 response.ErrorMessages.Add("already_requested_password_reset_in_last_two_minutes");
                 response.Status = ResponseStatus.Invalid;
                 return response;
             }
 
-            user.PasswordResetRequestedAt = _datetimeHelper.GetNow();
+            user.PasswordResetRequestedAt = DateTime.UtcNow;
             user.PasswordResetToken = Guid.NewGuid();
 
             var result = await _userRepository.Update(user.Id, user);
@@ -325,7 +325,7 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.PasswordResetToken == request.Token && x.Email == request.Email);
             if (user.IsExist()
                 && user.PasswordResetRequestedAt.HasValue
-                && user.PasswordResetRequestedAt.Value.Plus(Duration.FromDays(1)) > _datetimeHelper.GetNow())
+                && user.PasswordResetRequestedAt.Value.AddDays(1) > DateTime.UtcNow)
             {
                 response.Status = ResponseStatus.Success;
                 return response;
@@ -343,7 +343,7 @@ namespace Translation.Service
             if (user.IsExist()
                 && user.IsActive
                 && user.PasswordResetRequestedAt.HasValue
-                && user.PasswordResetRequestedAt.Value.Plus(Duration.FromDays(1)) > _datetimeHelper.GetNow())
+                && user.PasswordResetRequestedAt.Value.AddDays(1) > DateTime.UtcNow)
             {
                 user.PasswordHash = _cryptoHelper.Hash(request.Password, user.ObfuscationSalt);
                 user.LoginTryCount = 0;
@@ -560,7 +560,7 @@ namespace Translation.Service
 
             var invitedUser = _userFactory.CreateEntityFromRequest(request, currentUser.Organization, _cryptoHelper.GetSaltAsString());
             invitedUser.InvitationToken = Guid.NewGuid();
-            invitedUser.InvitedAt = _datetimeHelper.GetNow();
+            invitedUser.InvitedAt = DateTime.UtcNow;
             invitedUser.InvitedByUserId = currentUser.Id;
             invitedUser.InvitedByUserUid = currentUser.Uid;
             invitedUser.InvitedByUserName = currentUser.Name;
@@ -585,7 +585,7 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.InvitationToken == request.Token && x.Email == request.Email);
             if (user.IsExist()
                 && user.InvitedAt.HasValue
-                && user.InvitedAt.Value.Plus(Duration.FromDays(2)) > _datetimeHelper.GetNow())
+                && user.InvitedAt.Value.AddDays(2) > DateTime.UtcNow)
             {
                 response.Item.FirstName = user.FirstName;
                 response.Item.LastName = user.LastName;
@@ -605,7 +605,7 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.InvitationToken == request.Token && x.Email == request.Email);
             if (user.IsExist()
                 && user.InvitedAt.HasValue
-                && user.InvitedAt.Value.Plus(Duration.FromDays(2)) > _datetimeHelper.GetNow())
+                && user.InvitedAt.Value.AddDays(2) > DateTime.UtcNow)
             {
                 user.FirstName = request.FirstName;
                 user.LastName = request.LastName;

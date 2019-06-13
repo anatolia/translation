@@ -34,7 +34,6 @@ namespace Translation.Service
     {
         private readonly CacheManager _cacheManager;
         private readonly CryptoHelper _cryptoHelper;
-        private readonly IDatetimeHelper _datetimeHelper;
         private readonly IOrganizationRepository _organizationRepository;
         private readonly OrganizationFactory _organizationFactory;
         private readonly IUserRepository _userRepository;
@@ -50,7 +49,6 @@ namespace Translation.Service
 
         public AdminService(CacheManager cacheManager,
                             CryptoHelper cryptoHelper,
-                            IDatetimeHelper datetimeHelper,
                             IOrganizationRepository organizationRepository,
                             OrganizationFactory organizationFactory,
                             IUserRepository userRepository,
@@ -66,7 +64,6 @@ namespace Translation.Service
         {
             _cacheManager = cacheManager;
             _cryptoHelper = cryptoHelper;
-            _datetimeHelper = datetimeHelper;
             _organizationRepository = organizationRepository;
             _organizationFactory = organizationFactory;
             _userRepository = userRepository;
@@ -275,7 +272,7 @@ namespace Translation.Service
             }
 
             if (user.InvitedAt.HasValue
-                && user.InvitedAt.Value.Plus(Duration.FromDays(2)) > _datetimeHelper.GetNow())
+                && user.InvitedAt.Value.AddDays(2) > DateTime.UtcNow)
             {
                 response.Item.FirstName = user.FirstName;
                 response.Item.LastName = user.LastName;
@@ -306,7 +303,7 @@ namespace Translation.Service
             }
 
             if (user.InvitedAt.HasValue
-                && user.InvitedAt.Value.Plus(Duration.FromDays(2)) > _datetimeHelper.GetNow())
+                && user.InvitedAt.Value.AddDays(2) > DateTime.UtcNow)
             {
                 user.FirstName = request.FirstName;
                 user.LastName = request.LastName;
