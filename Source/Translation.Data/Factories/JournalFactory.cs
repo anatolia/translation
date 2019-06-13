@@ -13,10 +13,17 @@ namespace Translation.Data.Factories
             dto.OrganizationUid = entity.OrganizationUid;
             dto.OrganizationName = entity.OrganizationName;
 
-            dto.IntegrationName = entity.IntegrationName;
+            if (entity.IntegrationUid.HasValue)
+            {
+                dto.IntegrationUid = entity.IntegrationUid.Value;
+                dto.IntegrationName = entity.IntegrationName;
+            }
 
-            dto.UserUid = entity.UserUid;
-            dto.UserName = entity.UserName;
+            if (entity.UserUid.HasValue)
+            {
+                dto.UserUid = entity.UserUid.Value;
+                dto.UserName = entity.UserName;
+            }
 
             dto.Message = entity.Message;
             dto.CreatedAt = entity.CreatedAt;

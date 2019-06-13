@@ -1,5 +1,5 @@
 ﻿using System;
-using NodaTime;
+
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Admin;
 using Translation.Common.Models.Requests.Organization;
@@ -50,11 +50,9 @@ namespace Translation.Data.Factories
         {
             entity.UpdatedBy = request.CurrentUserId;
 
-            entity.Email = request.UserEmail;
             entity.FirstName = request.FirstName;
             entity.LastName = request.LastName;
             entity.Name = MapName(request.FirstName, request.LastName);
-            entity.IsActive = request.IsActive;
 
             return entity;
         }
@@ -113,7 +111,7 @@ namespace Translation.Data.Factories
             entity.InvitedByUserId = currentUser.Id;
             entity.InvitedByUserUid = currentUser.Uid;
             entity.InvitedByUserName = currentUser.Name;
-            entity.InvitedAt = SystemClock.Instance.GetCurrentInstant();
+            entity.InvitedAt = DateTime.UtcNow;
             entity.InvitationToken = Guid.NewGuid();
 
             return entity;

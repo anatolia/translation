@@ -14,19 +14,23 @@ namespace Translation.Data.Factories
             MapClientLogInfo(request.ClientLogInfo, entity);
 
             entity.OrganizationId = user.OrganizationId;
+            entity.OrganizationUid = user.OrganizationUid;
             entity.OrganizationName = user.OrganizationName;
             entity.UserId = user.Id;
+            entity.UserUid = user.Uid;
             entity.UserName = user.Name;
 
             return entity;
         }
 
-        public UserLoginLog CreateEntityFromRequest(SignUpRequest request)
+        public UserLoginLog CreateEntityFromRequest(SignUpRequest request, User user)
         {
             var entity = new UserLoginLog();
             MapClientLogInfo(request.ClientLogInfo, entity);
 
-            entity.OrganizationName = request.OrganizationName;
+            entity.OrganizationUid = user.OrganizationUid;
+            entity.OrganizationName = user.OrganizationName;
+            entity.UserUid = user.Uid;
             entity.UserName = request.FirstName + " " + request.LastName;
 
             return entity;

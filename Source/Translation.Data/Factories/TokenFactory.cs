@@ -1,7 +1,5 @@
 ﻿using System;
 
-using NodaTime;
-
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Integration.Token;
 using Translation.Data.Entities.Main;
@@ -15,7 +13,7 @@ namespace Translation.Data.Factories
             var entity = new Token();
 
             entity.AccessToken = Guid.NewGuid();
-            entity.ExpiresAt = entity.CreatedAt.Plus(Duration.FromMinutes(30));
+            entity.ExpiresAt = entity.CreatedAt.AddMinutes(30);
             entity.Ip = request.IP.ToString();
 
             entity.IntegrationClientUid = integrationClient.Uid;
@@ -38,6 +36,7 @@ namespace Translation.Data.Factories
         {
             var dto = new TokenDto();
             dto.Uid = entity.Uid;
+            dto.IntegrationClientUid = entity.IntegrationClientUid;
             dto.AccessToken = entity.AccessToken;
             dto.CreatedAt = entity.CreatedAt;
             dto.ExpiresAt = entity.ExpiresAt;
