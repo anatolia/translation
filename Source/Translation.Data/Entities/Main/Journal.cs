@@ -10,12 +10,12 @@ namespace Translation.Data.Entities.Main
         public Guid OrganizationUid { get; set; }
         public string OrganizationName { get; set; }
 
-        public long IntegrationId { get; set; }
-        public Guid IntegrationUid { get; set; }
+        public long? IntegrationId { get; set; }
+        public Guid? IntegrationUid { get; set; }
         public string IntegrationName { get; set; }
 
-        public long UserId { get; set; }
-        public Guid UserUid { get; set; }
+        public long? UserId { get; set; }
+        public Guid? UserUid { get; set; }
         public string UserName { get; set; }
 
         public string Message { get; set; }

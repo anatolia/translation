@@ -1,5 +1,5 @@
 ﻿using System;
-using NodaTime;
+
 using StandardRepository.Models.Entities;
 using StandardRepository.Models.Entities.Schemas;
 
@@ -20,7 +20,7 @@ namespace Translation.Data.Entities.Main
         public string IntegrationClientName { get; set; }
 
         public Guid AccessToken { get; set; }
-        public Instant ExpiresAt { get; set; }
+        public DateTime ExpiresAt { get; set; }
         public string Ip { get; set; }
         public bool IsActive { get; set; }
     }

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using NodaTime;
+
 using StandardRepository.Models.Entities;
 using StandardRepository.Models.Entities.Schemas;
 
@@ -14,16 +13,16 @@ namespace Translation.Data.Entities.Main
 
         public string Email { get; set; }
         public Guid EmailValidationToken { get; set; }
-        public Instant? EmailValidatedAt { get; set; }
+        public DateTime? EmailValidatedAt { get; set; }
         public bool IsEmailValidated { get; set; }
 
         public string PasswordHash { get; set; }
         public string ObfuscationSalt { get; set; }
         public Guid? PasswordResetToken { get; set; }
-        public Instant? PasswordResetRequestedAt { get; set; }
+        public DateTime? PasswordResetRequestedAt { get; set; }
 
-        public Instant? LastLoginAt { get; set; }
-        public Instant? LastLoginTryAt { get; set; }
+        public DateTime? LastLoginAt { get; set; }
+        public DateTime? LastLoginTryAt { get; set; }
         public int LoginTryCount { get; set; }
 
         public string FirstName { get; set; }
@@ -34,7 +33,7 @@ namespace Translation.Data.Entities.Main
         public bool IsAdmin { get; set; }
         public bool IsSuperAdmin { get; set; }
 
-        public Instant? InvitedAt { get; set; }
+        public DateTime? InvitedAt { get; set; }
         public long? InvitedByUserId { get; set; }
         public Guid? InvitedByUserUid { get; set; }
         public string InvitedByUserName { get; set; }
