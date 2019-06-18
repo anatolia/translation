@@ -3,8 +3,6 @@
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Npgsql;
-using StandardRepository.Factories;
 using StandardRepository.Helpers;
 using StandardRepository.Models;
 using StandardRepository.PostgreSQL;
@@ -23,7 +21,6 @@ namespace Translation.Client.Web.Helpers.DependencyInstallers
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(Component.For<CryptoHelper>());
-            container.Register(Component.For<IDatetimeHelper>().ImplementedBy<DatetimeHelper>());
 
             var connectionSettings = new ConnectionSettings();
             connectionSettings.DbName = ConfigurationManager.AppSettings[ConstantHelper.KEY_DB_NAME];
