@@ -1,16 +1,14 @@
-﻿@model ProjectCreateModel
+﻿@model OrganizationEditModel
 
-<a href="/Organization/Detail/@Model.OrganizationUid" data-translation="organization_link">organization_link</a>
+    <a href="/Organization/Detail/@Model.OrganizationUid" data-translation="organization_link">organization_link</a>
 <h1 data-translation="@Model.Title">@Model.Title</h1>
 
 <form method="post">
     <partial name="Components/_Hidden" model="@Model.OrganizationUidInput" />
-
     <partial name="Components/_Input" model="@Model.NameInput" />
-    <partial name="Components/_Url" model="@Model.UrlInput" />
     <partial name="Components/_LongInput" model="@Model.DescriptionInput" />
 
     <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
 
-    <button type="submit" data-translation="create_project_button">create_project_button</button>
+    <button type="submit" data-translation="update_organization_button">update_organization_button</button>
 </form>

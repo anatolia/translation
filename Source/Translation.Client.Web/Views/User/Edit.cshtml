@@ -1,0 +1,24 @@
+﻿@model UserEditModel
+
+<a href="/User/Detail/@Model.UserUid" data-translation="user_detail_link">user_detail_link</a>
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+
+<form id="Invite" method="post">
+    <partial name="Components/_Hidden" model="@Model.UserUidInput" />
+
+    <partial name="Components/_Input" model="@Model.FirstNameInput" />
+    <partial name="Components/_Input" model="@Model.LastNameInput" />
+    <partial name="Components/_Select" model="@Model.LanguageInput" />
+    
+    <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
+
+    <button type="submit" data-translation="update_user_button">update_user_button</button>
+</form>
+
+@section Scripts
+{
+    <script>
+        localStorage.removeItem('labels');
+        localStorage.removeItem('userLanguage');
+    </script>
+}

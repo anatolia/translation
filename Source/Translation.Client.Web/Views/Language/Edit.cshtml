@@ -1,9 +1,11 @@
-﻿@model LanguageCreateModel
+﻿@model LanguageEditModel
 
 <a href="/Language/List" data-translation="languages">languages</a>
 <h1 data-translation="@Model.Title">@Model.Title</h1>
 
 <form method="post" enctype="multipart/form-data">
+    <partial name="Components/_Hidden" model="@Model.LanguageUidInput" />
+
     <partial name="Components/_Input" model="@Model.NameInput" />
     <partial name="Components/_Input" model="@Model.OriginalNameInput" />
     <partial name="Components/_ShortInput" model="@Model.IsoCode2Input" />
@@ -13,5 +15,5 @@
 
     <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
 
-    <button type="submit" data-translation="create_language_button">create_language_button</button>
+    <button type="submit" data-translation="edit_language_button">edit_language_button</button>
 </form>

@@ -1,0 +1,26 @@
+﻿@model LabelUploadFromCSVModel
+
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+<p data-translation="be_careful_it_overwrites_existing_translations">be_careful_it_overwrites_existing_translations</p>
+
+<div>
+    <label data-translation="project">project</label>
+    <a href="/Project/Detail/@Model.ProjectUid">@Model.ProjectName</a>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+    <partial name="Components/_Hidden" model="@Model.OrganizationUidInput" />
+    <partial name="Components/_Hidden" model="@Model.ProjectUidInput" />
+    <partial name="Components/_Hidden" model="@Model.ProjectNameInput" />
+
+    <partial name="Components/_File" model="@Model.CSVFileInput" />
+
+    <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
+    <partial name="Components/_ErrorMessages" model="@Model.WarningMessages" />
+
+    <button type="submit" data-translation="upload_labels_from_csv_button">upload_labels_from_csv_button</button>
+</form>
+
+<div class="bottom-links">
+    <a href="/files/uploadLabelCsvTemplate.csv" data-translation="download_label_upload_template_file">download_label_upload_template_file</a>
+</div>

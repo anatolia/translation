@@ -1,8 +1,8 @@
-﻿@model InviteAcceptModel
+﻿@model AdminAcceptInviteModel
 
 <h1 data-translation="@Model.Title">@Model.Title</h1>
 
-<form id="InviteAccept" method="post">
+<form method="post">
     <partial name="Components/_Hidden" model="@Model.TokenInput" />
     <partial name="Components/_Hidden" model="@Model.EmailInput" />
 
@@ -13,5 +13,5 @@
 
     <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
 
-    <button type="submit" data-translation="accept_invite_button">accept_invite_button</button>
+    <button type="submit" data-translation="home_link">accept_invite_button</button>
 </form>

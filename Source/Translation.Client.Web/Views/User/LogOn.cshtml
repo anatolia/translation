@@ -1,0 +1,25 @@
+﻿@model LogOnModel
+
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+
+<form id="LogOn" method="post">
+    <partial name="Components/_Input" model="@Model.EmailInput" />
+    <partial name="Components/_Password" model="@Model.PasswordInput" />
+
+    <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
+
+    <button type="submit" data-translation="log_on_button">log_on_button</button>
+</form>
+
+<div class="bottom-links">
+    <a href="/User/DemandPasswordReset" data-translation="password_reset_link">password_reset_link</a>
+    <a href="/User/SignUp" data-translation="sign_up_link">sign_up_link</a>
+</div>
+
+@section Scripts
+{
+    <script>
+        localStorage.removeItem('labels');
+        localStorage.removeItem('userLanguage');
+    </script>
+}

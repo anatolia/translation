@@ -1,0 +1,16 @@
+﻿@model IntegrationClientActiveTokensModel
+
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+
+<div>
+    <label data-translation="integration">integration</label>
+    <a href="/Integration/Detail/@Model.IntegrationUid">@Model.IntegrationName</a>
+</div>
+<div>
+    <label data-translation="client_id">client_id</label>
+    @Model.ClientUid
+</div>
+
+<div class="tbl">
+    <table data-result="/Integration/ClientActiveTokensData/@Model.ClientUid"></table>
+</div>

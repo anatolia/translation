@@ -1,15 +1,15 @@
-﻿@model LabelCreateModel
+﻿@model LabelEditModel
 
 <h1 data-translation="@Model.Title">@Model.Title</h1>
 
 <form method="post">
     <partial name="Components/_Hidden" model="@Model.OrganizationUidInput" />
-    <partial name="Components/_Hidden" model="@Model.ProjectUidInput" />
+    <partial name="Components/_Hidden" model="@Model.LabelUidInput" />
 
     <partial name="Components/_Input" model="@Model.KeyInput" />
     <partial name="Components/_LongInput" model="@Model.DescriptionInput" />
 
     <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
 
-    <button type="submit" data-translation="create_label_button">create_label_button</button>
+    <button type="submit" data-translation="edit_label_button">edit_label_button</button>
 </form>

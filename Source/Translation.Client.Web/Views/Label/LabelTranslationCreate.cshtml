@@ -1,0 +1,30 @@
+﻿@model LabelTranslationCreateModel
+
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+
+<div>
+    <label data-translation="project">project</label>
+    <a href="/Project/Detail/@Model.ProjectUid">@Model.ProjectName</a>
+</div>
+
+<div>
+    <label data-translation="label_key">label_key</label>
+    <a href="/Label/Detail/@Model.LabelUid">@Model.LabelKey</a>
+</div>
+
+<form method="post">
+    <partial name="Components/_Hidden" model="@Model.OrganizationUidInput" />
+
+    <partial name="Components/_Hidden" model="@Model.ProjectInput" />
+    <partial name="Components/_Hidden" model="@Model.ProjectNameInput" />
+
+    <partial name="Components/_Hidden" model="@Model.LabelInput" />
+    <partial name="Components/_Hidden" model="@Model.LabelKeyInput" />
+
+    <partial name="Components/_Select" model="@Model.LanguageInput" />
+    <partial name="Components/_LongInput" model="@Model.LabelTranslationInput" />
+
+    <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
+
+    <button type="submit" data-translation="create_label_translation_button">create_label_translation_button</button>
+</form>

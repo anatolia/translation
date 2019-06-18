@@ -1,0 +1,8 @@
+﻿@model UserJournalListModel
+
+<a href="/User/Detail/@Model.UserUid" data-translation="user_link">user_link</a>
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+
+<div class="tbl">
+    <table data-result="/User/JournalListData/@Model.UserUid"></table>
+</div>

@@ -1,1 +1,49 @@
-﻿
+﻿@model ProjectDetailModel
+
+<label data-translation="project_name">project_name</label>
+<h1>@Model.Name</h1>
+<div>
+    <label data-translation="description">description</label>
+    @Model.Description
+</div>
+<div>
+    <label data-translation="organization">organization</label>
+    <a href="/Organization/Detail/@Model.OrganizationUid">@Model.OrganizationName</a>
+</div>
+<div>
+    <label data-translation="url">url</label>
+    <a href=@Model.Url target="_blank">@Model.Url</a>
+</div>
+<div>
+    <label data-translation="label_count">label_count</label>
+    @Model.LabelCount
+</div>
+<div>
+    <partial name="Components/_Checkbox" model="@Model.IsActiveInput" />
+</div>
+
+<div class="bottom-links">
+    <a href="/Project/Edit/@Model.ProjectUid" data-translation="edit_project_link">edit_project_link</a>
+    <a href="/Project/Clone/@Model.ProjectUid" data-translation="clone_project_link">clone_project_link</a>
+    <button type="button" class="btnRed"
+            data-confirm-title="delete_project_confirm_title"
+            data-confirm-content="delete_project_confirm_content"
+            data-url="/Project/Delete/"
+            data-prm="id=@Model.ProjectUid"
+            onclick="doRedirectIfConfirmedSuccess(this, '/Organization/Detail/@Model.OrganizationUid')"
+            data-translation="delete_button">
+        delete_button
+    </button>
+    <form action="/Project/DownloadLabels" method="post">
+        <input type="hidden" id="id" name="id" value=@Model.ProjectUid />
+        @Html.AntiForgeryToken()
+        <button type="submit" data-translation="download_labels_button">download_labels_button</button>
+    </form>
+</div>
+
+<h2 data-translation="labels">labels</h2>
+<div class="tbl">
+    <a href="/Label/Create/@Model.ProjectUid" data-translation="create_label_link">create_label_link</a>
+    <a href="/Label/UploadLabelFromCSVFile/@Model.ProjectUid" data-translation="upload_labels_from_csv_link">upload_labels_from_csv_link</a>
+    <table data-result="/Project/LabelListData/@Model.ProjectUid"></table>
+</div>

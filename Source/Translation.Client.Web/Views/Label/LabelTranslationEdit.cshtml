@@ -1,0 +1,25 @@
+﻿@model LabelTranslationEditModel
+
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+
+<form method="post">
+    <partial name="Components/_Hidden" model="@Model.OrganizationUidInput" />
+    <partial name="Components/_Hidden" model="@Model.LabelTranslationUidInput" />
+
+    <div>
+        <label data-translation="label">label</label>
+        @Model.LabelKey
+    </div>
+
+    <div>
+        <label data-translation="language">language</label>
+        <img src="@Model.LanguageIconUrl" alt="@Model.LanguageName" style="height: 34px; margin-top: 3px; margin-bottom: 5px;" />
+        <span style="display: block; margin-bottom: 10px;">@Model.LanguageName</span>
+    </div>
+
+    <partial name="Components/_Input" model="@Model.TranslationInput" />
+
+    <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
+
+    <button type="submit" data-translation="edit_translation_button">edit_translation_button</button>
+</form>

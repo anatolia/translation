@@ -1,0 +1,24 @@
+﻿@model AllUserListModel
+
+    <a href="/Admin/Dashboard" data-translation="admin_dashboard_link">admin_dashboard_link</a>
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+
+<div class="tbl">
+    <table data-result="/Admin/UserListData/"></table>
+</div>
+
+<script type="text/javascript">
+    function handleUpgradeToAdmin(btn, url) {
+        let uid = btn.parentElement.parentElement.dataset.uid;
+        handleRow(btn, 'id=' + uid, url,
+            function (req) {
+                let response = JSON.parse(req.response);
+                if (response.isOk === true) {
+                    hidePopup();    
+                } else {
+                    let messages = JSON.parse(req.response).join('<br/>');
+                    showPopupMessage(messages);
+                }
+            });
+    }
+</script>

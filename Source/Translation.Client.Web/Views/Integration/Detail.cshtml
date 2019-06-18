@@ -1,1 +1,42 @@
-﻿
+﻿@model IntegrationDetailModel
+
+<label data-translation="integration_name">integration_name</label>
+<h1>@Model.Name</h1>
+
+<div>
+    <label data-translation="description">description</label>
+    @Model.Description
+</div>
+
+<div>
+    <label data-translation="organization">organization</label>
+    <a href="/Organization/Detail/@Model.OrganizationUid">@Model.OrganizationName</a>
+</div>
+
+<div class="bottom-links">
+    <a href="/Integration/Edit/@Model.IntegrationUid" data-translation="edit_link">edit_link</a>
+    <a href="/Integration/ActiveTokens/@Model.IntegrationUid" data-translation="active_tokens_link">active_tokens_link</a>
+    <button type="button" class="btnRed"
+            data-confirm-title="delete_integration_confirm_title"
+            data-confirm-content="delete_integration_confirm_content"
+            data-url="/Integration/Delete/"
+            data-prm="id=@Model.IntegrationUid"
+            onclick="doRedirectIfConfirmedSuccess(this, '/Organization/Detail/@Model.OrganizationUid')"
+            data-translation="delete_button">
+        delete_button
+    </button>
+</div>
+
+<h2 data-translation="integration_clients">integration_clients</h2>
+<div class="tbl">
+    <button type="button" style="margin-top: 5px;"
+            data-translation="create_integration_client_link"
+            data-confirm-title="create_integration_client_confirm_title"
+            data-confirm-content="create_integration_client_confirm_content"
+            data-url="/Integration/ClientCreate/"
+            data-prm="id=@Model.IntegrationUid"
+            onclick="handlePostAndAppendRow(this)">
+        create_integration_client_link
+    </button>
+    <table data-result="/Integration/ClientListData/@Model.IntegrationUid"></table>
+</div>

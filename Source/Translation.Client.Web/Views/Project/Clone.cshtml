@@ -1,10 +1,16 @@
-﻿@model ProjectCreateModel
+﻿@model ProjectCloneModel
 
-<a href="/Organization/Detail/@Model.OrganizationUid" data-translation="organization_link">organization_link</a>
 <h1 data-translation="@Model.Title">@Model.Title</h1>
 
 <form method="post">
+    <div>
+        <label data-translation="cloning_project_name">cloning_project_name</label>
+        @Model.CloningProjectName
+    </div>
+
     <partial name="Components/_Hidden" model="@Model.OrganizationUidInput" />
+    <partial name="Components/_Hidden" model="@Model.CloningProjectUidInput" />
+    <partial name="Components/_Hidden" model="@Model.CloningProjectNameInput" />
 
     <partial name="Components/_Input" model="@Model.NameInput" />
     <partial name="Components/_Url" model="@Model.UrlInput" />
@@ -12,5 +18,5 @@
 
     <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
 
-    <button type="submit" data-translation="create_project_button">create_project_button</button>
+    <button type="submit" data-translation="clone_project_button">clone_project_button</button>
 </form>

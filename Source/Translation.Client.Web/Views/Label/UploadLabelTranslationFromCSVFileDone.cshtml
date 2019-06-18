@@ -1,0 +1,17 @@
+﻿@model TranslationUploadFromCSVDoneModel
+
+<div>
+    <label data-translation="added_translation_count">added_translation_count</label>
+    @Model.AddedTranslationCount
+</div>
+
+<div>
+    <label data-translation="can_not_added_translation_count">can_not_added_translation_count</label>
+    @Model.CanNotAddedTranslationCount
+</div>
+
+<partial name="Components/_ErrorMessages" model="@Model.WarningMessages" />
+
+<div class="bottom-links">
+    <span data-translation="visit">visit</span> <a href="/Label/Detail/@Model.LabelUid">@Model.LabelKey</a>
+</div>

@@ -1,9 +1,9 @@
-﻿@model InviteModel
+﻿@model AdminInviteModel
 
-    <a href="/Organization/Detail/@Model.OrganizationUid" data-translation="organization_link">organization_link</a>
+<a href="/Admin/Dashboard" data-translation="admin_dashboard_link">admin_dashboard_link</a>
 <h1 data-translation="@Model.Title">@Model.Title</h1>
 
-<form id="Invite" method="post">
+<form method="post">
     <partial name="Components/_Hidden" model="@Model.OrganizationUidInput" />
 
     <partial name="Components/_Email" model="@Model.EmailInput" />
@@ -12,5 +12,5 @@
 
     <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
 
-    <button type="submit" data-translation="invite_translator_button">invite_translator_button</button>
+    <button type="submit" data-translation="invite_user_as_admin_button">invite_user_as_admin_button</button>
 </form>

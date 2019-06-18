@@ -1,1 +1,13 @@
-﻿home index
+﻿@model HomeModel
+
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+
+@if (Model.IsAuthenticated)
+{
+    <a href="/Organization/Detail" data-translation="organization_link">organization_link</a>
+}
+
+@if (Model.IsSuperAdmin)
+{
+    <a href="/Admin/Dashboard" data-translation="admin_dashboard_link">admin_dashboard_link</a>
+}

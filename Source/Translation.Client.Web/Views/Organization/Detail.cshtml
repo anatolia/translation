@@ -1,1 +1,34 @@
-﻿
+﻿@model OrganizationDetailModel
+
+<label data-translation="organization_name">organization_name</label>
+<h1>@Model.Name</h1>
+
+<div>
+    <label data-translation="description">description</label>
+    @Model.Description
+</div>
+
+<div class="bottom-links">
+    <a href="/Organization/Edit/" data-translation="organization_edit_link">organization_edit_link</a>
+    <a href="/Organization/JournalList/" data-translation="journals_link">journals_link</a>
+</div>
+
+<h2 data-translation="projects">projects</h2>
+<div class="tbl">
+    <a href="/Project/Create" data-translation="create_project_link">create_project_link</a>
+    <table data-result="/Organization/ProjectListData/@Model.OrganizationUid"></table>
+</div>
+
+<h2 data-translation="users">users</h2>
+<div class="tbl">
+    <a href="/User/Invite/@Model.OrganizationUid" data-translation="invite_user_link">invite_user_link</a>
+    <a href="/Organization/UserLoginLogList/" data-translation="user_login_logs_link">user_login_logs_link</a>
+    <table data-result="/Organization/UserListData/@Model.OrganizationUid"></table>
+</div>
+
+<h2 data-translation="integrations">integrations</h2>
+<div class="tbl">
+    <a href="/Integration/Create/" data-translation="integration_create_link">integration_create_link</a>
+    <a href="/Organization/TokenRequestLogList/" data-translation="token_request_logs_link">token_request_logs_link</a>
+    <table data-result="/Organization/IntegrationListData/@Model.OrganizationUid"></table>
+</div>

@@ -1,0 +1,26 @@
+﻿@model AdminListBaseModel
+
+<a href="/Admin/Dashboard" data-translation="admin_dashboard_link">admin_dashboard_link</a>
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+
+<div class="tbl">
+    <a href="/Admin/Invite" data-translation="invite_new_admin">invite_new_admin</a>
+    <table data-result="/Admin/ListData/"></table>
+</div>
+
+<script type="text/javascript">
+    function handleDegradeToUser(btn, url) {
+        let uid = btn.parentElement.parentElement.dataset.uid;
+        handleRow(btn, 'id=' + uid, url,
+            function (req) {
+                let response = JSON.parse(req.response);
+                if (response.isOk === true) {
+                    btn.parentElement.parentElement.remove();
+                    hidePopup();
+                } else {
+                    let messages = JSON.parse(req.response).join('<br/>');
+                    showPopupMessage(messages);
+                }
+            });
+    }
+</script>

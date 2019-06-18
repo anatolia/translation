@@ -1,0 +1,22 @@
+﻿@model LabelCloneModel
+
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+
+<div>
+    <label data-translation="cloning_label_key">cloning_label_key</label>
+    <a href="/Label/Detail/@Model.CloningLabelUid">@Model.CloningLabelKey</a>
+</div>
+
+<form method="post">
+    <partial name="Components/_Hidden" model="@Model.OrganizationUidInput" />
+    <partial name="Components/_Hidden" model="@Model.CloningLabelUidInput" />
+    <partial name="Components/_Hidden" model="@Model.CloningLabelKeyInput" />
+
+    <partial name="Components/_Select" model="@Model.ProjectUidInput" />
+    <partial name="Components/_Input" model="@Model.KeyInput" />
+    <partial name="Components/_LongInput" model="@Model.DescriptionInput" />
+
+    <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
+
+    <button type="submit" data-translation="clone_label_button">clone_label_button</button>
+</form>

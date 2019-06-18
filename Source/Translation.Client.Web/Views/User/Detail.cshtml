@@ -1,0 +1,43 @@
+﻿@model UserDetailModel
+
+<label data-translation="user_name">user_name</label>
+<h1>@Model.Username</h1>
+
+<div>
+    <label data-translation="email">email</label>
+    @Model.Email
+</div>
+
+<div>
+    <label data-translation="organization_name">organization_name</label>
+    <a href="/Organization/Detail">@Model.OrganizationName</a>
+</div>
+
+<div>
+    <label data-translation="language">language</label>
+    <img src="@Model.LanguageIconUrl" alt="@Model.LanguageName" style="height: 34px; margin-top: 3px; margin-bottom: 5px;" />
+    <span style="display: block; margin-bottom: 10px;">@Model.LanguageName</span>
+</div>
+
+<div>
+    <label data-translation="label_count">label_count</label>
+    @Model.LabelCount
+</div>
+
+<div>
+    <label data-translation="label_translation_count">label_translation_count</label>
+    @Model.LabelTranslationCount
+</div>
+
+<div>
+    <label data-translation="invited_by_user">invited_by_user</label>
+    <a href="/User/Detail?id=@Model.InvitedByUserUid">@Model.InvitedByUserName</a>
+</div>
+
+<partial name="Components/_Checkbox" model="@Model.IsActiveInput" />
+
+<div class="bottom-links">
+    <a href="/User/ChangePassword" data-translation="change_password_link">change_password_link</a>
+    <a href="/User/Edit/" data-translation="user_edit_link">user_edit_link</a>
+    <a href="/User/JournalList/" data-translation="journals_link">journals_link</a>
+</div>
