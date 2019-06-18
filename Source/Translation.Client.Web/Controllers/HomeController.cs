@@ -2,15 +2,23 @@
 using Microsoft.AspNetCore.Mvc;
 
 using Translation.Client.Web.Models;
+using Translation.Common.Contracts;
 
 namespace Translation.Client.Web.Controllers
 {
     public class HomeController : BaseController
     {
+        public HomeController(IOrganizationService organizationService, IJournalService journalService) : base(organizationService, journalService)
+        {
+        }
+
         [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            var model = new HomeModel();
+            model.IsSuperAdmin = CurrentUser?.IsSuperAdmin ?? false;
+            model.IsAuthenticated = CurrentUser != null;
+            return View(model);
         }
 
         [HttpGet, AllowAnonymous]

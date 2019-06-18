@@ -1,53 +1,327 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 using Translation.Client.Web.Helpers;
-using Translation.Client.Web.Models;
-using Translation.Client.Web.Models.InputModels;
+using Translation.Client.Web.Helpers.ActionFilters;
+using Translation.Client.Web.Helpers.Mappers;
+using Translation.Client.Web.Models.Base;
+using Translation.Client.Web.Models.Label;
+using Translation.Client.Web.Models.Project;
+using Translation.Common.Contracts;
 using Translation.Common.Helpers;
+using Translation.Common.Models.Requests.Label;
+using Translation.Common.Models.Requests.Label.LabelTranslation;
+using Translation.Common.Models.Requests.Organization;
+using Translation.Common.Models.Requests.Project;
+using Translation.Common.Models.Shared;
 
 namespace Translation.Client.Web.Controllers
 {
     public class ProjectController : BaseController
     {
-        [HttpGet]
-        public IActionResult Create()
+        private readonly IProjectService _projectService;
+        private readonly ILabelService _labelService;
+
+        public ProjectController(IProjectService projectService,
+                                 ILabelService labelService,
+                                 IOrganizationService organizationService,
+                                 IJournalService journalService) : base(organizationService, journalService)
         {
-            var model = new ProjectCreateModel();
-            return View(model);
+            _projectService = projectService;
+            _labelService = labelService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(ProjectCreateModel model)
+        [HttpGet]
+        public IActionResult Create(Guid id)
         {
-            if (!model.Validate())
+            var organizationUid = id;
+            if (organizationUid.IsEmptyGuid())
             {
-                return View(model);
+                organizationUid = CurrentUser.OrganizationUid;
             }
 
-            //todo: map request and post
-
-            var uid = "";
-            return RedirectToAction("Detail", "Project", uid);
-
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Detail(string id)
-        {
-            if (id.IsNotUid())
+            var request = new OrganizationReadRequest(CurrentUser.Id, organizationUid);
+            var response = OrganizationService.GetOrganization(request);
+            if (response.Status.IsNotSuccess)
             {
                 return RedirectToAccessDenied();
             }
 
-            return View();
+            var model = ProjectMapper.MapProjectCreateModel(response.Item.Uid);
+            return View(model);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_project_create")]
+        public async Task<IActionResult> Create(ProjectCreateModel model)
+        {
+            if (model.IsNotValid())
+            {
+                return View(model);
+            }
+
+            var request = new ProjectCreateRequest(CurrentUser.Id, model.OrganizationUid, model.Name, model.Url, model.Description);
+            var response = await _projectService.CreateProject(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.MapMessages(response);
+                return View(model);
+            }
+
+            CurrentUser.IsActionSucceed = true;
+            return Redirect($"/Project/Detail/{response.Item.Uid}");
         }
 
         [HttpGet]
-        public JsonResult Items()
+        public async Task<IActionResult> Detail(Guid id)
         {
-            return Json(null);
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var request = new ProjectReadRequest(CurrentUser.Id, projectUid);
+            var response = await _projectService.GetProject(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = ProjectMapper.MapProjectDetailModel(response.Item);
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var request = new ProjectReadRequest(CurrentUser.Id, projectUid);
+            var response = await _projectService.GetProject(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = ProjectMapper.MapProjectEditModel(response.Item);
+            return View(model);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_project_edit")]
+        public async Task<IActionResult> Edit(ProjectEditModel model)
+        {
+            if (model.IsNotValid())
+            {
+                return View(model);
+            }
+
+            var request = new ProjectEditRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
+                                                 model.Name, model.Url, model.Description);
+            var response = await _projectService.EditProject(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.MapMessages(response);
+                return View(model);
+            }
+
+            CurrentUser.IsActionSucceed = true;
+            return Redirect($"/Project/Detail/{ model.ProjectUid}");
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_project_delete")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return Forbid();
+            }
+
+            var request = new ProjectDeleteRequest(CurrentUser.Id, projectUid);
+            var response = await _projectService.DeleteProject(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return Json(new CommonResult { IsOk = false, Messages = response.ErrorMessages });
+            }
+
+            CurrentUser.IsActionSucceed = true;
+            return Json(new CommonResult { IsOk = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Clone(Guid id)
+        {
+            var cloningProjectUid = id;
+            if (cloningProjectUid.IsEmptyGuid())
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var request = new ProjectReadRequest(CurrentUser.Id, cloningProjectUid);
+            var response = await _projectService.GetProject(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = ProjectMapper.MapProjectCloneModel(response.Item);
+            return View(model);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_project_clone")]
+        public async Task<IActionResult> Clone(ProjectCloneModel model)
+        {
+            if (model.IsNotValid())
+            {
+                return View(model);
+            }
+
+            var request = new ProjectCloneRequest(CurrentUser.Id, model.OrganizationUid, model.CloningProjectUid,
+                                                  model.Name, model.Url, model.Description);
+            var response = await _projectService.CloneProject(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.MapMessages(response);
+                return View(model);
+            }
+
+            CurrentUser.IsActionSucceed = true;
+            return Redirect($"/Project/Detail/{response.Item.Uid }");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SelectData()
+        {
+            var request = new ProjectReadListRequest(CurrentUser.Id, CurrentUser.OrganizationUid);
+            var response = await _projectService.GetProjects(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return null;
+            }
+
+            var items = new List<SelectResult>();
+            foreach (var item in response.Items)
+            {
+                items.Add(new SelectResult(item.Uid.ToUidString(), $"{item.Name}"));
+            }
+
+            return Json(items);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LabelListData(Guid id, int skip, int take)
+        {
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return Forbid();
+            }
+
+            var request = new LabelReadListRequest(CurrentUser.Id, projectUid);
+            SetPaging(skip, take, request);
+
+            var response = await _labelService.GetLabels(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = new DataResult();
+            result.AddHeaders("label_key", "description", "is_active");
+
+            for (var i = 0; i < response.Items.Count; i++)
+            {
+                var item = response.Items[i];
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Key)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            result.PagingInfo = response.PagingInfo;
+            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+
+            return Json(result);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_project_download_labels")]
+        public async Task<IActionResult> DownloadLabels(Guid id)
+        {
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return NoContent();
+            }
+
+            var request = new AllLabelReadListRequest(CurrentUser.Id, projectUid);
+            request.IsAddLabelsNotTranslated = true;
+            var response = await _labelService.GetLabelsWithTranslations(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NoContent();
+            }
+
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("label_key,language,translation");
+            for (var i = 0; i < response.Labels.Count; i++)
+            {
+                var label = response.Labels[i];
+                if (!label.Translations.Any())
+                {
+                    stringBuilder.AppendLine($"{label.Key},en,{label.Key}");
+                    continue;
+                }
+
+                for (var j = 0; j < label.Translations.Count; j++)
+                {
+                    var translation = label.Translations[j];
+                    stringBuilder.AppendLine($"{label.Key},{translation.LanguageIsoCode2},{translation.Translation}");
+                }
+            }
+
+            CurrentUser.IsActionSucceed = true;
+            return File(Encoding.UTF8.GetBytes(stringBuilder.ToString()), "text/csv", "labels.csv");
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_change_activation")]
+        public async Task<IActionResult> ChangeActivation(Guid id, Guid organizationUid)
+        {
+            var model = new CommonResult { IsOk = false };
+
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid()
+                || organizationUid.IsEmptyGuid())
+            {
+                return Json(model);
+            }
+
+            var request = new ProjectChangeActivationRequest(CurrentUser.Id, organizationUid, projectUid);
+            var response = await _projectService.ChangeActivationForProject(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return Json(model);
+            }
+
+            model.IsOk = true;
+            CurrentUser.IsActionSucceed = true;
+            return Json(model);
         }
     }
 }

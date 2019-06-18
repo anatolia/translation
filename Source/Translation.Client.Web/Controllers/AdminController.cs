@@ -1,40 +1,411 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using Translation.Client.Web.Helpers;
-using Translation.Client.Web.Models;
+using Translation.Client.Web.Helpers.ActionFilters;
+using Translation.Client.Web.Helpers.Mappers;
+using Translation.Client.Web.Models.Admin;
+using Translation.Client.Web.Models.Base;
+using Translation.Client.Web.Models.Organization;
+using Translation.Client.Web.Models.User;
+using Translation.Common.Contracts;
+using Translation.Common.Helpers;
+using Translation.Common.Models.Requests.Admin;
+using Translation.Common.Models.Requests.Integration.Token;
+using Translation.Common.Models.Requests.Journal;
+using Translation.Common.Models.Requests.Organization;
+using Translation.Common.Models.Requests.SendEmailLog;
+using Translation.Common.Models.Requests.User;
+using Translation.Common.Models.Requests.User.LoginLog;
+using Translation.Common.Models.Responses.Admin;
+using Translation.Common.Models.Shared;
 
 namespace Translation.Client.Web.Controllers
 {
     public class AdminController : BaseController
     {
-        [HttpGet]
-        public IActionResult Index()
+        private readonly IAdminService _adminService;
+
+        public AdminController(IAdminService adminService,
+                               IOrganizationService organizationService,
+                               IJournalService journalService) : base(organizationService, journalService)
         {
-            return View();
+            _adminService = adminService;
         }
 
         [HttpGet]
-        public IActionResult Journals()
+        public IActionResult Dashboard()
         {
-            return View();
+            var model = new AdminDashboardBaseModel();
+            return View(model);
         }
 
         [HttpGet]
-        public IActionResult PermissionLogs()
+        public IActionResult List()
         {
-            return View();
+            var model = new AdminListBaseModel();
+            return View(model);
         }
 
         [HttpGet]
-        public IActionResult UserLoginLogs()
+        public async Task<IActionResult> ListData(int skip, int take)
         {
-            return View();  
+            var request = new SuperAdminUserReadListRequest(CurrentUser.Id);
+            SetPaging(skip, take, request);
+
+            var response = await _adminService.GetSuperAdmins(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = DataResultHelper.GetAdminListDataResult(response.Items);
+            result.PagingInfo = response.PagingInfo;
+            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+
+            return Json(result);
         }
 
         [HttpGet]
-        public IActionResult TokenUsageLogs()
+        public IActionResult OrganizationList()
         {
-            return View();
+            var model = new OrganizationListModel();
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> OrganizationListData(int skip, int take)
+        {
+            var request = new OrganizationReadListRequest(CurrentUser.Id);
+            SetPaging(skip, take, request);
+
+            var response = await OrganizationService.GetOrganizations(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = new DataResult();
+            result.AddHeaders("organization_name", "user_count", "project_count", "label_count", "label_translation_count", "is_active", "");
+
+            for (var i = 0; i < response.Items.Count; i++)
+            {
+                var item = response.Items[i];
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Organization/Detail/{item.Uid}", item.Name, true)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.UserCount}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.ProjectCount}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.LabelCount}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareChangeActivationButton("/Admin/OrganizationChangeActivation/")}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            result.PagingInfo = response.PagingInfo;
+            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+
+            return Json(result);
+        }
+
+
+        [HttpGet]
+        public IActionResult UserList()
+        {
+            var model = new AllUserListModel();
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UserListData(int skip, int take)
+        {
+            var request = new AllUserReadListRequest(CurrentUser.Id);
+            SetPaging(skip, take, request);
+
+            var response = await _adminService.GetAllUsers(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = DataResultHelper.GetUserListDataResult(response.Items);
+            result.PagingInfo = response.PagingInfo;
+            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        public IActionResult UserLoginLogList()
+        {
+            var model = new UserLoginLogListModel();
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UserLoginLogListData(int skip, int take)
+        {
+            var request = new AllLoginLogReadListRequest(CurrentUser.Id);
+            SetPaging(skip, take, request);
+
+            var response = await _adminService.GetAllUserLoginLogs(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = DataResultHelper.GetUserLoginLogDataResult(response.Items);
+            result.PagingInfo = response.PagingInfo;
+            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        public IActionResult JournalList()
+        {
+            var model = new JournalListModel();
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> JournalListData(int skip, int take)
+        {
+            var request = new AllJournalReadListRequest(CurrentUser.Id);
+            SetPaging(skip, take, request);
+
+            var response = await _adminService.GetJournals(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = DataResultHelper.GetJournalListDataResult(response.Items);
+            result.PagingInfo = response.PagingInfo;
+            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        public IActionResult TokenRequestLogList()
+        {
+            var model = new TokenRequestLogListModel();
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TokenRequestLogListData(int skip, int take)
+        {
+            var request = new AllTokenRequestLogReadListRequest(CurrentUser.Id);
+            SetPaging(skip, take, request);
+
+            var response = await _adminService.GetTokenRequestLogs(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = DataResultHelper.GetTokenRequestLogListData(response.Items);
+            result.PagingInfo = response.PagingInfo;
+            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        public IActionResult SendEmailLogList()
+        {
+            var model = new SendEmailLogListModel();
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SendEmailLogListData(int skip, int take)
+        {
+            var request = new AllSendEmailLogReadListRequest(CurrentUser.Id);
+            SetPaging(skip, take, request);
+
+            var response = await _adminService.GetSendEmailLogs(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = DataResultHelper.GetSendEmailLogListData(response.Items);
+            result.PagingInfo = response.PagingInfo;
+            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        public IActionResult Invite()
+        {
+            var organizationUid = CurrentUser.OrganizationUid;
+            var model = AdminMapper.MapAdminInviteModel(organizationUid);
+            return View(model);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_invite_admin")]
+        public async Task<IActionResult> Invite(AdminInviteModel model)
+        {
+            if (model.IsNotValid())
+            {
+                return View(model);
+            }
+
+            var request = new AdminInviteRequest(CurrentUser.Id, model.OrganizationUid, model.Email, model.FirstName, model.LastName);
+            var response = await _adminService.InviteSuperAdminUser(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.MapMessages(response);
+                return View(model);
+            }
+
+            // todo : email gönderme senaryosu
+            CurrentUser.IsActionSucceed = true;
+            return Redirect("/Admin/InviteDone/");
+        }
+
+        [HttpGet]
+        public ViewResult InviteDone()
+        {
+            var model = new AdminInviteDoneModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeActivation(Guid id)
+        {
+            var adminUid = id;
+            if (adminUid.IsEmptyGuid())
+            {
+                return Forbid();
+            }
+
+            var request = new UserChangeActivationRequest(CurrentUser.Id, adminUid);
+            var response = await _adminService.ChangeActivation(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return Json(new CommonResult { IsOk = false, Messages = response.ErrorMessages });
+            }
+
+            return Json(new CommonResult { IsOk = true });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> OrganizationChangeActivation(Guid id)
+        {
+            var organizationUid = id;
+            if (organizationUid.IsEmptyGuid())
+            {
+                return Forbid();
+            }
+
+            var request = new OrganizationChangeActivationRequest(CurrentUser.Id, organizationUid);
+            var response = await _adminService.OrganizationChangeActivation(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return Json(new CommonResult { IsOk = false, Messages = response.ErrorMessages });
+            }
+
+            return Json(new CommonResult { IsOk = true });
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "demote_to_user")]
+        public async Task<IActionResult> DegradeToUser(Guid id)
+        {
+            var commonResult = new CommonResult { IsOk = false };
+
+            var adminUid = id;
+            if (adminUid.IsEmptyGuid())
+            {
+                return Json(commonResult);
+            }
+
+            var request = new AdminDemoteRequest(CurrentUser.Id, adminUid);
+            var response = await _adminService.DemoteToUser(request);
+            if (response.Status.IsNotSuccess)
+            {
+                commonResult.Messages = response.ErrorMessages;
+                return Json(commonResult);
+            }
+
+            commonResult.IsOk = true;
+            return Json(commonResult);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UserUpgradeToAdmin(Guid id)
+        {
+            var userUid = id;
+            if (userUid.IsEmptyGuid())
+            {
+                return Forbid();
+            }
+
+            var request = new AdminUpgradeRequest(CurrentUser.Id, userUid);
+            var response = await _adminService.UpgradeToAdmin(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return Json(new CommonResult { IsOk = false, Messages = response.ErrorMessages });
+            }
+
+            return Json(new CommonResult { IsOk = true });
+        }
+
+        [HttpGet, AllowAnonymous]
+        public async Task<IActionResult> AcceptInvite(Guid token, string email)
+        {
+            if (email.IsNotEmail()
+                || token.IsEmptyGuid())
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var request = new AdminInviteValidateRequest(token, email);
+            var response = await _adminService.ValidateSuperAdminUserInvitation(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = AdminMapper.MapAdminAcceptInviteModel(response.Item, token, email);
+            return View(model);
+        }
+
+        [HttpPost, AllowAnonymous]
+        public async Task<IActionResult> AcceptInvite(AdminAcceptInviteModel model)
+        {
+            if (model.IsNotValid())
+            {
+                return View(model);
+            }
+
+            var request = new AdminAcceptInviteRequest(model.Token, model.Email, model.FirstName, model.LastName, model.Password);
+            var response = await _adminService.AcceptSuperAdminUserInvite(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.MapMessages(response);
+                return View(model);
+            }
+
+            return Redirect("/Admin/AcceptInviteDone/");
+        }
+
+        [HttpGet, AllowAnonymous]
+        public ViewResult AcceptInviteDone()
+        {
+            var model = new AdminAcceptInviteDoneModel();
+            return View(model);
         }
     }
 }

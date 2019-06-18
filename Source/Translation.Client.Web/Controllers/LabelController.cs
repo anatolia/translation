@@ -1,40 +1,548 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 using Translation.Client.Web.Helpers;
-using Translation.Client.Web.Models;
+using Translation.Client.Web.Helpers.ActionFilters;
+using Translation.Client.Web.Helpers.Mappers;
+using Translation.Client.Web.Models.Base;
+using Translation.Client.Web.Models.Label;
+using Translation.Client.Web.Models.LabelTranslation;
+using Translation.Common.Contracts;
 using Translation.Common.Helpers;
+using Translation.Common.Models.Requests.Label;
+using Translation.Common.Models.Requests.Label.LabelTranslation;
+using Translation.Common.Models.Requests.Project;
+using Translation.Common.Models.Shared;
 
 namespace Translation.Client.Web.Controllers
 {
     public class LabelController : BaseController
     {
-        [HttpGet]
-        public IActionResult Create()
+        private readonly IProjectService _projectService;
+        private readonly ILabelService _labelService;
+
+        public LabelController(IProjectService projectService,
+                               ILabelService labelService,
+                               IOrganizationService organizationService,
+                               IJournalService journalService) : base(organizationService, journalService)
         {
-            return View();
+            _projectService = projectService;
+            _labelService = labelService;
         }
 
         [HttpGet]
-        public IActionResult Detail(string id)
+        public async Task<IActionResult> Create(Guid id)
         {
-            if (id.IsNotUid())
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return RedirectToHome();
+            }
+
+            var request = new ProjectReadRequest(CurrentUser.Id, projectUid);
+            var project = await _projectService.GetProject(request);
+            if (project.Status.IsNotSuccess)
             {
                 return RedirectToAccessDenied();
             }
 
-            return View();
+            var model = LabelMapper.MapLabelCreateModel(project.Item.OrganizationUid, projectUid);
+            return View(model);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_label_create")]
+        public async Task<IActionResult> Create(LabelCreateModel model)
+        {
+            if (model.IsNotValid())
+            {
+                return View(model);
+            }
+
+            var request = new LabelCreateRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid, model.Key, model.Description);
+            var response = await _labelService.CreateLabel(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.MapMessages(response);
+                return View(model);
+            }
+
+            CurrentUser.IsActionSucceed = true;
+            return Redirect($"/Label/Detail/{response.Item.Uid}");
         }
 
         [HttpGet]
-        public IActionResult CreateTranslation()
+        public async Task<IActionResult> Detail(Guid id)
         {
-            return View();
+            var labelUid = id;
+            if (labelUid.IsEmptyGuid())
+            {
+                return RedirectToHome();
+            }
+
+            var request = new LabelReadRequest(CurrentUser.Id, labelUid);
+            var response = await _labelService.GetLabel(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = LabelMapper.MapLabelDetailModel(response.Item);
+            return View(model);
         }
 
         [HttpGet]
-        public JsonResult Items()
+        public async Task<IActionResult> Edit(Guid id)
         {
-            return Json(null);
+            var labelUid = id;
+            if (labelUid.IsEmptyGuid())
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var request = new LabelReadRequest(CurrentUser.Id, labelUid);
+            var response = await _labelService.GetLabel(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = LabelMapper.MapLabelEditModel(response.Item);
+            return View(model);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_label_edit")]
+        public async Task<IActionResult> Edit(LabelEditModel model)
+        {
+            if (model.IsNotValid())
+            {
+                return View(model);
+            }
+
+            var request = new LabelEditRequest(CurrentUser.Id, model.OrganizationUid, model.LabelUid, model.Key, model.Description);
+            var response = await _labelService.EditLabel(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.MapMessages(response);
+                return View(model);
+            }
+
+            CurrentUser.IsActionSucceed = true;
+            return Redirect($"/Label/Detail/{response.Item.Uid}");
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_label_delete")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var labelUid = id;
+            if (labelUid.IsEmptyGuid())
+            {
+                return Forbid();
+            }
+
+            var request = new LabelDeleteRequest(CurrentUser.Id, labelUid);
+            var response = await _labelService.DeleteLabel(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return Json(new CommonResult { IsOk = false, Messages = response.ErrorMessages });
+            }
+
+            CurrentUser.IsActionSucceed = true;
+            return Json(new CommonResult { IsOk = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Clone(Guid id)
+        {
+            var labelUid = id;
+            if (labelUid.IsEmptyGuid())
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var request = new LabelReadRequest(CurrentUser.Id, labelUid);
+            var response = await _labelService.GetLabel(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = LabelMapper.MapLabelCloneModel(response.Item);
+            return View(model);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_label_clone")]
+        public async Task<IActionResult> Clone(LabelCloneModel model)
+        {
+            if (model.IsNotValid())
+            {
+                return View(model);
+            }
+
+            var request = new LabelCloneRequest(CurrentUser.Id, model.OrganizationUid, model.CloningLabelUid,
+                                                model.ProjectUid, model.Key, model.Description);
+            var response = await _labelService.CloneLabel(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.MapMessages(response);
+                return View(model);
+            }
+
+            CurrentUser.IsActionSucceed = true;
+            return Redirect($"/Label/Detail/{response.Item.Uid}");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UploadLabelFromCSVFile(Guid id)
+        {
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var request = new ProjectReadRequest(CurrentUser.Id, projectUid);
+            var project = await _projectService.GetProject(request);
+            if (project.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = LabelMapper.MapLabelUploadFromCSVModel(project.Item);
+            return View(model);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_label_upload_from_csv")]
+        public async Task<IActionResult> UploadLabelFromCSVFile(LabelUploadFromCSVModel model)
+        {
+            if (model.IsNotValid())
+            {
+                return View(model);
+            }
+
+            var labelListInfos = new List<LabelListInfo>();
+
+            var lines = new List<string>();
+            using (var reader = new StreamReader(model.CSVFile.OpenReadStream()))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    lines.Add(line);
+                }
+            }
+
+            for (var i = 1; i < lines.Count; i++)
+            {
+                var values = lines[i].Split(',');
+                if (values.Length != 3)
+                {
+                    model.ErrorMessages.Add("file_has_more_columns_than_expected");
+                    model.ErrorMessages.Add("error line : " + i);
+                    return View(model);
+                }
+
+                labelListInfos.Add(new LabelListInfo
+                {
+                    LabelKey = values[0],
+                    LanguageIsoCode2 = values[1],
+                    Translation = values[2]
+                });
+            }
+
+            var request = new LabelCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid, labelListInfos);
+            var response = await _labelService.CreateLabelFromList(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.MapMessages(response);
+                return View(model);
+            }
+
+            var doneModel = new LabelUploadFromCSVDoneModel();
+            doneModel.MapMessages(response);
+            doneModel.ProjectUid = model.ProjectUid;
+            doneModel.ProjectName = model.ProjectName;
+            doneModel.AddedLabelCount = response.AddedLabelCount;
+            doneModel.CanNotAddedLabelCount = response.CanNotAddedLabelCount;
+            doneModel.AddedLabelTranslationCount = response.AddedLabelTranslationCount;
+            doneModel.CanNotAddedLabelTranslationCount = response.CanNotAddedLabelTranslationCount;
+
+            CurrentUser.IsActionSucceed = true;
+            return RedirectToAction("UploadLabelFromCSVFileDone", doneModel);
+        }
+
+        [HttpGet]
+        public ViewResult UploadLabelFromCSVFileDone(LabelUploadFromCSVDoneModel model)
+        {
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UploadLabelTranslationFromCSVFile(Guid id)
+        {
+            var labelUid = id;
+            if (labelUid.IsEmptyGuid())
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var request = new LabelReadRequest(CurrentUser.Id, labelUid);
+            var label = await _labelService.GetLabel(request);
+            if (label.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = LabelMapper.MapUploadLabelTranslationFromCSVFileModel(label.Item);
+            return View(model);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_label_translation_upload_from_csv")]
+        public async Task<IActionResult> UploadLabelTranslationFromCSVFile(UploadLabelTranslationFromCSVFileModel model)
+        {
+            if (model.IsNotValid())
+            {
+                return View(model);
+            }
+
+            var translationListInfos = new List<TranslationListInfo>();
+
+            var lines = new List<string>();
+            using (var reader = new StreamReader(model.CSVFile.OpenReadStream()))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    lines.Add(line);
+                }
+            }
+
+            for (var i = 1; i < lines.Count; i++)
+            {
+                var values = lines[i].Split(',');
+                if (values.Length != 2)
+                {
+                    model.ErrorMessages.Add("file_has_more_columns_than_expected");
+                    model.ErrorMessages.Add("error line : " + i);
+                    return View(model);
+                }
+
+                translationListInfos.Add(new TranslationListInfo
+                {
+                    LanguageIsoCode2 = values[0],
+                    Translation = values[1]
+                });
+            }
+
+            var request = new LabelTranslationCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.LabelUid, translationListInfos);
+            var response = await _labelService.CreateTranslationFromList(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.MapMessages(response);
+                return View(model);
+            }
+
+            var doneModel = new TranslationUploadFromCSVDoneModel();
+            doneModel.MapMessages(response);
+            doneModel.LabelUid = model.LabelUid;
+            doneModel.LabelKey = model.LabelKey;
+            doneModel.AddedTranslationCount = response.AddedTranslationCount;
+            doneModel.CanNotAddedTranslationCount = response.CanNotAddedTranslationCount;
+
+            CurrentUser.IsActionSucceed = true;
+            return RedirectToAction("UploadLabelTranslationFromCSVFileDone", doneModel);
+        }
+
+        [HttpGet]
+        public ViewResult UploadLabelTranslationFromCSVFileDone(TranslationUploadFromCSVDoneModel model)
+        {
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LabelTranslationCreate(Guid id)
+        {
+            var labelUid = id;
+            if (labelUid.IsEmptyGuid())
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var request = new LabelReadRequest(CurrentUser.Id, labelUid);
+            var response = await _labelService.GetLabel(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = LabelMapper.MapLabelTranslationCreateModel(response.Item);
+            return View(model);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_label_translation_create")]
+        public async Task<IActionResult> LabelTranslationCreate(LabelTranslationCreateModel model)
+        {
+            if (model.IsNotValid())
+            {
+                return View(model);
+            }
+
+            var request = new LabelTranslationCreateRequest(CurrentUser.Id, model.OrganizationUid, model.LabelUid,
+                                                            model.LanguageUid, model.LabelTranslation);
+
+            var response = await _labelService.CreateTranslation(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.MapMessages(response);
+                return View(model);
+            }
+
+            CurrentUser.IsActionSucceed = true;
+            return Redirect($"/Label/Detail/{response.Item.LabelUid}");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LabelTranslationEdit(Guid id)
+        {
+            var labelTranslationUid = id;
+            if (labelTranslationUid.IsEmptyGuid())
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var request = new LabelTranslationReadRequest(CurrentUser.Id, labelTranslationUid);
+            var response = await _labelService.GetTranslation(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = LabelMapper.MapLabelTranslationEditModel(response.Item);
+            return View(model);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_label_translation_edit")]
+        public async Task<IActionResult> LabelTranslationEdit(LabelTranslationEditModel model)
+        {
+            if (model.IsNotValid())
+            {
+                return View(model);
+            }
+
+            var request = new LabelTranslationEditRequest(CurrentUser.Id, model.OrganizationUid, model.LabelTranslationUid, model.Translation);
+            var response = await _labelService.EditTranslation(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.MapMessages(response);
+                return View(model);
+            }
+
+            CurrentUser.IsActionSucceed = true;
+            return Redirect($"/Label/Detail/{response.Item.LabelUid}");
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_label_change_activation")]
+        public async Task<IActionResult> ChangeActivation(Guid id, Guid organizationUid)
+        {
+            var model = new CommonResult { IsOk = false };
+
+            var labelUid = id;
+            if (labelUid.IsEmptyGuid()
+                || organizationUid.IsEmptyGuid())
+            {
+                return Json(model);
+            }
+
+            var request = new LabelChangeActivationRequest(CurrentUser.Id, organizationUid, labelUid);
+            var response = await _labelService.ChangeActivation(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return Json(model);
+            }
+
+            model.IsOk = true;
+            CurrentUser.IsActionSucceed = true;
+            return Json(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LabelTranslationListData(Guid id, int skip, int take)
+        {
+            var labelUid = id;
+            if (labelUid.IsEmptyGuid())
+            {
+                return Forbid();
+            }
+
+            var request = new LabelTranslationReadListRequest(CurrentUser.Id, labelUid);
+            SetPaging(skip, take, request);
+
+            var response = await _labelService.GetTranslations(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = new DataResult();
+            result.AddHeaders("language", "translation", "");
+
+            for (var i = 0; i < response.Items.Count; i++)
+            {
+                var item = response.Items[i];
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareImage($"{item.LanguageIconUrl}", item.LanguageName)} {item.LanguageName}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.Translation}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationEdit/{item.Uid}", Localizer.Localize("edit"), true)}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            result.PagingInfo = response.PagingInfo;
+            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+
+            return Json(result);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_label_download_translations")]
+        public async Task<IActionResult> DownloadTranslations(Guid id)
+        {
+            var labelUid = id;
+            if (labelUid.IsEmptyGuid())
+            {
+                return NoContent();
+            }
+
+            var labelRequest = new LabelTranslationReadListRequest(CurrentUser.Id, labelUid);
+            var translations = await _labelService.GetTranslations(labelRequest);
+            if (translations.Status.IsNotSuccess)
+            {
+                return NoContent();
+            }
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine("language,translation");
+            foreach (var item in translations.Items)
+            {
+                sb.AppendLine(item.LanguageIsoCode2 + "," + item.Translation);
+            }
+
+            CurrentUser.IsActionSucceed = true;
+            return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "translations.csv");
         }
     }
 }
