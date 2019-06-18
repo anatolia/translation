@@ -17,6 +17,8 @@ namespace Translation.Common.Models.Requests.Journal
             }
 
             UserUid = userUid;
+
+            PagingInfo.IsAscending = false;
         }
     }
 }

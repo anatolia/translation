@@ -6,19 +6,13 @@ namespace Translation.Common.Models.Requests.User
 {
     public class UserEditRequest : UserBaseRequest
     {
-        public string UserEmail { get; }
         public string FirstName { get; }
         public string LastName { get; }
-        public bool IsActive { get; }
+        public Guid LanguageUid { get; set; }
 
-        public UserEditRequest(long currentUserId, Guid userUid, string email,
-                               string firsName, string lastName, bool isActive) : base(currentUserId, userUid)
+        public UserEditRequest(long currentUserId, Guid userUid, string firsName, 
+                               string lastName, Guid languageUid) : base(currentUserId, userUid)
         {
-            if (email.IsNotEmail())
-            {
-                ThrowArgumentException(nameof(email), email);
-            }
-
             if (firsName.IsEmpty())
             {
                 ThrowArgumentException(nameof(firsName), firsName);
@@ -29,10 +23,14 @@ namespace Translation.Common.Models.Requests.User
                 ThrowArgumentException(nameof(lastName), lastName);
             }
 
-            UserEmail = email;
+            if (languageUid.IsEmptyGuid())
+            {
+                ThrowArgumentException(nameof(languageUid), languageUid);
+            }
+
             FirstName = firsName;
             LastName = lastName;
-            IsActive = isActive;
+            LanguageUid = languageUid;
         }
     }
 }

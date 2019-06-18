@@ -8,9 +8,9 @@ namespace Translation.Common.Models.Requests.Label
 {
     public sealed class LabelCreateListRequest : BaseAuthenticatedRequest
     {
-        public Guid OrganizationUid { get; set; }
+        public Guid OrganizationUid { get; }
         public Guid ProjectUid { get; }
-        public List<LabelListInfo> Labels { get; set; }
+        public List<LabelListInfo> Labels { get; }
 
         public LabelCreateListRequest(long currentUserId, Guid organizationUid, Guid projectUid,
                                       List<LabelListInfo> labels) : base(currentUserId)

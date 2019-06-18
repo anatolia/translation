@@ -6,7 +6,7 @@ namespace Translation.Common.Models.Requests.Journal
     {
         public AllJournalReadListRequest(long currentUserId) : base(currentUserId)
         {
-
+            PagingInfo.IsAscending = false;
         }
     }
 }

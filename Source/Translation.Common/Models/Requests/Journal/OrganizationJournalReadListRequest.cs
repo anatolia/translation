@@ -17,6 +17,8 @@ namespace Translation.Common.Models.Requests.Journal
             }
 
             OrganizationUid = organizationUid;
+
+            PagingInfo.IsAscending = false;
         }
     }
 }

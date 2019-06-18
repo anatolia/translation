@@ -5,11 +5,11 @@ using Translation.Common.Models.Base;
 
 namespace Translation.Common.Models.Requests.Label
 {
-    public sealed class LabelUploadFromExcelRequest : BaseAuthenticatedRequest
+    public sealed class LabelUploadFromCSVRequest : BaseAuthenticatedRequest
     {
         public Guid LabelUid { get; }
 
-        public LabelUploadFromExcelRequest(long currentUserId, Guid labelUid) : base(currentUserId)
+        public LabelUploadFromCSVRequest(long currentUserId, Guid labelUid) : base(currentUserId)
         {
             if (labelUid.IsEmptyGuid())
             {
