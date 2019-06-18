@@ -6,6 +6,6 @@ namespace Translation.Common.Models.Responses.Label
     public class LabelReadListResponse : BaseResponse<LabelDto>
     {
 
-        
+
     }
 }

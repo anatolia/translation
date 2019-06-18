@@ -10,5 +10,6 @@ namespace Translation.Common.Models.Responses.Label
 
         public int AddedLabelTranslationCount { get; set; }
         public int CanNotAddedLabelTranslationCount { get; set; }
+        public int UpdatedLabelTranslationCount { get; set; }
     }
 }
