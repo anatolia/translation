@@ -6,7 +6,7 @@ namespace Translation.Data.Factories
 {
     public class LabelFactory
     {
-        public Label CreateEntityFromRequest(string key, Project projectEntity)
+        public Label CreateEntity(string key, Project projectEntity)
         {
             var entity = new Label();
             entity.Name = key;
@@ -55,7 +55,7 @@ namespace Translation.Data.Factories
         public Label CreateEntityFromRequest(LabelCreateRequest request, Project project)
         {
             var entity = new Label();
-            entity.CreatedBy = request.CurrentUserId;
+            
             entity.Key = request.LabelKey;
             entity.Name = request.LabelKey;
             entity.Description = request.Description;

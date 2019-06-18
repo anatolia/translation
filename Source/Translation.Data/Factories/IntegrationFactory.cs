@@ -15,7 +15,6 @@ namespace Translation.Data.Factories
             entity.OrganizationName = organizationEntity.Name;
             entity.Name = request.Name;
             entity.Description = request.Description;
-            entity.CreatedBy = request.CurrentUserId;
             entity.IsActive = true;
 
             return entity;
@@ -29,7 +28,6 @@ namespace Translation.Data.Factories
             entity.OrganizationName = organizationEntity.Name;
             entity.Name = request.Name;
             entity.Description = request.Description;
-            entity.CreatedBy = request.CurrentUserId;
             entity.IsActive = true;
 
             return entity;
@@ -61,6 +59,18 @@ namespace Translation.Data.Factories
             dto.CreatedAt = entity.CreatedAt;
 
             return dto;
+        }
+
+        public Integration CreateDefault(Organization organization)
+        {
+            var entity = new Integration();
+            entity.OrganizationId = organization.Id;
+            entity.OrganizationUid = organization.Uid;
+            entity.OrganizationName = organization.Name;
+            entity.Name = "Default";
+            entity.IsActive = true;
+
+            return entity;
         }
     }
 }

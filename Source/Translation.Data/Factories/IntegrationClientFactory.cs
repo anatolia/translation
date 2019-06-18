@@ -1,26 +1,24 @@
 ﻿using System;
 
 using Translation.Common.Models.DataTransferObjects;
-using Translation.Common.Models.Requests.Integration.IntegrationClient;
 using Translation.Data.Entities.Main;
 
 namespace Translation.Data.Factories
 {
     public class IntegrationClientFactory
     {
-        public IntegrationClient CreateEntityFromRequest(IntegrationClientCreateRequest request,
-                                                                Integration integrationEntity)
+        public IntegrationClient CreateEntity(Integration integration)
         {
             var entity = new IntegrationClient();
-            entity.OrganizationId = integrationEntity.OrganizationId;
-            entity.OrganizationUid = integrationEntity.OrganizationUid;
-            entity.OrganizationName = integrationEntity.OrganizationName;
-            entity.IntegrationId = integrationEntity.Id;
-            entity.IntegrationUid = integrationEntity.Uid;
-            entity.IntegrationName = integrationEntity.Name;
+            entity.OrganizationId = integration.OrganizationId;
+            entity.OrganizationUid = integration.OrganizationUid;
+            entity.OrganizationName = integration.OrganizationName;
+            entity.IntegrationId = integration.Id;
+            entity.IntegrationUid = integration.Uid;
+            entity.IntegrationName = integration.Name;
             entity.ClientId = Guid.NewGuid();
             entity.ClientSecret = Guid.NewGuid();
-            entity.CreatedBy = request.CurrentUserId;
+            
             entity.IsActive = true;
 
             return entity;

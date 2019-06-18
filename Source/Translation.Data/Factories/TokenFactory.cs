@@ -10,11 +10,19 @@ namespace Translation.Data.Factories
     {
         public Token CreateEntityFromRequest(TokenCreateRequest request, IntegrationClient integrationClient)
         {
+            var entity = CreateEntity(integrationClient);
+            entity.Ip = request.IP.ToString();
+
+            return entity;
+        }
+
+        public Token CreateEntity(IntegrationClient integrationClient)
+        {
             var entity = new Token();
 
             entity.AccessToken = Guid.NewGuid();
             entity.ExpiresAt = entity.CreatedAt.AddMinutes(30);
-            entity.Ip = request.IP.ToString();
+            entity.IsActive = true;
 
             entity.IntegrationClientUid = integrationClient.Uid;
             entity.IntegrationClientId = integrationClient.Id;
@@ -28,7 +36,6 @@ namespace Translation.Data.Factories
             entity.OrganizationId = integrationClient.OrganizationId;
             entity.OrganizationName = integrationClient.OrganizationName;
 
-            entity.IsActive = true;
             return entity;
         }
 
@@ -40,6 +47,7 @@ namespace Translation.Data.Factories
             dto.AccessToken = entity.AccessToken;
             dto.CreatedAt = entity.CreatedAt;
             dto.ExpiresAt = entity.ExpiresAt;
+
             return dto;
         }
     }

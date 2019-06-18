@@ -23,7 +23,7 @@ namespace Translation.Data.Factories
         public Project CreateEntityFromRequest(ProjectCreateRequest request, Organization organization)
         {
             var entity = new Project();
-            entity.CreatedBy = request.CurrentUserId;
+            
             entity.Name = request.ProjectName;
             entity.Description = request.Description;
             entity.Url = request.Url;
@@ -39,7 +39,7 @@ namespace Translation.Data.Factories
         public Project CreateEntityFromRequest(ProjectCreateRequest request, CurrentOrganization organization)
         {
             var entity = new Project();
-            entity.CreatedBy = request.CurrentUserId;
+            
             entity.Name = request.ProjectName;
             entity.Description = request.Description;
             entity.Url = request.Url;
@@ -56,7 +56,7 @@ namespace Translation.Data.Factories
         {
             var entity = new Project();
 
-            entity.CreatedBy = request.CurrentUserId;
+            
             entity.Name = request.Name;
             entity.Description = request.Description;
             entity.Url = request.Url;
@@ -92,6 +92,20 @@ namespace Translation.Data.Factories
         public Project UpdateEntityForChangeActivation(Project entity)
         {
             entity.IsActive = !entity.IsActive;
+            return entity;
+        }
+
+        public Project CreateDefault(Organization organization)
+        {
+            var entity = new Project();
+
+            entity.Name = "Default";
+            entity.IsActive = true;
+
+            entity.OrganizationId = organization.Id;
+            entity.OrganizationUid = organization.Uid;
+            entity.OrganizationName = organization.Name;
+
             return entity;
         }
     }

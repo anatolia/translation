@@ -6,6 +6,7 @@ using Translation.Common.Models.Requests.Organization;
 using Translation.Common.Models.Requests.User;
 using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Main;
+using Translation.Data.Entities.Parameter;
 
 namespace Translation.Data.Factories
 {
@@ -46,13 +47,18 @@ namespace Translation.Data.Factories
             return entity;
         }
 
-        public User CreateEntityFromRequest(UserEditRequest request, User entity)
+        public User CreateEntityFromRequest(UserEditRequest request, User entity, Language language)
         {
             entity.UpdatedBy = request.CurrentUserId;
 
             entity.FirstName = request.FirstName;
             entity.LastName = request.LastName;
             entity.Name = MapName(request.FirstName, request.LastName);
+
+            entity.LanguageId = language.Id;
+            entity.LanguageUid = language.Uid;
+            entity.LanguageName = language.Name;
+            entity.LanguageIconUrl = language.IconUrl;
 
             return entity;
         }
@@ -137,6 +143,10 @@ namespace Translation.Data.Factories
 
             dto.OrganizationUid = entity.OrganizationUid;
             dto.OrganizationName = entity.OrganizationName;
+
+            dto.LanguageUid = entity.LanguageUid;
+            dto.LanguageName = entity.LanguageName;
+            dto.LanguageIconUrl = entity.LanguageIconUrl;
 
             return dto;
         }

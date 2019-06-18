@@ -39,7 +39,7 @@ namespace Translation.Data.Factories
         {
             var entity = new Language();
 
-            entity.CreatedBy = request.CurrentUserId;
+            
             entity.Name = request.Name;
             entity.IsoCode2Char = request.IsoCode2;
             entity.IsoCode3Char = request.IsoCode3;

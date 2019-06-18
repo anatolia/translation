@@ -9,7 +9,7 @@ namespace Translation.Data.Factories
 {
     public class LabelTranslationFactory
     {
-        public LabelTranslation CreateEntityFromRequest(string translation, Label label, Language language)
+        public LabelTranslation CreateEntity(string translation, Label label, Language language)
         {
             var entity = new LabelTranslation();
             entity.Translation = translation;
