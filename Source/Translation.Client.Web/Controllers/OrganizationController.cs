@@ -130,7 +130,27 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = DataResultHelper.GetUserLoginLogDataResult(response.Items);
+            var result = new DataResult();
+            result.AddHeaders("user", "ip", "country", "city", "browser", "browser_version", "platform", "platform_version", "created_at");
+
+            for (var i = 0; i < response.Items.Count; i++)
+            {
+                var item = response.Items[i];
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.Uid}", item.UserName)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.Ip}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.Country}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.City}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.Browser}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.BrowserVersion}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.Platform}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.PlatformVersion}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
 
@@ -373,7 +393,7 @@ namespace Translation.Client.Web.Controllers
                 {
                     stringBuilder.Append($"-{DataResult.SEPARATOR}");
                 }
-                
+
                 stringBuilder.Append($"{item.Message}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
 
