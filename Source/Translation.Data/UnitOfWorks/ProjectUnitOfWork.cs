@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 using StandardRepository.PostgreSQL;
@@ -77,13 +78,17 @@ namespace Translation.Data.UnitOfWorks
                 _labelRepository.SetSqlExecutorForTransaction(connectionFactory);
                 _labelTranslationRepository.SetSqlExecutorForTransaction(connectionFactory);
 
+                var labels = await _labelRepository.SelectAll(x => x.ProjectId == projectId);
+                var labelTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == projectId);
+
+                newProject.LabelTranslationCount = labelTranslations.Count;
+                newProject.LabelCount = labelTranslations.Count;
                 var newProjectId = await _projectRepository.Insert(currentUserId, newProject);
 
                 var organization = await _organizationRepository.SelectById(newProject.OrganizationId);
                 organization.ProjectCount++;
                 await _organizationRepository.Update(currentUserId, organization);
 
-                var labels = await _labelRepository.SelectAll(x => x.ProjectId == projectId);
                 for (var i = 0; i < labels.Count; i++)
                 {
                     var label = labels[i];
@@ -91,11 +96,11 @@ namespace Translation.Data.UnitOfWorks
                     label.ProjectId = newProjectId;
                     label.ProjectUid = newProject.Uid;
                     label.ProjectName = newProject.Name;
+                    label.LabelTranslationCount = labelTranslations.Count(x => x.LabelId == label.Id);
 
                     await _labelRepository.Insert(currentUserId, label);
                 }
 
-                var labelTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == projectId);
                 for (var i = 0; i < labelTranslations.Count; i++)
                 {
                     var labelTranslation = labelTranslations[i];

@@ -1,7 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 
+using StandardRepository.Helpers;
 using StandardRepository.PostgreSQL;
 
+using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
 using Translation.Data.Repositories.Contracts;
 using Translation.Data.UnitOfWorks.Contracts;
@@ -14,26 +18,45 @@ namespace Translation.Data.UnitOfWorks
         private readonly IOrganizationRepository _organizationRepository;
         private readonly IUserRepository _userRepository;
         private readonly IUserLoginLogRepository _userLoginLogRepository;
+        private readonly IIntegrationRepository _integrationRepository;
+        private readonly IIntegrationClientRepository _integrationClientRepository;
+        private readonly IProjectRepository _projectRepository;
+        private readonly ILabelRepository _labelRepository;
+        private readonly ILabelTranslationRepository _labelTranslationRepository;
 
         public SignUpUnitOfWork(PostgreSQLTransactionalExecutor transactionalExecutor,
                                 IOrganizationRepository organizationRepository,
                                 IUserRepository userRepository,
-                                IUserLoginLogRepository userLoginLogRepository)
+                                IUserLoginLogRepository userLoginLogRepository,
+                                IIntegrationRepository integrationRepository,
+                                IIntegrationClientRepository integrationClientRepository,
+                                IProjectRepository projectRepository,
+                                ILabelRepository labelRepository,
+                                ILabelTranslationRepository labelTranslationRepository)
         {
             _transactionalExecutor = transactionalExecutor;
             _organizationRepository = organizationRepository;
             _userRepository = userRepository;
             _userLoginLogRepository = userLoginLogRepository;
+            _integrationRepository = integrationRepository;
+            _integrationClientRepository = integrationClientRepository;
+            _projectRepository = projectRepository;
+            _labelRepository = labelRepository;
+            _labelTranslationRepository = labelTranslationRepository;
         }
 
-        public async Task<(bool, Organization, User)> DoWork(Organization organization, User user, UserLoginLog userLoginLog)
+        public async Task<(bool, Organization, User)> DoWork(Organization organization, User user, UserLoginLog userLoginLog,
+                                                             Integration integration, IntegrationClient integrationClient, Project project)
         {
             var (organizationResult,
-                userResult) = await _transactionalExecutor.ExecuteAsync(async connectionFactory =>
+                 userResult) = await _transactionalExecutor.ExecuteAsync(async connectionFactory =>
             {
                 _userRepository.SetSqlExecutorForTransaction(connectionFactory);
                 _organizationRepository.SetSqlExecutorForTransaction(connectionFactory);
                 _userLoginLogRepository.SetSqlExecutorForTransaction(connectionFactory);
+                _integrationRepository.SetSqlExecutorForTransaction(connectionFactory);
+                _integrationClientRepository.SetSqlExecutorForTransaction(connectionFactory);
+                _projectRepository.SetSqlExecutorForTransaction(connectionFactory);
 
                 var organizationId = await _organizationRepository.Insert(0, organization);
                 organization.Id = organizationId;
@@ -51,6 +74,58 @@ namespace Translation.Data.UnitOfWorks
                 user.CreatedBy = userId;
                 await _organizationRepository.Update(userId, organization);
                 await _userRepository.Update(userId, user);
+
+                integration.OrganizationId = organizationId;
+                var integrationId = await _integrationRepository.Insert(userId, integration);
+
+                integrationClient.OrganizationId = organizationId;
+                integrationClient.IntegrationId = integrationId;
+                await _integrationClientRepository.Insert(userId, integrationClient);
+
+                project.OrganizationId = organizationId;
+                var projectId = await _projectRepository.Insert(userId, project);
+
+                if (!organization.IsSuperOrganization)
+                {
+                    var superProject = await _projectRepository.Select(x => x.IsSuperProject);
+                    if (superProject.IsExist())
+                    {
+                        var labels = await _labelRepository.SelectAll(x => x.ProjectId == superProject.Id);
+                        var labelTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == superProject.Id);
+
+                        for (var i = 0; i < labels.Count; i++)
+                        {
+                            var label = labels[i];
+                            label.Uid = Guid.NewGuid();
+                            label.OrganizationId = project.OrganizationId;
+                            label.OrganizationUid = project.OrganizationUid;
+                            label.OrganizationName = project.OrganizationName;
+                            label.ProjectId = projectId;
+                            label.ProjectUid = project.Uid;
+                            label.ProjectName = project.Name;
+
+                            var labelId = await _labelRepository.Insert(userId, label);
+
+                            var labelsTranslations = labelTranslations.Where(x => x.LabelName == label.Name).ToList();
+                            for (var j = 0; j < labelsTranslations.Count; j++)
+                            {
+                                var labelTranslation = labelsTranslations[j];
+                                labelTranslation.Uid = Guid.NewGuid();
+                                labelTranslation.OrganizationId = project.OrganizationId;
+                                labelTranslation.OrganizationUid = project.OrganizationUid;
+                                labelTranslation.OrganizationName = project.OrganizationName;
+                                labelTranslation.ProjectId = projectId;
+                                labelTranslation.ProjectUid = project.Uid;
+                                labelTranslation.ProjectName = project.Name;
+                                labelTranslation.LabelId = labelId;
+                                labelTranslation.LabelUid = label.Uid;
+                                labelTranslation.LabelName = label.Name;
+
+                                await _labelTranslationRepository.Insert(userId, labelTranslation);
+                            }
+                        }
+                    }
+                }
 
                 return (organization,
                         user);
