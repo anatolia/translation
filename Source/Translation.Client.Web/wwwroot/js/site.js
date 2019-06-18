@@ -76,20 +76,59 @@ function doIfConfirmed(btn, onConfirm) {
 }
 
 function doRedirectIfConfirmedSuccess(btn, redirectUrl) {
-	showPopup(btn.dataset.confirmTitle, btn.dataset.confirmContent, true, function () {
-		doPostWithFormUrlEncodedContent(btn.dataset.url, btn.dataset.prm,
-			function (req) {
-				let response = JSON.parse(req.response);
-				if (response.isOk === true) {
-					window.location.href = redirectUrl;
-				} else {
-					let messages = response.messages.join('<br/>');
-					showPopupMessage(messages);
-				}
-			},
-			function (req) {
-				let messages = JSON.parse(req.response).messages.join('<br/>');
-				showPopupMessage(messages);
-			});
-	});
+    showPopup(btn.dataset.confirmTitle, btn.dataset.confirmContent, true, function () {
+        doPostWithFormUrlEncodedContent(btn.dataset.url, btn.dataset.prm,
+            function (req) {
+                let response = JSON.parse(req.response);
+                if (response.isOk === true) {
+                    window.location.href = redirectUrl;
+                } else {
+                    let messages = response.messages.join('<br/>');
+                    showPopupMessage(messages);
+                }
+            },
+            function (req) {
+                let messages = JSON.parse(req.response).messages.join('<br/>');
+                showPopupMessage(messages);
+            });
+    });
 }
+
+
+function translateScreen() {
+    var items = document.querySelectorAll('[data-translation]');
+    var labels = JSON.parse(localStorage.getItem('labels'));
+    var userLanguage = localStorage.getItem('userLanguage');
+    if (userLanguage === null) {
+        userLanguage = 'en';
+    }
+
+    items.forEach(function(item) {
+        for (var i = 0; i < labels.length; i++) {
+            var label = labels[i];
+            if (label.key === item.dataset.translation) {
+
+                label.translations.forEach(function (translation) {
+                    if (translation.languageIsoCode2 === userLanguage) {
+                        item.innerHTML = translation.translation;
+                        return;  
+                    }
+                });
+
+                break;   
+            }
+        }
+    });
+}
+
+if (localStorage.getItem('labels') == undefined) {
+    doGet('/Data/GetMainLabels', function (req) {
+        if (199 < req.status && req.status < 300) {
+            localStorage.setItem('labels', req.responseText);
+            translateScreen();
+        }
+    });
+} else {
+    translateScreen();
+}
+
