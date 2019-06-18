@@ -87,11 +87,11 @@ namespace Translation.Service
             Expression<Func<Journal, object>> orderByColumn = x => x.Id;
 
             var entities = await _journalRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
-
             if (entities != null)
             {
-                foreach (var entity in entities)
+                for (var i = 0; i < entities.Count; i++)
                 {
+                    var entity = entities[i];
                     var dto = _journalFactory.CreateDtoFromEntity(entity);
                     response.Items.Add(dto);
                 }

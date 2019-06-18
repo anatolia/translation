@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -7,16 +7,52 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Castle.Facilities.AspNetCore" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.ResponseCaching" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.9" />
+    <PackageReference Include="StandardCache" Version="1.0.1" />
+    <PackageReference Include="StandardRepository" Version="1.0.1.6" />
+    <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.1.6" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\" />
+    <None Include="Views\Home\AccessDenied.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Integration\Create.cshtml" />
+    <None Include="Views\Integration\Detail.cshtml" />
+    <None Include="Views\Integration\TokenUsageLogs.cshtml" />
+    <None Include="Views\Label\Create.cshtml" />
+    <None Include="Views\Label\CreateTranslation.cshtml" />
+    <None Include="Views\Label\Detail.cshtml" />
+    <None Include="Views\Language\Create.cshtml" />
+    <None Include="Views\Language\List.cshtml" />
+    <None Include="Views\Organization\Detail.cshtml" />
+    <None Include="Views\Project\Create.cshtml" />
+    <None Include="Views\Project\Detail.cshtml" />
+    <None Include="Views\User\AcceptInvite.cshtml" />
+    <None Include="Views\User\AcceptInviteDone.cshtml" />
+    <None Include="Views\User\ChangePassword.cshtml" />
+    <None Include="Views\User\ChangePasswordDone.cshtml" />
+    <None Include="Views\User\DemandPasswordReset.cshtml" />
+    <None Include="Views\User\DemandPasswordResetDone.cshtml" />
+    <None Include="Views\User\Invite.cshtml" />
+    <None Include="Views\User\InviteDone.cshtml" />
+    <None Include="Views\User\PasswordReset.cshtml" />
+    <None Include="Views\User\PasswordResetDone.cshtml" />
+    <None Include="Views\User\SignUp.cshtml" />
+    <None Include="Views\User\ValidateEmail.cshtml" />
+    <None Include="Views\User\ValidateEmailDone.cshtml" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\js\site.min.js" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Translation.Common\Translation.Common.csproj" />
+    <ProjectReference Include="..\Translation.Data\Translation.Data.csproj" />
+    <ProjectReference Include="..\Translation.Service\Translation.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>

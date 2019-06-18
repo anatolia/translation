@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.106
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translation.Common", "Source\Translation.Common\Translation.Common.csproj", "{564E7A06-52AB-44DB-A9FF-99FF9F534B34}"
 EndProject
@@ -13,15 +13,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{BA13D2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{07DABBA1-4701-477A-9237-9FC4E70AA937}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tool", "Tool", "{509928CB-9B32-4728-B721-D2FB7EB7CA35}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translation.Tests", "Test\Translation.Tests\Translation.Tests.csproj", "{78D3FEE3-AC00-439B-9F8C-B349C5D0D2A4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translation.Data", "Source\Translation.Data\Translation.Data.csproj", "{DAB81FBB-DC6E-4A9D-BD0A-7BE1FEB2B7F5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translation.Client.Web", "Source\Translation.Client.Web\Translation.Client.Web.csproj", "{2B78E708-06A7-4985-A4C1-449327923633}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Translation.Service", "Source\Translation.Service\Translation.Service.csproj", "{23C8F6BD-D73E-47E6-97B5-B627C5D43158}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translation.Service", "Source\Translation.Service\Translation.Service.csproj", "{23C8F6BD-D73E-47E6-97B5-B627C5D43158}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translation.Client.Tool.PushKeysFromSource", "Source\Translation.Client.Tool.PushKeysFromSource\Translation.Client.Tool.PushKeysFromSource.csproj", "{2960B4EA-3EC9-4303-B8C2-E92301558BE6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translation.Client.Tool.TakeScreenshotOfViewContainingKey", "Source\Translation.Client.Tool.TakeScreenshotOfViewContainingKey\Translation.Client.Tool.TakeScreenshotOfViewContainingKey.csproj", "{696219B3-EDE9-40B8-BC9D-5758CA2C6776}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,14 @@ Global
 		{23C8F6BD-D73E-47E6-97B5-B627C5D43158}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23C8F6BD-D73E-47E6-97B5-B627C5D43158}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23C8F6BD-D73E-47E6-97B5-B627C5D43158}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2960B4EA-3EC9-4303-B8C2-E92301558BE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2960B4EA-3EC9-4303-B8C2-E92301558BE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2960B4EA-3EC9-4303-B8C2-E92301558BE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2960B4EA-3EC9-4303-B8C2-E92301558BE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{696219B3-EDE9-40B8-BC9D-5758CA2C6776}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{696219B3-EDE9-40B8-BC9D-5758CA2C6776}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{696219B3-EDE9-40B8-BC9D-5758CA2C6776}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{696219B3-EDE9-40B8-BC9D-5758CA2C6776}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +69,8 @@ Global
 		{DAB81FBB-DC6E-4A9D-BD0A-7BE1FEB2B7F5} = {07DABBA1-4701-477A-9237-9FC4E70AA937}
 		{2B78E708-06A7-4985-A4C1-449327923633} = {BA13D279-8AFC-4EEA-8650-5082E6495AAB}
 		{23C8F6BD-D73E-47E6-97B5-B627C5D43158} = {07DABBA1-4701-477A-9237-9FC4E70AA937}
+		{2960B4EA-3EC9-4303-B8C2-E92301558BE6} = {BA13D279-8AFC-4EEA-8650-5082E6495AAB}
+		{696219B3-EDE9-40B8-BC9D-5758CA2C6776} = {BA13D279-8AFC-4EEA-8650-5082E6495AAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0DF2FB4D-A2C4-45BF-BEF9-227039B063A2}

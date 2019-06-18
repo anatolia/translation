@@ -52,10 +52,12 @@ namespace Translation.Client.Tool.PushKeysFromSource
             Console.WriteLine("collecting labels from source");
 
             var items = new List<string>();
-            GetLabelKeysFromViews(Directory.GetFiles(projectFolder, "*.cshtml", SearchOption.AllDirectories), items);
-            GetLabelKeysFromClasses(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items);
 
-            Console.WriteLine("found " + items.Count + "label");
+            GetLabelKeysFromViews(Directory.GetFiles(projectFolder, "*.cshtml", SearchOption.AllDirectories), items);
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Localize\\(\")(.*)(?=\")");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Messages.Add\\(\")(.*)(?=\")");
+
+            Console.WriteLine("found " + items.Count + " label");
 
             string token;
             using (var client = new HttpClient())
@@ -161,18 +163,14 @@ namespace Translation.Client.Tool.PushKeysFromSource
             }
         }
 
-        private static void GetLabelKeysFromClasses(string[] files, List<string> items)
+        private static void GetLabelKeys(string[] files, List<string> items, string regexString)
         {
             for (var i = 0; i < files.Length; i++)
             {
                 var filePath = files[i];
                 var fileContent = File.ReadAllText(filePath);
-                if (!fileContent.Contains("Localizer.Localize("))
-                {
-                    continue;
-                }
 
-                var regex = new Regex("(?<=.Localize\\(\")(.*)(?=\")", RegexOptions.Compiled);
+                var regex = new Regex(regexString, RegexOptions.Compiled);
                 var matches = regex.Matches(fileContent);
                 if (!matches.Any())
                 {
