@@ -40,6 +40,7 @@ namespace Translation.Client.Web
             app.UseForwardedHeaders(forwardingOptions);
 
             app.UseStaticFiles();
+            app.UseResponseCaching();
 
             if (env.IsDevelopment())
             {
@@ -70,7 +71,7 @@ namespace Translation.Client.Web
             Container.Install(new RepositoryAndUnitOfWorkInstaller());
             Container.Install(new ServiceInstaller());
 
-            DbGeneratorHelper.Generate(Container);
+            DbGeneratorHelper.Generate(Container, env.WebRootPath);
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -99,19 +100,21 @@ namespace Translation.Client.Web
             });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(x =>
-                {
-                    x.Cookie.Name = ConstantHelper.APP_NAME;
-                    x.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                    x.Cookie.SameSite = SameSiteMode.Strict;
-                    x.Cookie.HttpOnly = true;
-                    x.Cookie.IsEssential = true;
-                    x.SlidingExpiration = true;
-                    x.ExpireTimeSpan = TimeSpan.FromHours(8);
-                    x.LoginPath = "/User/LogOn";
-                    x.LogoutPath = "/User/LogOff";
-                    x.AccessDeniedPath = "/User/AccessDenied";
-                });
+                    .AddCookie(x =>
+                    {
+                        x.Cookie.Name = ConstantHelper.APP_NAME;
+                        x.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                        x.Cookie.SameSite = SameSiteMode.Strict;
+                        x.Cookie.HttpOnly = true;
+                        x.Cookie.IsEssential = true;
+                        x.SlidingExpiration = true;
+                        x.ExpireTimeSpan = TimeSpan.FromHours(8);
+                        x.LoginPath = "/User/LogOn";
+                        x.LogoutPath = "/User/LogOff";
+                        x.AccessDeniedPath = "/Home/AccessDenied";
+                    });
+
+            services.AddResponseCaching();
 
             return services.AddWindsor(Container);
         }
