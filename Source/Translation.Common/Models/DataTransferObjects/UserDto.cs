@@ -1,5 +1,5 @@
 ﻿using System;
-using NodaTime;
+
 using Translation.Common.Models.Base;
 
 namespace Translation.Common.Models.DataTransferObjects
@@ -16,13 +16,17 @@ namespace Translation.Common.Models.DataTransferObjects
         public bool IsActive { get; set; }
         public bool IsAdmin { get; set; }
         public bool IsSuperAdmin { get; set; }
-        public Instant? LastLoggedInAt { get; set; }
+        public DateTime? LastLoggedInAt { get; set; }
 
-        public Instant? InvitedAt { get; set; }
+        public DateTime? InvitedAt { get; set; }
         public Guid? InvitedByUserUid { get; set; }
         public string InvitedByUserName { get; set; }
 
         public int LabelCount { get; set; }
         public int LabelTranslationCount { get; set; }
+
+        public Guid LanguageUid { get; set; }
+        public string LanguageName { get; set; }
+        public string LanguageIconUrl { get; set; }
     }
 }
