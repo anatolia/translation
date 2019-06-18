@@ -10,9 +10,11 @@ namespace Translation.Common.Contracts
     public interface ILabelService
     {
         Task<LabelCreateResponse> CreateLabel(LabelCreateRequest request);
+        Task<LabelCreateResponse> CreateLabel(LabelCreateWithTokenRequest request);
         Task<LabelCreateListResponse> CreateLabelFromList(LabelCreateListRequest request);
         Task<LabelReadResponse> GetLabel(LabelReadRequest request);
         Task<LabelReadListResponse> GetLabels(LabelReadListRequest request);
+        Task<AllLabelReadListResponse> GetLabelsWithTranslations(AllLabelReadListRequest labelReadListRequest);
         Task<LabelEditResponse> EditLabel(LabelEditRequest request);
         Task<LabelDeleteResponse> DeleteLabel(LabelDeleteRequest request);
         Task<LabelChangeActivationResponse> ChangeActivation(LabelChangeActivationRequest request);
@@ -24,6 +26,5 @@ namespace Translation.Common.Contracts
         Task<LabelTranslationReadListResponse> GetTranslations(LabelTranslationReadListRequest request);
         Task<LabelTranslationEditResponse> EditTranslation(LabelTranslationEditRequest request);
         Task<LabelTranslationDeleteResponse> DeleteTranslation(LabelTranslationDeleteRequest request);
-        
     }
 }

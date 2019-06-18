@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using NodaTime;
+
 using StandardRepository.Helpers;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
@@ -333,7 +333,7 @@ namespace Translation.Service
                 return response;
             }
 
-            var entity = _integrationClientFactory.CreateEntityFromRequest(request, integration);
+            var entity = _integrationClientFactory.CreateEntity(integration);
             await _integrationClientRepository.Insert(request.CurrentUserId, entity);
 
             response.Item = _integrationClientFactory.CreateDtoFromEntity(entity);
@@ -584,6 +584,44 @@ namespace Translation.Service
             }
 
             var token = _tokenFactory.CreateEntityFromRequest(request, integrationClient);
+            var id = await _tokenRepository.Insert(integrationClient.Id, token);
+            if (id > 0)
+            {
+                response.Item = _tokenFactory.CreateDtoFromEntity(token);
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<TokenCreateResponse> CreateToken(TokenGetRequest request)
+        {
+            var response = new TokenCreateResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (currentUser == null)
+            {
+                response.SetInvalid();
+                return response;
+            }
+            
+            var integrationClient = await _integrationClientRepository.Select(x => x.OrganizationId == currentUser.OrganizationId && x.IsActive);
+            if (integrationClient.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            if (await _organizationRepository.Any(x => x.Id == integrationClient.OrganizationId && !x.IsActive)
+                || await _integrationRepository.Any(x => x.Id == integrationClient.IntegrationId && !x.IsActive))
+            {
+                response.SetInvalidBecauseParentNotActive();
+                return response;
+            }
+
+            var token = _tokenFactory.CreateEntity(integrationClient);
             var id = await _tokenRepository.Insert(integrationClient.Id, token);
             if (id > 0)
             {

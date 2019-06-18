@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using NodaTime;
+
 using StandardRepository.Helpers;
 
 using Translation.Common.Contracts;
@@ -29,7 +29,7 @@ namespace Translation.Service
     {
         private readonly CacheManager _cacheManager;
         private readonly CryptoHelper _cryptoHelper;
-        
+
         private readonly ISignUpUnitOfWork _signUpUnitOfWork;
         private readonly ILogOnUnitOfWork _logOnUnitOfWork;
         private readonly IUserRepository _userRepository;
@@ -38,17 +38,25 @@ namespace Translation.Service
         private readonly OrganizationFactory _organizationFactory;
         private readonly IUserLoginLogRepository _userLoginLogRepository;
         private readonly UserLoginLogFactory _userLoginLogFactory;
+        private readonly IntegrationFactory _integrationFactory;
+        private readonly IntegrationClientFactory _integrationClientFactory;
+        private readonly ProjectFactory _projectFactory;
+        private readonly ILanguageRepository _languageRepository;
 
-        public OrganizationService(CacheManager cacheManager, CryptoHelper cryptoHelper, 
+        public OrganizationService(CacheManager cacheManager, CryptoHelper cryptoHelper,
                                    ISignUpUnitOfWork signUpUnitOfWork,
                                    ILogOnUnitOfWork logOnUnitOfWork,
                                    IUserRepository userRepository, UserFactory userFactory,
                                    IOrganizationRepository organizationRepository, OrganizationFactory organizationFactory,
-                                   IUserLoginLogRepository userLoginLogRepository, UserLoginLogFactory userLoginLogFactory)
+                                   IUserLoginLogRepository userLoginLogRepository, UserLoginLogFactory userLoginLogFactory,
+                                   IntegrationFactory integrationFactory,
+                                   IntegrationClientFactory integrationClientFactory,
+                                   ProjectFactory projectFactory,
+                                   ILanguageRepository languageRepository)
         {
             _cacheManager = cacheManager;
             _cryptoHelper = cryptoHelper;
-            
+
             _signUpUnitOfWork = signUpUnitOfWork;
             _logOnUnitOfWork = logOnUnitOfWork;
             _userRepository = userRepository;
@@ -57,6 +65,10 @@ namespace Translation.Service
             _organizationFactory = organizationFactory;
             _userLoginLogRepository = userLoginLogRepository;
             _userLoginLogFactory = userLoginLogFactory;
+            _integrationFactory = integrationFactory;
+            _integrationClientFactory = integrationClientFactory;
+            _projectFactory = projectFactory;
+            _languageRepository = languageRepository;
         }
 
         public async Task<SignUpResponse> CreateOrganizationWithAdmin(SignUpRequest request)
@@ -78,18 +90,28 @@ namespace Translation.Service
                 response.Status = ResponseStatus.Invalid;
                 return response;
             }
-            
+
             organization = _organizationFactory.CreateEntityFromRequest(request, _cryptoHelper.GetKeyAsString(), _cryptoHelper.GetIVAsString());
 
             var salt = _cryptoHelper.GetSaltAsString();
             var passwordHash = _cryptoHelper.Hash(request.Password, salt);
             user = _userFactory.CreateEntityFromRequest(request, organization, salt, passwordHash);
 
+            var english = await _languageRepository.Select(x => x.IsoCode2Char == "en");
+            user.LanguageId = english.Id;
+            user.LanguageUid = english.Uid;
+            user.LanguageName = english.Name;
+            user.LanguageIconUrl = english.IconUrl;
+
             var loginLog = _userLoginLogFactory.CreateEntityFromRequest(request, user);
+            var integration = _integrationFactory.CreateDefault(organization);
+            var integrationClient = _integrationClientFactory.CreateEntity(integration);
+            var project = _projectFactory.CreateDefault(organization);
 
             var (uowResult,
                  insertedOrganization,
-                 insertedUser) = await _signUpUnitOfWork.DoWork(organization, user, loginLog);
+                 insertedUser) = await _signUpUnitOfWork.DoWork(organization, user, loginLog,
+                                                                integration, integrationClient, project);
 
             if (uowResult)
             {
@@ -460,7 +482,7 @@ namespace Translation.Service
         public async Task<UserEditResponse> EditUser(UserEditRequest request)
         {
             var response = new UserEditResponse();
-            
+
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
@@ -481,7 +503,14 @@ namespace Translation.Service
                 return response;
             }
 
-            var updatedEntity = _userFactory.CreateEntityFromRequest(request, entity);
+            var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
+            if (language.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            var updatedEntity = _userFactory.CreateEntityFromRequest(request, entity, language);
             var result = await _userRepository.Update(request.CurrentUserId, updatedEntity);
             if (result)
             {
@@ -720,11 +749,11 @@ namespace Translation.Service
             List<UserLoginLog> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _userLoginLogRepository.SelectAfter(filter,request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _userLoginLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _userLoginLogRepository.SelectMany(filter,request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _userLoginLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)
