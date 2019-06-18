@@ -62,9 +62,9 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static LabelUploadFromExcelModel MapLabelUploadFromExcelModel(ProjectDto project)
+        public static LabelUploadFromCSVModel MapLabelUploadFromCSVModel(ProjectDto project)
         {
-            var model = new LabelUploadFromExcelModel();
+            var model = new LabelUploadFromCSVModel();
             model.OrganizationUid = project.OrganizationUid;
             model.ProjectUid = project.Uid;
             model.ProjectName = project.Name;
@@ -73,9 +73,9 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static UploadLabelTranslationFromExcelFileModel MapUploadLabelTranslationFromExcelFileModel(LabelDto label)
+        public static UploadLabelTranslationFromCSVFileModel MapUploadLabelTranslationFromCSVFileModel(LabelDto label)
         {
-            var model = new UploadLabelTranslationFromExcelFileModel();
+            var model = new UploadLabelTranslationFromCSVFileModel();
             model.OrganizationUid = label.OrganizationUid;
             model.LabelUid = label.Uid;
             model.LabelKey= label.Key;

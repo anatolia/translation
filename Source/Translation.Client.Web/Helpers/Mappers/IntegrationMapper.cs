@@ -40,6 +40,15 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
+        public static IntegrationActiveTokensModel MapIntegrationActiveTokensModel(IntegrationDto dto)
+        {
+            var model = new IntegrationActiveTokensModel();
+            model.IntegrationUid = dto.Uid;
+            model.IntegrationName = dto.Name;
+
+            return model;
+        }
+
         public static IntegrationEditModel MapIntegrationEditModel(IntegrationDto dto)
         {
             var model = new IntegrationEditModel();

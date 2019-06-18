@@ -26,6 +26,9 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.LabelCount = dto.LabelCount;
             model.LabelTranslationCount = dto.LabelTranslationCount;
 
+            model.LanguageName = dto.LanguageName;
+            model.LanguageIconUrl = dto.LanguageIconUrl;
+
             return model;
         }
     }
