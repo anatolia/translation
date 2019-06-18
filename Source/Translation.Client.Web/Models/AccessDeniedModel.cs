@@ -1,4 +1,4 @@
-﻿using Translation.Client.Web.Helpers;
+﻿using Translation.Client.Web.Models.Base;
 
 namespace Translation.Client.Web.Models
 {
@@ -6,7 +6,7 @@ namespace Translation.Client.Web.Models
     {
         public AccessDeniedModel()
         {
-            Title = Localizer.Localize("access_denied_title");
+            Title = "access_denied_title";
         }
     }
 }

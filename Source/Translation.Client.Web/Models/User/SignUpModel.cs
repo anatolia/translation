@@ -1,8 +1,8 @@
-﻿using Translation.Client.Web.Helpers;
+﻿using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.InputModels;
 using Translation.Common.Helpers;
 
-namespace Translation.Client.Web.Models
+namespace Translation.Client.Web.Models.User
 {
     public class SignUpModel : BaseModel
     {
@@ -22,7 +22,7 @@ namespace Translation.Client.Web.Models
 
         public SignUpModel()
         {
-            Title = Localizer.Localize("sign_up_title");
+            Title = "sign_up_title";
 
             EmailInput = new EmailInputModel("Email", "email", true);
             FirstNameInput = new InputModel("FirstName", "first_name", true);
