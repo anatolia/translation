@@ -32,7 +32,7 @@ namespace Translation.Client.Web.Models.Label
             CloningLabelUidInput = new HiddenInputModel("CloningLabelUid");
             CloningLabelKeyInput = new HiddenInputModel("CloningLabelKey");
 
-            ProjectUidInput = new SelectInputModel("ProjectUid", "project", "/Project/SelectData/");
+            ProjectUidInput = new SelectInputModel("ProjectUid", "ProjectName", "project", "/Project/SelectData/");
             KeyInput = new InputModel("Key", "key");
             DescriptionInput = new LongInputModel("Description", "description");
         }

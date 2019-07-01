@@ -41,8 +41,9 @@ namespace Translation.Client.Web.Models.LabelTranslation
 
             LabelInput = new HiddenInputModel("LabelUid");
             LabelKeyInput = new HiddenInputModel("LabelKey");
-
-            LanguageInput = new SelectInputModel("LanguageUid", "language", "/Language/SelectData", true, "", true, false);
+            
+            LanguageInput = new SelectInputModel("LanguageUid", "LanguageName", "language", "/Language/SelectData");
+            LanguageInput.IsOptionTypeContent = true;
             LabelTranslationInput = new LongInputModel("LabelTranslation", "label_translation", true);
         }
 

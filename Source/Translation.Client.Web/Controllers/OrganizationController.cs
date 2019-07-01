@@ -138,7 +138,7 @@ namespace Translation.Client.Web.Controllers
                 var item = response.Items[i];
                 var stringBuilder = new StringBuilder();
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.Uid}", item.UserName)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.UserUid}", item.UserName)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Ip}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Country}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.City}{DataResult.SEPARATOR}");

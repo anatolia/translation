@@ -1,25 +1,23 @@
 ﻿function getSelect(name) { return document.getElementById('select-' + name); }
 function hasClass(element, className) { return (' ' + element.className + ' ').indexOf(' ' + className + ' ') > -1; }
 function trimSearchTerm(term, selectContent) {
-
     let items = selectContent.childNodes;
     for (var i = 0, l = items.length; i < l; i++) {
         if (items[i]
-            && items[i].innerHTML) {
-            if (items[i].innerHTML.toLowerCase() == term.trim().toLowerCase()) {
+            && items[i].innerText) {
+            if (items[i].innerText.toLowerCase() === term.trim().toLowerCase()) {
                 return '';
             }
         }
     }
-
     return term.trim().toLowerCase().replace(/<br>/g, '').replace(/&nbsp;/g, '');
 }
 
-var selectChangeEvent = new Event('theSelectChangeEvent');
+var theSelectChangeEvent = new Event('theSelectChange');
 function onSelectChange(name, onChange) {
     var s = getSelect(name);
-    s.addEventListener('theSelectChangeEvent', function (e) {
-        if (name != this.dataset.name) {
+    s.addEventListener('theSelectChange', function (e) {
+        if (name !== this.dataset.name) {
             return;
         }
         onChange(this.dataset.value, this.dataset.name);
@@ -27,7 +25,11 @@ function onSelectChange(name, onChange) {
 }
 
 let urlArray = [];
-setInterval(function () { urlArray = []; }, 21000);
+setInterval(function () { urlArray = []; }, 13000);
+
+var theTrue = 'True';
+var theValueSeparator = ',';
+var refreshSelect = () => { };
 
 (function () {
     let loadCount = 5;  // item count which load each time
@@ -35,16 +37,20 @@ setInterval(function () { urlArray = []; }, 21000);
     let isNotChanged = false;
     let allSelects = document.querySelectorAll('div.select');
 
-    allSelects.forEach(function (s) {
-        if (s.dataset.value == '' && s.dataset.text == '') {
+    refreshSelect = function (s) {
 
-            if (s.dataset.setFirstItem == 'True') {
+        if (s.dataset.value === '' && s.dataset.text === '') {
+
+            if (s.dataset.setFirstItem === theTrue) {
                 doGet(s.dataset.url + '?take=' + loadCount, function (req) { selectDataFiller(s, req); });
             }
 
         } else {
             selectDataFiller(s);
         }
+    };
+    allSelects.forEach(function (s) {
+        refreshSelect(s);
     });
 
     function selectDataFiller(s, req) {
@@ -63,7 +69,7 @@ setInterval(function () { urlArray = []; }, 21000);
 
             let parentValue = '';
 
-            if (theSelect.dataset.parent != ''
+            if (theSelect.dataset.parent !== ''
                 && theSelect.dataset.parent != undefined) {
                 let parent = getSelect(theSelect.dataset.parent);
 
@@ -88,10 +94,9 @@ setInterval(function () { urlArray = []; }, 21000);
     }
 
     function initSelectItems(selectContent, item, type) {
-
         let items = selectContent.childNodes;
         for (var i = 0, l = items.length; i < l; i++) {
-            if (items[i].innerHTML == item.text) {
+            if (items[i].innerHTML === item.text) {
                 return null;
             }
         }
@@ -118,13 +123,13 @@ setInterval(function () { urlArray = []; }, 21000);
 
     function reFillChildsData(value, parentName) {
         allSelects.forEach(function (s) {
-            if (s.dataset.parent != parentName) { return; }
+            if (s.dataset.parent !== parentName) { return; }
 
             let url = s.dataset.url + '?take=' + loadCount + '&parent=' + value;
             if (!urlArray.includes(url)) {
                 urlArray.push(url);
                 doGet(url, function (req) {
-                    s.innerHTML = ' ';
+                    s.innerHTML = '';
                     selectDataFiller(s, req);
                 });
             }
@@ -142,8 +147,8 @@ setInterval(function () { urlArray = []; }, 21000);
             let lastLength = selectItems.length;
 
             let getUrl = theSelect.dataset.url + '?q=' + searchTerm + '&take=' + loadCount;
-            if (selectItems.length > 0) {
 
+            if (selectItems.length > 0) {
                 let lastUid = selectItems[(lastLength - 1)].getAttribute('value');
                 getUrl += '&lastUid=' + lastUid;
             }
@@ -152,17 +157,18 @@ setInterval(function () { urlArray = []; }, 21000);
                 let parent = getSelect(parentId);
                 getUrl += '&parent=' + parent.dataset.value;
             }
-            
+
             if (!urlArray.includes(getUrl)) {
                 urlArray.push(getUrl);
-
                 doGet(getUrl, function (req) {
                     let json = JSON.parse(req.responseText);
                     let type = theSelect.dataset.type;
                     for (let i = 0; i < json.length; i++) {
                         let selectItem = initSelectItems(selectContent, json[i], type);
                         if (selectItem != null) {
-                            selectItem.onclick = function () { onClickSingleSelectItem(this); }
+                            selectItem.onclick = function () {
+                                if (hasClass(theSelect, 'single-select')) { onClickSingleSelectItem(this); }
+                            }
                         }
                     }
                 });
@@ -170,21 +176,22 @@ setInterval(function () { urlArray = []; }, 21000);
         }
     }
 
-    function updateSelectContent(theSelect, updateItem) {
+    function updateSelectContent(theSelect, updateItems) {
         let selectContent = theSelect.querySelector('.select-content');
-        let type = theSelect.dataset.type;
-        selectContent.innerHTML = ' ';
 
-        if (updateItem.length == 0 && selectContent.childElementCount == 0) {
+        if (updateItems.length === 0
+            && selectContent.childElementCount === 0) {
+            selectContent.innerHTML = ' ';
             let noItem = createElement('div');
             noItem.style.padding = "5px";
             noItem.style.color = "grey";
             noItem.innerHTML = "no_item";
+            noItem.dataset.translation = "no_item";
             selectContent.appendChild(noItem);
         }
 
-        for (let i = 0; i < updateItem.length; i++) {
-            let selectItem = initSelectItems(selectContent, updateItem[i], type);
+        for (let i = 0; i < updateItems.length; i++) {
+            let selectItem = initSelectItems(selectContent, updateItems[i], theSelect.dataset.type);
             if (selectItem != null) {
                 selectItem.onclick = function () {
                     if (hasClass(theSelect, 'single-select')) { onClickSingleSelectItem(this); }
@@ -196,8 +203,9 @@ setInterval(function () { urlArray = []; }, 21000);
     function searchSelectContent(selectInput, event) {
         let theSelect = selectInput.closest('.select');
         let selectButton = theSelect.querySelector('.select-button');
+        let selectContent = theSelect.querySelector('.select-content');
         let parentId = theSelect.dataset.parent;
-        let searchTerm = trimSearchTerm(selectInput.innerHTML, theSelect.lastElementChild);
+        let searchTerm = trimSearchTerm(selectInput.innerHTML, selectContent);
 
         // input empty and press backspace block request
         if (oldSearchTerm.length == 0 && event.keyCode == 8) {
@@ -239,6 +247,7 @@ setInterval(function () { urlArray = []; }, 21000);
             doGet(url, function (req) {
                 let updateItems = JSON.parse(req.responseText);
                 if (theSelect.querySelector('.loader')) { theSelect.querySelector('.loader').remove(); }
+                clearContent(theSelect);
                 updateSelectContent(theSelect, updateItems);
             });
         }
@@ -247,17 +256,14 @@ setInterval(function () { urlArray = []; }, 21000);
     // Single Select Functions
     function initSingleSelect(theSelect, json) {
         initSingleSelectButton(theSelect, json);
-        if (theSelect.dataset.detail == "True") {
-            initSingleSelectInfo(theSelect, theSelect.dataset.detailUrl);
-        }
         initSingleSelectContent(theSelect, json);
     }
 
     function initSingleSelectButton(theSelect, json) {
         let selectButton = createElement('div');
         selectButton.className = "select-button";
+
         let uidInput = createElement('input');
-        uidInput.className = "select-value";
         uidInput.setAttribute('type', 'hidden');
         uidInput.id = theSelect.dataset.name;
         uidInput.name = theSelect.dataset.name;
@@ -269,9 +275,10 @@ setInterval(function () { urlArray = []; }, 21000);
 
         let selectButtonInput = createElement('div');
         selectButtonInput.className = "select-button-input";
-        selectButtonInput.setAttribute('contenteditable', 'true');
+        selectButtonInput.setAttribute('contenteditable', theTrue);
         let clearSelectButton = createButton('x', clearSelect);
         clearSelectButton.className = "clear-select-button";
+        selectButton.innerHTML = '';
         selectButton.appendChild(uidInput);
         selectButton.appendChild(textInput);
         selectButton.appendChild(selectButtonInput);
@@ -286,21 +293,21 @@ setInterval(function () { urlArray = []; }, 21000);
             selectButton.classList.remove('disabled');
         }
 
-        if (theSelect.dataset.value != ''
-            && theSelect.dataset.text != '') {
+        if (theSelect.dataset.value !== ''
+            && theSelect.dataset.text !== '') {
             selectButtonInput.innerHTML = theSelect.dataset.text;
             uidInput.value = theSelect.dataset.value;
             textInput.value = theSelect.dataset.text;
 
         } else {
-            if (theSelect.dataset.setFirstItem == 'True') {
+            if (theSelect.dataset.setFirstItem === theTrue) {
                 if (json.length > 0) {
                     selectButtonInput.innerHTML = json[0].text;
                     uidInput.value = json[0].value;
                     textInput.value = json[0].text;
                     theSelect.dataset.value = json[0].value;
                     theSelect.dataset.text = json[0].text;
-                    theSelect.dispatchEvent(selectChangeEvent);
+                    theSelect.dispatchEvent(theSelectChangeEvent);
 
                     reFillChildsData(json[0].value, theSelect.dataset.name);
                 }
@@ -327,57 +334,6 @@ setInterval(function () { urlArray = []; }, 21000);
         }
     }
 
-    function initSingleSelectInfo(parent, detailUrl) {
-        // Create Info Btn
-        let infoBtn = createElement('button');
-        infoBtn.className = "select-item-info-btn";
-        infoBtn.innerHTML = 'i';
-        parent.querySelector('.select-button').appendChild(infoBtn);
-
-        // Create Info Popup
-        let infoWrapper = createElement('div');
-        infoWrapper.className = "select-info-wrapper";
-        let closePopover = createElement('button');
-        closePopover.className = "close-popover-btn";
-        closePopover.innerHTML = "x";
-        infoWrapper.appendChild(closePopover);
-        closePopover.onclick = function () { infoWrapper.classList.remove('show'); }
-        let infoHeader = createElement('div');
-        infoHeader.className = "select-info-header";
-        let infoImg = createElement('img');
-        infoImg.className = "select-info-img";
-        let infoTitle = createElement('label');
-        infoTitle.className = 'select-info-title';
-        infoHeader.appendChild(infoImg);
-        infoHeader.appendChild(infoTitle);
-        let infoDesc = createElement('div');
-        infoDesc.className = 'select-info-desc';
-        infoWrapper.appendChild(infoHeader);
-        infoWrapper.appendChild(infoDesc);
-        parent.appendChild(infoWrapper);
-
-        // Show popover when hover the info button
-        infoBtn.onmouseover = function () {
-            let text = parent.querySelector('.select-button-input').innerHTML.toLowerCase();
-            if (text) {
-                infoWrapper.classList.add('show');
-                infoImg.setAttribute('src', 'url');
-                infoTitle.innerHTML = 'select item text';
-            }
-        }
-        // Show popup when click info button
-        infoBtn.onclick = function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            infoWrapper.classList.remove('show');
-            let strHTML = '<div class="select-item-header">';
-            strHTML += '<img class="select-item-image" src="' + 'Sample' + '">';
-            strHTML += '<label class="select-item-text">' + 'sample text' + '</label>';
-            strHTML += '</div>';
-            showPopup("Detail", strHTML, true, function () { });
-        }
-    }
-
     function initSingleSelectContent(parent, json) {
         let selectContent = createElement('div');
         selectContent.className = "select-content";
@@ -398,12 +354,11 @@ setInterval(function () { urlArray = []; }, 21000);
         var theValue = item.getAttribute('value');
         var theText = item.innerHTML;
 
-        if (theSelect.dataset.type === 'text') {
-            theSelect.querySelector('.select-button-input').innerHTML = theText;
-        } else if (theSelect.dataset.type === 'content') {
+        if (theSelect.dataset.type === 'content') {
             theText = item.querySelector('.select-item-text').innerHTML;
-            theSelect.querySelector('.select-button-input').innerHTML = theText;
         }
+
+        theSelect.querySelector('.select-button-input').innerHTML = theText;
 
         getElement(theSelect.dataset.name).setAttribute('value', theValue);
         getElement(theSelect.dataset.nameText).setAttribute('value', theText);
@@ -412,31 +367,35 @@ setInterval(function () { urlArray = []; }, 21000);
 
         reFillChildsData(theValue, theSelect.dataset.name);
 
-        theSelect.dispatchEvent(selectChangeEvent);
+        theSelect.dispatchEvent(theSelectChangeEvent);
         theSelect.classList.remove('show');
     }
 
     function clearSelect(e) {
         e.preventDefault();
         e.stopPropagation();
+
         let theSelect = this.closest('.select');
         let selectButton = theSelect.querySelector('.select-button');
         let selectButtonInput = selectButton.querySelector('.select-button-input');
         selectButtonInput.innerHTML = '';
+        theSelect.dataset.value = '';
+        theSelect.dataset.text = '';
+        getElement(theSelect.dataset.name).value = '';
+        getElement(theSelect.dataset.nameText).value = '';
+
         // Refills the data
         let parentId;
         let parentName = theSelect.dataset.name;
         allSelects.forEach(function (s) {
-            if (s.dataset.name == theSelect.dataset.parent) {
+            if (s.dataset.name === theSelect.dataset.parent) {
                 parentId = s.querySelector(theSelect.dataset.name).getAttribute('value');
             }
             // If parent cleared, clear child select also
-            if (s.dataset.parent == parentName) {
-
+            if (s.dataset.parent === parentName) {
                 s.querySelector('.select-button').classList.add('disabled');
                 s.querySelector('.select-button-input').innerHTML = ' ';
                 s.querySelector('.select-content').innerHTML = ' ';
-
             }
         });
 
@@ -451,6 +410,11 @@ setInterval(function () { urlArray = []; }, 21000);
                 updateSelectContent(theSelect, json);
             });
         }
+    }
+
+    function clearContent(theSelect) {
+        let selectContent = theSelect.querySelector('.select-content');
+        selectContent.innerHTML = '';
     }
 
     document.addEventListener('click',
@@ -507,7 +471,6 @@ setInterval(function () { urlArray = []; }, 21000);
                     if (hasClass(activeSelect, 'single-select')) { onClickSingleSelectItem(activeSelectItems[currentSelectItemId]); }
                 }
             }
-
         },
         false);
 })();

@@ -26,7 +26,7 @@ namespace Translation.Client.Web.Controllers
 
         public LanguageController(IHostingEnvironment environment,
                                   ILanguageService languageService,
-                                  IOrganizationService organizationService, 
+                                  IOrganizationService organizationService,
                                   IJournalService journalService) : base(organizationService, journalService)
         {
             _environment = environment;
@@ -198,9 +198,10 @@ namespace Translation.Client.Web.Controllers
                 return Json(items);
             }
 
-            foreach (var item in response.Items)
+            for (var i = 0; i < response.Items.Count; i++)
             {
-                items.Add(new SelectResult(item.Uid.ToUidString(), $"{item.Name} ( {item.IsoCode2} - {item.OriginalName} )", $"/images/flags/{item.IsoCode2}.png"));
+                var item = response.Items[i];
+                items.Add(new SelectResult(item.Uid.ToUidString(), item.Name, $"/images/flags/{item.IsoCode2}.png"));
             }
 
             return Json(items);

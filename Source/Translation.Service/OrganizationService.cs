@@ -112,7 +112,6 @@ namespace Translation.Service
                  insertedOrganization,
                  insertedUser) = await _signUpUnitOfWork.DoWork(organization, user, loginLog,
                                                                 integration, integrationClient, project);
-
             if (uowResult)
             {
                 // todo:send welcome email
@@ -391,7 +390,7 @@ namespace Translation.Service
             var response = new PasswordChangeResponse();
 
             var user = await _userRepository.Select(x => x.Id == request.CurrentUserId);
-            if (!user.IsNotExist())
+            if (user.IsNotExist())
             {
                 response.SetInvalidBecauseEntityNotFound();
                 return response;
