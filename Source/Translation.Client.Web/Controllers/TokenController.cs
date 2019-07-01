@@ -67,6 +67,7 @@ namespace Translation.Client.Web.Controllers
 
             var model = new TokenResult
             {
+                IsOk = true,
                 Token = response.Item.AccessToken,
                 CreatedAt = GetDateTimeAsString(response.Item.CreatedAt),
                 ExpiresAt = GetDateTimeAsString(response.Item.ExpiresAt)
