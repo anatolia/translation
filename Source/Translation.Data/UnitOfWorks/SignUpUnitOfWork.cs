@@ -49,14 +49,14 @@ namespace Translation.Data.UnitOfWorks
                                                              Integration integration, IntegrationClient integrationClient, Project project)
         {
             var (organizationResult,
-                 userResult) = await _transactionalExecutor.ExecuteAsync(async connectionFactory =>
+                 userResult) = await _transactionalExecutor.ExecuteAsync(async connection =>
             {
-                _userRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _organizationRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _userLoginLogRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _integrationRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _integrationClientRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _projectRepository.SetSqlExecutorForTransaction(connectionFactory);
+                _userRepository.SetSqlExecutorForTransaction(connection);
+                _organizationRepository.SetSqlExecutorForTransaction(connection);
+                _userLoginLogRepository.SetSqlExecutorForTransaction(connection);
+                _integrationRepository.SetSqlExecutorForTransaction(connection);
+                _integrationClientRepository.SetSqlExecutorForTransaction(connection);
+                _projectRepository.SetSqlExecutorForTransaction(connection);
 
                 var organizationId = await _organizationRepository.Insert(0, organization);
                 organization.Id = organizationId;

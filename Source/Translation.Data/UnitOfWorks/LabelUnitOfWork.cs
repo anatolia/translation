@@ -37,12 +37,12 @@ namespace Translation.Data.UnitOfWorks
 
         public async Task<bool> DoCreateWork(long currentUserId, Label label)
         {
-            await _transactionalExecutor.ExecuteAsync<bool>(async connectionFactory =>
+            await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
             {
-                _organizationRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _userRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _projectRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _labelRepository.SetSqlExecutorForTransaction(connectionFactory);
+                _organizationRepository.SetSqlExecutorForTransaction(connection);
+                _userRepository.SetSqlExecutorForTransaction(connection);
+                _projectRepository.SetSqlExecutorForTransaction(connection);
+                _labelRepository.SetSqlExecutorForTransaction(connection);
 
                 await _labelRepository.Insert(currentUserId, label);
 
@@ -67,13 +67,13 @@ namespace Translation.Data.UnitOfWorks
         public async Task<bool> DoCreateWorkBulk(long currentUserId, List<Label> labels, List<LabelTranslation> labelTranslationsToInsert,
                                                  List<LabelTranslation> labelTranslationsToUpdate)
         {
-            var result = await _transactionalExecutor.ExecuteAsync<bool>(async connectionFactory =>
+            var result = await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
              {
-                 _organizationRepository.SetSqlExecutorForTransaction(connectionFactory);
-                 _userRepository.SetSqlExecutorForTransaction(connectionFactory);
-                 _projectRepository.SetSqlExecutorForTransaction(connectionFactory);
-                 _labelRepository.SetSqlExecutorForTransaction(connectionFactory);
-                 _labelTranslationRepository.SetSqlExecutorForTransaction(connectionFactory);
+                 _organizationRepository.SetSqlExecutorForTransaction(connection);
+                 _userRepository.SetSqlExecutorForTransaction(connection);
+                 _projectRepository.SetSqlExecutorForTransaction(connection);
+                 _labelRepository.SetSqlExecutorForTransaction(connection);
+                 _labelTranslationRepository.SetSqlExecutorForTransaction(connection);
 
                  var first = labelTranslationsToInsert.FirstOrDefault();
                  if (first == null)
@@ -135,12 +135,12 @@ namespace Translation.Data.UnitOfWorks
 
         public async Task<bool> DoDeleteWork(long currentUserId, Label label)
         {
-            await _transactionalExecutor.ExecuteAsync<bool>(async connectionFactory =>
+            await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
             {
-                _organizationRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _userRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _projectRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _labelRepository.SetSqlExecutorForTransaction(connectionFactory);
+                _organizationRepository.SetSqlExecutorForTransaction(connection);
+                _userRepository.SetSqlExecutorForTransaction(connection);
+                _projectRepository.SetSqlExecutorForTransaction(connection);
+                _labelRepository.SetSqlExecutorForTransaction(connection);
 
                 await _labelRepository.Delete(currentUserId, label.Id);
 
@@ -164,12 +164,12 @@ namespace Translation.Data.UnitOfWorks
 
         public async Task<bool> DoCloneWork(long currentUserId, long labelId, Label newLabel)
         {
-            await _transactionalExecutor.ExecuteAsync(async connectionFactory =>
+            await _transactionalExecutor.ExecuteAsync(async connection =>
             {
-                _organizationRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _userRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _projectRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _labelRepository.SetSqlExecutorForTransaction(connectionFactory);
+                _organizationRepository.SetSqlExecutorForTransaction(connection);
+                _userRepository.SetSqlExecutorForTransaction(connection);
+                _projectRepository.SetSqlExecutorForTransaction(connection);
+                _labelRepository.SetSqlExecutorForTransaction(connection);
 
                 var newLabelId = await _labelRepository.Insert(currentUserId, newLabel);
 
@@ -208,13 +208,13 @@ namespace Translation.Data.UnitOfWorks
 
         public async Task<bool> DoCreateTranslationWork(long currentUserId, LabelTranslation labelTranslation)
         {
-            await _transactionalExecutor.ExecuteAsync<bool>(async connectionFactory =>
+            await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
             {
-                _organizationRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _userRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _projectRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _labelRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _labelTranslationRepository.SetSqlExecutorForTransaction(connectionFactory);
+                _organizationRepository.SetSqlExecutorForTransaction(connection);
+                _userRepository.SetSqlExecutorForTransaction(connection);
+                _projectRepository.SetSqlExecutorForTransaction(connection);
+                _labelRepository.SetSqlExecutorForTransaction(connection);
+                _labelTranslationRepository.SetSqlExecutorForTransaction(connection);
 
                 await _labelTranslationRepository.Insert(currentUserId, labelTranslation);
 
@@ -242,13 +242,13 @@ namespace Translation.Data.UnitOfWorks
 
         public async Task<bool> DoCreateTranslationWorkBulk(long currentUserId, List<LabelTranslation> labelTranslations)
         {
-            await _transactionalExecutor.ExecuteAsync<bool>(async connectionFactory =>
+            await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
             {
-                _organizationRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _userRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _projectRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _labelRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _labelTranslationRepository.SetSqlExecutorForTransaction(connectionFactory);
+                _organizationRepository.SetSqlExecutorForTransaction(connection);
+                _userRepository.SetSqlExecutorForTransaction(connection);
+                _projectRepository.SetSqlExecutorForTransaction(connection);
+                _labelRepository.SetSqlExecutorForTransaction(connection);
+                _labelTranslationRepository.SetSqlExecutorForTransaction(connection);
 
                 var first = labelTranslations.First();
                 var organizationId = first.OrganizationId;
@@ -285,13 +285,13 @@ namespace Translation.Data.UnitOfWorks
 
         public async Task<bool> DoDeleteTranslationWork(long currentUserId, LabelTranslation labelTranslation)
         {
-            await _transactionalExecutor.ExecuteAsync<bool>(async connectionFactory =>
+            await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
             {
-                _organizationRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _userRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _projectRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _labelRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _labelTranslationRepository.SetSqlExecutorForTransaction(connectionFactory);
+                _organizationRepository.SetSqlExecutorForTransaction(connection);
+                _userRepository.SetSqlExecutorForTransaction(connection);
+                _projectRepository.SetSqlExecutorForTransaction(connection);
+                _labelRepository.SetSqlExecutorForTransaction(connection);
+                _labelTranslationRepository.SetSqlExecutorForTransaction(connection);
 
                 await _labelTranslationRepository.Delete(currentUserId, labelTranslation.Id);
 

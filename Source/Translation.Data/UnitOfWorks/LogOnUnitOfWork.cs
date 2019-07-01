@@ -25,10 +25,10 @@ namespace Translation.Data.UnitOfWorks
 
         public async Task<bool> DoWork(User user, UserLoginLog userLoginLog)
         {
-            await _transactionalExecutor.ExecuteAsync<bool>(async connectionFactory =>
+            await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
             {
-                _userRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _userLoginLogRepository.SetSqlExecutorForTransaction(connectionFactory);
+                _userRepository.SetSqlExecutorForTransaction(connection);
+                _userLoginLogRepository.SetSqlExecutorForTransaction(connection);
 
                 await _userRepository.Update(user.Id, user);
                 await _userLoginLogRepository.Insert(user.Id, userLoginLog);

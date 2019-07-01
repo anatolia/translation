@@ -33,10 +33,10 @@ namespace Translation.Data.UnitOfWorks
 
         public async Task<bool> DoCreateWork(long currentUserId, Project project)
         {
-            await _transactionalExecutor.ExecuteAsync<bool>(async connectionFactory =>
+            await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
             {
-                _organizationRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _projectRepository.SetSqlExecutorForTransaction(connectionFactory);
+                _organizationRepository.SetSqlExecutorForTransaction(connection);
+                _projectRepository.SetSqlExecutorForTransaction(connection);
 
                 await _projectRepository.Insert(currentUserId, project);
 
@@ -52,10 +52,10 @@ namespace Translation.Data.UnitOfWorks
 
         public async Task<bool> DoDeleteWork(long currentUserId, Project project)
         {
-            await _transactionalExecutor.ExecuteAsync<bool>(async connectionFactory =>
+            await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
             {
-                _organizationRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _projectRepository.SetSqlExecutorForTransaction(connectionFactory);
+                _organizationRepository.SetSqlExecutorForTransaction(connection);
+                _projectRepository.SetSqlExecutorForTransaction(connection);
 
                 await _projectRepository.Delete(currentUserId, project.Id);
 
@@ -71,12 +71,12 @@ namespace Translation.Data.UnitOfWorks
 
         public async Task<bool> DoCloneWork(long currentUserId, long projectId, Project newProject)
         {
-            await _transactionalExecutor.ExecuteAsync<bool>(async connectionFactory =>
+            await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
             {
-                _organizationRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _projectRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _labelRepository.SetSqlExecutorForTransaction(connectionFactory);
-                _labelTranslationRepository.SetSqlExecutorForTransaction(connectionFactory);
+                _organizationRepository.SetSqlExecutorForTransaction(connection);
+                _projectRepository.SetSqlExecutorForTransaction(connection);
+                _labelRepository.SetSqlExecutorForTransaction(connection);
+                _labelTranslationRepository.SetSqlExecutorForTransaction(connection);
 
                 var labels = await _labelRepository.SelectAll(x => x.ProjectId == projectId);
                 var labelTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == projectId);
