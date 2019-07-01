@@ -13,11 +13,11 @@ namespace Translation.Client.Web.Helpers.DependencyInstallers
         {
             container.Register(Classes.FromAssemblyContaining(typeof(IOrganizationRepository))
                                       .Where(x => x.Name.EndsWith("Repository"))
-                                      .WithService.DefaultInterfaces());
+                                      .WithService.DefaultInterfaces().LifestyleTransient());
 
             container.Register(Classes.FromAssemblyContaining(typeof(ISignUpUnitOfWork))
                                       .Where(x => x.Name.EndsWith("UnitOfWork"))
-                                      .WithService.DefaultInterfaces());
+                                      .WithService.DefaultInterfaces().LifestyleTransient());
         }
     }
 }

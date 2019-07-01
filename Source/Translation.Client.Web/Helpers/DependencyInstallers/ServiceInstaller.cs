@@ -15,7 +15,7 @@ namespace Translation.Client.Web.Helpers.DependencyInstallers
 
             container.Register(Classes.FromAssemblyContaining(typeof(OrganizationService))
                                       .Where(x => x.Name.EndsWith("Service"))
-                                      .WithService.DefaultInterfaces());
+                                      .WithService.DefaultInterfaces().LifestyleTransient());
         }
     }
 }

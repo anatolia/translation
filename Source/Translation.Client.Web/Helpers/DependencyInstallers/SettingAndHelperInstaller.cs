@@ -3,6 +3,7 @@
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using Npgsql;
 using StandardRepository.Helpers;
 using StandardRepository.Models;
 using StandardRepository.PostgreSQL;
@@ -49,8 +50,12 @@ namespace Translation.Client.Web.Helpers.DependencyInstallers
             container.Register(Component.For<EntityUtils>().Instance(entityUtils));
 
             container.Register(Component.For<PostgreSQLConnectionFactory>());
-            container.Register(Component.For<PostgreSQLExecutor>());
-            container.Register(Component.For<PostgreSQLTransactionalExecutor>());
+            container.Register(Component.For<NpgsqlConnection>()
+                                        .DependsOn(Dependency.OnValue("connectionString", PostgreSQLConnectionFactory.GetConnectionString(connectionSettings)))
+                                        .LifestyleTransient());
+            
+            container.Register(Component.For<PostgreSQLExecutor>().LifestyleTransient());
+            container.Register(Component.For<PostgreSQLTransactionalExecutor>().LifestyleTransient());
         }
     }
 }
