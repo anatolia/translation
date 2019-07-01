@@ -12,8 +12,8 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
-    <PackageReference Include="StandardRepository" Version="1.0.1.7" />
-    <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.1.7" />
+    <PackageReference Include="StandardRepository" Version="1.0.1.8" />
+    <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.1.8" />
   </ItemGroup>
 
   <ItemGroup>

@@ -13,8 +13,8 @@
     <PackageReference Include="Microsoft.AspNetCore.ResponseCaching" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.11" />
     <PackageReference Include="StandardCache" Version="1.0.1" />
-    <PackageReference Include="StandardRepository" Version="1.0.1.7" />
-    <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.1.7" />
+    <PackageReference Include="StandardRepository" Version="1.0.1.8" />
+    <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.1.8" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
   </ItemGroup>
 
