@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -184,6 +185,39 @@ namespace Translation.Service
             }
 
             var result = await _languageRepository.Delete(request.CurrentUserId, language.Id);
+            if (result)
+            {
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<LanguageRestoreResponse> RestoreLanguage(LanguageRestoreRequest request)
+        {
+            var response = new LanguageRestoreResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            
+            var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
+            if (language.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("language_not_found");
+                return response;
+            }
+
+            var revisions = await _languageRepository.SelectRevisions(language.Id);
+            if (revisions.All(x => x.Revision != request.Revision))
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("revision_not_found");
+                return response;
+            }
+
+            var result = await _languageRepository.RestoreRevision(request.CurrentUserId, language.Id, request.Revision);
             if (result)
             {
                 response.Status = ResponseStatus.Success;

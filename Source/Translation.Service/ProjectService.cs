@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using StandardRepository.Helpers;
@@ -333,6 +334,44 @@ namespace Translation.Service
             if (result)
             {
                 response.Item = _projectFactory.CreateDtoFromEntity(updatedEntity);
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<ProjectRestoreResponse> RestoreProject(ProjectRestoreRequest request)
+        {
+            var response = new ProjectRestoreResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
+            if (project.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("project_not_found");
+                return response;
+            }
+
+            var revisions = await _projectRepository.SelectRevisions(project.Id);
+            if (revisions.All(x => x.Revision != request.Revision))
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("revision_not_found");
+                return response;
+            }
+
+            var result = await _projectRepository.RestoreRevision(request.CurrentUserId, project.Id, request.Revision);
+            if (result)
+            {
                 response.Status = ResponseStatus.Success;
                 return response;
             }

@@ -21,8 +21,12 @@ namespace Translation.Client.Web.Controllers
 {
     public class UserController : BaseController
     {
-        public UserController(IOrganizationService organizationService, IJournalService journalService) : base(organizationService, journalService)
+        private readonly IOrganizationService _organizationService;
+
+        public UserController(IOrganizationService organizationService, 
+                              IJournalService journalService) : base(organizationService, journalService)
         {
+            _organizationService = organizationService;
         }
 
         [HttpGet, AllowAnonymous]
@@ -486,5 +490,36 @@ namespace Translation.Client.Web.Controllers
 
             return Json(result);
         }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_user_restore")]
+        public async Task<IActionResult> Restore(Guid id, int revision)
+        {
+            var model = new CommonResult { IsOk = false };
+
+            var userUid = id;
+            if (userUid.IsEmptyGuid())
+            {
+                return Json(model);
+            }
+
+            if (revision < 1)
+            {
+                return Json(model);
+            }
+
+            var request = new UserRestoreRequest(CurrentUser.Id, userUid, revision);
+            var response = await _organizationService.RestoreUser(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.Messages = response.ErrorMessages;
+                return Json(model);
+            }
+
+            model.IsOk = true;
+            CurrentUser.IsActionSucceed = true;
+            return Json(model);
+        }
+
     }
 }

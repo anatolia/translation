@@ -26,6 +26,7 @@ namespace Translation.Client.Web.Controllers
     {
         private readonly IIntegrationService _integrationService;
         private readonly IProjectService _projectService;
+        private readonly IOrganizationService _organizationService;
 
         public OrganizationController(IIntegrationService integrationService,
                                       IProjectService projectService,
@@ -34,6 +35,7 @@ namespace Translation.Client.Web.Controllers
         {
             _integrationService = integrationService;
             _projectService = projectService;
+            _organizationService = organizationService;
         }
 
         [HttpGet]
@@ -96,6 +98,36 @@ namespace Translation.Client.Web.Controllers
 
             CurrentUser.IsActionSucceed = true;
             return Redirect($"/Organization/Detail/{model.OrganizationUid }");
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_organization_restore")]
+        public async Task<IActionResult> Restore(Guid id, int revision)
+        {
+            var model = new CommonResult { IsOk = false };
+
+            var organizationUid = id;
+            if (organizationUid.IsEmptyGuid())
+            {
+                return Json(model);
+            }
+
+            if (revision < 1)
+            {
+                return Json(model);
+            }
+
+            var request = new OrganizationRestoreRequest(CurrentUser.Id, organizationUid, revision);
+            var response = await _organizationService.RestoreOrganization(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.Messages = response.ErrorMessages;
+                return Json(model);
+            }
+
+            model.IsOk = true;
+            CurrentUser.IsActionSucceed = true;
+            return Json(model);
         }
 
         [HttpGet]
@@ -404,6 +436,32 @@ namespace Translation.Client.Web.Controllers
             result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
+        }
+
+        [HttpGet]
+        public IActionResult Revisions(Guid id)
+        {
+            var organizationUid = id;
+            if (organizationUid.IsEmptyGuid())
+            {
+                return RedirectToHome();
+            }
+
+            var model = new OrganizationRevisionReadListModel();
+            if (organizationUid.IsNotEmptyGuid())
+            {
+                var request = new OrganizationReadRequest(CurrentUser.Id, organizationUid);
+                var response = _organizationService.GetOrganization(request);
+                if (response.Status.IsNotSuccess)
+                {
+                    return NotFound();
+                }
+
+                model.OrganizationUid = organizationUid;
+                model.SetInputModelValues();
+            }
+
+            return View(model);
         }
     }
 }

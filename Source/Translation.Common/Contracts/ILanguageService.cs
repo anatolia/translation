@@ -12,5 +12,6 @@ namespace Translation.Common.Contracts
         Task<LanguageCreateResponse> CreateLanguage(LanguageCreateRequest request);
         Task<LanguageEditResponse> EditLanguage(LanguageEditRequest request);
         Task<LanguageDeleteResponse> DeleteLanguage(LanguageDeleteRequest request);
+        Task<LanguageRestoreResponse> RestoreLanguage(LanguageRestoreRequest request);
     }
 }

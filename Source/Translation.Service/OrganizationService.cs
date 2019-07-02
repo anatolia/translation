@@ -226,6 +226,44 @@ namespace Translation.Service
             return response;
         }
 
+        public async Task<OrganizationRestoreResponse> RestoreOrganization(OrganizationRestoreRequest request)
+        {
+            var response = new OrganizationRestoreResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
+            if (organization.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("organization_setting_not_found");
+                return response;
+            }
+
+            var revisions = await _organizationRepository.SelectRevisions(organization.Id);
+            if (revisions.All(x => x.Revision != request.Revision))
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("revision_not_found");
+                return response;
+            }
+
+            var result = await _organizationRepository.RestoreRevision(request.CurrentUserId, organization.Id, request.Revision);
+            if (result)
+            {
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
         public async Task<ValidateEmailResponse> ValidateEmail(ValidateEmailRequest request)
         {
             var response = new ValidateEmailResponse();
@@ -861,5 +899,44 @@ namespace Translation.Service
 
             return true;
         }
+
+        public async Task<UserRestoreResponse> RestoreUser(UserRestoreRequest request)
+        {
+            var response = new UserRestoreResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            var user = await _userRepository.Select(x => x.Uid == request.UserUid);
+            if (user.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("user_setting_not_found");
+                return response;
+            }
+
+            var revisions = await _organizationRepository.SelectRevisions(user.Id);
+            if (revisions.All(x => x.Revision != request.Revision))
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("revision_not_found");
+                return response;
+            }
+
+            var result = await _organizationRepository.RestoreRevision(request.CurrentUserId, user.Id, request.Revision);
+            if (result)
+            {
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
     }
 }

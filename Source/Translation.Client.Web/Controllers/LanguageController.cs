@@ -206,5 +206,36 @@ namespace Translation.Client.Web.Controllers
 
             return Json(items);
         }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_language_restore")]
+        public async Task<IActionResult> Restore(Guid id, int revision)
+        {
+            var model = new CommonResult { IsOk = false };
+
+            var languageUid = id;
+            if (languageUid.IsEmptyGuid())
+            {
+                return Json(model);
+            }
+
+            if (revision < 1)
+            {
+                return Json(model);
+            }
+
+            var request = new LanguageRestoreRequest(CurrentUser.Id, languageUid, revision);
+            var response = await _languageService.RestoreLanguage(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.Messages = response.ErrorMessages;
+                return Json(model);
+            }
+
+            model.IsOk = true;
+            CurrentUser.IsActionSucceed = true;
+            return Json(model);
+        }
+
     }
 }

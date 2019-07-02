@@ -323,5 +323,36 @@ namespace Translation.Client.Web.Controllers
             CurrentUser.IsActionSucceed = true;
             return Json(model);
         }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_project_restore")]
+        public async Task<IActionResult> Restore(Guid id, int revision)
+        {
+            var model = new CommonResult { IsOk = false };
+
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return Json(model);
+            }
+
+            if (revision < 1)
+            {
+                return Json(model);
+            }
+
+            var request = new ProjectRestoreRequest(CurrentUser.Id, projectUid, revision);
+            var response = await _projectService.RestoreProject(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.Messages = response.ErrorMessages;
+                return Json(model);
+            }
+
+            model.IsOk = true;
+            CurrentUser.IsActionSucceed = true;
+            return Json(model);
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -7,6 +8,7 @@ using StandardRepository.Helpers;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Helpers;
+using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Integration;
 using Translation.Common.Models.Requests.Integration.IntegrationClient;
 using Translation.Common.Models.Requests.Integration.Token;
@@ -156,6 +158,42 @@ namespace Translation.Service
             return response;
         }
 
+        public async Task<IntegrationRevisionReadListResponse> GetIntegrationRevisions(IntegrationRevisionReadListRequest request)
+        {
+            var response = new IntegrationRevisionReadListResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
+            if (integration.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            var revisions = await _integrationRepository.SelectRevisions(integration.Id);
+
+            for (int i = 0; i < revisions.Count; i++)
+            {
+                var revision = revisions[i];
+
+                var revisionDto = new RevisionDto<IntegrationDto>();
+                revisionDto.Revision = revision.Revision;
+                revisionDto.RevisionedAt = revision.RevisionedAt;
+
+                var user = _cacheManager.GetCachedUser(revision.RevisionedBy);
+                revisionDto.RevisionedByUid = user.Uid;
+                revisionDto.RevisionedByName = user.Name;
+
+                revisionDto.Item = _integrationFactory.CreateDtoFromEntity(revision.Entity);
+
+                response.Items.Add(revisionDto);
+            }
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
         public async Task<IntegrationEditResponse> EditIntegration(IntegrationEditRequest request)
         {
             var response = new IntegrationEditResponse();
@@ -292,6 +330,44 @@ namespace Translation.Service
             if (result)
             {
                 response.Item = _integrationFactory.CreateDtoFromEntity(integration);
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<IntegrationRestoreResponse> RestoreIntegration(IntegrationRestoreRequest request)
+        {
+            var response = new IntegrationRestoreResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
+            if (integration.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("integration_not_found");
+                return response;
+            }
+
+            var revisions = await _integrationRepository.SelectRevisions(integration.Id);
+            if (revisions.All(x => x.Revision != request.Revision))
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("revision_not_found");
+                return response;
+            }
+
+            var result = await _integrationRepository.RestoreRevision(request.CurrentUserId, integration.Id, request.Revision);
+            if (result)
+            {
                 response.Status = ResponseStatus.Success;
                 return response;
             }

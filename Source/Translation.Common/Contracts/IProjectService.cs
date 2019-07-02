@@ -14,5 +14,6 @@ namespace Translation.Common.Contracts
         Task<ProjectDeleteResponse> DeleteProject(ProjectDeleteRequest request);
         Task<ProjectCloneResponse> CloneProject(ProjectCloneRequest request);
         Task<ProjectChangeActivationResponse> ChangeActivationForProject(ProjectChangeActivationRequest request);
+        Task<ProjectRestoreResponse> RestoreProject(ProjectRestoreRequest request);
     }
 }

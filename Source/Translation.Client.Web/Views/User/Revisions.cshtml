@@ -1,0 +1,11 @@
+﻿@model UserRevisionReadListModel
+
+<div id="nav-help">
+    <a href="/User/List" data-translation="users">users</a>
+    / <a href="/User/Detail/@Model.UserUid">@Model.UserName</a>
+</div>
+<h1  data-translation="@Model.Title">@Model.Title</h1>
+
+<div class="tbl">
+    <table data-result="/User/RevisionsData/@Model.UserUid"></table>
+</div>
