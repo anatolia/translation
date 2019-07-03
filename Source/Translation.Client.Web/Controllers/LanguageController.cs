@@ -71,6 +71,26 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Detail(Guid id)
+        {
+            var languageUid = id;
+            if (languageUid.IsEmptyGuid())
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var request = new LanguageReadRequest(CurrentUser.Id, languageUid);
+            var response = await _languageService.GetLanguage(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = LanguageMapper.MapLanguageDetailModel(response.Item);
+            return View(model);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
             var languageUid = id;
@@ -237,5 +257,74 @@ namespace Translation.Client.Web.Controllers
             return Json(model);
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Revisions(Guid id)
+        {
+            var languageUid = id;
+            if (languageUid.IsEmptyGuid())
+            {
+                return RedirectToHome();
+            }
+
+            var model = new LanguageRevisionReadListModel();
+            if (languageUid.IsNotEmptyGuid())
+            {
+                var request = new LanguageReadRequest(CurrentUser.Id, languageUid);
+                var response = await _languageService.GetLanguage(request);
+                if (response.Status.IsNotSuccess)
+                {
+                    return NotFound();
+                }
+
+                model.LanguageUid = languageUid;
+                model.LanguageName = response.Item.Name;
+                model.SetInputModelValues();
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RevisionsData(Guid id)
+        {
+            var languageUid = id;
+            if (languageUid.IsEmptyGuid())
+            {
+                return NotFound();
+            }
+
+            var request = new LanguageRevisionReadListRequest(CurrentUser.Id, languageUid);
+
+            var response = await _languageService.GetLanguageRevisions(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = new DataResult();
+            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "language_name", "2_char_code","3_char_code", "icon", "created_at", "");
+
+            for (var i = 0; i < response.Items.Count; i++)
+            {
+                var revisionItem = response.Items[i];
+                var item = revisionItem.Item;
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.Revision}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{GetDateTimeAsString(revisionItem.RevisionedAt)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.Name}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsoCode2}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsoCode3}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareImage($"{item.IconPath}", item.OriginalName)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Language/Restore/", "/Language/Detail")}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            return Json(result);
+        }
     }
 }

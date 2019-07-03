@@ -491,6 +491,74 @@ namespace Translation.Client.Web.Controllers
             return Json(result);
         }
 
+        [HttpGet]
+        public IActionResult Revisions(Guid id)
+        {
+            var userUid = id;
+            if (userUid.IsEmptyGuid())
+            {
+                return RedirectToHome();
+            }
+
+            var model = new UserRevisionReadListModel();
+            if (userUid.IsNotEmptyGuid())
+            {
+                var request = new UserReadRequest(CurrentUser.Id, userUid);
+                var response = _organizationService.GetUser(request);
+                if (response.Status.IsNotSuccess)
+                {
+                    return NotFound();
+                }
+
+                model.UserUid = userUid;
+                model.UserName = response.Item.Name;
+                model.SetInputModelValues();
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RevisionsData(Guid id)
+        {
+            var userUid = id;
+            if (userUid.IsEmptyGuid())
+            {
+                return NotFound();
+            }
+
+            var request = new UserRevisionReadListRequest(CurrentUser.Id, userUid);
+
+            var response = await _organizationService.GetUserRevisions(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = new DataResult();
+            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "user_name", "email", "is_active", "created_at", "");
+
+            for (var i = 0; i < response.Items.Count; i++)
+            {
+                var revisionItem = response.Items[i];
+                var item = revisionItem.Item;
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.Revision}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{GetDateTimeAsString(revisionItem.RevisionedAt)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.Email}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/User/Restore/", "/User/Detail")}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            return Json(result);
+        }
+
         [HttpPost,
          JournalFilter(Message = "journal_user_restore")]
         public async Task<IActionResult> Restore(Guid id, int revision)

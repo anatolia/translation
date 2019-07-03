@@ -100,6 +100,72 @@ namespace Translation.Client.Web.Controllers
             return Redirect($"/Organization/Detail/{model.OrganizationUid }");
         }
 
+        [HttpGet]
+        public IActionResult Revisions(Guid id)
+        {
+            var organizationUid = id;
+            if (organizationUid.IsEmptyGuid())
+            {
+                return RedirectToHome();
+            }
+
+            var model = new OrganizationRevisionReadListModel();
+            if (organizationUid.IsNotEmptyGuid())
+            {
+                var request = new OrganizationReadRequest(CurrentUser.Id, organizationUid);
+                var response = _organizationService.GetOrganization(request);
+                if (response.Status.IsNotSuccess)
+                {
+                    return NotFound();
+                }
+
+                model.OrganizationUid = organizationUid;
+                model.SetInputModelValues();
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RevisionsData(Guid id)
+        {
+            var organizationUid = id;
+            if (organizationUid.IsEmptyGuid())
+            {
+                return NotFound();
+            }
+
+            var request = new OrganizationRevisionReadListRequest(CurrentUser.Id, organizationUid);
+
+            var response = await _organizationService.GetOrganizationRevisions(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = new DataResult();
+            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "organization_name", "is_active", "created_at", "");
+
+            for (var i = 0; i < response.Items.Count; i++)
+            {
+                var revisionItem = response.Items[i];
+                var item = revisionItem.Item;
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.Revision}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{GetDateTimeAsString(revisionItem.RevisionedAt)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Organization/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Organization/Restore/", "/Organization/Detail")}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            return Json(result);
+        }
+
         [HttpPost,
          JournalFilter(Message = "journal_organization_restore")]
         public async Task<IActionResult> Restore(Guid id, int revision)
@@ -436,32 +502,6 @@ namespace Translation.Client.Web.Controllers
             result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
-        }
-
-        [HttpGet]
-        public IActionResult Revisions(Guid id)
-        {
-            var organizationUid = id;
-            if (organizationUid.IsEmptyGuid())
-            {
-                return RedirectToHome();
-            }
-
-            var model = new OrganizationRevisionReadListModel();
-            if (organizationUid.IsNotEmptyGuid())
-            {
-                var request = new OrganizationReadRequest(CurrentUser.Id, organizationUid);
-                var response = _organizationService.GetOrganization(request);
-                if (response.Status.IsNotSuccess)
-                {
-                    return NotFound();
-                }
-
-                model.OrganizationUid = organizationUid;
-                model.SetInputModelValues();
-            }
-
-            return View(model);
         }
     }
 }

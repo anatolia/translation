@@ -8,6 +8,7 @@ namespace Translation.Common.Contracts
     public interface IProjectService
     {
         Task<ProjectReadListResponse> GetProjects(ProjectReadListRequest request);
+        Task<ProjectRevisionReadListResponse> GetProjectRevisions(ProjectRevisionReadListRequest request);
         Task<ProjectReadResponse> GetProject(ProjectReadRequest request);
         Task<ProjectCreateResponse> CreateProject(ProjectCreateRequest request);
         Task<ProjectEditResponse> EditProject(ProjectEditRequest request);

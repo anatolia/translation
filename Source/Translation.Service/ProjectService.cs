@@ -7,6 +7,7 @@ using StandardRepository.Helpers;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Helpers;
+using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Responses.Project;
 using Translation.Data.Entities.Domain;
@@ -83,6 +84,42 @@ namespace Translation.Service
             response.PagingInfo.LastUid = request.PagingInfo.LastUid;
             response.PagingInfo.IsAscending = request.PagingInfo.IsAscending;
             response.PagingInfo.TotalItemCount = await _projectRepository.Count(filter);
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
+        public async Task<ProjectRevisionReadListResponse> GetProjectRevisions(ProjectRevisionReadListRequest request)
+        {
+            var response = new ProjectRevisionReadListResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
+            if (project.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            var revisions = await _projectRepository.SelectRevisions(project.Id);
+
+            for (int i = 0; i < revisions.Count; i++)
+            {
+                var revision = revisions[i];
+
+                var revisionDto = new RevisionDto<ProjectDto>();
+                revisionDto.Revision = revision.Revision;
+                revisionDto.RevisionedAt = revision.RevisionedAt;
+
+                var user = _cacheManager.GetCachedUser(revision.RevisionedBy);
+                revisionDto.RevisionedByUid = user.Uid;
+                revisionDto.RevisionedByName = user.Name;
+
+                revisionDto.Item = _projectFactory.CreateDtoFromEntity(revision.Entity);
+
+                response.Items.Add(revisionDto);
+            }
 
             response.Status = ResponseStatus.Success;
             return response;

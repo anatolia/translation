@@ -324,6 +324,73 @@ namespace Translation.Client.Web.Controllers
             return Json(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Revisions(Guid id)
+        {
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return RedirectToHome();
+            }
+
+            var model = new ProjectRevisionReadListModel();
+            if (projectUid.IsNotEmptyGuid())
+            {
+                var request = new ProjectReadRequest(CurrentUser.Id, projectUid);
+                var response = await _projectService.GetProject(request);
+                if (response.Status.IsNotSuccess)
+                {
+                    return NotFound();
+                }
+
+                model.ProjectUid = projectUid;
+                model.ProjectName = response.Item.Name;
+                model.SetInputModelValues();
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RevisionsData(Guid id)
+        {
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return NotFound();
+            }
+
+            var request = new ProjectRevisionReadListRequest(CurrentUser.Id, projectUid);
+
+            var response = await _projectService.GetProjectRevisions(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = new DataResult();
+            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "project_name", "is_active", "created_at", "");
+
+            for (var i = 0; i < response.Items.Count; i++)
+            {
+                var revisionItem = response.Items[i];
+                var item = revisionItem.Item;
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.Revision}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{GetDateTimeAsString(revisionItem.RevisionedAt)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Project/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Project/Restore/", "/Project/Detail")}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            return Json(result);
+        }
+
         [HttpPost,
          JournalFilter(Message = "journal_project_restore")]
         public async Task<IActionResult> Restore(Guid id, int revision)
