@@ -993,7 +993,7 @@ namespace Translation.Service
                 return response;
             }
 
-            var revisions = await _organizationRepository.SelectRevisions(user.Id);
+            var revisions = await _userRepository.SelectRevisions(user.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
                 response.SetInvalidBecauseEntityNotFound();
@@ -1001,7 +1001,7 @@ namespace Translation.Service
                 return response;
             }
 
-            var result = await _organizationRepository.RestoreRevision(request.CurrentUserId, user.Id, request.Revision);
+            var result = await _userRepository.RestoreRevision(request.CurrentUserId, user.Id, request.Revision);
             if (result)
             {
                 response.Status = ResponseStatus.Success;

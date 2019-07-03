@@ -114,5 +114,21 @@ namespace Translation.Client.Web.Helpers.Mappers
 
             return model;
         }
+
+
+        public static LabelTranslationDetailModel MapLabelTranslationDetailModel(LabelTranslationDto dto)
+        {
+            var model = new LabelTranslationDetailModel();
+            model.LabelTranslationUid = dto.Uid;
+            model.Translation = dto.Translation;
+            model.LabelKey = dto.LabelKey;
+            model.LanguageName = dto.LanguageName;
+            model.LanguageIconUrl = dto.LanguageIconUrl;
+
+            model.OrganizationUid = dto.OrganizationUid;
+            model.SetInputModelValues();
+
+            return model;
+        }
     }
 }

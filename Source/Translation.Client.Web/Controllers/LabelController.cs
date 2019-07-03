@@ -289,7 +289,7 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Integration/Restore/", "/Integration/Detail")}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Label/Restore/", "/Label/Detail")}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
             }
@@ -450,6 +450,26 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> LabelTranslationDetail(Guid id)
+        {
+            var labelTranslationUid = id;
+            if (labelTranslationUid.IsEmptyGuid())
+            {
+                return RedirectToHome();
+            }
+
+            var request = new LabelTranslationReadRequest(CurrentUser.Id, labelTranslationUid);
+            var response = await _labelService.GetTranslation(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = LabelMapper.MapLabelTranslationDetailModel(response.Item);
+            return View(model);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> LabelTranslationEdit(Guid id)
         {
             var labelTranslationUid = id;
@@ -509,7 +529,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var result = new DataResult();
-            result.AddHeaders("language", "translation", "");
+            result.AddHeaders("language", "translation", "", "");
 
             for (var i = 0; i < response.Items.Count; i++)
             {
@@ -519,6 +539,7 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append($"{result.PrepareImage($"{item.LanguageIconUrl}", item.LanguageName)} {item.LanguageName}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Translation}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationEdit/{item.Uid}", Localizer.Localize("edit"), true)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
             }
@@ -735,7 +756,7 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append($"{GetDateTimeAsString(revisionItem.RevisionedAt)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Integration/Restore/", "/Integration/Detail")}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Label/RestoreLabelTranslation/", "/Label/LabelTranslationDetail")}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
             }

@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
 using Translation.Client.Web.Helpers.Mappers;
-using Translation.Client.Web.Models;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.Language;
 using Translation.Common.Contracts;
@@ -178,7 +177,7 @@ namespace Translation.Client.Web.Controllers
                 var item = response.Items[i];
                 var stringBuilder = new StringBuilder();
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Name}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink("/Language/Detail/" + item.Uid, item.Name, true)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsoCode2}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsoCode3}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{result.PrepareImage($"{item.IconPath}", item.OriginalName)}{DataResult.SEPARATOR}");

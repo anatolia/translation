@@ -980,14 +980,14 @@ namespace Translation.Service
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
-            var label = await _labelRepository.Select(x => x.Uid == request.LabelTranslationUid);
-            if (label.IsNotExist())
+            var labelTranslation = await _labelTranslationRepository.Select(x => x.Uid == request.LabelTranslationUid);
+            if (labelTranslation.IsNotExist())
             {
                 response.SetInvalidBecauseEntityNotFound();
                 return response;
             }
 
-            var revisions = await _labelTranslationRepository.SelectRevisions(label.Id);
+            var revisions = await _labelTranslationRepository.SelectRevisions(labelTranslation.Id);
 
             for (int i = 0; i < revisions.Count; i++)
             {
