@@ -187,7 +187,8 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new ProjectCloneRequest(CurrentUser.Id, model.OrganizationUid, model.CloningProjectUid,
-                                                  model.Name, model.Url, model.Description);
+                                                  model.Name, model.Url, model.Description,
+                                                  model.LabelCount, model.LabelTranslationCount, model.IsSuperProject);
             var response = await _projectService.CloneProject(request);
             if (response.Status.IsNotSuccess)
             {
