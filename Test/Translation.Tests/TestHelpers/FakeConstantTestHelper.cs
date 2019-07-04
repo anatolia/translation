@@ -16,6 +16,11 @@ namespace Translation.Tests.TestHelpers
         public static Guid OrganizationOneProjectOneUid => new Guid("7f062647-4c7d-4ba5-b380-55869c74a944");
         public const string OrganizationOneProjectOneName = "Organization One Project One";
 
+        public const long OrganizationOneUserOneId = 2165161649L;
+        public static Guid OrganizationOneUserOneUid => new Guid("5f235216-1da8-471c-ad50-7cb6c424f996");
+        public const string OrganizationOneUserOneName = "Organization One User One";
+        public const string OrganizationOneUserOneEmail = "organizationoneuserone@gmail.com";
+
         public const long OrganizationTwoId = 5168064649L;
         public static Guid OrganizationTwoUid => new Guid("bead3ad6-dc3c-44cd-9031-ad09438877f1");
         public const string OrganizationTwoName = "Organization Two";
@@ -23,6 +28,11 @@ namespace Translation.Tests.TestHelpers
         public const long OrganizationTwoProjectOneId = 2157161649L;
         public static Guid OrganizationTwoProjectOneUid => new Guid("c67d7fa4-5626-4777-a591-ded84dc76e50");
         public const string OrganizationTwoProjectOneName = "BlueSoft Project One";
+        public const string OrganizationTwoUserOneEmail = "organizationtwouserone@gmail.com";
+
+        public const long OrganizationTwoUserOneId = 6065151649L;
+        public static Guid OrganizationTwoUserOneUid => new Guid("6ca74999-22d7-4bcd-b3ee-dbd88a38598e");
+        public const string OrganizationTwoUserOneName = "Organization Two User One";
 
         public static Guid EmptyUid => Guid.Empty;
         public static Guid UidOne => new Guid("3A2F7BA0-0D4C-4231-B9DF-A15460B60BD2");
@@ -44,6 +54,13 @@ namespace Translation.Tests.TestHelpers
         public const int One = 1;
         public const int Two = 2;
         public const int Three = 3;
+        public const int Four = 4;
+        public const int Five = 5;
+        public const int Six = 6;
+        public const int Seven = 7;
+        public const int Eight = 8;
+        public const int Nine = 9;
+        public const int Ten = 10;
         
         public const double MinusDoubleOne = -1.04;
         public const double MinusDoubleTwo = -2.04;
@@ -84,7 +101,8 @@ namespace Translation.Tests.TestHelpers
         public const string HttpsWwwUrl = "https://www.turkiye.gov.tr";
         public const string ShortHttpsUrl = "https://aka.ms";
 
-        public const string IpOne = "87.204.85.116";
+        public const string IpOne = "85.201.85.116";
+        public const string IpTwo = "87.204.85.116";
 
         public const string IsoCode2One = "TR";
         public const string IsoCode3One = "TUR";
