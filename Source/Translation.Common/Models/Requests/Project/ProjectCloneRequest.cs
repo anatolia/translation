@@ -12,9 +12,13 @@ namespace Translation.Common.Models.Requests.Project
         public string Name { get; }
         public string Url { get; }
         public string Description { get; }
+        public int LabelCount { get; set; }
+        public int LabelTranslationCount { get; set; }
+        public bool IsSuperProject { get; set; }
 
         public ProjectCloneRequest(long currentUserId, Guid organizationUid, Guid cloningProjectUid,
-                                   string name, string url, string description) : base(currentUserId)
+                                   string name, string url, string description,
+                                   int labelCount, int labelTranslationCount, bool isSuperProject) : base(currentUserId)
         {
             if (organizationUid.IsEmptyGuid())
             {
@@ -42,6 +46,9 @@ namespace Translation.Common.Models.Requests.Project
             Name = name;
             Url = url;
             Description = description;
+            LabelCount = labelCount;
+            LabelTranslationCount = labelTranslationCount;
+            IsSuperProject = isSuperProject;
         }
     }
 }
