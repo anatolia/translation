@@ -323,6 +323,14 @@ namespace Translation.Service
                 return response;
             }
 
+            if (await _projectRepository.Any(x => x.Name == request.Name
+                                                  && x.OrganizationId == currentUser.OrganizationId))
+            {
+                response.ErrorMessages.Add("project_name_must_be_unique");
+                response.Status = ResponseStatus.Failed;
+                return response;
+            }
+
             var cloningEntity = _projectFactory.CreateEntityFromRequest(request, project);
             var uowResult = await _projectUnitOfWork.DoCloneWork(request.CurrentUserId, project.Id, cloningEntity);
             if (uowResult)
