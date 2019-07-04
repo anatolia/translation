@@ -57,6 +57,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.CloningLabelUid = dto.Uid;
             model.CloningLabelKey = dto.Key;
             model.CloningLabelDescription = dto.Description;
+            model.CloningLabelTranslationCount = dto.LabelTranslationCount;
 
             model.SetInputModelValues();
             return model;
