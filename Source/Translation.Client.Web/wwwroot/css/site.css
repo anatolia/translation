@@ -1,152 +1,137 @@
 ﻿* {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-family: Arial;
-    color: #333;
-    font-size: 15px;
-    background-color: #ffe;
-}
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: Arial;
+  color: #333;
+  font-size: 15px;
+  background-color: #ffe; }
 
 main {
-    min-height: 610px;
-}
+  min-height: 610px;
+  width: 89%;
+  margin: 34px auto; }
+  main div {
+    min-height: 39px; }
 
-main, footer, header {
-    width: 89%;
-    margin: 34px auto;
-}
+footer {
+  width: 89%;
+  margin: 34px auto; }
 
-    header a {
-        font-size: 45px;
-        margin: 21px auto;
-        color: #900C3F;
-        text-decoration: none;
-        margin-left: -10px;
-    }
+header {
+  width: 89%;
+  margin: 34px auto; }
+  header a {
+    font-size: 45px;
+    margin: 21px auto;
+    color: #900C3F;
+    text-decoration: none;
+    margin-left: -10px; }
 
 a {
-    margin-top: 5px;
-    margin-bottom: 8px;
-    margin-right: 5px;
-    color: #3d839f;
-}
+  margin-top: 5px;
+  margin-bottom: 8px;
+  margin-right: 5px;
+  color: #3d839f; }
 
 h1 {
-    font-size: 29px;
-    margin-bottom: 21px;
-    color: #212F3D;
-    letter-spacing: 1px;
-}
+  font-size: 29px;
+  margin-bottom: 21px;
+  color: #212F3D;
+  letter-spacing: 1px; }
 
 h2 {
-    margin-bottom: 13px;
-    font-size: 21px;
-    letter-spacing: 2px;
-    color: coral;
-    text-decoration: underline;
-}
+  margin-bottom: 13px;
+  font-size: 21px;
+  letter-spacing: 2px;
+  color: coral;
+  text-decoration: underline; }
 
 select {
-    border-bottom: 1px solid #999;
-    padding: 5px 13px 5px 0;
-    cursor: pointer;
-}
+  border-bottom: 1px solid #999;
+  padding: 5px 13px 5px 0;
+  cursor: pointer; }
 
 label {
-    font-weight: bold;
-}
-
-label, input, button {
-    display: block;
-    margin-top: 1px;
-    margin-bottom: 3px;
-    margin-top: 8px;
-}
-
-.error {
-    color: red;
-    font-weight: bold;
-    font-size: 13px;
-    font-style: italic;
-}
-
-    .error li {
-        color: red;
-        font-weight: normal;
-        margin: 6px;
-        list-style-type: square;
-    }
+  font-weight: bold;
+  display: block;
+  margin-top: 1px;
+  margin-bottom: 3px;
+  margin-top: 8px; }
 
 input {
-    font-size: 13px;
-    line-height: 21px;
-    padding: 5px;
-    margin-top: 13px;
-    font-style: italic;
-    border: 1px solid #999;
-    width: 34%;
-}
-
-.longinput input {
-    width: 55%;
-}
-
-.shortinput input {
-    width: 21%;
-}
-
-input[type=radio], input[type=checkbox] {
-    width: auto;
-    zoom: 1.5;
-}
+  display: block;
+  margin-top: 1px;
+  margin-bottom: 3px;
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 21px;
+  padding: 5px;
+  margin-top: 13px;
+  font-style: italic;
+  border: 1px solid #999;
+  width: 34%; }
 
 button {
-    font-weight: bold;
-    padding: 8px;
-    margin-top: 21px;
-    background-color: #84cae6;
-    color: #3d839f;
-    border-radius: 3px;
-    cursor: pointer;
-}
+  display: block;
+  margin-top: 1px;
+  margin-bottom: 3px;
+  margin-top: 8px;
+  font-weight: bold;
+  padding: 8px;
+  margin-top: 21px;
+  background-color: #84cae6;
+  color: #3d839f;
+  border-radius: 3px;
+  cursor: pointer; }
+
+.error {
+  color: red;
+  font-weight: bold;
+  font-size: 13px;
+  font-style: italic; }
+  .error li {
+    color: red;
+    font-weight: normal;
+    margin: 6px;
+    list-style-type: square; }
+
+.longinput input {
+  width: 55%; }
+
+.shortinput input {
+  width: 21%; }
+
+input[type=radio] {
+  width: auto;
+  zoom: 1.5; }
+
+input[type=checkbox] {
+  width: auto;
+  zoom: 1.5; }
 
 .error-messages {
-    margin: 7px;
-    padding-left: 21px;
-    margin-left: 0;
-}
-
-    .error-messages li {
-        color: red;
-        list-style-type: square;
-    }
+  margin: 7px;
+  padding-left: 21px;
+  margin-left: 0; }
+  .error-messages li {
+    color: red;
+    list-style-type: square; }
 
 .bottom-links {
-    margin-top: 21px;
-    margin-bottom: 21px;
-}
-
-    .bottom-links a {
-        display: block;
-        margin-top: 21px;
-    }
-
-
-main div {
-    min-height: 39px;
-}
+  margin-top: 21px;
+  margin-bottom: 21px; }
+  .bottom-links a {
+    display: block;
+    margin-top: 21px; }
 
 button[type=submit] {
-    margin-bottom: 8px;
-}
+  margin-bottom: 8px; }
 
 .btnGreen {
-    background: #36b036;
-    color: #fff;
-}
+  background: #36b036;
+  color: #fff; }
 
 .btnRed {
-    background: #a5221e;
-    color: #fff;
-}
+  background: #a5221e;
+  color: #fff; }

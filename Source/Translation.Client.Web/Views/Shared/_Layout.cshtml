@@ -7,10 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@Model?.Title / @ConstantHelper.APP_NAME</title>
 
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/plugins/popup/css/popup.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/plugins/select/css/select.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/plugins/table/css/table.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -43,10 +40,7 @@
     <partial name="_Popup" />
     @Html.AntiForgeryToken()
 
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/plugins/popup/popup.js" asp-append-version="true"></script>
-    <script src="~/plugins/select/select.js" asp-append-version="true"></script>
-    <script src="~/plugins/table/table.js" asp-append-version="true"></script>
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

@@ -46,7 +46,6 @@
     <None Include="Views\User\ValidateEmail.cshtml" />
     <None Include="Views\User\ValidateEmailDone.cshtml" />
     <None Include="wwwroot\js\site.js" />
-    <None Include="wwwroot\js\site.min.js" />
   </ItemGroup>
 
   <ItemGroup>
