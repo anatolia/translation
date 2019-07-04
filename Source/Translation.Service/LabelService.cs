@@ -689,7 +689,7 @@ namespace Translation.Service
             var uowResult = await _labelUnitOfWork.DoCloneWork(request.CurrentUserId, label.Id, newLabel);
             if (uowResult)
             {
-                response.Item = _labelFactory.CreateDtoFromEntity(label);
+                response.Item = _labelFactory.CreateDtoFromEntity(newLabel);
                 response.Status = ResponseStatus.Success;
                 return response;
             }
