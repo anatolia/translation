@@ -89,19 +89,19 @@ namespace Translation.Tests.TestHelpers
         public const string IsoCode2One = "TR";
         public const string IsoCode3One = "TUR";
 
-        public const string CaseOne = "case_1";
-        public const string CaseTwo = "case_2";
-        public const string CaseThree = "case_3";
-        public const string CaseFour = "case_4";
-        public const string CaseFive = "case_5";
-        public const string CaseSix = "case_6";
-        public const string CaseSeven = "case_7";
-        public const string CaseEight = "case_8";
-        public const string CaseNine = "case_9";
-        public const string CaseTen = "case_10";
-        public const string CaseEleven = "case_11";
-        public const string CaseTwelve = "case_12";
-        public const string CaseThirteen = "case_13";
+        public const string CaseOne = "Case One";
+        public const string CaseTwo = "Case Two";
+        public const string CaseThree = "Case Three";
+        public const string CaseFour = "Case Four";
+        public const string CaseFive = "Case Five";
+        public const string CaseSix = "Case Six";
+        public const string CaseSeven = "Case Seven";
+        public const string CaseEight = "Case Eight";
+        public const string CaseNine = "Case Nine";
+        public const string CaseTen = "Case Ten";
+        public const string CaseEleven = "Case Eleven";
+        public const string CaseTwelve = "Case Twelve";
+        public const string CaseThirteen = "Case Thirten";
 
         public static string GetNewEmail()
         {
