@@ -57,10 +57,11 @@ namespace Translation.Data.Factories
             entity.OrganizationUid = cloningProject.OrganizationUid;
             entity.OrganizationName = cloningProject.OrganizationName;
 
-            entity.Uid = request.CloningProjectUid;
             entity.Name = request.Name;
 
             entity.LabelCount = cloningProject.LabelCount;
+            entity.LabelTranslationCount = cloningProject.LabelTranslationCount;
+            entity.IsSuperProject = cloningProject.IsSuperProject;
 
             entity.Description = request.Description;
             entity.Url = request.Url;
