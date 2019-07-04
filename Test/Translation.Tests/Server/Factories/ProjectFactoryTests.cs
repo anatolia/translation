@@ -106,7 +106,9 @@ namespace Translation.Tests.Server.Factories
 
             result.Description.ShouldBe(request.Description);
             result.Url.ShouldBe(request.Url);
-            // todo: result.LabelCount.ShouldBe(request.LabelCount);
+            result.LabelCount.ShouldBe(request.LabelCount);
+            result.LabelTranslationCount.ShouldBe(request.LabelTranslationCount);
+            result.IsSuperProject.ShouldBe(request.IsSuperProject);
         }
 
         [Test]
