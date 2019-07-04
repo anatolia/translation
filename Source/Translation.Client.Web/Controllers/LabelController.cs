@@ -403,6 +403,76 @@ namespace Translation.Client.Web.Controllers
             return View("UploadLabelFromCSVFileDone", doneModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> CreateBulkLabel(Guid id)
+        {
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var request = new ProjectReadRequest(CurrentUser.Id, projectUid);
+            var project = await _projectService.GetProject(request);
+            if (project.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = LabelMapper.MapCreateBulkLabelModel(project.Item);
+            return View(model);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_create_bulk_label_from_csv")]
+        public async Task<IActionResult> CreateBulkLabel(CreateBulkLabelModel model)
+        {
+            if (model.IsNotValid())
+            {
+                return View(model);
+            }
+
+            var labelListInfos = new List<LabelListInfo>();
+
+            var lines = model.BulkLabelData.Split('\n');
+            for (var i = 1; i < lines.Length; i++)
+            {
+                var values = lines[i].Split(',');
+                if (values.Length != 3)
+                {
+                    model.ErrorMessages.Add("file_has_more_columns_than_expected");
+                    model.ErrorMessages.Add("error line : " + i);
+                    return View(model);
+                }
+
+                labelListInfos.Add(new LabelListInfo
+                {
+                    LabelKey = values[0],
+                    LanguageIsoCode2 = values[1],
+                    Translation = values[2]
+                });
+            }
+
+            var request = new LabelCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid, labelListInfos);
+            var response = await _labelService.CreateLabelFromList(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.MapMessages(response);
+                return View(model);
+            }
+
+            var doneModel = new CreateBulkLabelDoneModel();
+            doneModel.MapMessages(response);
+            doneModel.ProjectUid = model.ProjectUid;
+            doneModel.ProjectName = model.ProjectName;
+            doneModel.AddedLabelCount = response.AddedLabelCount;
+            doneModel.CanNotAddedLabelCount = response.CanNotAddedLabelCount;
+            doneModel.AddedLabelTranslationCount = response.AddedLabelTranslationCount;
+            doneModel.CanNotAddedLabelTranslationCount = response.CanNotAddedLabelTranslationCount;
+
+            CurrentUser.IsActionSucceed = true;
+            return View("CreateBulkLabelDone", doneModel);
+        }
         #endregion
 
         #region LabelTranslation
@@ -551,12 +621,6 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public ViewResult UploadLabelFromCSVFileDone(LabelUploadFromCSVDoneModel model)
-        {
-            return View(model);
-        }
-
-        [HttpGet]
         public async Task<IActionResult> UploadLabelTranslationFromCSVFile(Guid id)
         {
             var labelUid = id;
@@ -632,12 +696,6 @@ namespace Translation.Client.Web.Controllers
             CurrentUser.IsActionSucceed = true;
             return View("UploadLabelTranslationFromCSVFileDone", doneModel);
 
-        }
-
-        [HttpGet]
-        public ViewResult UploadLabelTranslationFromCSVFileDone(TranslationUploadFromCSVDoneModel model)
-        {
-            return View(model);
         }
 
         [HttpPost,
