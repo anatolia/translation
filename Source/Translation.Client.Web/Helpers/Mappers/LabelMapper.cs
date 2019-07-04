@@ -33,6 +33,8 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.IsActive = dto.IsActive;
             model.IsActiveInput.Value = dto.IsActive;
 
+            model.LabelTranslationCount = dto.LabelTranslationCount;
+
             model.SetInputModelValues();
             return model;
         }
