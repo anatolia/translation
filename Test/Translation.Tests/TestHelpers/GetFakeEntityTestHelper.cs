@@ -7,12 +7,12 @@ namespace Translation.Tests.TestHelpers
 {
     public class GetFakeEntityTestHelper
     {
-        public static Organization GetParkNet()
+        public static Organization GetOrganizationOne()
         {
             var organization = new Organization();
-            organization.Id = IdParkNet;
-            organization.Uid = UidParkNet;
-            organization.Name = NameParkNet;
+            organization.Id = OrganizationOneId;
+            organization.Uid = OrganizationOneUid;
+            organization.Name = OrganizationOneName;
             organization.CreatedAt = DateTimeOne;
             organization.Description = StringOne;
             organization.IsActive = true;
@@ -21,27 +21,27 @@ namespace Translation.Tests.TestHelpers
             return organization;
         }
 
-        public static CurrentOrganization GetCurrentParkNet()
+        public static CurrentOrganization GetCurrentOrganizationOne()
         {
             var organization = new CurrentOrganization();
-            organization.Id = IdParkNet;
-            organization.Uid = UidParkNet;
-            organization.Name = NameParkNet;
+            organization.Id = OrganizationOneId;
+            organization.Uid = OrganizationOneUid;
+            organization.Name = OrganizationOneName;
 
             return organization;
         }
 
-        public static Project GetParkNetProjectOne()
+        public static Project GetOrganizationOneProjectOne()
         {
             var project = new Project();
-            project.Id = IdParkNetProjectOne;
-            project.Uid = UidBlueSoftProjectOne;
-            project.Name = NameParkNetProjectOne;
-            project.OrganizationId = IdParkNet;
-            project.OrganizationUid = UidParkNet;
-            project.OrganizationName = NameParkNet;
+            project.Id = OrganizationOneProjectOneId;
+            project.Uid = OrganizationOneProjectOneUid;
+            project.Name = OrganizationOneProjectOneName;
+            project.OrganizationId = OrganizationOneId;
+            project.OrganizationUid = OrganizationOneUid;
+            project.OrganizationName = OrganizationOneName;
             project.IsActive = true;
-            project.Url = URL_HTTP;
+            project.Url = HttpUrl;
             project.CreatedAt = DateTimeOne;
 
             return project;
