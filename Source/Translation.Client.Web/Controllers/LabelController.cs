@@ -400,7 +400,7 @@ namespace Translation.Client.Web.Controllers
             doneModel.CanNotAddedLabelTranslationCount = response.CanNotAddedLabelTranslationCount;
 
             CurrentUser.IsActionSucceed = true;
-            return RedirectToAction("UploadLabelFromCSVFileDone", doneModel);
+            return View("UploadLabelFromCSVFileDone", doneModel);
         }
 
         #endregion
@@ -630,7 +630,8 @@ namespace Translation.Client.Web.Controllers
             doneModel.CanNotAddedTranslationCount = response.CanNotAddedTranslationCount;
 
             CurrentUser.IsActionSucceed = true;
-            return RedirectToAction("UploadLabelTranslationFromCSVFileDone", doneModel);
+            return View("UploadLabelTranslationFromCSVFileDone", doneModel);
+
         }
 
         [HttpGet]
