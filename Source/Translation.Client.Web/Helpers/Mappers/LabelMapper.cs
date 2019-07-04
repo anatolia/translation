@@ -73,6 +73,17 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
+        public static CreateBulkLabelModel MapCreateBulkLabelModel(ProjectDto project)
+        {
+            var model = new CreateBulkLabelModel();
+            model.OrganizationUid = project.OrganizationUid;
+            model.ProjectUid = project.Uid;
+            model.ProjectName = project.Name;
+
+            model.SetInputModelValues();
+            return model;
+        }
+
         public static UploadLabelTranslationFromCSVFileModel MapUploadLabelTranslationFromCSVFileModel(LabelDto label)
         {
             var model = new UploadLabelTranslationFromCSVFileModel();
