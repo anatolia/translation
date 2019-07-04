@@ -18,6 +18,8 @@ namespace Translation.Client.Web.Models.Label
         public string Description { get; set; }
         public bool IsActive { get; set; }
 
+        public int LabelTranslationCount { get; set; }
+
         public HiddenInputModel OrganizationUidInput { get; }
         public HiddenInputModel ProjectUidInput { get; }
         public HiddenInputModel LabelUidInput { get; }
