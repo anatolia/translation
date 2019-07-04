@@ -135,6 +135,7 @@ namespace Translation.Tests.Server.Factories
         {
             // arrange
             var project = GetOrganizationOneProjectOne();
+            var isActive = project.IsActive;
 
             // act
             var result = ProjectFactory.UpdateEntityForChangeActivation(project);
@@ -150,7 +151,7 @@ namespace Translation.Tests.Server.Factories
 
             result.Url.ShouldBe(project.Url);
             result.Description.ShouldBe(project.Description);
-            result.IsActive.ShouldBe(!project.IsActive);
+            result.IsActive.ShouldBe(!isActive);
         }
 
         [Test]
