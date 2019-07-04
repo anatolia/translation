@@ -15,7 +15,7 @@ namespace Translation.Tests.TestHelpers
             organization.Name = OrganizationOneName;
             organization.CreatedAt = DateTimeOne;
             organization.Description = StringOne;
-            organization.IsActive = true;
+            organization.IsActive = BooleanTrue;
             organization.ObfuscationKey = StringSixtyFourOne;
 
             return organization;
@@ -40,11 +40,40 @@ namespace Translation.Tests.TestHelpers
             project.OrganizationId = OrganizationOneId;
             project.OrganizationUid = OrganizationOneUid;
             project.OrganizationName = OrganizationOneName;
-            project.IsActive = true;
+            project.IsActive = BooleanTrue;
             project.Url = HttpUrl;
             project.CreatedAt = DateTimeOne;
 
             return project;
+        }
+
+        public static User GetOrganizationOneUserOne()
+        {
+            var user = new User();
+            user.OrganizationId = OrganizationOneId;
+            user.OrganizationUid = OrganizationOneUid;
+            user.OrganizationName = OrganizationOneName;
+
+            user.Id = OrganizationOneUserOneId;
+            user.Uid = OrganizationOneUserOneUid;
+            user.Name = OrganizationOneUserOneName;
+
+            user.Email = OrganizationOneUserOneEmail;
+            user.IsActive = BooleanTrue;
+
+            return user;
+        }
+
+        public static CurrentUser GetOrganizationOneCurrentUserOne()
+        {
+            var user = new CurrentUser();
+            user.Id = OrganizationOneUserOneId;
+            user.Uid = OrganizationOneUserOneUid;
+            user.Name = OrganizationOneUserOneName;
+            user.Email = OrganizationOneUserOneEmail;
+            user.IsActive = BooleanTrue;
+
+            return user;
         }
     }
 }
