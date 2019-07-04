@@ -1,11 +1,11 @@
 ﻿using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
-using static Translation.Tests.TestHelpers.GetFakeConstantTestHelper;
+using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
 namespace Translation.Tests.TestHelpers
 {
-    public class GetFakeEntityTestHelper
+    public class FakeEntityTestHelper
     {
         public static Organization GetOrganizationOne()
         {

@@ -1,6 +1,6 @@
 ﻿namespace Translation.Tests.TestHelpers
 {
-    public class GetFakeModelTestHelper
+    public class FakeModelTestHelper
     {
         
     }

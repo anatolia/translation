@@ -4,7 +4,7 @@ using Translation.Common.Helpers;
 
 namespace Translation.Tests.TestHelpers
 {
-    public class GetFakeConstantTestHelper
+    public class FakeConstantTestHelper
     {
         public const long CurrentUserId = 4198161609L;
 

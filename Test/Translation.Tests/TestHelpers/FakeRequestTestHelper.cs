@@ -2,11 +2,11 @@
 using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
-using static Translation.Tests.TestHelpers.GetFakeConstantTestHelper;
+using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
 namespace Translation.Tests.TestHelpers
 {
-    public class GetFakeRequestTestHelper
+    public class FakeRequestTestHelper
     {
         public static ProjectCreateRequest GetProjectCreateRequest(Organization organization, Project project)
         {
