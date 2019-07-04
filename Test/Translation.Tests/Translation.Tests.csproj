@@ -5,13 +5,36 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="EnumerationTests\" />
+    <Folder Include="Client\Models\ViewModels\Integration\" />
+    <Folder Include="Client\Models\ViewModels\Journal\" />
+    <Folder Include="Client\Models\ViewModels\Label\" />
+    <Folder Include="Client\Models\ViewModels\Language\" />
+    <Folder Include="Client\Models\ViewModels\Project\" />
+    <Folder Include="Client\Models\ViewModels\Organization\" />
+    <Folder Include="Common\Requests\Admin\" />
+    <Folder Include="Common\Requests\Label\" />
+    <Folder Include="Common\Requests\LabelTranslation\" />
+    <Folder Include="Common\Requests\Language\" />
+    <Folder Include="Common\Requests\Integration\" />
+    <Folder Include="Common\Requests\Project\" />
+    <Folder Include="Common\Requests\User\" />
+    <Folder Include="Common\Requests\Organization\" />
+    <Folder Include="Common\Responses\Admin\" />
+    <Folder Include="Common\Responses\Integration\" />
+    <Folder Include="Common\Responses\LabelTranslation\" />
+    <Folder Include="Common\Responses\Label\" />
+    <Folder Include="Common\Responses\Language\" />
+    <Folder Include="Common\Responses\Organization\" />
+    <Folder Include="Common\Responses\Project\" />
+    <Folder Include="Common\Responses\User\" />
+    <Folder Include="Enumerations\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
+    <PackageReference Include="Shouldly" Version="3.0.2" />
     <PackageReference Include="StandardRepository" Version="1.0.1.9" />
     <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.1.9" />
   </ItemGroup>
