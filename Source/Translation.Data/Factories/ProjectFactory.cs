@@ -55,7 +55,6 @@ namespace Translation.Data.Factories
         public Project CreateEntityFromRequest(ProjectCloneRequest request, Project cloningProject)
         {
             var entity = new Project();
-
             
             entity.Name = request.Name;
             entity.Description = request.Description;
