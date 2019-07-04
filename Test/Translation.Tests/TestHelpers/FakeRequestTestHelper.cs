@@ -35,7 +35,8 @@ namespace Translation.Tests.TestHelpers
         public static ProjectCloneRequest GetProjectCloneRequest(Project project)
         {
             var request = new ProjectCloneRequest(CurrentUserId, project.OrganizationUid, project.Uid,
-                                                  project.Name, project.Url, project.Description);
+                                                  project.Name, project.Url, project.Description,
+                                                  project.LabelCount, project.LabelTranslationCount, project.IsSuperProject);
 
             return request;
         }
