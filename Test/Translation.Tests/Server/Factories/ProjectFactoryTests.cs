@@ -2,8 +2,8 @@
 using Shouldly;
 
 using Translation.Data.Factories;
-using static Translation.Tests.TestHelpers.GetFakeRequestTestHelper;
-using static Translation.Tests.TestHelpers.GetFakeEntityTestHelper;
+using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
+using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Tests.Server.Factories
 {
@@ -29,10 +29,15 @@ namespace Translation.Tests.Server.Factories
             var result = ProjectFactory.CreateEntityFromRequest(request, project);
 
             // assert
-            result.UpdatedBy.ShouldBe(request.CurrentUserId);
+            result.OrganizationId.ShouldBe(project.OrganizationId);
+            result.OrganizationUid.ShouldBe(project.OrganizationUid);
+            result.OrganizationName.ShouldBe(project.OrganizationName);
+            
+            result.Uid.ShouldBe(request.ProjectUid);
             result.Name.ShouldBe(request.ProjectName);
-            result.Description.ShouldBe(request.Description);
+
             result.Url.ShouldBe(request.Url);
+            result.Description.ShouldBe(request.Description);
         }
 
         [Test]
@@ -47,14 +52,15 @@ namespace Translation.Tests.Server.Factories
             var result = ProjectFactory.CreateEntityFromRequest(request, organization);
 
             // assert
-            result.Name.ShouldBe(request.ProjectName);
-            result.Description.ShouldBe(request.Description);
-            result.Url.ShouldBe(request.Url);
-            result.IsActive.ShouldBeTrue();
-
             result.OrganizationId.ShouldBe(organization.Id);
             result.OrganizationUid.ShouldBe(organization.Uid);
             result.OrganizationName.ShouldBe(organization.Name);
+
+            result.Name.ShouldBe(request.ProjectName);
+
+            result.Description.ShouldBe(request.Description);
+            result.Url.ShouldBe(request.Url);
+            result.IsActive.ShouldBeTrue();
         }
 
         [Test]
@@ -69,19 +75,19 @@ namespace Translation.Tests.Server.Factories
             var result = ProjectFactory.CreateEntityFromRequest(request, organization);
 
             // assert
-            result.Name.ShouldBe(request.ProjectName);
-            result.Description.ShouldBe(request.Description);
-            result.Url.ShouldBe(request.Url);
-            result.IsActive.ShouldBeTrue();
-
             result.OrganizationId.ShouldBe(organization.Id);
             result.OrganizationUid.ShouldBe(organization.Uid);
             result.OrganizationName.ShouldBe(organization.Name);
+
+            result.Name.ShouldBe(request.ProjectName);
+
+            result.Description.ShouldBe(request.Description);
+            result.Url.ShouldBe(request.Url);
+            result.IsActive.ShouldBeTrue();
         }
 
-
         [Test]
-        public void ProjectFactory_CreateEntityFromRequest_ProjectCreateRequest_Project()
+        public void ProjectFactory_CreateEntityFromRequest_ProjectCloneRequest_Project()
         {
             // arrange
             var project = GetOrganizationOneProjectOne();
@@ -91,15 +97,16 @@ namespace Translation.Tests.Server.Factories
             var result = ProjectFactory.CreateEntityFromRequest(request, project);
 
             // assert
-            result.Name.ShouldBe(request.Name);
-            result.Description.ShouldBe(request.Description);
-            result.Url.ShouldBe(request.Url);
-            result.LabelCount.ShouldBe(project.LabelCount);
-            result.IsActive.ShouldBeTrue();
-
             result.OrganizationId.ShouldBe(project.OrganizationId);
             result.OrganizationUid.ShouldBe(project.OrganizationUid);
             result.OrganizationName.ShouldBe(project.OrganizationName);
+
+            result.Uid.ShouldBe(request.CloningProjectUid);
+            result.Name.ShouldBe(request.Name);
+
+            result.Description.ShouldBe(request.Description);
+            result.Url.ShouldBe(request.Url);
+            // todo: result.LabelCount.ShouldBe(request.LabelCount);
         }
 
         [Test]
@@ -112,17 +119,57 @@ namespace Translation.Tests.Server.Factories
             var result = ProjectFactory.CreateDtoFromEntity(project);
 
             // assert
-            result.CreatedAt.ShouldBe(project.CreatedAt);
-            result.UpdatedAt.ShouldBe(project.UpdatedAt);
+            result.OrganizationUid.ShouldBe(project.OrganizationUid);
+            result.OrganizationName.ShouldBe(project.OrganizationName);
+
+            result.Uid.ShouldBe(project.Uid);
             result.Name.ShouldBe(project.Name);
+
             result.Url.ShouldBe(project.Url);
             result.Description.ShouldBe(project.Description);
             result.IsActive.ShouldBe(project.IsActive);
+        }
 
-            result.Uid.ShouldBe(project.Uid);
+        [Test]
+        public void ProjectFactory_UpdateEntityForChangeActivation()
+        {
+            // arrange
+            var project = GetOrganizationOneProjectOne();
 
-            result.OrganizationName.ShouldBe(project.OrganizationName);
+            // act
+            var result = ProjectFactory.UpdateEntityForChangeActivation(project);
+
+            // assert
+            result.OrganizationId.ShouldBe(project.OrganizationId);
             result.OrganizationUid.ShouldBe(project.OrganizationUid);
+            result.OrganizationName.ShouldBe(project.OrganizationName);
+
+            result.Id.ShouldBe(project.Id);
+            result.Uid.ShouldBe(project.Uid);
+            result.Name.ShouldBe(project.Name);
+
+            result.Url.ShouldBe(project.Url);
+            result.Description.ShouldBe(project.Description);
+            result.IsActive.ShouldBe(!project.IsActive);
+        }
+
+        [Test]
+        public void ProjectFactory_CreateDefault()
+        {
+            // arrange
+            var organization = GetOrganizationOne();
+
+            // act
+            var result = ProjectFactory.CreateDefault(organization);
+
+            // assert
+            result.OrganizationId.ShouldBe(organization.Id);
+            result.OrganizationUid.ShouldBe(organization.Uid);
+            result.OrganizationName.ShouldBe(organization.Name);
+
+            result.Name.ShouldBe("Default");
+
+            result.IsActive.ShouldBeTrue();
         }
     }
 }
