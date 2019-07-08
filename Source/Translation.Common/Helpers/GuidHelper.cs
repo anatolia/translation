@@ -45,6 +45,13 @@ namespace Translation.Common.Helpers
             return !IsEmptyGuid(guid);
         }
 
+        public static Guid ToGuid(this string text)
+        {
+            Guid.TryParse(text, out var uid);
+
+            return uid;
+        }
+
         public static string ToUidString(this Guid guid)
         {
             return guid.ToString("N");
