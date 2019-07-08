@@ -330,6 +330,30 @@ namespace Translation.Service
             return response;
         }
 
+        public async Task<LabelReadByKeyResponse> GetLabelByKey(LabelReadByKeyRequest request)
+        {
+            var response = new LabelReadByKeyResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            var label = await _labelRepository.Select(x => x.Key == request.LabelKey);
+            if (label.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            if (label.OrganizationId != currentUser.OrganizationId)
+            {
+                response.SetFailed();
+                return response;
+            }
+
+            response.Item = _labelFactory.CreateDtoFromEntity(label);
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
         public async Task<LabelReadListResponse> GetLabels(LabelReadListRequest request)
         {
             var response = new LabelReadListResponse();
