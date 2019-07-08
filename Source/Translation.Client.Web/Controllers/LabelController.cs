@@ -77,23 +77,46 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Detail(Guid id)
+        public async Task<IActionResult> Detail(string id)
         {
-            var labelUid = id;
-            if (labelUid.IsEmptyGuid())
+            if (id.IsUid())
             {
-                return RedirectToHome();
-            }
+                var labelUid = id.ToGuid();
+                if (labelUid.IsEmptyGuid())
+                {
+                    return RedirectToHome();
+                }
 
-            var request = new LabelReadRequest(CurrentUser.Id, labelUid);
-            var response = await _labelService.GetLabel(request);
-            if (response.Status.IsNotSuccess)
+                var request = new LabelReadRequest(CurrentUser.Id, labelUid);
+                var response = await _labelService.GetLabel(request);
+
+                if (response.Status.IsNotSuccess)
+                {
+                    return RedirectToAccessDenied();
+                }
+
+                var model = LabelMapper.MapLabelDetailModel(response.Item);
+                return View(model);
+            }
+            else
             {
-                return RedirectToAccessDenied();
-            }
+                var labelKey = id;
+                if (labelKey.IsEmpty())
+                {
+                    return RedirectToHome();
+                }
 
-            var model = LabelMapper.MapLabelDetailModel(response.Item);
-            return View(model);
+                var request = new LabelReadByKeyRequest(CurrentUser.Id, labelKey);
+                var response = await _labelService.GetLabelByKey(request);
+
+                if (response.Status.IsNotSuccess)
+                {
+                    return RedirectToAccessDenied();
+                }
+
+                var model = LabelMapper.MapLabelDetailModel(response.Item);
+                return View(model);
+            }
         }
 
         [HttpGet]
