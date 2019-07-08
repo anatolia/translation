@@ -14,17 +14,21 @@ namespace Translation.Common.Contracts
         Task<LabelCreateListResponse> CreateLabelFromList(LabelCreateListRequest request);
         Task<LabelReadResponse> GetLabel(LabelReadRequest request);
         Task<LabelReadListResponse> GetLabels(LabelReadListRequest request);
+        Task<LabelRevisionReadListResponse> GetLabelRevisions(LabelRevisionReadListRequest request);
         Task<AllLabelReadListResponse> GetLabelsWithTranslations(AllLabelReadListRequest labelReadListRequest);
         Task<LabelEditResponse> EditLabel(LabelEditRequest request);
         Task<LabelDeleteResponse> DeleteLabel(LabelDeleteRequest request);
         Task<LabelChangeActivationResponse> ChangeActivation(LabelChangeActivationRequest request);
         Task<LabelCloneResponse> CloneLabel(LabelCloneRequest request);
-
+        Task<LabelRestoreResponse> RestoreLabel(LabelRestoreRequest request);
         Task<LabelTranslationCreateResponse> CreateTranslation(LabelTranslationCreateRequest request);
         Task<LabelTranslationCreateListResponse> CreateTranslationFromList(LabelTranslationCreateListRequest request);
         Task<LabelTranslationReadListResponse> GetTranslation(LabelTranslationReadRequest request);
         Task<LabelTranslationReadListResponse> GetTranslations(LabelTranslationReadListRequest request);
+        Task<LabelTranslationRevisionReadListResponse> GetLabelTranslationRevisions(
+            LabelTranslationRevisionReadListRequest request);
         Task<LabelTranslationEditResponse> EditTranslation(LabelTranslationEditRequest request);
         Task<LabelTranslationDeleteResponse> DeleteTranslation(LabelTranslationDeleteRequest request);
+        Task<LabelTranslationRestoreResponse> RestoreLabelTranslation(LabelTranslationRestoreRequest request);
     }
 }

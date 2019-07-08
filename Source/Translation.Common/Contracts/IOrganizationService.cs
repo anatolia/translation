@@ -16,8 +16,10 @@ namespace Translation.Common.Contracts
 
         OrganizationReadResponse GetOrganization(OrganizationReadRequest request);
         Task<OrganizationReadListResponse> GetOrganizations(OrganizationReadListRequest request);
+        Task<OrganizationRevisionReadListResponse>
+            GetOrganizationRevisions(OrganizationRevisionReadListRequest request);
         Task<OrganizationEditResponse> EditOrganization(OrganizationEditRequest request);
-
+        Task<OrganizationRestoreResponse> RestoreOrganization(OrganizationRestoreRequest request);
         Task<ValidateEmailResponse> ValidateEmail(ValidateEmailRequest request);
         Task<LogOnResponse> LogOn(LogOnRequest request);
         Task<DemandPasswordResetResponse> DemandPasswordReset(DemandPasswordResetRequest request);
@@ -35,6 +37,7 @@ namespace Translation.Common.Contracts
 
         UserReadResponse GetUser(UserReadRequest request);
         Task<UserReadListResponse> GetUsers(UserReadListRequest request);
+        Task<UserRevisionReadListResponse> GetUserRevisions(UserRevisionReadListRequest request);
         Task<UserLoginLogReadListResponse> GetUserLoginLogs(UserLoginLogReadListRequest request);
         Task<OrganizationLoginLogReadListResponse> GetUserLoginLogsOfOrganization(OrganizationLoginLogReadListRequest request);
         
@@ -43,5 +46,6 @@ namespace Translation.Common.Contracts
 
         Task<bool> LoadOrganizationsToCache();
         Task<bool> LoadUsersToCache();
+        Task<UserRestoreResponse> RestoreUser(UserRestoreRequest request);
     }
 }

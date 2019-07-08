@@ -27,16 +27,18 @@ namespace Translation.Data.Factories
         public Label CreateEntityFromRequest(LabelCloneRequest request, Label label)
         {
             var entity = new Label();
+            entity.OrganizationId = label.OrganizationId;
+            entity.OrganizationUid = label.OrganizationUid;
+            entity.OrganizationName = label.OrganizationName;
+
+            entity.ProjectId = label.ProjectId;
+            entity.ProjectUid = label.ProjectUid;
+            entity.ProjectName = label.ProjectName;
+
             entity.Description = request.Description;
             entity.Key = request.LabelKey;
             entity.Name = request.LabelKey;
 
-            entity.ProjectId = label.Id;
-            entity.ProjectUid = label.Uid;
-            entity.ProjectName = label.Name;
-            entity.OrganizationId = label.OrganizationId;
-            entity.OrganizationUid = label.OrganizationUid;
-            entity.OrganizationName = label.OrganizationName;
             entity.IsActive = true;
 
             return entity;
@@ -80,6 +82,7 @@ namespace Translation.Data.Factories
             dto.Key = entity.Key;
             dto.Name = entity.Name;
             dto.Description = entity.Description;
+            dto.LabelTranslationCount = entity.LabelTranslationCount;
 
             dto.OrganizationUid = entity.OrganizationUid;
             dto.OrganizationName = entity.OrganizationName;

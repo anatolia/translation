@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using StandardRepository.Helpers;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Helpers;
+using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Responses.Project;
 using Translation.Data.Entities.Domain;
@@ -82,6 +84,42 @@ namespace Translation.Service
             response.PagingInfo.LastUid = request.PagingInfo.LastUid;
             response.PagingInfo.IsAscending = request.PagingInfo.IsAscending;
             response.PagingInfo.TotalItemCount = await _projectRepository.Count(filter);
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
+        public async Task<ProjectRevisionReadListResponse> GetProjectRevisions(ProjectRevisionReadListRequest request)
+        {
+            var response = new ProjectRevisionReadListResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
+            if (project.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            var revisions = await _projectRepository.SelectRevisions(project.Id);
+
+            for (int i = 0; i < revisions.Count; i++)
+            {
+                var revision = revisions[i];
+
+                var revisionDto = new RevisionDto<ProjectDto>();
+                revisionDto.Revision = revision.Revision;
+                revisionDto.RevisionedAt = revision.RevisionedAt;
+
+                var user = _cacheManager.GetCachedUser(revision.RevisionedBy);
+                revisionDto.RevisionedByUid = user.Uid;
+                revisionDto.RevisionedByName = user.Name;
+
+                revisionDto.Item = _projectFactory.CreateDtoFromEntity(revision.Entity);
+
+                response.Items.Add(revisionDto);
+            }
 
             response.Status = ResponseStatus.Success;
             return response;
@@ -285,6 +323,14 @@ namespace Translation.Service
                 return response;
             }
 
+            if (await _projectRepository.Any(x => x.Name == request.Name
+                                                  && x.OrganizationId == currentUser.OrganizationId))
+            {
+                response.ErrorMessages.Add("project_name_must_be_unique");
+                response.Status = ResponseStatus.Failed;
+                return response;
+            }
+
             var cloningEntity = _projectFactory.CreateEntityFromRequest(request, project);
             var uowResult = await _projectUnitOfWork.DoCloneWork(request.CurrentUserId, project.Id, cloningEntity);
             if (uowResult)
@@ -333,6 +379,44 @@ namespace Translation.Service
             if (result)
             {
                 response.Item = _projectFactory.CreateDtoFromEntity(updatedEntity);
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<ProjectRestoreResponse> RestoreProject(ProjectRestoreRequest request)
+        {
+            var response = new ProjectRestoreResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
+            if (project.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("project_not_found");
+                return response;
+            }
+
+            var revisions = await _projectRepository.SelectRevisions(project.Id);
+            if (revisions.All(x => x.Revision != request.Revision))
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("revision_not_found");
+                return response;
+            }
+
+            var result = await _projectRepository.RestoreRevision(request.CurrentUserId, project.Id, request.Revision);
+            if (result)
+            {
                 response.Status = ResponseStatus.Success;
                 return response;
             }

@@ -1,0 +1,32 @@
+﻿@model CreateBulkLabelDoneModel
+
+<div>
+    <label data-translation="added_label_count">added_label_count</label>
+    @Model.AddedLabelCount
+</div>
+
+<div>
+    <label data-translation="can_not_added_label_count">can_not_added_label_count</label>
+    @Model.CanNotAddedLabelCount
+</div>
+
+<div>
+    <label data-translation="added_label_translation_count">added_label_translation_count</label>
+    @Model.AddedLabelTranslationCount
+</div>
+
+<div>
+    <label data-translation="can_not_added_label_translation_count">can_not_added_label_translation_count</label>
+    @Model.CanNotAddedLabelTranslationCount
+</div>
+
+<div>
+    <label data-translation="total_rows_processed">total_rows_processed</label>
+    @Model.TotalRowsProcessed
+</div>
+
+<partial name="Components/_ErrorMessages" model="@Model.WarningMessages" />
+
+<div class="bottom-links">
+    <span data-translation="visit">visit</span> <a href="/Project/Detail/@Model.ProjectUid">@Model.ProjectName</a>
+</div>

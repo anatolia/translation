@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.InputModels;
 using Translation.Common.Helpers;
@@ -9,19 +10,25 @@ namespace Translation.Client.Web.Models.Project
     {
         public Guid OrganizationUid { get; set; }
         public Guid CloningProjectUid { get; set; }
-        public string CloningProjectName { get; set; }
-
         public string Name { get; set; }
+
         public string Url { get; set; }
         public string Description { get; set; }
 
+        public int LabelCount { get; set; }
+        public int LabelTranslationCount { get; set; }
+        public bool IsSuperProject { get; set; }
+
         public HiddenInputModel OrganizationUidInput { get; }
         public HiddenInputModel CloningProjectUidInput { get; }
-        public HiddenInputModel CloningProjectNameInput { get; }
 
         public InputModel NameInput { get; }
         public UrlInputModel UrlInput { get; }
         public LongInputModel DescriptionInput { get; }
+
+        public HiddenInputModel LabelCountInput { get; set; }
+        public HiddenInputModel LabelTranslationCountInput { get; set; }
+        public CheckboxInputModel IsSuperProjectInput { get; set; }
 
         public ProjectCloneModel()
         {
@@ -29,22 +36,28 @@ namespace Translation.Client.Web.Models.Project
 
             OrganizationUidInput = new HiddenInputModel("OrganizationUid");
             CloningProjectUidInput = new HiddenInputModel("CloningProjectUid");
-            CloningProjectNameInput = new HiddenInputModel("CloningProjectName");
+            NameInput = new InputModel("Name", "name");
 
-            NameInput = new InputModel("Name", "name", true);
             UrlInput = new UrlInputModel("Url", "url");
             DescriptionInput = new LongInputModel("Description", "description");
+
+            LabelCountInput = new HiddenInputModel("LabelCount");
+            LabelTranslationCountInput = new HiddenInputModel("LabelTranslationCount");
+            IsSuperProjectInput = new CheckboxInputModel("IsSuperProject", "is_super_project");
         }
 
         public override void SetInputModelValues()
         {
             OrganizationUidInput.Value = OrganizationUid.ToUidString();
             CloningProjectUidInput.Value = CloningProjectUid.ToUidString();
-            CloningProjectNameInput.Value = CloningProjectName;
-
             NameInput.Value = Name;
+
             UrlInput.Value = Url;
             DescriptionInput.Value = Description;
+
+            LabelCountInput.Value = LabelCount.ToString();
+            LabelTranslationCountInput.Value = LabelTranslationCount.ToString();
+            IsSuperProjectInput.Value = IsSuperProject;
         }
 
         public override void SetInputErrorMessages()

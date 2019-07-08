@@ -9,12 +9,10 @@ using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
 using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
-using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.Project;
 using Translation.Common.Contracts;
 using Translation.Common.Helpers;
 using Translation.Common.Models.Requests.Label;
-using Translation.Common.Models.Requests.Label.LabelTranslation;
 using Translation.Common.Models.Requests.Organization;
 using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Shared;
@@ -189,7 +187,8 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new ProjectCloneRequest(CurrentUser.Id, model.OrganizationUid, model.CloningProjectUid,
-                                                  model.Name, model.Url, model.Description);
+                                                  model.Name, model.Url, model.Description,
+                                                  model.LabelCount, model.LabelTranslationCount, model.IsSuperProject);
             var response = await _projectService.CloneProject(request);
             if (response.Status.IsNotSuccess)
             {
@@ -239,7 +238,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var result = new DataResult();
-            result.AddHeaders("label_key", "description", "is_active");
+            result.AddHeaders("label_key", "label_translation_count", "description", "is_active");
 
             for (var i = 0; i < response.Items.Count; i++)
             {
@@ -247,6 +246,7 @@ namespace Translation.Client.Web.Controllers
                 var stringBuilder = new StringBuilder();
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Key)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
 
@@ -323,5 +323,103 @@ namespace Translation.Client.Web.Controllers
             CurrentUser.IsActionSucceed = true;
             return Json(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Revisions(Guid id)
+        {
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return RedirectToHome();
+            }
+
+            var model = new ProjectRevisionReadListModel();
+            if (projectUid.IsNotEmptyGuid())
+            {
+                var request = new ProjectReadRequest(CurrentUser.Id, projectUid);
+                var response = await _projectService.GetProject(request);
+                if (response.Status.IsNotSuccess)
+                {
+                    return NotFound();
+                }
+
+                model.ProjectUid = projectUid;
+                model.ProjectName = response.Item.Name;
+                model.SetInputModelValues();
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RevisionsData(Guid id)
+        {
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return NotFound();
+            }
+
+            var request = new ProjectRevisionReadListRequest(CurrentUser.Id, projectUid);
+
+            var response = await _projectService.GetProjectRevisions(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = new DataResult();
+            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "project_name", "is_active", "created_at", "");
+
+            for (var i = 0; i < response.Items.Count; i++)
+            {
+                var revisionItem = response.Items[i];
+                var item = revisionItem.Item;
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.Revision}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{GetDateTimeAsString(revisionItem.RevisionedAt)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Project/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Project/Restore/", "/Project/Detail")}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            return Json(result);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_project_restore")]
+        public async Task<IActionResult> Restore(Guid id, int revision)
+        {
+            var model = new CommonResult { IsOk = false };
+
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return Json(model);
+            }
+
+            if (revision < 1)
+            {
+                return Json(model);
+            }
+
+            var request = new ProjectRestoreRequest(CurrentUser.Id, projectUid, revision);
+            var response = await _projectService.RestoreProject(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.Messages = response.ErrorMessages;
+                return Json(model);
+            }
+
+            model.IsOk = true;
+            CurrentUser.IsActionSucceed = true;
+            return Json(model);
+        }
+
     }
 }

@@ -55,7 +55,14 @@ namespace Translation.Client.Web.Helpers.Mappers
             var model = new ProjectCloneModel();
             model.OrganizationUid = dto.OrganizationUid;
             model.CloningProjectUid = dto.Uid;
-            model.CloningProjectName = dto.Name;
+            model.Name = dto.Name;
+
+            model.Url = dto.Url;
+            model.Description = dto.Description;
+
+            model.LabelCount = dto.LabelCount;
+            model.LabelTranslationCount = dto.LabelTranslationCount;
+            model.IsSuperProject = dto.IsSuperProject;
 
             model.SetInputModelValues();
             return model;

@@ -1,0 +1,11 @@
+﻿@model LanguageRevisionReadListModel
+
+<div id="nav-help">
+    <a href="/Language/List" data-translation="languages">languages</a>
+    / <a href="/Language/Detail/@Model.LanguageUid">@Model.LanguageName</a>
+</div>
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+
+<div class="tbl">
+    <table data-result="/Language/RevisionsData/@Model.LanguageUid"></table>
+</div>

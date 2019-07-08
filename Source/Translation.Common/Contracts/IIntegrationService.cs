@@ -14,6 +14,7 @@ namespace Translation.Common.Contracts
     {
         Task<IntegrationCreateResponse> CreateIntegration(IntegrationCreateRequest request);
         Task<IntegrationReadResponse> GetIntegration(IntegrationReadRequest request);
+        Task<IntegrationRevisionReadListResponse> GetIntegrationRevisions(IntegrationRevisionReadListRequest request);
         Task<IntegrationReadListResponse> GetIntegrations(IntegrationReadListRequest request);
         Task<IntegrationEditResponse> EditIntegration(IntegrationEditRequest request);
         Task<IntegrationDeleteResponse> DeleteIntegration(IntegrationDeleteRequest request);
@@ -26,7 +27,7 @@ namespace Translation.Common.Contracts
         Task<IntegrationClientRefreshResponse> RefreshIntegrationClient(IntegrationClientRefreshRequest request);
         Task<IntegrationClientDeleteResponse> DeleteIntegrationClient(IntegrationClientDeleteRequest request);
         Task<IntegrationClientChangeActivationResponse> ChangeActivationForIntegrationClient(IntegrationClientChangeActivationRequest request);
-
+        Task<IntegrationRestoreResponse> RestoreIntegration(IntegrationRestoreRequest request);
         Task<TokenCreateResponse> CreateToken(TokenCreateRequest request);
         Task<TokenCreateResponse> CreateToken(TokenGetRequest request);
         Task<TokenRevokeResponse> RevokeToken(TokenRevokeRequest request);

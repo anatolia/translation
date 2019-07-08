@@ -18,11 +18,23 @@
     <a href="/Project/Detail/@Model.ProjectUid">@Model.ProjectName</a>
 </div>
 
+<div>
+    <label data-translation="label_translation_count">label_translation_count</label>
+    @Model.LabelTranslationCount
+</div>
+
 <partial name="Components/_Checkbox" model="@Model.IsActiveInput" />
+
+<div>
+    <label data-translation="label_translation_count">label_translation_count</label>
+    @Model.LabelTranslationCount
+</div>
+
 
 <div class="bottom-links">
     <a href="/Label/Edit/@Model.LabelUid" data-translation="edit_label_link">edit_label_link</a>
     <a href="/Label/Clone/@Model.LabelUid" data-translation="clone_label_link">clone_label_link</a>
+    <a href="/Label/Revisions/@Model.LabelUid" data-translation="revisions_link">revisions_link</a>
     <button type="button" class="btnRed"
             data-confirm-title="delete_label_confirm_title"
             data-confirm-content="delete_label_confirm_content"
@@ -41,7 +53,6 @@
 
 <h2 data-translation="translations">translations</h2>
 <div class="tbl">
-    <br />
     <a href="/Label/LabelTranslationCreate/@Model.LabelUid" data-translation="create_label_translation_link">create_label_translation_link</a>
     <a href="/Label/UploadLabelTranslationFromCSVFile/@Model.LabelUid" data-translation="upload_translations_from_csv_link">upload_translations_from_csv_link</a>
     <table data-result="/Label/LabelTranslationListData/@Model.LabelUid"></table>

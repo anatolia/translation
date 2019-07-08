@@ -9,9 +9,11 @@ namespace Translation.Common.Models.DataTransferObjects
         public Guid OrganizationUid { get; set; }
         public string OrganizationName { get; set; }
 
-        public string Url { get; set; }
         public string Description { get; set; }
-        public int LabelCount { get; set; }
+        public string Url { get; set; }
         public bool IsActive { get; set; }
+        public int LabelCount { get; set; }
+        public int LabelTranslationCount { get; set; }
+        public bool IsSuperProject { get; set; }
     }
 }
