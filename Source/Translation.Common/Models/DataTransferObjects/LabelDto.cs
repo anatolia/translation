@@ -14,5 +14,7 @@ namespace Translation.Common.Models.DataTransferObjects
         public string Key { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
+
+        public int LabelTranslationCount { get; set; }
     }
 }

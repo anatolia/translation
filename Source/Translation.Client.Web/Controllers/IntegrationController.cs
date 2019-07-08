@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -152,6 +151,103 @@ namespace Translation.Client.Web.Controllers
 
             CurrentUser.IsActionSucceed = true;
             return Json(new CommonResult { IsOk = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Revisions(Guid id)
+        {
+            var integrationUid = id;
+            if (integrationUid.IsEmptyGuid())
+            {
+                return RedirectToHome();
+            }
+
+            var model = new IntegrationRevisionReadListModel();
+            if (integrationUid.IsNotEmptyGuid())
+            {
+                var request = new IntegrationReadRequest(CurrentUser.Id, integrationUid);
+                var response = await _integrationService.GetIntegration(request);
+                if (response.Status.IsNotSuccess)
+                {
+                    return NotFound();
+                }
+
+                model.IntegrationUid = integrationUid;
+                model.IntegrationName = response.Item.Name;
+                model.SetInputModelValues();
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RevisionsData(Guid id)
+        {
+            var integrationUid = id;
+            if (integrationUid.IsEmptyGuid())
+            {
+                return NotFound();
+            }
+
+            var request = new IntegrationRevisionReadListRequest(CurrentUser.Id, integrationUid);
+
+            var response = await _integrationService.GetIntegrationRevisions(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = new DataResult();
+            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "integration_name", "is_active", "created_at", "");
+
+            for (var i = 0; i < response.Items.Count; i++)
+            {
+                var revisionItem = response.Items[i];
+                var item = revisionItem.Item;
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.Revision}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{GetDateTimeAsString(revisionItem.RevisionedAt)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Integration/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Integration/Restore/", "/Integration/Detail")}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            return Json(result);
+        }
+
+        [HttpPost,
+         JournalFilter(Message = "journal_integration_restore")]
+        public async Task<IActionResult> Restore(Guid id, int revision)
+        {
+            var model = new CommonResult { IsOk = false };
+
+            var integrationUid = id;
+            if (integrationUid.IsEmptyGuid())
+            {
+                return Json(model);
+            }
+
+            if (revision < 1)
+            {
+                return Json(model);
+            }
+
+            var request = new IntegrationRestoreRequest(CurrentUser.Id, integrationUid, revision);
+            var response = await _integrationService.RestoreIntegration(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.Messages = response.ErrorMessages;
+                return Json(model);
+            }
+
+            model.IsOk = true;
+            CurrentUser.IsActionSucceed = true;
+            return Json(model);
         }
 
         [HttpGet]

@@ -374,3 +374,31 @@ function handleChangeActivationRow(btn, url) {
             }
         });
 }
+
+function handleRestoreRow(btn, url, redirectUrl) {
+    let row = btn.parentElement.parentElement;
+    let table = row.parentElement.parentElement;
+    let thead = table.firstChild;
+
+    let revisionIndex = 0;
+    for (var i = 0; i < thead.firstChild.childNodes.length; i++) {
+        if (thead.firstChild.childNodes[i].dataset.translation === 'revision') {
+            break;
+        }
+        revisionIndex++;
+    }
+
+    var theRevision = row.children[revisionIndex].innerText;
+
+    let uid = btn.parentElement.parentElement.dataset.uid;
+    handleRow(btn, 'id=' + uid + '&revision=' + theRevision, url,
+        function (req) {
+            let response = JSON.parse(req.response);
+            if (response.isOk === true) {
+                window.location.href = redirectUrl + "/" + uid;
+            } else {
+                let messages = response.messages.join('<br/>');
+                showPopupMessage(messages);
+            }
+        });
+}

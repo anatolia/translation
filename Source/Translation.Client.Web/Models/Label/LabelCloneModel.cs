@@ -1,4 +1,5 @@
 using System;
+
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.InputModels;
 using Translation.Common.Helpers;
@@ -16,6 +17,8 @@ namespace Translation.Client.Web.Models.Label
         public string Key { get; set; }
         public string Description { get; set; }
 
+        public int CloningLabelTranslationCount { get; set; }
+
         public HiddenInputModel OrganizationUidInput { get; }
         public HiddenInputModel CloningLabelUidInput { get; }
         public HiddenInputModel CloningLabelKeyInput { get; }
@@ -23,6 +26,8 @@ namespace Translation.Client.Web.Models.Label
         public SelectInputModel ProjectUidInput { get; }
         public InputModel KeyInput { get; }
         public LongInputModel DescriptionInput { get; }
+
+        public HiddenInputModel CloningLabelTranslationCountInput { get; }
 
         public LabelCloneModel()
         {
@@ -35,6 +40,8 @@ namespace Translation.Client.Web.Models.Label
             ProjectUidInput = new SelectInputModel("ProjectUid", "ProjectName", "project", "/Project/SelectData/");
             KeyInput = new InputModel("Key", "key");
             DescriptionInput = new LongInputModel("Description", "description");
+
+            CloningLabelTranslationCountInput = new HiddenInputModel("CloningLabelTranslationCount", "cloning_label_translation_count");
         }
 
         public override void SetInputModelValues()
@@ -46,6 +53,8 @@ namespace Translation.Client.Web.Models.Label
 
             KeyInput.Value = CloningLabelKey;
             DescriptionInput.Value = CloningLabelDescription;
+
+            CloningLabelTranslationCountInput.Value = CloningLabelTranslationCount.ToString();
         }
 
         public override void SetInputErrorMessages()

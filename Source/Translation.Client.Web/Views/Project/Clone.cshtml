@@ -5,12 +5,11 @@
 <form method="post">
     <div>
         <label data-translation="cloning_project_name">cloning_project_name</label>
-        @Model.CloningProjectName
+        @Model.Name
     </div>
 
     <partial name="Components/_Hidden" model="@Model.OrganizationUidInput" />
     <partial name="Components/_Hidden" model="@Model.CloningProjectUidInput" />
-    <partial name="Components/_Hidden" model="@Model.CloningProjectNameInput" />
 
     <partial name="Components/_Input" model="@Model.NameInput" />
     <partial name="Components/_Url" model="@Model.UrlInput" />

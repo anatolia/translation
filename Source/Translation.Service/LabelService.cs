@@ -353,6 +353,42 @@ namespace Translation.Service
             return response;
         }
 
+        public async Task<LabelRevisionReadListResponse> GetLabelRevisions(LabelRevisionReadListRequest request)
+        {
+            var response = new LabelRevisionReadListResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            var label = await _labelRepository.Select(x => x.Uid == request.LabelUid);
+            if (label.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            var revisions = await _labelRepository.SelectRevisions(label.Id);
+
+            for (int i = 0; i < revisions.Count; i++)
+            {
+                var revision = revisions[i];
+
+                var revisionDto = new RevisionDto<LabelDto>();
+                revisionDto.Revision = revision.Revision;
+                revisionDto.RevisionedAt = revision.RevisionedAt;
+
+                var user = _cacheManager.GetCachedUser(revision.RevisionedBy);
+                revisionDto.RevisionedByUid = user.Uid;
+                revisionDto.RevisionedByName = user.Name;
+
+                revisionDto.Item = _labelFactory.CreateDtoFromEntity(revision.Entity);
+
+                response.Items.Add(revisionDto);
+            }
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
         public async Task<AllLabelReadListResponse> GetLabelsWithTranslations(AllLabelReadListRequest request)
         {
             var response = new AllLabelReadListResponse();
@@ -653,7 +689,45 @@ namespace Translation.Service
             var uowResult = await _labelUnitOfWork.DoCloneWork(request.CurrentUserId, label.Id, newLabel);
             if (uowResult)
             {
-                response.Item = _labelFactory.CreateDtoFromEntity(label);
+                response.Item = _labelFactory.CreateDtoFromEntity(newLabel);
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<LabelRestoreResponse> RestoreLabel(LabelRestoreRequest request)
+        {
+            var response = new LabelRestoreResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            var label = await _labelRepository.Select(x => x.Uid == request.LabelUid);
+            if (label.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("label_not_found");
+                return response;
+            }
+
+            var revisions = await _labelRepository.SelectRevisions(label.Id);
+            if (revisions.All(x => x.Revision != request.Revision))
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("revision_not_found");
+                return response;
+            }
+
+            var result = await _labelRepository.RestoreRevision(request.CurrentUserId, label.Id, request.Revision);
+            if (result)
+            {
                 response.Status = ResponseStatus.Success;
                 return response;
             }
@@ -900,6 +974,42 @@ namespace Translation.Service
             return response;
         }
 
+        public async Task<LabelTranslationRevisionReadListResponse> GetLabelTranslationRevisions(LabelTranslationRevisionReadListRequest request)
+        {
+            var response = new LabelTranslationRevisionReadListResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            var labelTranslation = await _labelTranslationRepository.Select(x => x.Uid == request.LabelTranslationUid);
+            if (labelTranslation.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            var revisions = await _labelTranslationRepository.SelectRevisions(labelTranslation.Id);
+
+            for (int i = 0; i < revisions.Count; i++)
+            {
+                var revision = revisions[i];
+
+                var revisionDto = new RevisionDto<LabelTranslationDto>();
+                revisionDto.Revision = revision.Revision;
+                revisionDto.RevisionedAt = revision.RevisionedAt;
+
+                var user = _cacheManager.GetCachedUser(revision.RevisionedBy);
+                revisionDto.RevisionedByUid = user.Uid;
+                revisionDto.RevisionedByName = user.Name;
+
+                revisionDto.Item = _labelTranslationFactory.CreateDtoFromEntity(revision.Entity);
+
+                response.Items.Add(revisionDto);
+            }
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
         public async Task<LabelTranslationEditResponse> EditTranslation(LabelTranslationEditRequest request)
         {
             var response = new LabelTranslationEditResponse();
@@ -987,6 +1097,44 @@ namespace Translation.Service
 
             var uowResult = await _labelUnitOfWork.DoDeleteTranslationWork(request.CurrentUserId, labelTranslation);
             if (uowResult)
+            {
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<LabelTranslationRestoreResponse> RestoreLabelTranslation(LabelTranslationRestoreRequest request)
+        {
+            var response = new LabelTranslationRestoreResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            var labelTranslation = await _labelTranslationRepository.Select(x => x.Uid == request.LabelTranslationUid);
+            if (labelTranslation.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("label_translation_not_found");
+                return response;
+            }
+
+            var revisions = await _labelTranslationRepository.SelectRevisions(labelTranslation.Id);
+            if (revisions.All(x => x.Revision != request.Revision))
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("revision_not_found");
+                return response;
+            }
+
+            var result = await _labelTranslationRepository.RestoreRevision(request.CurrentUserId, labelTranslation.Id, request.Revision);
+            if (result)
             {
                 response.Status = ResponseStatus.Success;
                 return response;

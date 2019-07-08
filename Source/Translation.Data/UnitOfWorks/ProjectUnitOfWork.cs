@@ -82,7 +82,7 @@ namespace Translation.Data.UnitOfWorks
                 var labelTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == projectId);
 
                 newProject.LabelTranslationCount = labelTranslations.Count;
-                newProject.LabelCount = labelTranslations.Count;
+                newProject.LabelCount = labels.Count;
                 var newProjectId = await _projectRepository.Insert(currentUserId, newProject);
 
                 var organization = await _organizationRepository.SelectById(newProject.OrganizationId);

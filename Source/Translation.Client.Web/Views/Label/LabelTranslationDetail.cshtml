@@ -1,0 +1,20 @@
+﻿@model LabelTranslationDetailModel
+
+<label data-translation="label_name">label_name</label>
+<h1>@Model.LabelKey</h1>
+
+<div>
+    <label data-translation="language_name">language_name</label>
+    @Model.LanguageName
+</div>
+
+<div>
+    <label data-translation="translation">translation</label>
+    @Model.Translation
+</div>
+
+<div class="bottom-links">
+    <a href="/Label/LabelTranslationEdit/@Model.LabelTranslationUid" data-translation="edit">edit</a>
+    <a href="/Label/LabelTranslationRevisions/@Model.LabelTranslationUid" data-translation="revisions_link">revisions_link</a>
+</div>
+

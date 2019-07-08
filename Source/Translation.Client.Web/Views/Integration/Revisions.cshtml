@@ -1,0 +1,10 @@
+﻿@model IntegrationRevisionReadListModel
+
+<div id="nav-help">
+    <a href="/Integration/Detail/@Model.IntegrationUid">@Model.IntegrationName</a>
+</div>
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+
+<div class="tbl">
+    <table data-result="/Integration/RevisionsData/@Model.IntegrationUid"></table>
+</div>

@@ -10,6 +10,7 @@ using StandardRepository.Helpers;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Helpers;
+using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Organization;
 using Translation.Common.Models.Requests.User;
 using Translation.Common.Models.Requests.User.LoginLog;
@@ -181,6 +182,42 @@ namespace Translation.Service
             return response;
         }
 
+        public async Task<OrganizationRevisionReadListResponse> GetOrganizationRevisions(OrganizationRevisionReadListRequest request)
+        {
+            var response = new OrganizationRevisionReadListResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
+            if (organization.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            var revisions = await _organizationRepository.SelectRevisions(organization.Id);
+
+            for (int i = 0; i < revisions.Count; i++)
+            {
+                var revision = revisions[i];
+
+                var revisionDto = new RevisionDto<OrganizationDto>();
+                revisionDto.Revision = revision.Revision;
+                revisionDto.RevisionedAt = revision.RevisionedAt;
+
+                var user = _cacheManager.GetCachedUser(revision.RevisionedBy);
+                revisionDto.RevisionedByUid = user.Uid;
+                revisionDto.RevisionedByName = user.Name;
+
+                revisionDto.Item = _organizationFactory.CreateDtoFromEntity(revision.Entity);
+
+                response.Items.Add(revisionDto);
+            }
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
         public async Task<OrganizationEditResponse> EditOrganization(OrganizationEditRequest request)
         {
             var response = new OrganizationEditResponse();
@@ -218,6 +255,44 @@ namespace Translation.Service
                 _cacheManager.UpsertOrganizationCache(updatedEntity, _organizationFactory.MapCurrentOrganization(updatedEntity));
 
                 response.Item = _organizationFactory.CreateDtoFromEntity(updatedEntity);
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<OrganizationRestoreResponse> RestoreOrganization(OrganizationRestoreRequest request)
+        {
+            var response = new OrganizationRestoreResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
+            if (organization.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("organization_setting_not_found");
+                return response;
+            }
+
+            var revisions = await _organizationRepository.SelectRevisions(organization.Id);
+            if (revisions.All(x => x.Revision != request.Revision))
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("revision_not_found");
+                return response;
+            }
+
+            var result = await _organizationRepository.RestoreRevision(request.CurrentUserId, organization.Id, request.Revision);
+            if (result)
+            {
                 response.Status = ResponseStatus.Success;
                 return response;
             }
@@ -725,6 +800,43 @@ namespace Translation.Service
             return response;
         }
 
+
+        public async Task<UserRevisionReadListResponse> GetUserRevisions(UserRevisionReadListRequest request)
+        {
+            var response = new UserRevisionReadListResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            var user = await _userRepository.Select(x => x.Uid == request.UserUid);
+            if (user.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            var revisions = await _userRepository.SelectRevisions(user.Id);
+
+            for (int i = 0; i < revisions.Count; i++)
+            {
+                var revision = revisions[i];
+
+                var revisionDto = new RevisionDto<UserDto>();
+                revisionDto.Revision = revision.Revision;
+                revisionDto.RevisionedAt = revision.RevisionedAt;
+
+                var revisionedByUser = _cacheManager.GetCachedUser(revision.RevisionedBy);
+                revisionDto.RevisionedByUid = revisionedByUser.Uid;
+                revisionDto.RevisionedByName = revisionedByUser.Name;
+
+                revisionDto.Item = _userFactory.CreateDtoFromEntity(revision.Entity);
+
+                response.Items.Add(revisionDto);
+            }
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
         public async Task<UserLoginLogReadListResponse> GetUserLoginLogs(UserLoginLogReadListRequest request)
         {
             var response = new UserLoginLogReadListResponse();
@@ -861,5 +973,44 @@ namespace Translation.Service
 
             return true;
         }
+
+        public async Task<UserRestoreResponse> RestoreUser(UserRestoreRequest request)
+        {
+            var response = new UserRestoreResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            var user = await _userRepository.Select(x => x.Uid == request.UserUid);
+            if (user.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("user_setting_not_found");
+                return response;
+            }
+
+            var revisions = await _userRepository.SelectRevisions(user.Id);
+            if (revisions.All(x => x.Revision != request.Revision))
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("revision_not_found");
+                return response;
+            }
+
+            var result = await _userRepository.RestoreRevision(request.CurrentUserId, user.Id, request.Revision);
+            if (result)
+            {
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
     }
 }

@@ -33,6 +33,8 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.IsActive = dto.IsActive;
             model.IsActiveInput.Value = dto.IsActive;
 
+            model.LabelTranslationCount = dto.LabelTranslationCount;
+
             model.SetInputModelValues();
             return model;
         }
@@ -57,6 +59,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.CloningLabelUid = dto.Uid;
             model.CloningLabelKey = dto.Key;
             model.CloningLabelDescription = dto.Description;
+            model.CloningLabelTranslationCount = dto.LabelTranslationCount;
 
             model.SetInputModelValues();
             return model;
@@ -65,6 +68,17 @@ namespace Translation.Client.Web.Helpers.Mappers
         public static LabelUploadFromCSVModel MapLabelUploadFromCSVModel(ProjectDto project)
         {
             var model = new LabelUploadFromCSVModel();
+            model.OrganizationUid = project.OrganizationUid;
+            model.ProjectUid = project.Uid;
+            model.ProjectName = project.Name;
+
+            model.SetInputModelValues();
+            return model;
+        }
+
+        public static CreateBulkLabelModel MapCreateBulkLabelModel(ProjectDto project)
+        {
+            var model = new CreateBulkLabelModel();
             model.OrganizationUid = project.OrganizationUid;
             model.ProjectUid = project.Uid;
             model.ProjectName = project.Name;
@@ -105,6 +119,22 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.LabelTranslationUid = dto.Uid;
             model.Translation = dto.Translation;
             model.TranslationInput.Value = dto.Translation;
+            model.LabelKey = dto.LabelKey;
+            model.LanguageName = dto.LanguageName;
+            model.LanguageIconUrl = dto.LanguageIconUrl;
+
+            model.OrganizationUid = dto.OrganizationUid;
+            model.SetInputModelValues();
+
+            return model;
+        }
+
+
+        public static LabelTranslationDetailModel MapLabelTranslationDetailModel(LabelTranslationDto dto)
+        {
+            var model = new LabelTranslationDetailModel();
+            model.LabelTranslationUid = dto.Uid;
+            model.Translation = dto.Translation;
             model.LabelKey = dto.LabelKey;
             model.LanguageName = dto.LanguageName;
             model.LanguageIconUrl = dto.LanguageIconUrl;

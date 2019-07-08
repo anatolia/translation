@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ using StandardRepository.Helpers;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Helpers;
+using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Responses.Language;
 using Translation.Data.Entities.Parameter;
@@ -86,6 +88,42 @@ namespace Translation.Service
             response.PagingInfo.LastUid = request.PagingInfo.LastUid;
             response.PagingInfo.IsAscending = request.PagingInfo.IsAscending;
             response.PagingInfo.TotalItemCount = await _languageRepository.Count(filter);
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
+        public async Task<LanguageRevisionReadListResponse> GetLanguageRevisions(LanguageRevisionReadListRequest request)
+        {
+            var response = new LanguageRevisionReadListResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
+            if (language.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            var revisions = await _languageRepository.SelectRevisions(language.Id);
+
+            for (int i = 0; i < revisions.Count; i++)
+            {
+                var revision = revisions[i];
+
+                var revisionDto = new RevisionDto<LanguageDto>();
+                revisionDto.Revision = revision.Revision;
+                revisionDto.RevisionedAt = revision.RevisionedAt;
+
+                var user = _cacheManager.GetCachedUser(revision.RevisionedBy);
+                revisionDto.RevisionedByUid = user.Uid;
+                revisionDto.RevisionedByName = user.Name;
+
+                revisionDto.Item = _languageFactory.CreateDtoFromEntity(revision.Entity);
+
+                response.Items.Add(revisionDto);
+            }
 
             response.Status = ResponseStatus.Success;
             return response;
@@ -184,6 +222,39 @@ namespace Translation.Service
             }
 
             var result = await _languageRepository.Delete(request.CurrentUserId, language.Id);
+            if (result)
+            {
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<LanguageRestoreResponse> RestoreLanguage(LanguageRestoreRequest request)
+        {
+            var response = new LanguageRestoreResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            
+            var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
+            if (language.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("language_not_found");
+                return response;
+            }
+
+            var revisions = await _languageRepository.SelectRevisions(language.Id);
+            if (revisions.All(x => x.Revision != request.Revision))
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                response.InfoMessages.Add("revision_not_found");
+                return response;
+            }
+
+            var result = await _languageRepository.RestoreRevision(request.CurrentUserId, language.Id, request.Revision);
             if (result)
             {
                 response.Status = ResponseStatus.Success;

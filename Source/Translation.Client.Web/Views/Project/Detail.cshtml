@@ -25,6 +25,7 @@
 <div class="bottom-links">
     <a href="/Project/Edit/@Model.ProjectUid" data-translation="edit_project_link">edit_project_link</a>
     <a href="/Project/Clone/@Model.ProjectUid" data-translation="clone_project_link">clone_project_link</a>
+    <a href="/Project/Revisions/@Model.ProjectUid" data-translation="revisions_link">revisions_link</a>
     <button type="button" class="btnRed"
             data-confirm-title="delete_project_confirm_title"
             data-confirm-content="delete_project_confirm_content"
@@ -44,6 +45,7 @@
 <h2 data-translation="labels">labels</h2>
 <div class="tbl">
     <a href="/Label/Create/@Model.ProjectUid" data-translation="create_label_link">create_label_link</a>
+    <a href="/Label/CreateBulkLabel/@Model.ProjectUid" data-translation="create_bulk_label_link">create_bulk_label_link</a>
     <a href="/Label/UploadLabelFromCSVFile/@Model.ProjectUid" data-translation="upload_labels_from_csv_link">upload_labels_from_csv_link</a>
     <table data-result="/Project/LabelListData/@Model.ProjectUid"></table>
 </div>

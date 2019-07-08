@@ -1,0 +1,22 @@
+﻿@model CreateBulkLabelModel
+
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+<p data-translation="be_careful_it_overwrites_existing_translations">be_careful_it_overwrites_existing_translations</p>
+
+<div>
+    <label data-translation="project">project</label>
+    <a href="/Project/Detail/@Model.ProjectUid">@Model.ProjectName</a>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+    <partial name="Components/_Hidden" model="@Model.OrganizationUidInput" />
+    <partial name="Components/_Hidden" model="@Model.ProjectUidInput" />
+    <partial name="Components/_Hidden" model="@Model.ProjectNameInput" />
+
+    <partial name="Components/_Textarea" model="@Model.BulkLabelInput" />
+
+    <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
+    <partial name="Components/_ErrorMessages" model="@Model.WarningMessages" />
+
+    <button type="submit" data-translation="create_bulk_button">create_bulk_button</button>
+</form>

@@ -1,0 +1,11 @@
+﻿@model LabelRevisionReadListModel
+
+<div id="nav-help">
+    <a href="/Label/List" data-translation="labels">labels</a>
+    / <a href="/Label/Detail/@Model.LabelUid">@Model.LabelName</a>
+</div>
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+
+<div class="tbl">
+    <table data-result="/Label/RevisionsData/@Model.LabelUid"></table>
+</div>
