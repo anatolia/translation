@@ -13,6 +13,7 @@ namespace Translation.Common.Contracts
         Task<LabelCreateResponse> CreateLabel(LabelCreateWithTokenRequest request);
         Task<LabelCreateListResponse> CreateLabelFromList(LabelCreateListRequest request);
         Task<LabelReadResponse> GetLabel(LabelReadRequest request);
+        Task<LabelReadByKeyResponse> GetLabelByKey(LabelReadByKeyRequest request);
         Task<LabelReadListResponse> GetLabels(LabelReadListRequest request);
         Task<LabelRevisionReadListResponse> GetLabelRevisions(LabelRevisionReadListRequest request);
         Task<AllLabelReadListResponse> GetLabelsWithTranslations(AllLabelReadListRequest labelReadListRequest);
