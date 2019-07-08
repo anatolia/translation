@@ -82,6 +82,7 @@ namespace Translation.Data.Factories
             dto.Key = entity.Key;
             dto.Name = entity.Name;
             dto.Description = entity.Description;
+            dto.LabelTranslationCount = entity.LabelTranslationCount;
 
             dto.OrganizationUid = entity.OrganizationUid;
             dto.OrganizationName = entity.OrganizationName;
