@@ -119,6 +119,7 @@ namespace Translation.Client.Web.Controllers
                 }
 
                 model.OrganizationUid = organizationUid;
+                model.OrganizationName = response.Item.Name;
                 model.SetInputModelValues();
             }
 
