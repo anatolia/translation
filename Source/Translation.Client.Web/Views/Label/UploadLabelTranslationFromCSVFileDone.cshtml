@@ -10,8 +10,14 @@
     @Model.CanNotAddedTranslationCount
 </div>
 
+<div>
+    <label data-translation="total_rows_processed">total_rows_processed</label>
+    @Model.TotalRowsProcessed
+</div>
+
 <partial name="Components/_ErrorMessages" model="@Model.WarningMessages" />
 
-<div class="bottom-links">
+<div>
+    <br />
     <span data-translation="visit">visit</span> <a href="/Label/Detail/@Model.LabelUid">@Model.LabelKey</a>
 </div>

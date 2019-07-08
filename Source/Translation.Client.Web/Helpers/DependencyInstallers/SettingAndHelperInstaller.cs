@@ -31,7 +31,6 @@ namespace Translation.Client.Web.Helpers.DependencyInstallers
             connectionSettings.DbPassword = ConfigurationManager.AppSettings[ConstantHelper.KEY_DB_PASS];
             connectionSettings.DbPort = ConfigurationManager.AppSettings[ConstantHelper.KEY_DB_PORT];
             container.Register(Component.For<ConnectionSettings>().Instance(connectionSettings));
-            Console.WriteLine(PostgreSQLConnectionFactory.GetConnectionString(connectionSettings));
 
             var adminSettings = new AdminSettings();
             adminSettings.AdminEmail = ConfigurationManager.AppSettings[ConstantHelper.KEY_SUPER_ADMIN_EMAIL];

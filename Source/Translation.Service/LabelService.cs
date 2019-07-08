@@ -219,7 +219,7 @@ namespace Translation.Service
                 response.AddedLabelCount++;
             }
 
-            var translationsInsert = new List<LabelTranslation>();
+            var translationsToInsert = new List<LabelTranslation>();
             var translationsToUpdate = new List<LabelTranslation>();
 
             for (var i = 0; i < request.Labels.Count; i++)
@@ -239,13 +239,28 @@ namespace Translation.Service
                     var oldLabel = oldLabels.FirstOrDefault(x => x.Key == translationInfo.LabelKey);
                     if (oldLabel != null)
                     {
-                        if (oldTranslations.Any(x => x.Translation == translationInfo.Translation && x.LabelId == oldLabel.Id))
+                        if (translationsToInsert.Any(x => x.LanguageId == language.Id
+                                                          && x.LabelUid == oldLabel.Uid))
                         {
                             continue;
                         }
 
-                        var translationToUpdate = _labelTranslationFactory.CreateEntity(translationInfo.Translation, oldLabel, language);
-                        translationsToUpdate.Add(translationToUpdate);
+                        var translationForExistingLabel = oldTranslations.FirstOrDefault(x => x.LabelId == oldLabel.Id && x.LanguageId == language.Id);
+                        if (translationForExistingLabel == null)
+                        {
+                            var translationToInsert = _labelTranslationFactory.CreateEntity(translationInfo.Translation, oldLabel, language);
+                            translationsToInsert.Add(translationToInsert);
+                            response.AddedLabelTranslationCount++;
+                            continue;
+                        }
+
+                        if (translationForExistingLabel.Translation == translationInfo.Translation)
+                        {
+                            continue;
+                        }
+
+                        translationForExistingLabel.Translation = translationInfo.Translation;
+                        translationsToUpdate.Add(translationForExistingLabel);
                         response.UpdatedLabelTranslationCount++;
                         continue;
                     }
@@ -254,17 +269,33 @@ namespace Translation.Service
                     continue;
                 }
 
-                if (translationsInsert.Any(x => x.Translation == translationInfo.Translation && x.LabelId == label.Id))
+                if (translationsToInsert.Any(x => x.LanguageId == language.Id
+                                                  && x.LabelUid == label.Uid))
                 {
                     continue;
                 }
 
-                var labelTranslation = _labelTranslationFactory.CreateEntity(translationInfo.Translation, label, language);
-                translationsInsert.Add(labelTranslation);
-                response.AddedLabelTranslationCount++;
+                var oldTranslation = oldTranslations.FirstOrDefault(x => x.LabelUid == label.Uid && x.LanguageId == language.Id);
+                if (oldTranslation != null)
+                {
+                    if (oldTranslation.Translation == translationInfo.Translation)
+                    {
+                        continue;
+                    }
+
+                    oldTranslation.Translation = translationInfo.Translation;
+                    translationsToUpdate.Add(oldTranslation);
+                    response.UpdatedLabelTranslationCount++;
+                }
+                else
+                {
+                    var labelTranslation = _labelTranslationFactory.CreateEntity(translationInfo.Translation, label, language);
+                    translationsToInsert.Add(labelTranslation);
+                    response.AddedLabelTranslationCount++;
+                }
             }
 
-            var uowResult = await _labelUnitOfWork.DoCreateWorkBulk(request.CurrentUserId, labels, translationsInsert, translationsToUpdate);
+            var uowResult = await _labelUnitOfWork.DoCreateWorkBulk(request.CurrentUserId, labels, translationsToInsert, translationsToUpdate);
             if (uowResult)
             {
                 response.Status = ResponseStatus.Success;

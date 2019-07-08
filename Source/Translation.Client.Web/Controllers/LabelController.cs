@@ -398,6 +398,7 @@ namespace Translation.Client.Web.Controllers
             doneModel.CanNotAddedLabelCount = response.CanNotAddedLabelCount;
             doneModel.AddedLabelTranslationCount = response.AddedLabelTranslationCount;
             doneModel.CanNotAddedLabelTranslationCount = response.CanNotAddedLabelTranslationCount;
+            doneModel.TotalRowsProcessed = lines.Count - 1;
 
             CurrentUser.IsActionSucceed = true;
             return View("UploadLabelFromCSVFileDone", doneModel);
@@ -469,6 +470,7 @@ namespace Translation.Client.Web.Controllers
             doneModel.CanNotAddedLabelCount = response.CanNotAddedLabelCount;
             doneModel.AddedLabelTranslationCount = response.AddedLabelTranslationCount;
             doneModel.CanNotAddedLabelTranslationCount = response.CanNotAddedLabelTranslationCount;
+            doneModel.TotalRowsProcessed = lines.Length - 1;
 
             CurrentUser.IsActionSucceed = true;
             return View("CreateBulkLabelDone", doneModel);
@@ -599,7 +601,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var result = new DataResult();
-            result.AddHeaders("language", "translation", "", "");
+            result.AddHeaders("language", "translation", "");
 
             for (var i = 0; i < response.Items.Count; i++)
             {
@@ -608,7 +610,7 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{result.PrepareImage($"{item.LanguageIconUrl}", item.LanguageName)} {item.LanguageName}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Translation}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationEdit/{item.Uid}", Localizer.Localize("edit"), true)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationEdit/{item.Uid}", Localizer.Localize("edit"), true)}");
                 stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
@@ -692,6 +694,7 @@ namespace Translation.Client.Web.Controllers
             doneModel.LabelKey = model.LabelKey;
             doneModel.AddedTranslationCount = response.AddedTranslationCount;
             doneModel.CanNotAddedTranslationCount = response.CanNotAddedTranslationCount;
+            doneModel.TotalRowsProcessed = lines.Count - 1;
 
             CurrentUser.IsActionSucceed = true;
             return View("UploadLabelTranslationFromCSVFileDone", doneModel);

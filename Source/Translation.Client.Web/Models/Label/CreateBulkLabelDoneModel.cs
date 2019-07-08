@@ -14,6 +14,7 @@ namespace Translation.Client.Web.Models.Label
         
         public int CanNotAddedLabelTranslationCount { get; set; }
         public int AddedLabelTranslationCount { get; set; }
+        public int TotalRowsProcessed { get; set; }
 
         public CreateBulkLabelDoneModel()
         {

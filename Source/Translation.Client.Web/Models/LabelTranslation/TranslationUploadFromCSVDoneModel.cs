@@ -11,6 +11,7 @@ namespace Translation.Client.Web.Models.LabelTranslation
 
         public int AddedTranslationCount { get; set; }
         public int CanNotAddedTranslationCount { get; set; }
+        public int TotalRowsProcessed { get; set; }
 
         public TranslationUploadFromCSVDoneModel()
         {

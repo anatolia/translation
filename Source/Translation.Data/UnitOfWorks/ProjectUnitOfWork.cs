@@ -98,18 +98,20 @@ namespace Translation.Data.UnitOfWorks
                     label.ProjectName = newProject.Name;
                     label.LabelTranslationCount = labelTranslations.Count(x => x.LabelId == label.Id);
 
-                    await _labelRepository.Insert(currentUserId, label);
-                }
+                    var labelId = await _labelRepository.Insert(currentUserId, label);
 
-                for (var i = 0; i < labelTranslations.Count; i++)
-                {
-                    var labelTranslation = labelTranslations[i];
-                    labelTranslation.Uid = Guid.NewGuid();
-                    labelTranslation.ProjectId = newProjectId;
-                    labelTranslation.ProjectUid = newProject.Uid;
-                    labelTranslation.ProjectName = newProject.Name;
+                    var labelsTranslations = labelTranslations.Where(x => x.LabelName == label.Key).ToList();
+                    for (var lt = 0; lt < labelsTranslations.Count; lt++)
+                    {
+                        var labelTranslation = labelTranslations[lt];
+                        labelTranslation.Uid = Guid.NewGuid();
+                        labelTranslation.ProjectId = newProjectId;
+                        labelTranslation.ProjectUid = newProject.Uid;
+                        labelTranslation.ProjectName = newProject.Name;
+                        labelTranslation.LabelId = labelId;
 
-                    await _labelTranslationRepository.Insert(currentUserId, labelTranslation);
+                        await _labelTranslationRepository.Insert(currentUserId, labelTranslation);
+                    }
                 }
 
                 return true;
