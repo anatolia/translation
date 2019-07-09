@@ -336,16 +336,11 @@ namespace Translation.Service
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
-            var label = await _labelRepository.Select(x => x.Key == request.LabelKey);
+            var label = await _labelRepository.Select(x => x.OrganizationId == currentUser.OrganizationId 
+                                                           && x.Key == request.LabelKey);
             if (label.IsNotExist())
             {
                 response.SetInvalidBecauseEntityNotFound();
-                return response;
-            }
-
-            if (label.OrganizationId != currentUser.OrganizationId)
-            {
-                response.SetFailed();
                 return response;
             }
 
