@@ -423,7 +423,7 @@ namespace Translation.Service
             {
                 foreach (var entity in entities)
                 {
-                    var dto = _labelFactory.CreateDtoForSearch(entity);
+                    var dto = _labelFactory.CreateDtoFromEntity(entity);
                     response.Items.Add(dto);
                 }
             }

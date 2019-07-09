@@ -153,7 +153,7 @@ function filterLabels() {
 
 function bindLabelSearchDropdown(responseText) {
     var dropdown = document.getElementById('dropdown');
-    while (dropdown.firstChild) {
+    while (dropdown.childElementCount > 1) {
         dropdown.removeChild(dropdown.firstChild);
     }
     var labels = JSON.parse(responseText);
@@ -165,8 +165,16 @@ function bindLabelSearchDropdown(responseText) {
         var aTag = document.createElement('a');
         aTag.setAttribute('href', "/Label/Detail/" + label.key);
         aTag.innerHTML = label.key;
-        dropdown.appendChild(aTag);
+        dropdown.insertBefore(aTag, dropdown.firstChild);
     }
+}
+
+function openLabelSearchListPage() {
+    window.location.href = "/Label/SearchList?search=" + getLabelSearchTerm();
+}
+
+function getLabelSearchTerm() {
+    return document.getElementById("txtSearch").value;
 }
 
 document.onclick = function (e) {

@@ -1,0 +1,12 @@
+﻿@model LabelSearchListModel
+
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+
+<div>
+    <label data-translation="label_search_results_for">label_search_results_for</label>
+    @Model.SearchTerm
+</div>
+
+<div class="tbl">
+    <table data-result="/Label/SearchListData?search=@Model.SearchTerm"></table>
+</div>

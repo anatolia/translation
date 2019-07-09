@@ -161,6 +161,14 @@ namespace Translation.Client.Web.Controllers
             return Redirect($"/Label/Detail/{response.Item.Uid}");
         }
 
+        [HttpGet]
+        public ViewResult SearchList(string search)
+        {
+            var model = new LabelSearchListModel();
+            model.SearchTerm = search;
+            return View(model);
+        }
+
         [HttpPost,
          JournalFilter(Message = "journal_label_delete")]
         public async Task<IActionResult> Delete(Guid id)
@@ -233,7 +241,8 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new LabelSearchListRequest(CurrentUser.Id, search);
-            
+            request.PagingInfo.Take = 6;
+
             var response = await _labelService.GetLabels(request);
             if (response.Status.IsNotSuccess)
             {
@@ -241,6 +250,45 @@ namespace Translation.Client.Web.Controllers
             }
 
             return Json(response.Items);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchListData(string search, int skip, int take)
+        {
+            if (search.IsEmpty())
+            {
+                return Json(null);
+            }
+
+            var request = new LabelSearchListRequest(CurrentUser.Id, search);
+            SetPaging(skip, take, request);
+
+            var response = await _labelService.GetLabels(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = new DataResult();
+            result.AddHeaders("label_key", "label_translation_count", "description", "is_active");
+
+            for (var i = 0; i < response.Items.Count; i++)
+            {
+                var item = response.Items[i];
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Key}", item.Key)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            result.PagingInfo = response.PagingInfo;
+            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+
+            return Json(result);
         }
 
         [HttpPost,

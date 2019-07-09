@@ -8,7 +8,6 @@ namespace Translation.Common.Models.Requests.Label
     {
         public LabelSearchListRequest(long currentUserId, string searchTerm) : base(currentUserId)
         {
-            PagingInfo.Take = 6;
             SearchTerm = searchTerm;
         }
     }
