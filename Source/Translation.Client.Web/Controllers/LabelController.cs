@@ -81,7 +81,8 @@ namespace Translation.Client.Web.Controllers
         {
             if (id.IsUid())
             {
-                var labelUid = id.ToGuid();
+                Guid.TryParse(id, out var uid);
+                var labelUid = uid;
                 if (labelUid.IsEmptyGuid())
                 {
                     return RedirectToHome();
