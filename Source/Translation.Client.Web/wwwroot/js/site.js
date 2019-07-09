@@ -103,7 +103,7 @@ function translateScreen() {
         userLanguage = 'en';
     }
 
-    items.forEach(function(item) {
+    items.forEach(function (item) {
         for (var i = 0; i < labels.length; i++) {
             var label = labels[i];
             if (label.key === item.dataset.translation) {
@@ -111,11 +111,11 @@ function translateScreen() {
                 label.translations.forEach(function (translation) {
                     if (translation.languageIsoCode2 === userLanguage) {
                         item.innerHTML = translation.translation;
-                        return;  
+                        return;
                     }
                 });
 
-                break;   
+                break;
             }
         }
     });
@@ -132,3 +132,61 @@ if (localStorage.getItem('labels') == undefined) {
     translateScreen();
 }
 
+function filterLabels() {
+    var dropdown = document.getElementById("dropdown");
+    var filter, txtSearch;
+    txtSearch = document.getElementById("txtSearch");
+    filter = txtSearch.value;
+
+    doGet('/Label/SearchData?search=' + filter, function (req) {
+        if (199 < req.status && req.status < 300) {
+            bindLabelSearchDropdown(req.responseText);
+        }
+    });
+
+    if (filter == "") {
+        hide(dropdown);
+    } else {
+        show(dropdown);
+    }
+}
+
+function bindLabelSearchDropdown(responseText) {
+    var dropdown = document.getElementById('dropdown');
+    while (dropdown.firstChild) {
+        dropdown.removeChild(dropdown.firstChild);
+    }
+    var labels = JSON.parse(responseText);
+    if (labels == null) {
+        return;
+    }
+    for (var i = 0; i < labels.length; i++) {
+        var label = labels[i];
+        var aTag = document.createElement('a');
+        aTag.setAttribute('href', "/Label/Detail/" + label.key);
+        aTag.innerHTML = label.key;
+        dropdown.appendChild(aTag);
+    }
+}
+
+document.onclick = function (e) {
+    var item = e.target;
+    if (item.tagName !== "dropdown") {
+        var dropdown = document.getElementById("dropdown");
+        hide(dropdown);
+    }
+}
+
+function show(element) {
+    if (element != undefined) {
+        element.classList.remove("hide");
+        element.classList.add("show");
+    }
+}
+
+function hide(element) {
+    if (element != undefined) {
+        element.classList.remove("show");
+        element.classList.add("hide");
+    }
+}

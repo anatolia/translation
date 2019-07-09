@@ -224,6 +224,25 @@ namespace Translation.Client.Web.Controllers
             return Redirect($"/Label/Detail/{response.Item.Uid}");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> SearchData(string search)
+        {
+            if (search.IsEmpty())
+            {
+                return Json(null);
+            }
+
+            var request = new LabelSearchListRequest(CurrentUser.Id, search);
+            
+            var response = await _labelService.GetLabels(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            return Json(response.Items);
+        }
+
         [HttpPost,
          JournalFilter(Message = "journal_label_restore")]
         public async Task<IActionResult> Restore(Guid id, int revision)

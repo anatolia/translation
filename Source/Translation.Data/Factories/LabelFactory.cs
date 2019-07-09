@@ -93,6 +93,17 @@ namespace Translation.Data.Factories
             return dto;
         }
 
+        public LabelDto CreateDtoForSearch(Label entity)
+        {
+            var dto = new LabelDto();
+            dto.Uid = entity.Uid;
+            dto.Key = entity.Key;
+            dto.Name = entity.Name;
+            dto.IsActive = entity.IsActive;
+
+            return dto;
+        }
+
         public Label UpdateEntityForChangeActivation(Label entity)
         {
             entity.IsActive = !entity.IsActive;

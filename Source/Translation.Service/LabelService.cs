@@ -403,6 +403,35 @@ namespace Translation.Service
             return response;
         }
 
+        public async Task<LabelSearchListResponse> GetLabels(LabelSearchListRequest request)
+        {
+            var response = new LabelSearchListResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            var cachedOrganization = _cacheManager.GetCachedOrganization(currentUser.OrganizationId);
+
+            Expression<Func<Label, bool>> filter = x => x.OrganizationId == cachedOrganization.Id;
+            Expression<Func<Label, object>> orderByColumn = x => x.Id;
+            if (request.SearchTerm.IsNotEmpty())
+            {
+                filter = x => x.Name.Contains(request.SearchTerm) && x.OrganizationId == cachedOrganization.Id;
+            }
+
+            List<Label> entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+
+            if (entities != null)
+            {
+                foreach (var entity in entities)
+                {
+                    var dto = _labelFactory.CreateDtoForSearch(entity);
+                    response.Items.Add(dto);
+                }
+            }
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
         public async Task<LabelRevisionReadListResponse> GetLabelRevisions(LabelRevisionReadListRequest request)
         {
             var response = new LabelRevisionReadListResponse();
