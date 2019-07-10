@@ -32,6 +32,7 @@ namespace Translation.Tests.Client.Controllers
         public Mock<ILanguageService> MockLanguageService { get; }
         public Mock<IProjectService> MockProjectService { get; }
         public Mock<ILabelService> MockLabelService { get; }
+        public Mock<IJournalService> MockJournalService { get; }
 
         public ControllerBaseTests()
         {
@@ -42,6 +43,7 @@ namespace Translation.Tests.Client.Controllers
             MockLanguageService = new Mock<ILanguageService>();
             MockProjectService = new Mock<IProjectService>();
             MockLabelService = new Mock<ILabelService>();
+            MockJournalService = new Mock<IJournalService>();
 
             SetupCurrentUser();
 
@@ -52,6 +54,7 @@ namespace Translation.Tests.Client.Controllers
             Container.Register(Component.For<IAdminService>().Instance(MockAdminService.Object).LifestyleTransient());
             Container.Register(Component.For<IProjectService>().Instance(MockProjectService.Object).LifestyleTransient());
             Container.Register(Component.For<ILabelService>().Instance(MockLabelService.Object).LifestyleTransient());
+            Container.Register(Component.For<IJournalService>().Instance(MockJournalService.Object).LifestyleTransient());
 
             Container.Register(Component.For<HomeController>().LifestyleTransient());
             Container.Register(Component.For<AdminController>().LifestyleTransient());
