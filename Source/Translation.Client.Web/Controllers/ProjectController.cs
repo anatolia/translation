@@ -50,6 +50,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = ProjectMapper.MapProjectCreateModel(response.Item.Uid);
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -59,6 +60,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -67,6 +69,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -91,6 +94,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = ProjectMapper.MapProjectDetailModel(response.Item);
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -111,6 +115,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = ProjectMapper.MapProjectEditModel(response.Item);
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -120,6 +125,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -174,6 +180,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = ProjectMapper.MapProjectCloneModel(response.Item);
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -183,6 +190,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -193,6 +201,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -243,6 +252,7 @@ namespace Translation.Client.Web.Controllers
                 model.SetInputModelValues();
             }
 
+            model.SetInputModelValues();
             return View(model);
         }
 

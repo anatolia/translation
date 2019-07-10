@@ -47,6 +47,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = IntegrationMapper.MapIntegrationCreateModel(organizationUid);
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -56,6 +57,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -64,6 +66,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -88,6 +91,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = IntegrationMapper.MapIntegrationDetailModel(response.Item);
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -108,6 +112,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = IntegrationMapper.MapIntegrationEditModel(response.Item);
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -117,6 +122,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -125,6 +131,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -177,6 +184,7 @@ namespace Translation.Client.Web.Controllers
                 model.SetInputModelValues();
             }
 
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -407,6 +415,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = IntegrationMapper.MapIntegrationClientActiveTokensModel(response.Item);
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -467,6 +476,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = IntegrationMapper.MapIntegrationActiveTokensModel(response.Item);
+            model.SetInputModelValues();
             return View(model);
         }
 

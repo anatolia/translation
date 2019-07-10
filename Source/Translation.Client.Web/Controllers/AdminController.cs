@@ -40,6 +40,7 @@ namespace Translation.Client.Web.Controllers
         public IActionResult Dashboard()
         {
             var model = new AdminDashboardBaseModel();
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -47,6 +48,7 @@ namespace Translation.Client.Web.Controllers
         public IActionResult List()
         {
             var model = new AdminListBaseModel();
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -88,6 +90,7 @@ namespace Translation.Client.Web.Controllers
         public IActionResult OrganizationList()
         {
             var model = new OrganizationListModel();
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -133,6 +136,7 @@ namespace Translation.Client.Web.Controllers
         public IActionResult UserList()
         {
             var model = new AllUserListModel();
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -175,6 +179,7 @@ namespace Translation.Client.Web.Controllers
         public IActionResult UserLoginLogList()
         {
             var model = new UserLoginLogListModel();
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -222,6 +227,7 @@ namespace Translation.Client.Web.Controllers
         public IActionResult JournalList()
         {
             var model = new JournalListModel();
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -264,6 +270,7 @@ namespace Translation.Client.Web.Controllers
         public IActionResult TokenRequestLogList()
         {
             var model = new TokenRequestLogListModel();
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -309,6 +316,7 @@ namespace Translation.Client.Web.Controllers
         public IActionResult SendEmailLogList()
         {
             var model = new SendEmailLogListModel();
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -353,6 +361,7 @@ namespace Translation.Client.Web.Controllers
         {
             var organizationUid = CurrentUser.OrganizationUid;
             var model = AdminMapper.MapAdminInviteModel(organizationUid);
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -362,6 +371,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -370,6 +380,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -382,6 +393,7 @@ namespace Translation.Client.Web.Controllers
         public ViewResult InviteDone()
         {
             var model = new AdminInviteDoneModel();
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -483,6 +495,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = AdminMapper.MapAdminAcceptInviteModel(response.Item, token, email);
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -491,6 +504,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -499,6 +513,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -509,6 +524,7 @@ namespace Translation.Client.Web.Controllers
         public ViewResult AcceptInviteDone()
         {
             var model = new AdminAcceptInviteDoneModel();
+            model.SetInputModelValues();
             return View(model);
         }
     }
