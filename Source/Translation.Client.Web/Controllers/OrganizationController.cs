@@ -197,6 +197,57 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> PendingTranslations()
+        {
+            var model = new OrganizationPendingTranslationReadListModel();
+            model.OrganizationUid = CurrentUser.OrganizationUid;
+            model.OrganizationName = CurrentUser.Organization.Name;
+            model.SetInputModelValues();
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> PendingTranslationsData(Guid id, int skip, int take)
+        {
+            var organizationUid = id;
+            if (organizationUid.IsEmptyGuid())
+            {
+                return Forbid();
+            }
+
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUser.Id, organizationUid);
+            SetPaging(skip, take, request);
+
+            var response = await _organizationService.GetPendingTranslations(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = new DataResult();
+            result.AddHeaders("label_key", "label_translation_count", "description", "is_active");
+
+            for (var i = 0; i < response.Items.Count; i++)
+            {
+                var item = response.Items[i];
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Key}", item.Key)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            result.PagingInfo = response.PagingInfo;
+            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+
+            return Json(result);
+        }
+
+        [HttpGet]
         public IActionResult UserLoginLogList(Guid id)
         {
             var organizationUid = id;

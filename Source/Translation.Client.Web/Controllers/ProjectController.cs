@@ -220,6 +220,73 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> PendingTranslations(Guid id)
+        {
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return RedirectToHome();
+            }
+
+            var model = new ProjectPendingTranslationReadListModel();
+            if (projectUid.IsNotEmptyGuid())
+            {
+                var request = new ProjectReadRequest(CurrentUser.Id, projectUid);
+                var response = await _projectService.GetProject(request);
+                if (response.Status.IsNotSuccess)
+                {
+                    return NotFound();
+                }
+
+                model.ProjectUid = projectUid;
+                model.ProjectName = response.Item.Name;
+                model.SetInputModelValues();
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> PendingTranslationsData(Guid id, int skip, int take)
+        {
+            var projectUid = id;
+            if (projectUid.IsEmptyGuid())
+            {
+                return Forbid();
+            }
+
+            var request = new ProjectPendingTranslationReadListRequest(CurrentUser.Id, projectUid);
+            SetPaging(skip, take, request);
+
+            var response = await _projectService.GetPendingTranslations(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = new DataResult();
+            result.AddHeaders("label_key", "label_translation_count", "description", "is_active");
+
+            for (var i = 0; i < response.Items.Count; i++)
+            {
+                var item = response.Items[i];
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Key}", item.Key)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            result.PagingInfo = response.PagingInfo;
+            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+
+            return Json(result);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> LabelListData(Guid id, int skip, int take)
         {
             var projectUid = id;

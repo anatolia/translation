@@ -161,14 +161,6 @@ namespace Translation.Client.Web.Controllers
             return Redirect($"/Label/Detail/{response.Item.Uid}");
         }
 
-        [HttpGet]
-        public ViewResult SearchList(string search)
-        {
-            var model = new LabelSearchListModel();
-            model.SearchTerm = search;
-            return View(model);
-        }
-
         [HttpPost,
          JournalFilter(Message = "journal_label_delete")]
         public async Task<IActionResult> Delete(Guid id)
@@ -230,6 +222,14 @@ namespace Translation.Client.Web.Controllers
 
             CurrentUser.IsActionSucceed = true;
             return Redirect($"/Label/Detail/{response.Item.Uid}");
+        }
+
+        [HttpGet]
+        public ViewResult SearchList(string search)
+        {
+            var model = new LabelSearchListModel();
+            model.SearchTerm = search;
+            return View(model);
         }
 
         [HttpGet]

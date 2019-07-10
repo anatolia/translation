@@ -20,6 +20,7 @@ namespace Translation.Common.Contracts
             GetOrganizationRevisions(OrganizationRevisionReadListRequest request);
         Task<OrganizationEditResponse> EditOrganization(OrganizationEditRequest request);
         Task<OrganizationRestoreResponse> RestoreOrganization(OrganizationRestoreRequest request);
+        Task<OrganizationPendingTranslationReadListResponse> GetPendingTranslations(OrganizationPendingTranslationReadListRequest request);
         Task<ValidateEmailResponse> ValidateEmail(ValidateEmailRequest request);
         Task<LogOnResponse> LogOn(LogOnRequest request);
         Task<DemandPasswordResetResponse> DemandPasswordReset(DemandPasswordResetRequest request);
