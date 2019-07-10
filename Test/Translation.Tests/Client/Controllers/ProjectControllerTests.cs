@@ -1,11 +1,14 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+
 using NUnit.Framework;
+using Shouldly;
 
 using Translation.Client.Web.Controllers;
 using Translation.Client.Web.Models.Project;
 using Translation.Tests.TestHelpers;
 using static Translation.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
+using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
 namespace Translation.Tests.Client.Controllers
 {
@@ -44,6 +47,27 @@ namespace Translation.Tests.Client.Controllers
             var methodInfo = type.GetMethod(actionMethod, parameters);
             var attributes = methodInfo.GetCustomAttributes(httpVerbAttribute, true);
             Assert.AreEqual(attributes.Length, 1);
+        }
+
+        [Test]
+        public void Controller_Derived_From_BaseController()
+        {
+            var type = SystemUnderTest.GetType();
+            type.BaseType.Name.StartsWith("BaseController").ShouldBeTrue();
+        }
+
+        [Test]
+        public void Create_GET()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Success();
+
+            // act
+            var result = SystemUnderTest.Create(UidOne);
+
+            // assert
+            // todo
+            MockOrganizationService.Verify_GetOrganization();
         }
     }
 }
