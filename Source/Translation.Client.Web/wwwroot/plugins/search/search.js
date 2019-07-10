@@ -1,14 +1,23 @@
-﻿function filterLabels() {
+﻿window.addEventListener("keyup", onUpDownKeyPress);
+var labelSearchListIndex = -1;
+var lastFilter = "";
+
+function filterLabels() {
     var dropdown = document.getElementById("dropdown");
     var filter, txtSearch;
     txtSearch = document.getElementById("txtSearch");
     filter = txtSearch.value;
 
-    doGet('/Label/SearchData?search=' + filter, function (req) {
-        if (199 < req.status && req.status < 300) {
-            bindLabelSearchDropdown(req.responseText);
-        }
-    });
+    if (filter !== lastFilter) {
+        labelSearchListIndex = -1;
+
+        doGet('/Label/SearchData?search=' + filter, function (req) {
+            if (199 < req.status && req.status < 300) {
+                bindLabelSearchDropdown(req.responseText);
+            }
+        });
+    }
+    lastFilter = filter;
 
     if (filter == "") {
         hide(dropdown);
@@ -50,7 +59,8 @@ function getLabelSearchTerm() {
 
 document.onclick = function (e) {
     var item = e.target;
-    if (item.tagName !== "dropdown") {
+    if (item.id !== "dropdown"
+        || item.id !== "txtSearch") {
         var dropdown = document.getElementById("dropdown");
         hide(dropdown);
     }
@@ -58,7 +68,6 @@ document.onclick = function (e) {
 
 function show(element) {
     if (element != undefined) {
-        element.classList.remove("hide");
         element.classList.add("show");
     }
 }
@@ -66,7 +75,6 @@ function show(element) {
 function hide(element) {
     if (element != undefined) {
         element.classList.remove("show");
-        element.classList.add("hide");
     }
 }
 
@@ -76,18 +84,13 @@ var Key = {
     ENTER: 13
 }
 
-window.addEventListener("keyup", onUpDownKeyPress);
-var labelSearchListIndex = -1;
-
 function onUpDownKeyPress(event) {
-    var txtSearch = document.getElementById('txtSearch');
     var dropdown = document.getElementById('dropdown');
-    txtSearch.blur();
     var itemList = dropdown.getElementsByTagName("a");
     var key = event.which || event.keyCode;
 
     if (key === Key.DOWN
-        && labelSearchListIndex < itemList.length - 2) {
+        && labelSearchListIndex < itemList.length - 1) {
         labelSearchListIndex++;
     } else if (key === Key.UP
         && labelSearchListIndex > 0) {
@@ -97,7 +100,11 @@ function onUpDownKeyPress(event) {
     select(itemList, labelSearchListIndex);
 
     if (key === Key.ENTER) {
-        openLabelDetailPage(itemList[labelSearchListIndex].getAttribute("uid"));
+        if (labelSearchListIndex === itemList.length - 1) {
+            openLabelSearchListPage();
+        } else {
+            openLabelDetailPage(itemList[labelSearchListIndex].getAttribute("uid"));
+        }
     }
 }
 
