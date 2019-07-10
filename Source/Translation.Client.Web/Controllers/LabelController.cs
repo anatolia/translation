@@ -431,6 +431,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelUploadFromCSVModel(project.Item);
+            model.SetInputModelValues();
             return View(model);
         }
 
@@ -440,6 +441,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -462,6 +464,7 @@ namespace Translation.Client.Web.Controllers
                 {
                     model.ErrorMessages.Add("file_has_more_columns_than_expected");
                     model.ErrorMessages.Add("error line : " + i);
+                    model.SetInputModelValues();
                     return View(model);
                 }
 
