@@ -53,16 +53,15 @@ namespace Translation.Tests.Client.Controllers
             Container.Register(Component.For<IProjectService>().Instance(MockProjectService.Object).LifestyleTransient());
             Container.Register(Component.For<ILabelService>().Instance(MockLabelService.Object).LifestyleTransient());
 
-            // todo Container Register
-            //Container.Register(Component.For<HomeController>().LifestyleTransient());
-            //Container.Register(Component.For<AdminController>().LifestyleTransient());
-            //Container.Register(Component.For<LanguageController>().LifestyleTransient());
-            //Container.Register(Component.For<UserController>().LifestyleTransient());
-            //Container.Register(Component.For<IntegrationController>().LifestyleTransient());
-            //Container.Register(Component.For<TokenController>().LifestyleTransient());
-            //Container.Register(Component.For<OrganizationController>().LifestyleTransient());
-            //Container.Register(Component.For<ProjectController>().LifestyleTransient());
-            //Container.Register(Component.For<LabelController>().LifestyleTransient());
+            Container.Register(Component.For<HomeController>().LifestyleTransient());
+            Container.Register(Component.For<AdminController>().LifestyleTransient());
+            Container.Register(Component.For<LanguageController>().LifestyleTransient());
+            Container.Register(Component.For<UserController>().LifestyleTransient());
+            Container.Register(Component.For<IntegrationController>().LifestyleTransient());
+            Container.Register(Component.For<TokenController>().LifestyleTransient());
+            Container.Register(Component.For<OrganizationController>().LifestyleTransient());
+            Container.Register(Component.For<ProjectController>().LifestyleTransient());
+            Container.Register(Component.For<LabelController>().LifestyleTransient());
         }
 
         private void SetupCurrentUser()

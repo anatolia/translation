@@ -18,7 +18,7 @@ namespace Translation.Tests.Common
 
     public class BaseTests
     {
-        public WindsorContainer Container { get; set; } = new WindsorContainer();
+        public IWindsorContainer Container { get; set; } = new WindsorContainer();
 
         protected Mock<CacheManager> MockCacheManager { get; }
         protected Mock<CryptoHelper> MockCryptoHelper { get; }
