@@ -36,6 +36,15 @@
             data-translation="delete_button">
         delete_button
     </button>
+    <button type="button"
+            data-confirm-title="change_activation_project_confirm_title"
+            data-confirm-content="change_activation_project_confirm_content"
+            data-url="/Project/ChangeActivation/"
+            data-prm="id=@Model.ProjectUid&organizationUid=@Model.OrganizationUid"
+            onclick="doRedirectIfConfirmedSuccess(this, '/Project/Detail/@Model.ProjectUid')"
+            data-translation="change_activation_button">
+        change_activation_button
+    </button>
     <form action="/Project/DownloadLabels" method="post">
         <input type="hidden" id="id" name="id" value=@Model.ProjectUid />
         @Html.AntiForgeryToken()
