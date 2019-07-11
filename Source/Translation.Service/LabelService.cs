@@ -409,14 +409,9 @@ namespace Translation.Service
             var response = new LabelSearchListResponse();
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            var cachedOrganization = _cacheManager.GetCachedOrganization(currentUser.OrganizationId);
 
-            Expression<Func<Label, bool>> filter = x => x.OrganizationId == cachedOrganization.Id;
+            Expression<Func<Label, bool>> filter = x => x.Name.Contains(request.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
             Expression<Func<Label, object>> orderByColumn = x => x.Id;
-            if (request.SearchTerm.IsNotEmpty())
-            {
-                filter = x => x.Name.Contains(request.SearchTerm) && x.OrganizationId == cachedOrganization.Id;
-            }
 
             List<Label> entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
 
