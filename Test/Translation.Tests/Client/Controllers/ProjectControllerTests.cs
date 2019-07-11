@@ -6,9 +6,10 @@ using Shouldly;
 
 using Translation.Client.Web.Controllers;
 using Translation.Client.Web.Models.Project;
-using Translation.Tests.TestHelpers;
+using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
 
 namespace Translation.Tests.Client.Controllers
 {
@@ -66,7 +67,7 @@ namespace Translation.Tests.Client.Controllers
             var result = SystemUnderTest.Create(UidOne);
 
             // assert
-            // todo
+            AssertViewWithModel<ProjectCreateModel>(result);
             MockOrganizationService.Verify_GetOrganization();
         }
     }

@@ -16,6 +16,7 @@ using Castle.MicroKernel.Registration;
 using Translation.Client.Web.Controllers;
 using Translation.Common.Contracts;
 using Translation.Common.Models.Requests.User;
+using Translation.Service.Managers;
 using Translation.Tests.Common;
 using Translation.Tests.TestFakes;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
@@ -65,6 +66,8 @@ namespace Translation.Tests.Client.Controllers
             Container.Register(Component.For<OrganizationController>().LifestyleTransient());
             Container.Register(Component.For<ProjectController>().LifestyleTransient());
             Container.Register(Component.For<LabelController>().LifestyleTransient());
+
+            Container.Register(Component.For<CacheManager>());
         }
 
         private void SetupCurrentUser()

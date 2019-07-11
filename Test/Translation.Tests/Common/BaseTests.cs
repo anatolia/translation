@@ -1,17 +1,12 @@
-﻿using Castle.MicroKernel.Registration;
+﻿using Moq;
 using Castle.Windsor;
-using Moq;
-using Npgsql;
+using Castle.MicroKernel.Registration;
 
-using StandardRepository;
-using Translation.Common.Contracts;
 using Translation.Common.Helpers;
-using Translation.Data.Entities.Main;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
 using Translation.Data.UnitOfWorks.Contracts;
-using Translation.Service;
-using Translation.Service.Managers;
+using Translation.Tests.SetupHelpers;
 
 namespace Translation.Tests.Common
 {
@@ -19,9 +14,6 @@ namespace Translation.Tests.Common
     public class BaseTests
     {
         public IWindsorContainer Container { get; set; } = new WindsorContainer();
-
-        protected Mock<CacheManager> MockCacheManager { get; }
-        protected Mock<CryptoHelper> MockCryptoHelper { get; }
 
         protected Mock<IIntegrationClientRepository> MockIntegrationClientRepository { get; }
         protected Mock<IIntegrationRepository> MockIntegrationRepository { get; }
@@ -44,9 +36,6 @@ namespace Translation.Tests.Common
 
         protected BaseTests()
         {
-            MockCacheManager = new Mock<CacheManager>();
-            MockCryptoHelper = new Mock<CryptoHelper>();
-
             #region Repository
 
             MockIntegrationClientRepository = new Mock<IIntegrationClientRepository>();
@@ -72,12 +61,16 @@ namespace Translation.Tests.Common
             MockSignUpUnitOfWork = new Mock<ISignUpUnitOfWork>();
             #endregion
 
+            #region Services
+
+            #endregion
+
             ConfigureIocContainer();
         }
 
         public void ConfigureIocContainer()
         {
-            Container.Register(Component.For<CryptoHelper>().Instance(MockCryptoHelper.Object));
+            Container.Register(Component.For<CryptoHelper>());
 
             #region Factory
 
@@ -124,19 +117,12 @@ namespace Translation.Tests.Common
 
             #endregion
 
-            #region registerType
-
-            Container.Register(Component.For<IAdminService>().ImplementedBy<AdminService>());
-            Container.Register(Component.For<IIntegrationService>().ImplementedBy<IntegrationService>());
-            Container.Register(Component.For<IJournalService>().ImplementedBy<JournalService>());
-            Container.Register(Component.For<ILabelService>().ImplementedBy<LabelService>());
-            Container.Register(Component.For<ILanguageService>().ImplementedBy<LanguageService>());
-            Container.Register(Component.For<IOrganizationService>().ImplementedBy<OrganizationService>());
-            Container.Register(Component.For<IProjectService>().ImplementedBy<ProjectService>());
-
+            #region Setup For Cache
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockOrganizationRepository.Setup_SelectById_Returns_OrganizationOne();
+            MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
             #endregion
-
-            Container.Register(Component.For<CacheManager>());
         }
     }
 }
