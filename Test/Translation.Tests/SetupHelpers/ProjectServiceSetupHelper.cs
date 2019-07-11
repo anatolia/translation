@@ -4,6 +4,7 @@ using Moq;
 
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
+using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Responses.Project;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
@@ -12,6 +13,15 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class ProjectServiceSetupHelper
     {
+        public static void Setup_GetPendingTranslations_Returns_ProjectPendingTranslationReadListResponse_Success(this Mock<IProjectService> service)
+        {
+            var items = new List<LabelDto>();
+            items.Add(new LabelDto() { Uid = UidOne });
+
+            service.Setup(x => x.GetPendingTranslations(It.IsAny<ProjectPendingTranslationReadListRequest>()))
+                .Returns(Task.FromResult(new ProjectPendingTranslationReadListResponse { Status = ResponseStatus.Success, Items = items }));
+        }
+
         public static void Setup_GetProjects_Returns_ProjectReadListResponse_Success(this Mock<IProjectService> service)
         {
             service.Setup(x => x.GetProjects(It.IsAny<ProjectReadListRequest>()))
@@ -52,6 +62,15 @@ namespace Translation.Tests.SetupHelpers
         {
             service.Setup(x => x.ChangeActivationForProject(It.IsAny<ProjectChangeActivationRequest>()))
                 .Returns(Task.FromResult(new ProjectChangeActivationResponse { Status = ResponseStatus.Success }));
+        }
+
+        public static void Setup_GetPendingTranslations_Returns_ProjectPendingTranslationReadListResponse_Failed(this Mock<IProjectService> service)
+        {
+            var items = new List<LabelDto>();
+            items.Add(new LabelDto() { Uid = UidOne });
+
+            service.Setup(x => x.GetPendingTranslations(It.IsAny<ProjectPendingTranslationReadListRequest>()))
+                .Returns(Task.FromResult(new ProjectPendingTranslationReadListResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_GetProjects_Returns_ProjectReadListResponse_Failed(this Mock<IProjectService> service)
@@ -96,6 +115,15 @@ namespace Translation.Tests.SetupHelpers
                 .Returns(Task.FromResult(new ProjectChangeActivationResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
         }
 
+        public static void Setup_GetPendingTranslations_Returns_ProjectPendingTranslationReadListResponse_Invalid(this Mock<IProjectService> service)
+        {
+            var items = new List<LabelDto>();
+            items.Add(new LabelDto() { Uid = UidOne });
+
+            service.Setup(x => x.GetPendingTranslations(It.IsAny<ProjectPendingTranslationReadListRequest>()))
+                .Returns(Task.FromResult(new ProjectPendingTranslationReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
         public static void Setup_GetProjects_Returns_ProjectReadListResponse_Invalid(this Mock<IProjectService> service)
         {
             service.Setup(x => x.GetProjects(It.IsAny<ProjectReadListRequest>()))
@@ -136,6 +164,15 @@ namespace Translation.Tests.SetupHelpers
         {
             service.Setup(x => x.ChangeActivationForProject(It.IsAny<ProjectChangeActivationRequest>()))
                 .Returns(Task.FromResult(new ProjectChangeActivationResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Verify_GetPendingTranslations(this Mock<IProjectService> service)
+        {
+            var items = new List<LabelDto>();
+            items.Add(new LabelDto() { Uid = UidOne });
+
+            service.Verify(x => x.GetPendingTranslations(It.IsAny<ProjectPendingTranslationReadListRequest>()));
+
         }
 
         public static void Verify_GetProjects(this Mock<IProjectService> service)

@@ -133,7 +133,6 @@ namespace Translation.Tests.Client.Controllers
             MockProjectService.Verify_CreateProject();
         }
 
-
         [Test]
         public async Task Create_POST_FailedResponse()
         {
@@ -148,7 +147,6 @@ namespace Translation.Tests.Client.Controllers
             AssertErrorMessagesForInvalidOrFailedResponse<ProjectCreateModel>(result);
             MockProjectService.Verify_CreateProject();
         }
-
 
         [Test]
         public async Task Create_POST_InvalidResponse()
@@ -402,7 +400,6 @@ namespace Translation.Tests.Client.Controllers
             AssertView<ForbidResult>(result);
         }
 
-
         [Test]
         public async Task Clone_GET()
         {
@@ -530,6 +527,34 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public async Task PendingTranslations_GET()
+        {
+            // arrange
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.PendingTranslations(OrganizationOneProjectOneUid);
+
+            // assert
+            AssertViewWithModel<ProjectPendingTranslationReadListModel>(result);
+            MockProjectService.Verify_GetProject();
+        }
+
+        [Test]
+        public async Task PendingTranslations_GET_InvalidParameter()
+        {
+            // arrange
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.PendingTranslations(EmptyUid);
+
+            // assert
+            AssertViewRedirectToHome(result);
+            MockProjectService.Verify_GetProject();
+        }
+
+        [Test]
         public async Task SelectData_GET_FailedResponse()
         {
             // arrange
@@ -555,6 +580,79 @@ namespace Translation.Tests.Client.Controllers
             // assert
             MockProjectService.Verify_GetProjects();
             result.ShouldBe(null);
+        }
+
+        [Test]
+        public void PendingTranslationsData_GET()
+        {
+            // arrange
+            MockProjectService.Setup_GetPendingTranslations_Returns_ProjectPendingTranslationReadListResponse_Success();
+
+            // act
+            var result = SystemUnderTest.PendingTranslationsData(OrganizationOneProjectOneUid, One, Two);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockProjectService.Verify_GetPendingTranslations();
+        }
+
+        [Test]
+        public void PendingTranslationsData_GET_FailedResponse()
+        {
+            // arrange
+            MockProjectService.Setup_GetPendingTranslations_Returns_ProjectPendingTranslationReadListResponse_Failed();
+
+            // act
+            var result = SystemUnderTest.PendingTranslationsData(OrganizationOneProjectOneUid, One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockProjectService.Verify_GetPendingTranslations();
+        }
+
+        [Test]
+        public void PendingTranslationsData_GET_InvalidResponse()
+        {
+            // arrange
+            MockProjectService.Setup_GetPendingTranslations_Returns_ProjectPendingTranslationReadListResponse_Invalid();
+
+            // act
+            var result = SystemUnderTest.PendingTranslationsData(OrganizationOneProjectOneUid, One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockProjectService.Verify_GetPendingTranslations();
+        }
+
+        [Test]
+        public void PendingTranslationsData_GET_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = SystemUnderTest.PendingTranslationsData(OrganizationOneProjectOneUid, One, Two);
+
+            // assert
+            AssertView<ForbidResult>(result);
+        }
+
+        [TestCase(10, 10)]
+        [TestCase(10, 1000)]
+        [TestCase(-10, 10)]
+        [TestCase(10, -10)]
+        [TestCase(1000, 10)]
+        public async Task PendingTranslationsData_GET_SetPaging(int skip, int take)
+        {
+            // arrange
+            MockProjectService.Setup_GetPendingTranslations_Returns_ProjectPendingTranslationReadListResponse_Success();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.PendingTranslationsData(OrganizationOneProjectOneUid, skip, take);
+
+            // assert
+            AssertView<DataResult>(result);
+            AssertPagingInfo(result);
+            MockProjectService.Verify_GetPendingTranslations();
         }
 
         [Test]
