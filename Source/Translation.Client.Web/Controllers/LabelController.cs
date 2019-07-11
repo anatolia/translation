@@ -52,7 +52,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelCreateModel(project.Item.OrganizationUid, projectUid);
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -100,7 +100,7 @@ namespace Translation.Client.Web.Controllers
                 }
 
                 var model = LabelMapper.MapLabelDetailModel(response.Item);
-                model.SetInputModelValues();
+
                 return View(model);
             }
             else
@@ -120,7 +120,7 @@ namespace Translation.Client.Web.Controllers
                 }
 
                 var model = LabelMapper.MapLabelDetailModel(response.Item);
-                model.SetInputModelValues();
+
                 return View(model);
             }
         }
@@ -142,7 +142,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelEditModel(response.Item);
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -207,7 +207,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelCloneModel(response.Item);
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -240,7 +240,7 @@ namespace Translation.Client.Web.Controllers
         {
             var model = new LabelSearchListModel();
             model.SearchTerm = search;
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -357,7 +357,6 @@ namespace Translation.Client.Web.Controllers
                 model.SetInputModelValues();
             }
 
-            model.SetInputModelValues();
             return View(model);
         }
 
@@ -444,7 +443,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelUploadFromCSVModel(project.Item);
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -529,7 +528,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapCreateBulkLabelModel(project.Item);
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -607,7 +606,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelTranslationCreateModel(response.Item);
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -653,7 +652,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelTranslationDetailModel(response.Item);
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -674,7 +673,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelTranslationEditModel(response.Item);
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -758,7 +757,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapUploadLabelTranslationFromCSVFileModel(label.Item);
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -768,6 +767,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -906,7 +906,6 @@ namespace Translation.Client.Web.Controllers
                 model.SetInputModelValues();
             }
 
-            model.SetInputModelValues();
             return View(model);
         }
 

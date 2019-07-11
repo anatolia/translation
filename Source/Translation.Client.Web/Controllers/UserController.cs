@@ -33,7 +33,7 @@ namespace Translation.Client.Web.Controllers
         public IActionResult SignUp()
         {
             var model = new SignUpModel();
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -80,7 +80,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = new ValidateEmailDoneModel();
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -89,7 +89,7 @@ namespace Translation.Client.Web.Controllers
         {
             var model = new LogOnModel();
             model.RedirectUrl = returnUrl;
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -132,7 +132,7 @@ namespace Translation.Client.Web.Controllers
         public ViewResult DemandPasswordReset()
         {
             var model = new DemandPasswordResetModel();
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -159,7 +159,7 @@ namespace Translation.Client.Web.Controllers
         public ViewResult DemandPasswordResetDone()
         {
             var model = new DemandPasswordResetDoneModel();
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -185,7 +185,6 @@ namespace Translation.Client.Web.Controllers
                 Email = email
             };
 
-            model.SetInputModelValues();
             return View(model);
         }
 
@@ -213,7 +212,7 @@ namespace Translation.Client.Web.Controllers
         public ViewResult ResetPasswordDone()
         {
             var model = new ResetPasswordDoneModel();
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -234,7 +233,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = UserMapper.MapUserDetailModel(response.Item);
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -243,7 +242,7 @@ namespace Translation.Client.Web.Controllers
         {
             var model = new ChangePasswordModel();
             model.UserUid = CurrentUser.Uid;
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -273,7 +272,7 @@ namespace Translation.Client.Web.Controllers
         public ViewResult ChangePasswordDone()
         {
             var model = new ChangePasswordDoneModel();
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -299,7 +298,7 @@ namespace Translation.Client.Web.Controllers
             model.LastName = response.Item.LastName;
             model.LanguageUid = response.Item.LanguageUid;
             model.LanguageName = response.Item.LanguageName;
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -369,7 +368,7 @@ namespace Translation.Client.Web.Controllers
         public ViewResult InviteDone()
         {
             var model = new InviteDoneModel();
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -425,7 +424,7 @@ namespace Translation.Client.Web.Controllers
         public ViewResult AcceptInviteDone()
         {
             var model = new InviteAcceptDoneModel();
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -473,7 +472,7 @@ namespace Translation.Client.Web.Controllers
 
             var model = new UserJournalListModel();
             model.UserUid = userUid;
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -539,7 +538,6 @@ namespace Translation.Client.Web.Controllers
                 model.SetInputModelValues();
             }
 
-            model.SetInputModelValues();
             return View(model);
         }
 

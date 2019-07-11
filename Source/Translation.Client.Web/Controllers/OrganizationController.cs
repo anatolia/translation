@@ -54,7 +54,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = OrganizationMapper.MapOrganizationDetailModel(response.Item);
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -75,7 +75,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = OrganizationMapper.MapOrganizationEditModel(response.Item);
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -127,7 +127,6 @@ namespace Translation.Client.Web.Controllers
                 model.SetInputModelValues();
             }
 
-            model.SetInputModelValues();
             return View(model);
         }
 
@@ -207,7 +206,7 @@ namespace Translation.Client.Web.Controllers
             var model = new OrganizationPendingTranslationReadListModel();
             model.OrganizationUid = CurrentUser.OrganizationUid;
             model.OrganizationName = CurrentUser.Organization.Name;
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -262,7 +261,7 @@ namespace Translation.Client.Web.Controllers
 
             var model = new OrganizationUserLoginLogListModel();
             model.OrganizationUid = organizationUid;
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -442,7 +441,7 @@ namespace Translation.Client.Web.Controllers
 
             var model = new OrganizationTokenRequestLogListModel();
             model.OrganizationUid = organizationUid;
-            model.SetInputModelValues();
+
             return View(model);
         }
 
@@ -501,7 +500,7 @@ namespace Translation.Client.Web.Controllers
 
             var model = new OrganizationJournalListModel();
             model.OrganizationUid = organizationUid;
-            model.SetInputModelValues();
+
             return View(model);
         }
 

@@ -18,7 +18,6 @@ namespace Translation.Client.Web.Controllers
             var model = new HomeModel();
             model.IsSuperAdmin = CurrentUser?.IsSuperAdmin ?? false;
             model.IsAuthenticated = CurrentUser != null;
-            model.SetInputModelValues();
             return View(model);
         }
 
@@ -26,7 +25,6 @@ namespace Translation.Client.Web.Controllers
         public IActionResult AccessDenied()
         {
             var model = new AccessDeniedModel();
-            model.SetInputModelValues();
             return View(model);
         }
     }
