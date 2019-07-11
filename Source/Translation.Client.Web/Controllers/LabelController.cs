@@ -843,8 +843,9 @@ namespace Translation.Client.Web.Controllers
             var sb = new StringBuilder();
 
             sb.AppendLine("language,translation");
-            foreach (var item in translations.Items)
+            for (var i = 0; i < translations.Items.Count; i++)
             {
+                var item = translations.Items[i];
                 sb.AppendLine(item.LanguageIsoCode2 + "," + item.Translation);
             }
 

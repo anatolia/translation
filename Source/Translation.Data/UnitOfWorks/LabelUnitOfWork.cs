@@ -183,8 +183,9 @@ namespace Translation.Data.UnitOfWorks
                 user.LabelCount++;
 
                 var labelTranslations = await _labelTranslationRepository.SelectAll(x => x.LabelId == labelId);
-                foreach (var labelTranslation in labelTranslations)
+                for (var i = 0; i < labelTranslations.Count; i++)
                 {
+                    var labelTranslation = labelTranslations[i];
                     organization.LabelTranslationCount++;
                     project.LabelTranslationCount++;
                     user.LabelTranslationCount++;

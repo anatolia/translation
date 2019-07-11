@@ -38,8 +38,9 @@ namespace Translation.Tests.TestHelpers
             var messages = ((T)((ViewResult)result).Model).InputErrorMessages;
             messages.Count.ShouldBe(model.InputErrorMessages.Count);
 
-            foreach (var message in messages)
+            for (var i = 0; i < messages.Count; i++)
             {
+                var message = messages[i];
                 model.InputErrorMessages.ShouldContain(message);
             }
         }

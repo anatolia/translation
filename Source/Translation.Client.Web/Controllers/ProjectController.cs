@@ -220,8 +220,9 @@ namespace Translation.Client.Web.Controllers
             }
 
             var items = new List<SelectResult>();
-            foreach (var item in response.Items)
+            for (var i = 0; i < response.Items.Count; i++)
             {
+                var item = response.Items[i];
                 items.Add(new SelectResult(item.Uid.ToUidString(), $"{item.Name}"));
             }
 
