@@ -1,0 +1,64 @@
+﻿using System;
+using System.Linq.Expressions;
+
+using Moq;
+
+using Translation.Data.Entities.Main;
+using Translation.Data.Repositories.Contracts;
+using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
+using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
+
+namespace Translation.Tests.SetupHelpers
+{
+    public static class JournalRepositorySetupHelper
+    {
+        //public static void Setup_SelectMany_Returns_JournalList(this Mock<IJournalRepository> repository)
+        //{
+        //    repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<Journal, bool>>>(),
+        //            It.IsAny<int>(),
+        //            It.IsAny<int>(),
+        //            It.IsAny<Expression<Func<Journal, object>>>(),
+        //            It.IsAny<bool>(), false))
+        //        .ReturnsAsync(EntityDataHelper.GetFakeParkNetJournalList());
+        //}
+
+        public static void Verify_SelectMany(this Mock<IJournalRepository> repository)
+        {
+            repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<Journal, bool>>>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<Expression<Func<Journal, object>>>(),
+                    It.IsAny<bool>(), false));
+        }
+
+        //public static void Setup_SelectAfter_Returns_JournalList(this Mock<IJournalRepository> repository)
+        //{
+        //    repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Journal, bool>>>(),
+        //            It.IsAny<Guid>(),
+        //            It.IsAny<int>(),
+        //            It.IsAny<Expression<Func<Journal, object>>>(),
+        //            It.IsAny<bool>(), false))
+        //        .ReturnsAsync(EntityDataHelper.GetFakeParkNetJournalList());
+        //}
+
+        public static void Verify_SelectAfter(this Mock<IJournalRepository> repository)
+        {
+            repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<Journal, bool>>>(),
+                    It.IsAny<Guid>(),
+                    It.IsAny<int>(),
+                    It.IsAny<Expression<Func<Journal, object>>>(),
+                    It.IsAny<bool>(), false));
+        }
+
+        public static void Setup_Count_Returns_POSITIVE_INT_NUMBER_10(this Mock<IJournalRepository> repository)
+        {
+            repository.Setup(x => x.Count(It.IsAny<Expression<Func<Journal, bool>>>(), false))
+                .ReturnsAsync(Ten);
+        }
+
+        public static void Verify_Count(this Mock<IJournalRepository> repository)
+        {
+            repository.Verify(x => x.Count(It.IsAny<Expression<Func<Journal, bool>>>(), false));
+        }
+    }
+}

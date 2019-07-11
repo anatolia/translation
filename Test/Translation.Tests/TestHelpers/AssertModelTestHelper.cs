@@ -10,7 +10,7 @@ namespace Translation.Tests.TestHelpers
     public class AssertModelTestHelper
     {
 
-        public void AssertPagingInfo(PagingInfo info)
+        public static void AssertPagingInfo(PagingInfo info)
         {
             var pagingInfo = GetFakePagingInfo();
 
@@ -21,7 +21,7 @@ namespace Translation.Tests.TestHelpers
                                             () => info.TotalItemCount.ShouldBe(pagingInfo.TotalItemCount));
         }
 
-        public void AssertPagingInfo(JsonResult result)
+        public static void AssertPagingInfo(JsonResult result)
         {
             var pagingInfo = new PagingInfo();
 
@@ -31,7 +31,7 @@ namespace Translation.Tests.TestHelpers
             resultValue.PagingInfo.Skip.ShouldBe(pagingInfo.Skip);
         }
 
-        public void AssertPagingInfoForSelectMany(PagingInfo info)
+        public static void AssertPagingInfoForSelectMany(PagingInfo info)
         {
             var pagingInfo = GetFakePagingInfoForSelectMany();
 
@@ -42,7 +42,7 @@ namespace Translation.Tests.TestHelpers
                                             () => info.TotalItemCount.ShouldBe(pagingInfo.TotalItemCount));
         }
 
-        public void AssertPagingInfoForSelectAfter(PagingInfo info)
+        public static void AssertPagingInfoForSelectAfter(PagingInfo info)
         {
             var pagingInfo = GetFakePagingInfoForSelectAfter();
 

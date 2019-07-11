@@ -496,6 +496,5 @@ namespace Translation.Client.Web.Controllers
             CurrentUser.IsActionSucceed = true;
             return Json(model);
         }
-
     }
 }
