@@ -20,7 +20,7 @@ function searchWork() {
 
     if (filter == "") {
         hide(searchResults);
-        txtSearch.removeEventListener("keyup", onUpDownKeyPress);
+        txtSearch.removeEventListener("keydown", onUpDownKeyPress);
     } else {
         show(searchResults);
     }
