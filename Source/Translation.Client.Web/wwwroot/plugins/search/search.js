@@ -1,15 +1,14 @@
-﻿window.addEventListener("keyup", onUpDownKeyPress);
-var labelSearchListIndex = -1;
-var lastFilter = "";
+﻿let _index = -1;
+let lastFilter = "";
 
-function filterLabels() {
-    var dropdown = document.getElementById("dropdown");
-    var filter, txtSearch;
-    txtSearch = document.getElementById("txtSearch");
-    filter = txtSearch.value;
+function searchWork() {
+    let searchResults = document.getElementById("searchResults");
+    let txtSearch = document.getElementById("txtSearch");
+    txtSearch.addEventListener("keydown", onUpDownKeyPress);
+    let filter = txtSearch.value;
 
     if (filter !== lastFilter) {
-        labelSearchListIndex = -1;
+        _index = -1;
 
         doGet('/Label/SearchData?search=' + filter, function (req) {
             if (199 < req.status && req.status < 300) {
@@ -20,28 +19,28 @@ function filterLabels() {
     lastFilter = filter;
 
     if (filter == "") {
-        hide(dropdown);
+        hide(searchResults);
+        txtSearch.removeEventListener("keyup", onUpDownKeyPress);
     } else {
-        show(dropdown);
+        show(searchResults);
     }
 }
 
 function bindLabelSearchDropdown(responseText) {
-    var dropdown = document.getElementById('dropdown');
-    while (dropdown.childElementCount > 1) {
-        dropdown.removeChild(dropdown.firstChild);
+    let searchResults = document.getElementById('searchResults');
+    while (searchResults.childElementCount > 1) {
+        searchResults.removeChild(searchResults.firstChild);
     }
-    var labels = JSON.parse(responseText);
-    if (labels == null) {
+    let results = JSON.parse(responseText);
+    if (results == null) {
         return;
     }
-    for (var i = 0; i < labels.length; i++) {
-        var label = labels[i];
-        var aTag = document.createElement('a');
-        aTag.setAttribute('href', "/Label/Detail/" + label.key);
-        aTag.setAttribute('uid', label.uid);
-        aTag.innerHTML = label.key;
-        dropdown.insertBefore(aTag, dropdown.firstChild);
+    for (let i = 0; i < results.length; i++) {
+        let result = results[i];
+        let link = document.createElement('a');
+        link.setAttribute('uid', result.uid);
+        link.innerHTML = result.key;
+        searchResults.insertBefore(link, searchResults.firstChild);
     }
 }
 
@@ -58,11 +57,11 @@ function getLabelSearchTerm() {
 }
 
 document.onclick = function (e) {
-    var item = e.target;
-    if (item.id !== "dropdown"
+    let item = e.target;
+    if (item.id !== "searchResults"
         || item.id !== "txtSearch") {
-        var dropdown = document.getElementById("dropdown");
-        hide(dropdown);
+        let searchResults = document.getElementById("searchResults");
+        hide(searchResults);
     }
 }
 
@@ -78,47 +77,52 @@ function hide(element) {
     }
 }
 
-var Key = {
+let KEY = {
     UP: 38,
     DOWN: 40,
     ENTER: 13
 }
 
 function onUpDownKeyPress(event) {
-    var dropdown = document.getElementById('dropdown');
-    var itemList = dropdown.getElementsByTagName("a");
-    var key = event.which || event.keyCode;
+    let searchResults = document.getElementById('searchResults');
+    let results = searchResults.getElementsByTagName("a");
+    let key = event.which || event.keyCode;
 
-    if (key === Key.DOWN
-        && labelSearchListIndex < itemList.length - 1) {
-        labelSearchListIndex++;
-    } else if (key === Key.UP
-        && labelSearchListIndex > 0) {
-        labelSearchListIndex--;
+    if (key === KEY.DOWN
+        && _index < results.length - 1) {
+        event.preventDefault();
+        _index++;
+    } else if (key === KEY.UP
+               && _index > 0) {
+        event.preventDefault();
+        _index--;
     }
 
-    select(itemList, labelSearchListIndex);
+    markSelected(results, _index);
 
-    if (key === Key.ENTER) {
-        if (labelSearchListIndex === itemList.length - 1) {
+    if (key === KEY.ENTER) {
+        if (event.target.id === "txtSearch") {
+            openLabelSearchListPage();
+        }
+        else if (_index === results.length - 1) {
             openLabelSearchListPage();
         } else {
-            openLabelDetailPage(itemList[labelSearchListIndex].getAttribute("uid"));
+            openLabelDetailPage(results[_index].getAttribute("uid"));
         }
     }
 }
 
-function select(itemList, itemIndexToSelect) {
-    if (itemList.length === 1) {
+function markSelected(results, resultIndexToSelect) {
+    if (results.length === 1) {
         return;
     }
 
-    for (i = 0; i < itemList.length; i++) {
-        item = itemList[i];
-        if (i === itemIndexToSelect) {
-            item.classList.add("list-item-selected");
+    for (i = 0; i < results.length; i++) {
+        result = results[i];
+        if (i === resultIndexToSelect) {
+            result.classList.add("list-item-selected");
         } else {
-            item.classList.remove("list-item-selected");
+            result.classList.remove("list-item-selected");
         }
     }
 }

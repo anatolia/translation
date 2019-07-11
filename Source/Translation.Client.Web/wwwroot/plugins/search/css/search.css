@@ -21,7 +21,8 @@
 
 .search {
   position: relative;
-  display: inline-block; }
+  display: inline-block;
+  float: right; }
   .search a {
     font-size: 12px; }
     .search a:hover {
@@ -47,13 +48,13 @@
 .list-item-selected {
   background-color: #ddd; }
 
-#labelSearchListLink {
+#allSearchListLink {
   color: blue; }
 
 .show {
   display: block; }
 
-.dropdown {
+.searchResults {
   overflow: scroll;
   overflow-x: hidden;
   overflow-y: scroll; }

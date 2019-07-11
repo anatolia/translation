@@ -25,6 +25,7 @@
 .search {
     position: relative;
     display: inline-block;
+    float: right;
 
     a {
         font-size: 12px;
@@ -61,7 +62,7 @@
     background-color: #ddd;
 }
 
-#labelSearchListLink {
+#allSearchListLink {
     color: blue;
 }
 
@@ -69,7 +70,7 @@
     display: block;
 }
 
-.dropdown {
+.searchResults {
     overflow: scroll;
     overflow-x: hidden;
     overflow-y: scroll;
