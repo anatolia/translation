@@ -96,8 +96,6 @@ namespace Translation.Service
         {
             var response = new ProjectRevisionReadListResponse();
 
-            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
