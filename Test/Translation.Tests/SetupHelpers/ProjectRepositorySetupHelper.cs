@@ -23,7 +23,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_SelectRevisions_Returns_InvalidRevision(this Mock<IProjectRepository> repository)
         {
             repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
-                .ReturnsAsync(new List<EntityRevision<Project>>());
+                      .ReturnsAsync(new List<EntityRevision<Project>>());
         }
 
         public static void Setup_SelectRevisions_Returns_OrganizationOneProjectOneRevisions(this Mock<IProjectRepository> repository)
@@ -41,7 +41,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_Select_Returns_InvalidProject(this Mock<IProjectRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Project, bool>>>(), false))
-                .ReturnsAsync(new Project());
+                      .ReturnsAsync(new Project());
         }
 
         public static void Verify_Select(this Mock<IProjectRepository> repository)

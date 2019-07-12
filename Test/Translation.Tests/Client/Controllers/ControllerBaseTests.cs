@@ -79,11 +79,11 @@ namespace Translation.Tests.Client.Controllers
         {
             var authenticationServiceMock = new Mock<IAuthenticationService>();
             authenticationServiceMock.Setup(a => a.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(), It.IsAny<AuthenticationProperties>()))
-                .Returns(Task.CompletedTask);
+                                     .Returns(Task.CompletedTask);
 
             var serviceProviderMock = new Mock<IServiceProvider>();
             serviceProviderMock.Setup(s => s.GetService(typeof(IAuthenticationService)))
-                .Returns(authenticationServiceMock.Object);
+                               .Returns(authenticationServiceMock.Object);
 
             var fakeClaimsPrincipal = new FakeClaimsPrincipal(new Claim(ClaimTypes.Name, OrganizationOneUserOneName), new Claim(ClaimTypes.Email, OrganizationOneUserOneEmail));
 

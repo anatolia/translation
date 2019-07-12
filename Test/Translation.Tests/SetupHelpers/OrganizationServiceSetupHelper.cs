@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Moq;
 
 using Translation.Common.Contracts;
@@ -88,57 +89,50 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_DemandPasswordReset_Returns_DemandPasswordResetResponse_Success(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.DemandPasswordReset(It.IsAny<DemandPasswordResetRequest>()))
-                .Returns(Task.FromResult(new DemandPasswordResetResponse { Status = ResponseStatus.Success }));
+                   .Returns(Task.FromResult(new DemandPasswordResetResponse { Status = ResponseStatus.Success }));
         }
 
         public static void Setup_ValidatePasswordReset_Returns_PasswordResetValidateResponse_Success(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.ValidatePasswordReset(It.IsAny<PasswordResetValidateRequest>()))
-                .Returns(Task.FromResult(new PasswordResetValidateResponse { Status = ResponseStatus.Success }));
+                   .Returns(Task.FromResult(new PasswordResetValidateResponse { Status = ResponseStatus.Success }));
         }
 
         public static void Setup_PasswordReset_Returns_PasswordResetResponse_Success(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.PasswordReset(It.IsAny<PasswordResetRequest>()))
-                .Returns(Task.FromResult(new PasswordResetResponse { Status = ResponseStatus.Success }));
+                   .Returns(Task.FromResult(new PasswordResetResponse { Status = ResponseStatus.Success }));
         }
 
         public static void Setup_GetUser_Returns_UserReadResponse_Success(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.GetUser(It.IsAny<UserReadRequest>()))
-                .Returns(new UserReadResponse { Status = ResponseStatus.Success });
+                   .Returns(new UserReadResponse { Status = ResponseStatus.Success });
         }
 
         public static void Setup_ChangePassword_Returns_PasswordChangeResponse_Success(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.ChangePassword(It.IsAny<PasswordChangeRequest>()))
-                .Returns(Task.FromResult(new PasswordChangeResponse { Status = ResponseStatus.Success }));
+                   .Returns(Task.FromResult(new PasswordChangeResponse { Status = ResponseStatus.Success }));
         }
 
         public static void Setup_InviteUser_Returns_UserInviteResponse_Success(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.InviteUser(It.IsAny<UserInviteRequest>()))
-                .Returns(Task.FromResult(new UserInviteResponse { Status = ResponseStatus.Success }));
+                   .Returns(Task.FromResult(new UserInviteResponse { Status = ResponseStatus.Success }));
         }
 
         public static void Setup_ValidateUserInvitation_Returns_UserInviteValidateResponse_Success(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.ValidateUserInvitation(It.IsAny<UserInviteValidateRequest>()))
-                .Returns(Task.FromResult(new UserInviteValidateResponse { Status = ResponseStatus.Success }));
+                   .Returns(Task.FromResult(new UserInviteValidateResponse { Status = ResponseStatus.Success }));
         }
 
         public static void Setup_AcceptInvitation_Returns_UserAcceptInviteResponse_Success(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.AcceptInvitation(It.IsAny<UserAcceptInviteRequest>()))
-                .Returns(Task.FromResult(new UserAcceptInviteResponse { Status = ResponseStatus.Success }));
+                   .Returns(Task.FromResult(new UserAcceptInviteResponse { Status = ResponseStatus.Success }));
         }
-
-        //todo:
-        //public static void Setup_GetOrganizationUsersLoginLogs_Returns_OrganizationUserLoginLogReadListResponse_Success(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x => x.GetOrganizationUsersLoginLogs(It.IsAny<OrganizationUserLoginLogReadListRequest>()))
-        //        .Returns(Task.FromResult(new OrganizationUserLoginLogReadListResponse { Status = ResponseStatus.Success }));
-        //}
 
         public static void Setup_ChangeActivationForUser_Returns_UserChangeActivationResponse_Success(this Mock<IOrganizationService> service)
         {
@@ -149,297 +143,176 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_EditOrganization_Returns_OrganizationEditResponse_Success(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.EditOrganization(It.IsAny<OrganizationEditRequest>()))
-                .Returns(Task.FromResult(
-                    new OrganizationEditResponse { Status = ResponseStatus.Success }));
+                   .Returns(Task.FromResult(new OrganizationEditResponse { Status = ResponseStatus.Success }));
         }
-
-        //todo:
-        //public static void Setup_GetOrganizationUsers_Returns_OrganizationUserReadListResponse_Success(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x => x.GetOrganizationUsers(It.IsAny<OrganizationUserReadListRequest>()))
-        //        .Returns(Task.FromResult(
-        //            new OrganizationUserReadListResponse<TranslationUserDto> { Status = ResponseStatus.Success }));
-        //}
 
         public static void Setup_EditUser_Returns_UserEditResponse_Success(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.EditUser(It.IsAny<UserEditRequest>()))
-                .Returns(Task.FromResult(new UserEditResponse { Status = ResponseStatus.Success }));
+                   .Returns(Task.FromResult(new UserEditResponse { Status = ResponseStatus.Success }));
         }
 
         public static void Setup_DeleteUser_Returns_UserDeleteResponse_Success(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.DeleteUser(It.IsAny<UserDeleteRequest>()))
-                .Returns(Task.FromResult(new UserDeleteResponse { Status = ResponseStatus.Success }));
+                   .Returns(Task.FromResult(new UserDeleteResponse { Status = ResponseStatus.Success }));
         }
-
-        // todo:
-        //public static void Setup_GetUserLoginLogs_Returns_UserLoginLogReadListResponse_Success(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x => x.GetUserLoginLogs(It.IsAny<UserLoginLogReadListRequest>()))
-        //        .Returns(Task.FromResult(new UserLoginLogReadListResponse { Status = ResponseStatus.Success }));
-        //}
-
-        //public static void Setup_GetJournalList_Returns_OrganizationJournalReadListResponse_Success(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x => x.GetJournalList(It.IsAny<OrganizationJournalReadListRequest>()))
-        //        .Returns(Task.FromResult(new OrganizationJournalReadListResponse { Status = ResponseStatus.Success }));
-        //}
-
-        //public static void Setup_GetOrganizationTokenRequestLogReadList_Returns_OrganizationTokenRequestLogReadListResponse_Success(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x =>
-        //            x.GetOrganizationTokenRequestLogReadList(It.IsAny<OrganizationTokenRequestLogReadListRequest>()))
-        //        .Returns(Task.FromResult(
-        //            new OrganizationTokenRequestLogReadListResponse { Status = ResponseStatus.Success }));
-        //}
-
-        //public static void Setup_GetOrganizationUserLoginLogs_Returns_OrganizationUserLoginLogReadListResponse_Success(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x => x.GetOrganizationUserLoginLogs(It.IsAny<OrganizationUserLoginLogReadListRequest>()))
-        //        .Returns(
-        //            Task.FromResult(new OrganizationUserLoginLogReadListResponse { Status = ResponseStatus.Success }));
-        //}
 
         public static void Setup_DemandPasswordReset_Returns_DemandPasswordResetResponse_Failed(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.DemandPasswordReset(It.IsAny<DemandPasswordResetRequest>()))
-                .Returns(Task.FromResult(new DemandPasswordResetResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+                   .Returns(Task.FromResult(new DemandPasswordResetResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_ValidatePasswordReset_Returns_PasswordResetValidateResponse_Failed(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.ValidatePasswordReset(It.IsAny<PasswordResetValidateRequest>()))
-                .Returns(Task.FromResult(new PasswordResetValidateResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+                   .Returns(Task.FromResult(new PasswordResetValidateResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_PasswordReset_Returns_PasswordResetResponse_Failed(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.PasswordReset(It.IsAny<PasswordResetRequest>()))
-                .Returns(Task.FromResult(new PasswordResetResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+                   .Returns(Task.FromResult(new PasswordResetResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_ChangePassword_Returns_PasswordChangeResponse_Failed(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.ChangePassword(It.IsAny<PasswordChangeRequest>()))
-                .Returns(Task.FromResult(new PasswordChangeResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+                   .Returns(Task.FromResult(new PasswordChangeResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_ChangeActivationForUser_Returns_UserChangeActivationResponse_Failed(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.ChangeActivationForUser(It.IsAny<UserChangeActivationRequest>()))
-                .Returns(Task.FromResult(new UserChangeActivationResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new UserChangeActivationResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
         }
 
         public static void Setup_GetOrganization_Returns_OrganizationReadResponse_Failed(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.GetOrganization(It.IsAny<OrganizationReadRequest>()))
-                .Returns(new OrganizationReadResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, });
+                   .Returns(new OrganizationReadResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, });
         }
 
         public static void Setup_EditOrganization_Returns_OrganizationEditResponse_Failed(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.EditOrganization(It.IsAny<OrganizationEditRequest>()))
-                .Returns(Task.FromResult(
-                    new OrganizationEditResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new OrganizationEditResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
         }
-
-        //public static void Setup_GetOrganizationUsers_Returns_OrganizationUserReadListResponse_Failed(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x => x.GetOrganizationUsers(It.IsAny<OrganizationUserReadListRequest>()))
-        //        .Returns(Task.FromResult(
-        //            new OrganizationUserReadListResponse<TranslationUserDto> { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
-        //}
-
-        //public static void Setup_GetOrganizationUsersLoginLogs_Returns_OrganizationUserLoginLogReadListResponse_Failed(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x => x.GetOrganizationUsersLoginLogs(It.IsAny<OrganizationUserLoginLogReadListRequest>()))
-        //        .Returns(Task.FromResult(
-        //            new OrganizationUserLoginLogReadListResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
-        //}
 
         public static void Setup_EditUser_Returns_UserEditResponse_Failed(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.EditUser(It.IsAny<UserEditRequest>()))
-                .Returns(Task.FromResult(new UserEditResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new UserEditResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
         }
 
         public static void Setup_DeleteUser_Returns_UserDeleteResponse_Failed(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.DeleteUser(It.IsAny<UserDeleteRequest>()))
-                .Returns(Task.FromResult(new UserDeleteResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new UserDeleteResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
         }
-
-        //public static void Setup_GetUserLoginLogs_Returns_UserLoginLogReadListResponse_Failed(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x => x.GetUserLoginLogs(It.IsAny<UserLoginLogReadListRequest>()))
-        //        .Returns(Task.FromResult(new UserLoginLogReadListResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
-        //}
 
         public static void Setup_InviteUser_Returns_UserInviteResponse_Failed(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.InviteUser(It.IsAny<UserInviteRequest>()))
-                .Returns(Task.FromResult(new UserInviteResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new UserInviteResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
         }
 
         public static void Setup_ValidateUserInvitation_Returns_UserInviteValidateResponse_Failed(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.ValidateUserInvitation(It.IsAny<UserInviteValidateRequest>()))
-                .Returns(Task.FromResult(new UserInviteValidateResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new UserInviteValidateResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
         }
 
         public static void Setup_AcceptInvitation_Returns_UserAcceptInviteResponse_Failed(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.AcceptInvitation(It.IsAny<UserAcceptInviteRequest>()))
-                .Returns(Task.FromResult(new UserAcceptInviteResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new UserAcceptInviteResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
         }
-
-        //public static void Setup_GetJournalList_Returns_OrganizationJournalReadListResponse_Failed(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x => x.GetJournalList(It.IsAny<OrganizationJournalReadListRequest>()))
-        //        .Returns(Task.FromResult(new OrganizationJournalReadListResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
-        //}
 
         public static void Setup_GetUser_Returns_UserReadResponse_Failed(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.GetUser(It.IsAny<UserReadRequest>()))
-                .Returns(new UserReadResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, });
+                   .Returns(new UserReadResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, });
         }
-
-        //public static void Setup_GetOrganizationTokenRequestLogReadList_Returns_OrganizationTokenRequestLogReadListResponse_Failed(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x =>
-        //            x.GetOrganizationTokenRequestLogReadList(It.IsAny<OrganizationTokenRequestLogReadListRequest>()))
-        //        .Returns(Task.FromResult(
-        //            new OrganizationTokenRequestLogReadListResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
-        //}
-
-        //public static void Setup_GetOrganizationUserLoginLogs_Returns_OrganizationUserLoginLogReadListResponse_Failed(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x => x.GetOrganizationUserLoginLogs(It.IsAny<OrganizationUserLoginLogReadListRequest>()))
-        //        .Returns(Task.FromResult(
-        //            new OrganizationUserLoginLogReadListResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }, }));
-        //}
 
         public static void Setup_DemandPasswordReset_Returns_DemandPasswordResetResponse_Invalid(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.DemandPasswordReset(It.IsAny<DemandPasswordResetRequest>()))
-                .Returns(Task.FromResult(new DemandPasswordResetResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new DemandPasswordResetResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
         }
 
         public static void Setup_ValidatePasswordReset_Returns_PasswordResetValidateResponse_Invalid(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.ValidatePasswordReset(It.IsAny<PasswordResetValidateRequest>()))
-                .Returns(Task.FromResult(new PasswordResetValidateResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new PasswordResetValidateResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
         }
 
         public static void Setup_PasswordReset_Returns_PasswordResetResponse_Invalid(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.PasswordReset(It.IsAny<PasswordResetRequest>()))
-                .Returns(Task.FromResult(new PasswordResetResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new PasswordResetResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
         }
 
         public static void Setup_ChangePassword_Returns_PasswordChangeResponse_Invalid(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.ChangePassword(It.IsAny<PasswordChangeRequest>()))
-                .Returns(Task.FromResult(new PasswordChangeResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new PasswordChangeResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
         }
 
         public static void Setup_ChangeActivationForUser_Returns_UserChangeActivationResponse_Invalid(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.ChangeActivationForUser(It.IsAny<UserChangeActivationRequest>()))
-                .Returns(Task.FromResult(new UserChangeActivationResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new UserChangeActivationResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
         }
 
         public static void Setup_GetOrganization_Returns_OrganizationReadResponse_Invalid(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.GetOrganization(It.IsAny<OrganizationReadRequest>()))
-                .Returns(new OrganizationReadResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, });
+                   .Returns(new OrganizationReadResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, });
         }
 
         public static void Setup_EditOrganization_Returns_OrganizationEditResponse_Invalid(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.EditOrganization(It.IsAny<OrganizationEditRequest>()))
-                .Returns(Task.FromResult(
-                    new OrganizationEditResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new OrganizationEditResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
         }
-
-        //public static void Setup_GetOrganizationUsers_Returns_OrganizationUserReadListResponse_Invalid(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x => x.GetOrganizationUsers(It.IsAny<OrganizationUserReadListRequest>()))
-        //        .Returns(Task.FromResult(
-        //            new OrganizationUserReadListResponse<TranslationUserDto> { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
-        //}
-
-        //public static void Setup_GetOrganizationUsersLoginLogs_Returns_OrganizationUserLoginLogReadListResponse_Invalid(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x => x.GetOrganizationUsersLoginLogs(It.IsAny<OrganizationUserLoginLogReadListRequest>()))
-        //        .Returns(
-        //            Task.FromResult(new OrganizationUserLoginLogReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
-        //}
 
         public static void Setup_EditUser_Returns_UserEditResponse_Invalid(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.EditUser(It.IsAny<UserEditRequest>()))
-                .Returns(Task.FromResult(new UserEditResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new UserEditResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
         }
 
         public static void Setup_DeleteUser_Returns_UserDeleteResponse_Invalid(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.DeleteUser(It.IsAny<UserDeleteRequest>()))
-                .Returns(Task.FromResult(new UserDeleteResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new UserDeleteResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
         }
-
-        //public static void Setup_GetUserLoginLogs_Returns_UserLoginLogReadListResponse_Invalid(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x => x.GetUserLoginLogs(It.IsAny<UserLoginLogReadListRequest>()))
-        //        .Returns(Task.FromResult(new UserLoginLogReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
-        //}
 
         public static void Setup_InviteUser_Returns_UserInviteResponse_Invalid(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.InviteUser(It.IsAny<UserInviteRequest>()))
-                .Returns(Task.FromResult(new UserInviteResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new UserInviteResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
         }
 
         public static void Setup_ValidateUserInvitation_Returns_UserInviteValidateResponse_Invalid(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.ValidateUserInvitation(It.IsAny<UserInviteValidateRequest>()))
-                .Returns(Task.FromResult(new UserInviteValidateResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new UserInviteValidateResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
         }
 
         public static void Setup_AcceptInvitation_Returns_UserAcceptInviteResponse_Invalid(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.AcceptInvitation(It.IsAny<UserAcceptInviteRequest>()))
-                .Returns(Task.FromResult(new UserAcceptInviteResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
+                   .Returns(Task.FromResult(new UserAcceptInviteResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
         }
-
-        //public static void Setup_GetJournalList_Returns_OrganizationJournalReadListResponse_Invalid(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x => x.GetJournalList(It.IsAny<OrganizationJournalReadListRequest>()))
-        //        .Returns(Task.FromResult(new OrganizationJournalReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
-        //}
 
         public static void Setup_GetUser_Returns_UserReadResponse_Invalid(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.GetUser(It.IsAny<UserReadRequest>()))
                 .Returns(new UserReadResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, });
         }
-
-        //public static void Setup_GetOrganizationTokenRequestLogReadList_Returns_OrganizationTokenRequestLogReadListResponse_Invalid(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x =>
-        //            x.GetOrganizationTokenRequestLogReadList(It.IsAny<OrganizationTokenRequestLogReadListRequest>()))
-        //        .Returns(Task.FromResult(
-        //            new OrganizationTokenRequestLogReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
-        //}
-
-        //public static void Setup_GetOrganizationUserLoginLogs_Returns_OrganizationUserLoginLogReadListResponse_Invalid(this Mock<IOrganizationService> service)
-        //{
-        //    service.Setup(x => x.GetOrganizationUserLoginLogs(It.IsAny<OrganizationUserLoginLogReadListRequest>()))
-        //        .Returns(
-        //            Task.FromResult(new OrganizationUserLoginLogReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
-        //}
 
         public static void Verify_CreateOrganizationWithAdmin(this Mock<IOrganizationService> service)
         {
@@ -486,16 +359,6 @@ namespace Translation.Tests.SetupHelpers
             service.Verify(x => x.EditOrganization(It.IsAny<OrganizationEditRequest>()));
         }
 
-        //public static void Verify_GetOrganizationUsers(this Mock<IOrganizationService> service)
-        //{
-        //    service.Verify(x => x.GetOrganizationUsers(It.IsAny<OrganizationUserReadListRequest>()));
-        //}
-
-        //public static void Verify_GetOrganizationUsersLoginLogs(this Mock<IOrganizationService> service)
-        //{
-        //    service.Verify(x => x.GetOrganizationUsersLoginLogs(It.IsAny<OrganizationUserLoginLogReadListRequest>()));
-        //}
-
         public static void Verify_EditUser(this Mock<IOrganizationService> service)
         {
             service.Verify(x => x.EditUser(It.IsAny<UserEditRequest>()));
@@ -505,11 +368,6 @@ namespace Translation.Tests.SetupHelpers
         {
             service.Verify(x => x.DeleteUser(It.IsAny<UserDeleteRequest>()));
         }
-
-        //public static void Verify_GetUserLoginLogs(this Mock<IOrganizationService> service)
-        //{
-        //    service.Verify(x => x.GetUserLoginLogs(It.IsAny<UserLoginLogReadListRequest>()));
-        //}
 
         public static void Verify_InviteUser(this Mock<IOrganizationService> service)
         {
@@ -526,25 +384,9 @@ namespace Translation.Tests.SetupHelpers
             service.Verify(x => x.AcceptInvitation(It.IsAny<UserAcceptInviteRequest>()));
         }
 
-        //public static void Verify_GetJournalList(this Mock<IOrganizationService> service)
-        //{
-        //    service.Verify(x => x.GetJournalList(It.IsAny<OrganizationJournalReadListRequest>()));
-        //}
-
         public static void Verify_GetUser(this Mock<IOrganizationService> service)
         {
             service.Verify(x => x.GetUser(It.IsAny<UserReadRequest>()));
         }
-
-        //public static void Verify_GetOrganizationTokenRequestLogReadList(this Mock<IOrganizationService> service)
-        //{
-        //    service.Verify(x =>
-        //        x.GetOrganizationTokenRequestLogReadList(It.IsAny<OrganizationTokenRequestLogReadListRequest>()));
-        //}
-
-        //public static void Verify_GetOrganizationUserLoginLogs(this Mock<IOrganizationService> service)
-        //{
-        //    service.Verify(x => x.GetOrganizationUserLoginLogs(It.IsAny<OrganizationUserLoginLogReadListRequest>()));
-        //}
     }
 }

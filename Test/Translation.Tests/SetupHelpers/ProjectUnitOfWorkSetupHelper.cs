@@ -17,7 +17,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_DoCreateWork_Returns_True(this Mock<IProjectUnitOfWork> unitOfWork)
         {
             unitOfWork.Setup(x => x.DoCreateWork(It.IsAny<long>(), It.IsAny<Project>()))
-                .ReturnsAsync(BooleanTrue);
+                      .ReturnsAsync(BooleanTrue);
         }
 
         public static void Verify_DoCloneWork(this Mock<IProjectUnitOfWork> unitOfWork)

@@ -15,24 +15,13 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_Count_Returns_POSITIVE_INT_NUMBER_10(this Mock<ITokenRequestLogRepository> repository)
         {
             repository.Setup(x => x.Count(It.IsAny<Expression<Func<TokenRequestLog, bool>>>(), false))
-                .ReturnsAsync(Ten);
+                      .ReturnsAsync(Ten);
         }
 
         public static void Verify_Count(this Mock<ITokenRequestLogRepository> repository)
         {
             repository.Verify(x => x.Count(It.IsAny<Expression<Func<TokenRequestLog, bool>>>(), false));
         }
-
-        //public static void Setup_SelectMany_Returns_TokenRequestLogList(this Mock<ITokenRequestLogRepository> repository)
-        //{
-        //    repository.Setup(x =>
-        //            x.SelectMany(It.IsAny<Expression<Func<TokenRequestLog, bool>>>(),
-        //                It.IsAny<int>(),
-        //                It.IsAny<int>(),
-        //                It.IsAny<Expression<Func<TokenRequestLog, object>>>(),
-        //                It.IsAny<bool>(), false))
-        //        .ReturnsAsync(EntityDataHelper.GetFakeParkNetTokenRequestLogList());
-        //}
 
         public static void Verify_SelectMany(this Mock<ITokenRequestLogRepository> repository)
         {
@@ -43,17 +32,6 @@ namespace Translation.Tests.SetupHelpers
                         It.IsAny<Expression<Func<TokenRequestLog, object>>>(),
                         It.IsAny<bool>(), false));
         }
-
-        //public static void Setup_SelectAfter_Returns_TokenRequestLogList(this Mock<ITokenRequestLogRepository> repository)
-        //{
-        //    repository.Setup(x =>
-        //            x.SelectAfter(It.IsAny<Expression<Func<TokenRequestLog, bool>>>(),
-        //                It.IsAny<Guid>(),
-        //                It.IsAny<int>(),
-        //                It.IsAny<Expression<Func<TokenRequestLog, object>>>(),
-        //                It.IsAny<bool>(), false))
-        //        .ReturnsAsync(EntityDataHelper.GetFakeParkNetTokenRequestLogList());
-        //}
 
         public static void Verify_SelectAfter(this Mock<ITokenRequestLogRepository> repository)
         {

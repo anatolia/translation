@@ -12,16 +12,6 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class SendEmailLogRepositorySetupHelper
     {
-        //public static void Setup_SelectMany_Returns_ParkNetSendEmailLogList(this Mock<ISendEmailLogRepository> repository)
-        //{
-        //    repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<SendEmailLog, bool>>>(),
-        //            It.IsAny<int>(),
-        //            It.IsAny<int>(),
-        //            It.IsAny<Expression<Func<SendEmailLog, object>>>(),
-        //            It.IsAny<bool>(), false))
-        //        .ReturnsAsync(EntityDataHelper.GetFakeGetFakeParkNetSendEmailLogList());
-        //}
-
         public static void Verify_SelectMany(this Mock<ISendEmailLogRepository> repository)
         {
             repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<SendEmailLog, bool>>>(),
@@ -30,16 +20,6 @@ namespace Translation.Tests.SetupHelpers
                     It.IsAny<Expression<Func<SendEmailLog, object>>>(),
                     It.IsAny<bool>(), false));
         }
-
-        //public static void Setup_SelectAfter_Return_ParkNetSendEmailLogList(this Mock<ISendEmailLogRepository> repository)
-        //{
-        //    repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<SendEmailLog, bool>>>(),
-        //            It.IsAny<Guid>(),
-        //            It.IsAny<int>(),
-        //            It.IsAny<Expression<Func<SendEmailLog, object>>>(),
-        //            It.IsAny<bool>(), false))
-        //        .ReturnsAsync(EntityDataHelper.GetFakeGetFakeParkNetSendEmailLogList());
-        //}
 
         public static void Verify_SelectAfter(this Mock<ISendEmailLogRepository> repository)
         {

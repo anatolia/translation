@@ -3,7 +3,6 @@ using System.Linq.Expressions;
 
 using Moq;
 
-using Translation.Data.Entities.Main;
 using Translation.Data.Entities.Parameter;
 using Translation.Data.Repositories.Contracts;
 using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
@@ -112,26 +111,6 @@ namespace Translation.Tests.SetupHelpers
                                             It.IsAny<long>()));
         }
 
-        //public static void Setup_SelectMany_Returns_LanguageList(this Mock<ILanguageRepository> repository)
-        //{
-        //    repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<Language, bool>>>(),
-        //                                       It.IsAny<int>(),
-        //                                       It.IsAny<int>(),
-        //                                       It.IsAny<Expression<Func<Language, object>>>(),
-        //                                       It.IsAny<bool>(), false))
-        //              .ReturnsAsync(TranslationEntityDataHelper.GetFakeLanguageList());
-        //}
-
-        //public static void Setup_SelectAfter_Returns_LanguageList(this Mock<ILanguageRepository> repository)
-        //{
-        //    repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Language, bool>>>(),
-        //                                        It.IsAny<Guid>(),
-        //                                        It.IsAny<int>(),
-        //                                        It.IsAny<Expression<Func<Language, object>>>(),
-        //                                        It.IsAny<bool>(), false))
-        //              .ReturnsAsync(TranslationEntityDataHelper.GetFakeLanguageList());
-        //}
-
         public static void Verify_SelectAfter(this Mock<ILanguageRepository> repository)
         {
             repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<Language, bool>>>(),
@@ -153,7 +132,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_Count_Returns_POSITIVE_INT_NUMBER_10(this Mock<ILanguageRepository> repository)
         {
             repository.Setup(x => x.Count(It.IsAny<Expression<Func<Language, bool>>>(), false))
-                .ReturnsAsync(Ten);
+                      .ReturnsAsync(Ten);
         }
 
         public static void Verify_Count(this Mock<ILanguageRepository> repository)

@@ -2,11 +2,10 @@
 using System.Linq.Expressions;
 
 using Moq;
+
 using Translation.Data.Entities.Domain;
-using Translation.Data.Entities.Main;
 using Translation.Data.Repositories.Contracts;
 using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
-using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
 namespace Translation.Tests.SetupHelpers
 {
@@ -34,16 +33,6 @@ namespace Translation.Tests.SetupHelpers
             repository.Verify(x => x.Select(It.IsAny<Expression<Func<Label, bool>>>(), false));
         }
 
-        //public static void Setup_SelectAfter_Returns_ParkNetLabelList(this Mock<ILabelRepository> repository)
-        //{
-        //    repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Label, bool>>>(),
-        //                                        It.IsAny<Guid>(),
-        //                                        It.IsAny<int>(),
-        //                                        It.IsAny<Expression<Func<Label, object>>>(),
-        //                                        It.IsAny<bool>(), false))
-        //               .ReturnsAsync(TranslationEntityDataHelper.GetFakeParkNetLabelList());
-        //}
-
         public static void Verify_SelectAfter(this Mock<ILabelRepository> repository)
         {
             repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<Label, bool>>>(),
@@ -52,16 +41,6 @@ namespace Translation.Tests.SetupHelpers
                                                  It.IsAny<Expression<Func<Label, object>>>(),
                                                  It.IsAny<bool>(), false));
         }
-
-        //public static void Setup_SelectMany_Returns_ParkNetLabelList(this Mock<ILabelRepository> repository)
-        //{
-        //    repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<Label, bool>>>(),
-        //                                       It.IsAny<int>(),
-        //                                       It.IsAny<int>(),
-        //                                       It.IsAny<Expression<Func<Label, object>>>(),
-        //                                       It.IsAny<bool>(), false))
-        //              .ReturnsAsync(TranslationEntityDataHelper.GetFakeParkNetLabelList());
-        //}
 
         public static void Verify_SelectMany(this Mock<ILabelRepository> repository)
         {
@@ -96,14 +75,14 @@ namespace Translation.Tests.SetupHelpers
         {
             repository.Setup(x => x.Delete(It.IsAny<long>(),
                                            It.IsAny<long>()))
-                                .ReturnsAsync(true);
+                      .ReturnsAsync(true);
         }
 
         public static void Setup_Delete_Failed(this Mock<ILabelRepository> repository)
         {
             repository.Setup(x => x.Delete(It.IsAny<long>(),
                                            It.IsAny<long>()))
-                                .ReturnsAsync(false);
+                      .ReturnsAsync(false);
         }
 
         public static void Verify_Delete(this Mock<ILabelRepository> repository)
@@ -128,15 +107,5 @@ namespace Translation.Tests.SetupHelpers
         {
             repository.Verify(x => x.Any(It.IsAny<Expression<Func<Label, bool>>>(), false));
         }
-
-        //public static void Setup_SelectMany_Returns_LabelList(this Mock<ILabelRepository> repository)
-        //{
-        //    repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<Label, bool>>>(),
-        //                                       It.IsAny<int>(),
-        //                                       It.IsAny<int>(),
-        //                                       It.IsAny<Expression<Func<Label, object>>>(),
-        //                                       It.IsAny<bool>(), false))
-        //              .ReturnsAsync(TranslationEntityDataHelper.GetFakeParkNetLabelList());
-        //}
     }
 }
