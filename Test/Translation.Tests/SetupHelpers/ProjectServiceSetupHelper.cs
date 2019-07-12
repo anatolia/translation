@@ -13,6 +13,15 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class ProjectServiceSetupHelper
     {
+        public static void Setup_GetProjectRevisions_Returns_ProjectRevisionReadListResponse_Success(this Mock<IProjectService> service)
+        {
+            var items = new List<RevisionDto<ProjectDto>>();
+            items.Add(new RevisionDto<ProjectDto>() { RevisionedByUid = UidOne });
+
+            service.Setup(x => x.GetProjectRevisions(It.IsAny<ProjectRevisionReadListRequest>()))
+                .Returns(Task.FromResult(new ProjectRevisionReadListResponse() { Status = ResponseStatus.Success, Items = items }));
+        }
+
         public static void Setup_GetPendingTranslations_Returns_ProjectPendingTranslationReadListResponse_Success(this Mock<IProjectService> service)
         {
             var items = new List<LabelDto>();
@@ -58,17 +67,32 @@ namespace Translation.Tests.SetupHelpers
                 .Returns(Task.FromResult(new ProjectCloneResponse { Status = ResponseStatus.Success }));
         }
 
+        public static void Setup_RestoreProject_Returns_ProjectRestoreResponse_Success(this Mock<IProjectService> service)
+        {
+            service.Setup(x => x.RestoreProject(It.IsAny<ProjectRestoreRequest>()))
+                .Returns(Task.FromResult(new ProjectRestoreResponse { Status = ResponseStatus.Success }));
+        }
+
         public static void Setup_ChangeActivationForProject_Returns_ProjectChangeActivationResponse_Success(this Mock<IProjectService> service)
         {
             service.Setup(x => x.ChangeActivationForProject(It.IsAny<ProjectChangeActivationRequest>()))
                 .Returns(Task.FromResult(new ProjectChangeActivationResponse { Status = ResponseStatus.Success }));
         }
 
+        public static void Setup_RestoreProject_Returns_ProjectRestoreResponse_Failed(this Mock<IProjectService> service)
+        {
+            service.Setup(x => x.RestoreProject(It.IsAny<ProjectRestoreRequest>()))
+                .Returns(Task.FromResult(new ProjectRestoreResponse { Status = ResponseStatus.Failed }));
+        }
+
+        public static void Setup_GetProjectRevisions_Returns_ProjectRevisionReadListResponse_Failed(this Mock<IProjectService> service)
+        {
+            service.Setup(x => x.GetProjectRevisions(It.IsAny<ProjectRevisionReadListRequest>()))
+                .Returns(Task.FromResult(new ProjectRevisionReadListResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+        }
+
         public static void Setup_GetPendingTranslations_Returns_ProjectPendingTranslationReadListResponse_Failed(this Mock<IProjectService> service)
         {
-            var items = new List<LabelDto>();
-            items.Add(new LabelDto() { Uid = UidOne });
-
             service.Setup(x => x.GetPendingTranslations(It.IsAny<ProjectPendingTranslationReadListRequest>()))
                 .Returns(Task.FromResult(new ProjectPendingTranslationReadListResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
         }
@@ -113,6 +137,18 @@ namespace Translation.Tests.SetupHelpers
         {
             service.Setup(x => x.ChangeActivationForProject(It.IsAny<ProjectChangeActivationRequest>()))
                 .Returns(Task.FromResult(new ProjectChangeActivationResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Setup_RestoreProject_Returns_ProjectRestoreResponse_Invalid(this Mock<IProjectService> service)
+        {
+            service.Setup(x => x.RestoreProject(It.IsAny<ProjectRestoreRequest>()))
+                .Returns(Task.FromResult(new ProjectRestoreResponse { Status = ResponseStatus.Invalid}));
+        }
+
+        public static void Setup_GetProjectRevisions_Returns_ProjectRevisionReadListResponse_Invalid(this Mock<IProjectService> service)
+        {
+            service.Setup(x => x.GetProjectRevisions(It.IsAny<ProjectRevisionReadListRequest>()))
+                .Returns(Task.FromResult(new ProjectRevisionReadListResponse() { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_GetPendingTranslations_Returns_ProjectPendingTranslationReadListResponse_Invalid(this Mock<IProjectService> service)
@@ -164,6 +200,17 @@ namespace Translation.Tests.SetupHelpers
         {
             service.Setup(x => x.ChangeActivationForProject(It.IsAny<ProjectChangeActivationRequest>()))
                 .Returns(Task.FromResult(new ProjectChangeActivationResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Verify_RestoreProject(this Mock<IProjectService> service)
+        {
+            service.Verify(x => x.RestoreProject(It.IsAny<ProjectRestoreRequest>()));
+
+        }
+
+        public static void Verify_GetProjectRevisions(this Mock<IProjectService> service)
+        {
+            service.Verify(x => x.GetProjectRevisions(It.IsAny<ProjectRevisionReadListRequest>()));
         }
 
         public static void Verify_GetPendingTranslations(this Mock<IProjectService> service)

@@ -527,34 +527,6 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task PendingTranslations_GET()
-        {
-            // arrange
-            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
-
-            // act
-            var result = await SystemUnderTest.PendingTranslations(OrganizationOneProjectOneUid);
-
-            // assert
-            AssertViewWithModel<ProjectPendingTranslationReadListModel>(result);
-            MockProjectService.Verify_GetProject();
-        }
-
-        [Test]
-        public async Task PendingTranslations_GET_InvalidParameter()
-        {
-            // arrange
-            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
-
-            // act
-            var result = await SystemUnderTest.PendingTranslations(EmptyUid);
-
-            // assert
-            AssertViewRedirectToHome(result);
-            MockProjectService.Verify_GetProject();
-        }
-
-        [Test]
         public async Task SelectData_GET_FailedResponse()
         {
             // arrange
@@ -580,6 +552,34 @@ namespace Translation.Tests.Client.Controllers
             // assert
             MockProjectService.Verify_GetProjects();
             result.ShouldBe(null);
+        }
+
+        [Test]
+        public async Task PendingTranslations_GET()
+        {
+            // arrange
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.PendingTranslations(OrganizationOneProjectOneUid);
+
+            // assert
+            AssertViewWithModel<ProjectPendingTranslationReadListModel>(result);
+            MockProjectService.Verify_GetProject();
+        }
+
+        [Test]
+        public async Task PendingTranslations_GET_InvalidParameter()
+        {
+            // arrange
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.PendingTranslations(EmptyUid);
+
+            // assert
+            AssertViewRedirectToHome(result);
+            MockProjectService.Verify_GetProject();
         }
 
         [Test]
@@ -830,6 +830,141 @@ namespace Translation.Tests.Client.Controllers
 
             // act
             var result = (JsonResult)await SystemUnderTest.ChangeActivation(EmptyUid, OrganizationOneProjectOneUid);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
+        }
+
+        [Test]
+        public async Task Revisions_GET()
+        {
+            // arrange
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.Revisions(OrganizationOneProjectOneUid);
+
+            // assert
+            AssertViewWithModel<ProjectRevisionReadListModel>(result);
+            MockProjectService.Verify_GetProject();
+        }
+
+        [Test]
+        public async Task Revisions_GET_InvalidParameter()
+        {
+            // arrange
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.Revisions(EmptyUid);
+
+            // assert
+            AssertViewRedirectToHome(result);
+            MockProjectService.Verify_GetProject();
+        }
+
+        [Test]
+        public void RevisionsData_GET()
+        {
+            // arrange
+            MockProjectService.Setup_GetProjectRevisions_Returns_ProjectRevisionReadListResponse_Success();
+
+            // act
+            var result = SystemUnderTest.RevisionsData(OrganizationOneProjectOneUid);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockProjectService.Verify_GetProjectRevisions();
+        }
+
+        [Test]
+        public void RevisionsData_GET_FailedResponse()
+        {
+            // arrange
+            MockProjectService.Setup_GetProjectRevisions_Returns_ProjectRevisionReadListResponse_Failed();
+
+            // act
+            var result = SystemUnderTest.RevisionsData(OrganizationOneProjectOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockProjectService.Verify_GetProjectRevisions();
+        }
+
+        [Test]
+        public void RevisionsData_GET_InvalidResponse()
+        {
+            // arrange
+            MockProjectService.Setup_GetProjectRevisions_Returns_ProjectRevisionReadListResponse_Invalid();
+
+            // act
+            var result = SystemUnderTest.RevisionsData(OrganizationOneProjectOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockProjectService.Verify_GetProjectRevisions();
+        }
+
+        [Test]
+        public void RevisionsData_GET_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = SystemUnderTest.RevisionsData(EmptyUid);
+
+            // assert
+            AssertView<ForbidResult>(result);
+        }
+
+        public async Task Restore_Post()
+        {
+            // arrange
+            MockProjectService.Setup_RestoreProject_Returns_ProjectRestoreResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.Restore(OrganizationOneProjectOneUid, One);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockProjectService.Verify_RestoreProject();
+        }
+
+        [Test]
+        public async Task Restore_Post_FailedResponse()
+        {
+            // arrange
+            MockProjectService.Setup_RestoreProject_Returns_ProjectRestoreResponse_Failed();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(OrganizationOneProjectOneUid, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
+            MockProjectService.Verify_RestoreProject();
+        }
+
+        [Test]
+        public async Task Restore_Post_InvalidResponse()
+        {
+            // arrange
+            MockProjectService.Setup_RestoreProject_Returns_ProjectRestoreResponse_Invalid();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(OrganizationOneProjectOneUid, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
+            MockProjectService.Verify_RestoreProject();
+        }
+
+        [Test]
+        public async Task Restore_Post_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(EmptyUid, One);
 
             // assert
             ((CommonResult)result.Value).IsOk.ShouldBe(false);
