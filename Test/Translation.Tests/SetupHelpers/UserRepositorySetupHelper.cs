@@ -17,6 +17,21 @@ namespace Translation.Tests.SetupHelpers
             repository.Setup(x => x.SelectById(It.IsAny<long>())).ReturnsAsync(GetOrganizationOneUserOne());
         }
 
+        public static void Setup_SelectById_Returns_OrganizationTwoUserOne(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.SelectById(It.IsAny<long>())).ReturnsAsync(GetOrganizationTwoUserOne());
+        }
+
+        public static void Setup_SelectById_Returns_OrganizationOneAdminUserOne(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.SelectById(It.IsAny<long>())).ReturnsAsync(GetOrganizationOneAdminUserOne());
+        }
+
+        public static void Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.SelectById(It.IsAny<long>())).ReturnsAsync(GetOrganizationOneSuperAdminUserOne());
+        }
+
         public static void Setup_Select_Returns_OrganizationOneUserOne(this Mock<IUserRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false)).ReturnsAsync(GetOrganizationOneUserOne());
@@ -32,6 +47,11 @@ namespace Translation.Tests.SetupHelpers
         //                                                It.IsAny<bool>(), false))
         //              .ReturnsAsync(EntityDataHelper.GetFakeParkNetUserList());
         //}
+
+        public static void Verify_SelectById(this Mock<IUserRepository> repository)
+        {
+            repository.Verify(x => x.SelectById(It.IsAny<long>()));
+        }
 
         public static void Verify_SelectMany(this Mock<IUserRepository> repository)
         {

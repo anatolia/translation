@@ -1,4 +1,8 @@
-﻿using Translation.Common.Models.Shared;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
+using StandardRepository.Models.Entities;
+using Translation.Common.Models.DataTransferObjects;
+using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
 using Translation.Data.Entities.Parameter;
@@ -61,6 +65,22 @@ namespace Translation.Tests.TestHelpers
 
             user.Email = OrganizationOneUserOneEmail;
             user.IsActive = BooleanTrue;
+
+            return user;
+        }
+
+        public static User GetOrganizationOneAdminUserOne()
+        {
+            var user = GetOrganizationOneUserOne();
+            user.IsAdmin = BooleanTrue;
+
+            return user;
+        }
+
+        public static User GetOrganizationOneSuperAdminUserOne()
+        {
+            var user = GetOrganizationOneUserOne();
+            user.IsSuperAdmin = BooleanTrue;
 
             return user;
         }
@@ -272,6 +292,20 @@ namespace Translation.Tests.TestHelpers
             language.IsoCode3Char = IsoCode3One;
 
             return language;
+        }
+
+        public static List<EntityRevision<Project>> GetOrganizationOneProjectOneRevisions()
+        {
+            var list = new List<EntityRevision<Project>>();
+            var revision = new EntityRevision<Project>();
+            revision.Id = LongOne;
+            revision.Revision = One;
+            revision.RevisionedAt = DateTimeOne;
+            revision.Entity = GetOrganizationOneProjectOne();
+
+            list.Add(revision);
+
+            return list;
         }
     }
 }
