@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using NUnit.Framework;
+
 using StandardRepository.Models.Entities;
-using Translation.Common.Models.DataTransferObjects;
+
 using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
