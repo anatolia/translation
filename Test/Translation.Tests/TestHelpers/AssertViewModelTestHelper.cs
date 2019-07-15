@@ -86,6 +86,21 @@ namespace Translation.Tests.TestHelpers
             result.ShouldNotBeNull();
         }
 
+        public static void AssertViewAndHeaders(Task<IActionResult> result, string[] headers)
+        {
+            result.ShouldNotBeNull();
+            var jsonResult = result.Result as JsonResult;
+            jsonResult.ShouldNotBeNull();
+            var dataResult = jsonResult.Value as DataResult;
+            dataResult.ShouldNotBeNull();
+            headers.Length.ShouldBe(dataResult.Headers.Count);
+
+            for (int i = 0; i < dataResult.Headers.Count; i++)
+            {
+                headers[i].ShouldBe(dataResult.Headers[i].Key);
+            }
+        }
+
         public static void AssertView<T>(Task<RedirectResult> result)
         {
             result.ShouldNotBeNull();
