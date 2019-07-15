@@ -39,62 +39,46 @@
             onclick="handlePostAndAppendRow(this)">
         create_integration_client_link
     </button>
-    <!--
     <table data-result="/Integration/ClientListData/@Model.IntegrationUid"></table>
-    -->
-    <table id="ClientListTable">
-        <thead>
-            <tr></tr>
-        </thead>
-        <tbody></tbody>
-    </table>
 </div>
 
 @section Scripts {
 <script>
-    function showStars(dataId) {
-
-        var td = document.querySelector("td[data-id='" + dataId + "']");
-        var hidden = td.getAttribute('data-text');
-        td.innerHTML = hidden + " <a class='show' href='javascript:hideStars(`" + dataId +"`);'>hide</a>";
+    function showHiddenText(id) {
+        var td = document.querySelector("td[data-id='" + id + "']");
+        var text = td.getAttribute('hidden-text');
+        td.innerHTML = text + " <a href='javascript:hideHiddenText(\""+id+"\")'>hide</a>";
     }
-    function hideStars(dataId) {
-        var td = document.querySelector("td[data-id='" + dataId + "']");
-        td.innerHTML = "***** <a class='show' href='javascript:showStars(`" + dataId +"`);'>show</a>";
+    
+    function hideHiddenText(id) {
+        var td = document.querySelector("td[data-id='" + id + "']");
+        var text = td.getAttribute('hidden-text');
+        td.innerHTML = "<span style='float:left;margin-top:4px;'>"+ ("*".repeat(text.length)) + "</span> <a href='javascript:showHiddenText(\""+id+"\")'>show</a>";
     }
 
-    document.addEventListener('DOMContentLoaded',
-        () => {
-            var clientListTable = document.getElementById("ClientListTable");
-            var xhr = new XMLHttpRequest;
-            // Get Table Data
-            xhr.open('get', "/Integration/ClientListData/@Model.IntegrationUid");
-            xhr.send();
-            xhr.onload = function() {
-                if (this.status === 200) {
-                    var thead = clientListTable.querySelector('thead tr');
-                    var tbody = clientListTable.querySelector('tbody');
+    var tableChangeInterval = setInterval(() => {
+        var table = document.getElementsByTagName('table')[0];
+        var rows = table.querySelectorAll('tr');
 
-                    var response = JSON.parse(this.responseText);
-                    // Insert Headers
-                    response.headers.forEach((header) => {
-                        thead.innerHTML += "<th data-translation='"+header.key+"'>" + header.key + "</th>";
-                    });
-                    // Insert Rows
-                    response.data.forEach((data) => {
-                        var rowString = "";
-                        data = data.split(',_,');
-                        
-                        rowString += "<td data-id='"+data[0]+"-id' data-text='"+data[1]+"'>***** <a class='show' href='javascript:showStars(`"+data[0]+"-id`);'>show</a></td>";
-                        rowString += "<td data-id='" + data[0] + "-secret' data-text='" + data[2] + "'>***** <a class='show-hide' href='javascript:showStars(`"+data[0]+"-secret`);'>show</a></td>";
-                        rowString += (data[3] === "true") ? "<td><input type='checkbox' disabled checked></td>" : "<td><input type='checkbox' disabled></td>";
-                        rowString += "<td>"+data[4]+"</td>";
-                        
-                        tbody.innerHTML += "<tr>" + rowString + "</tr>";
-                    });
+        if (rows.length > 0) {
+            clearInterval(tableChangeInterval);
+            rows = table.querySelectorAll('tbody tr');
 
-                }
-            }
-        });
+            rows.forEach((row) => {
+                var uid = row.getAttribute('data-uid');
+                var columnCounter = -1;
+                var columns = row.querySelectorAll("td");
+                columns.forEach((column) => {
+                    columnCounter++;
+                    if (columnCounter === 1 || columnCounter === 0) {
+                        var text = column.innerText;
+                        column.setAttribute('hidden-text', text);
+                        column.setAttribute('data-id', uid + "-" + columnCounter);
+                        column.innerHTML = "<span style='float:left;margin-top:4px;'>"+ ("*".repeat(text.length)) + "</span> <a href='javascript:showHiddenText(\""+uid+"-"+columnCounter+"\")'>show</a>";
+                    }
+                });
+            });
+        }
+    }, 5);
 </script>
 }
