@@ -5,7 +5,8 @@
       "wwwroot/js/site.js",
       "wwwroot/plugins/popup/popup.js",
       "wwwroot/plugins/select/select.js",
-      "wwwroot/plugins/table/table.js"
+      "wwwroot/plugins/table/table.js",
+      "wwwroot/plugins/search/search.js"
     ],
     "minify": {
       "enabled": true
@@ -17,7 +18,8 @@
       "wwwroot/css/site.css",
       "wwwroot/plugins/popup/css/popup.css",
       "wwwroot/plugins/select/css/select.css",
-      "wwwroot/plugins/table/css/table.css"
+      "wwwroot/plugins/table/css/table.css",
+      "wwwroot/plugins/search/css/search.css"
     ],
     "minify": {
       "enabled": true
