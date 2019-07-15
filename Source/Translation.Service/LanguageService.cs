@@ -76,8 +76,9 @@ namespace Translation.Service
 
             if (entities != null)
             {
-                foreach (var entity in entities)
+                for (var i = 0; i < entities.Count; i++)
                 {
+                    var entity = entities[i];
                     var dto = _languageFactory.CreateDtoFromEntity(entity);
                     response.Items.Add(dto);
                 }

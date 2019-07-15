@@ -21,6 +21,26 @@ namespace Translation.Tests.TestHelpers
         public const string OrganizationOneUserOneName = "Organization One User One";
         public const string OrganizationOneUserOneEmail = "organizationoneuserone@gmail.com";
 
+        public const string OrganizationOneSuperAdminUserOneName = "Organization One Super Admin User One";
+        public const string OrganizationOneSuperAdminUserOneEmail = "organizationonesuperadminuserone@gmail.com";
+
+        public const long OrganizationOneIntegrationOneId = 1168161649L;
+        public static Guid OrganizationOneIntegrationOneUid => new Guid("6a45c8ff-3814-4d2b-b71c-84c1ed1925e0");
+        public const string OrganizationOneIntegrationOneName = "Organization One Integration One";
+
+        public const long OrganizationOneIntegrationOneIntegrationClientOneId = 3168161601L;
+        public static Guid OrganizationOneIntegrationOneIntegrationClientOneUid => new Guid("2068f8f7-b2d9-4c1f-83e9-267a59501d1e");
+        public const string OrganizationOneIntegrationOneIntegrationClientOneName = "Organization One Integration One Integration Client One";
+
+        public const long OrganizationOneProjectOneLabelOneId = 3164161549L;
+        public static Guid OrganizationOneProjectOneLabelOneUid => new Guid("0aae2e10-2a3d-4ee6-adc5-658d83c50c8b");
+        public const string OrganizationOneProjectOneLabelOneName = "Organization One Project One Label One";
+        public const string OrganizationOneProjectOneLabelOneKey = "organization_one_project_one_label_one";
+
+        public const long OrganizationOneProjectOneLabelOneLabelTranslationOneId = 3164161549L;
+        public static Guid OrganizationOneProjectOneLabelOneLabelTranslationOneUid => new Guid("26b4f65d-f4c9-40f2-a973-0529389d6f3e");
+        public const string OrganizationOneProjectOneLabelOneLabelTranslationOneName = "Organization One Project One Label One LabelTranslation One";
+
         public const long OrganizationTwoId = 5168064649L;
         public static Guid OrganizationTwoUid => new Guid("bead3ad6-dc3c-44cd-9031-ad09438877f1");
         public const string OrganizationTwoName = "Organization Two";
@@ -28,11 +48,22 @@ namespace Translation.Tests.TestHelpers
         public const long OrganizationTwoProjectOneId = 2157161649L;
         public static Guid OrganizationTwoProjectOneUid => new Guid("c67d7fa4-5626-4777-a591-ded84dc76e50");
         public const string OrganizationTwoProjectOneName = "BlueSoft Project One";
-        public const string OrganizationTwoUserOneEmail = "organizationtwouserone@gmail.com";
-
+        
         public const long OrganizationTwoUserOneId = 6065151649L;
         public static Guid OrganizationTwoUserOneUid => new Guid("6ca74999-22d7-4bcd-b3ee-dbd88a38598e");
         public const string OrganizationTwoUserOneName = "Organization Two User One";
+        public const string OrganizationTwoUserOneEmail = "organizationtwouserone@gmail.com";
+
+        public const string OrganizationTwoSuperAdminUserOneName = "Organization Two Super Admin User One";
+        public const string OrganizationTwoSuperAdminUserOneEmail = "organizationtwosuperadminuserone@gmail.com";
+
+        public const long OrganizationTwoIntegrationOneId = 1168161649L;
+        public static Guid OrganizationTwoIntegrationOneUid => new Guid("110dadde-a4bd-4f53-abcb-fb6a1c69a7b8");
+        public const string OrganizationTwoIntegrationOneName = "Organization Two Integration One";
+
+        public const long OrganizationTwoIntegrationOneIntegrationClientOneId = 3168161601L;
+        public static Guid OrganizationTwoIntegrationOneIntegrationClientOneUid => new Guid("e4db895f-569c-4ab4-804b-553b4a4b7518");
+        public const string OrganizationTwoIntegrationOneIntegrationClientOneName = "Organization Two Integration One Integration Client One";
 
         public static Guid EmptyUid => Guid.Empty;
         public static Guid UidOne => new Guid("3A2F7BA0-0D4C-4231-B9DF-A15460B60BD2");

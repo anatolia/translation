@@ -26,12 +26,14 @@ namespace Translation.Service
         private readonly ProjectFactory _projectFactory;
         private readonly IOrganizationRepository _organizationRepository;
         private readonly ILabelRepository _labelRepository;
+        private readonly LabelFactory _labelFactory;
 
         public ProjectService(CacheManager cacheManager,
                               IProjectUnitOfWork projectUnitOfWork,
                               IProjectRepository projectRepository, ProjectFactory projectFactory,
                               IOrganizationRepository organizationRepository,
-                              ILabelRepository labelRepository)
+                              ILabelRepository labelRepository,
+                              LabelFactory labelFactory)
         {
             _cacheManager = cacheManager;
             _projectUnitOfWork = projectUnitOfWork;
@@ -39,6 +41,7 @@ namespace Translation.Service
             _projectFactory = projectFactory;
             _organizationRepository = organizationRepository;
             _labelRepository = labelRepository;
+            _labelFactory = labelFactory;
         }
 
         public async Task<ProjectReadListResponse> GetProjects(ProjectReadListRequest request)
@@ -92,8 +95,6 @@ namespace Translation.Service
         public async Task<ProjectRevisionReadListResponse> GetProjectRevisions(ProjectRevisionReadListRequest request)
         {
             var response = new ProjectRevisionReadListResponse();
-
-            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
@@ -422,6 +423,64 @@ namespace Translation.Service
             }
 
             response.SetFailed();
+            return response;
+        }
+
+        public async Task<ProjectPendingTranslationReadListResponse> GetPendingTranslations(ProjectPendingTranslationReadListRequest request)
+        {
+            var response = new ProjectPendingTranslationReadListResponse();
+
+            var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
+            if (project.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (project.OrganizationId != currentUser.OrganizationId)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            Expression<Func<Label, bool>> filter = x => x.ProjectId == project.Id
+                                                        && x.LabelTranslationCount == 0;
+            Expression<Func<Label, object>> orderByColumn = x => x.Id;
+            if (request.SearchTerm.IsNotEmpty())
+            {
+                filter = x => x.Name.Contains(request.SearchTerm) 
+                              && x.ProjectId == project.Id
+                              && x.LabelTranslationCount == 0;
+            }
+
+            List<Label> entities;
+            if (request.PagingInfo.Skip < 1)
+            {
+                entities = await _labelRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            }
+            else
+            {
+                entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            }
+
+            if (entities != null)
+            {
+                for (var i = 0; i < entities.Count; i++)
+                {
+                    var entity = entities[i];
+                    var dto = _labelFactory.CreateDtoFromEntity(entity);
+                    response.Items.Add(dto);
+                }
+            }
+
+            response.PagingInfo.Skip = request.PagingInfo.Skip;
+            response.PagingInfo.Take = request.PagingInfo.Take;
+            response.PagingInfo.LastUid = request.PagingInfo.LastUid;
+            response.PagingInfo.IsAscending = request.PagingInfo.IsAscending;
+            response.PagingInfo.TotalItemCount = await _labelRepository.Count(filter);
+
+            response.Status = ResponseStatus.Success;
             return response;
         }
     }

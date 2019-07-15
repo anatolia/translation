@@ -1,4 +1,5 @@
-﻿using Translation.Common.Models.Shared;
+﻿using Translation.Client.Web.Models.Project;
+using Translation.Common.Models.Shared;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
 namespace Translation.Tests.TestHelpers
@@ -43,6 +44,40 @@ namespace Translation.Tests.TestHelpers
             pagingInfo.Type = PagingInfo.PAGE_NUMBERS;
 
             return pagingInfo;
+        }
+
+        public static ProjectCreateModel GetOrganizationOneProjectOneCreateModel()
+        {
+            var model = new ProjectCreateModel();
+            model.OrganizationUid = OrganizationOneUid;
+            model.Name = OrganizationOneProjectOneName;
+            model.Url = HttpsUrl;
+
+            return model;
+        }
+
+        public static ProjectEditModel GetOrganizationOneProjectOneEditModel()
+        {
+            var model = new ProjectEditModel();
+            model.OrganizationUid = OrganizationOneUid;
+            model.ProjectUid = OrganizationOneProjectOneUid;
+            model.Name = OrganizationOneProjectOneName;
+            model.Url = HttpsUrl;
+
+            return model;
+        }
+
+        public static ProjectCloneModel GetOrganizationOneProjectOneCloneModel()
+        {
+            var model = new ProjectCloneModel();
+            model.OrganizationUid = OrganizationOneUid;
+            model.Name = OrganizationOneProjectOneName;
+            model.CloningProjectUid = OrganizationOneProjectOneUid;
+            model.LabelCount = One;
+            model.LabelTranslationCount = Two;
+            model.Url = HttpsUrl;
+
+            return model;
         }
     }
 }

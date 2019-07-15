@@ -42,8 +42,8 @@ namespace Translation.Common.Models.Base
 
         public void SetInvalidBecauseParentNotActive()
         {
-            Status = ResponseStatus.Invalid;
-            ErrorMessages.Add("action_is_invalid_because_parent_entity_is_not_active");
+            Status = ResponseStatus.InvalidBecauseParentNotActive;
+            ErrorMessages.Add(ResponseStatus.InvalidBecauseParentNotActive.Description);
         }
 
         public void SetFailed()

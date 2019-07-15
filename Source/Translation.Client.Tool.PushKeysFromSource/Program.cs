@@ -103,8 +103,9 @@ namespace Translation.Client.Tool.PushKeysFromSource
             {
                 client.BaseAddress = new Uri(serviceUrl);
 
-                foreach (var newItem in newItems)
+                for (var i = 0; i < newItems.Count; i++)
                 {
+                    var newItem = newItems[i];
                     var content = new FormUrlEncodedContent(new[]
                     {
                         new KeyValuePair<string, string>("token", token),

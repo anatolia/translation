@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using Shouldly;
 
+using Translation.Client.Web.Controllers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.InputModels;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
@@ -37,8 +38,9 @@ namespace Translation.Tests.TestHelpers
             var messages = ((T)((ViewResult)result).Model).InputErrorMessages;
             messages.Count.ShouldBe(model.InputErrorMessages.Count);
 
-            foreach (var message in messages)
+            for (var i = 0; i < messages.Count; i++)
             {
+                var message = messages[i];
                 model.InputErrorMessages.ShouldContain(message);
             }
         }
@@ -49,7 +51,7 @@ namespace Translation.Tests.TestHelpers
             messages.Any(x => x == StringOne).ShouldBeTrue();
         }
 
-        public void AssertErrorMessagesForInvalidOrFailedResponse<T>(IActionResult result) where T : BaseModel
+        public static void AssertErrorMessagesForInvalidOrFailedResponse<T>(IActionResult result) where T : BaseModel
         {
             AssertViewWithModel<T>(result);
 
@@ -66,7 +68,7 @@ namespace Translation.Tests.TestHelpers
             viewResult.Model.ShouldBeAssignableTo<T>();
         }
 
-        public void AssertView<T>(ViewResult result)
+        public static void AssertView<T>(ViewResult result)
         {
             result.ShouldNotBeNull();
             result.ViewName.ShouldBeNull();
@@ -74,103 +76,116 @@ namespace Translation.Tests.TestHelpers
             result.Model.ShouldBeAssignableTo<T>();
         }
 
-        public void AssertView<T>(IActionResult result)
+        public static void AssertView<T>(IActionResult result)
         {
             result.ShouldNotBeNull();
         }
 
-        public void AssertView<T>(Task<IActionResult> result)
+        public static void AssertView<T>(Task<IActionResult> result)
         {
             result.ShouldNotBeNull();
         }
 
-        public void AssertView<T>(Task<RedirectResult> result)
+        public static void AssertViewAndHeaders(Task<IActionResult> result, string[] headers)
+        {
+            result.ShouldNotBeNull();
+            var jsonResult = result.Result as JsonResult;
+            jsonResult.ShouldNotBeNull();
+            var dataResult = jsonResult.Value as DataResult;
+            dataResult.ShouldNotBeNull();
+            headers.Length.ShouldBe(dataResult.Headers.Count);
+
+            for (int i = 0; i < dataResult.Headers.Count; i++)
+            {
+                headers[i].ShouldBe(dataResult.Headers[i].Key);
+            }
+        }
+
+        public static void AssertView<T>(Task<RedirectResult> result)
         {
             result.ShouldNotBeNull();
         }
 
-        public void AssertView<T>(JsonResult result)
+        public static void AssertView<T>(JsonResult result)
         {
             result.ShouldNotBeNull();
             result.Value.ShouldNotBeNull();
             result.Value.ShouldBeAssignableTo<T>();
         }
 
-        public void AssertView<T>(FileResult result)
+        public static void AssertView<T>(FileResult result)
         {
             result.ShouldNotBeNull();
             result.ContentType.ShouldNotBeNull();
             result.FileDownloadName.ShouldNotBeNull();
         }
 
-        public void AssertView<T>(RedirectResult result)
+        public static void AssertView<T>(RedirectResult result)
         {
             result.ShouldNotBeNull();
         }
 
-        // todo:
-        //public void AssertViewAccessDenied<T>(RedirectResult result)
-        //{
-        //    var controller = new BaseServiceController<OrganizationDto, UserDto>(null);
-        //    var redirectAccessDenied = controller.RedirectToAccessDenied();
+        public static void AssertViewAccessDenied<T>(RedirectResult result)
+        {
+            var controller = new BaseController(null, null);
+            var redirectAccessDenied = controller.RedirectToAccessDenied();
 
-        //    result.ShouldNotBeNull();
-        //    result.Url.ShouldBe(redirectAccessDenied.Url);
-        //}
+            result.ShouldNotBeNull();
+            result.Url.ShouldBe(redirectAccessDenied.Url);
+        }
 
-        // todo:
-        //public void AssertViewAccessDenied(IActionResult result)
-        //{
-        //    var controller = new BaseServiceController<OrganizationDto, UserDto>(null);
-        //    var redirectAccessDenied = controller.RedirectToAccessDenied();
+        public static void AssertViewAccessDenied(IActionResult result)
+        {
+            var controller = new BaseController(null, null);
+            var redirectAccessDenied = controller.RedirectToAccessDenied();
 
-        //    result.ShouldNotBeNull();
-        //    ((RedirectResult)result).Url.ShouldBe(redirectAccessDenied.Url);
-        //}
+            result.ShouldNotBeNull();
+            ((RedirectResult)result).Url.ShouldBe(redirectAccessDenied.Url);
+        }
 
-        //public void AssertViewRedirectToHome<T>(RedirectResult result)
-        //{
-        //    var controller = new BaseServiceController<OrganizationDto, UserDto>(null);
-        //    var redirectToHome = controller.RedirectToHome();
+        public static void AssertViewRedirectToHome<T>(RedirectResult result)
+        {
+            var controller = new BaseController(null, null);
+            var redirectToHome = controller.RedirectToHome();
 
-        //    result.ShouldNotBeNull();
-        //    result.Url.ShouldBe(redirectToHome.Url);
-        //}
+            result.ShouldNotBeNull();
+            result.Url.ShouldBe(redirectToHome.Url);
+        }
 
-        //public void AssertViewRedirectToHome(IActionResult result)
-        //{
-        //    var controller = new BaseServiceController<OrganizationDto, UserDto>(null);
-        //    var redirectToHome = controller.RedirectToHome();
+        public static void AssertViewRedirectToHome(IActionResult result)
+        {
+            var controller = new BaseController(null, null);
+            var redirectToHome = controller.RedirectToHome();
 
-        //    result.ShouldNotBeNull();
-        //    ((RedirectResult)result).Url.ShouldBe(redirectToHome.Url);
-        //}
+            result.ShouldNotBeNull();
+            ((RedirectResult)result).Url.ShouldBe(redirectToHome.Url);
+        }
 
-        //public void AssertViewForbid<T>(ForbidResult result)
-        //{
-        //    var controller = new BaseServiceController<OrganizationDto, UserDto>(null);
-        //    var forbid = controller.Forbid();
+        public static void AssertViewForbid<T>(ForbidResult result)
+        {
+            var controller = new BaseController(null, null);
+            var forbid = controller.Forbid();
 
-        //    result.ShouldNotBeNull();
-        //    result.ShouldBeAssignableTo(forbid.GetType());
-        //}
+            result.ShouldNotBeNull();
+            result.ShouldBeAssignableTo(forbid.GetType());
+        }
 
-        //public void AssertViewNotFound<T>(NotFoundResult result)
-        //{
-        //    var controller = new BaseServiceController<OrganizationDto, UserDto>(null);
-        //    var notFound = controller.NotFound();
+        public static void AssertViewNotFound<T>(NotFoundResult result)
+        {
+            var controller = new BaseController(null, null);
+            var notFound = controller.NotFound();
 
-        //    result.ShouldNotBeNull();
-        //    result.ShouldBeAssignableTo(notFound.GetType());
-        //}
+            result.ShouldNotBeNull();
+            result.ShouldBeAssignableTo(notFound.GetType());
+        }
 
-        public void AssertView<T>(RedirectToActionResult result, string actionName)
+        public static void AssertView<T>(RedirectToActionResult result, string actionName)
         {
             result.ShouldNotBeNull();
             result.ActionName.ShouldBe(actionName);
         }
 
-        public void AssertReturnType<T>(T result)
+        public static void AssertReturnType<T>(T result)
         {
             result.ShouldNotBeNull();
             result.ShouldBeAssignableTo<T>();
