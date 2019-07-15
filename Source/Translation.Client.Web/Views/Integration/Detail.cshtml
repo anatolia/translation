@@ -41,3 +41,73 @@
     </button>
     <table data-result="/Integration/ClientListData/@Model.IntegrationUid"></table>
 </div>
+
+@section Scripts {
+    <script>
+        function SecretField(element, order) {
+            this.el = element;
+            this.order = order;
+            this.isVisible = false;
+            this.text = this.el.innerText;
+            this.uniqueId = this.el.parentElement.getAttribute('data-uid') + this.order;
+            this.el.setAttribute('data-id', this.uniqueId);
+
+            this.getStars = function (countOfStars) {
+                return "*".repeat(countOfStars);
+            }
+
+            this.getButton = function (type) {
+                return "<span class='secretButton' id='" + this.uniqueId + "'>" + type + "</span>";
+            }
+
+            this.getSecretSpan = function () {
+                return "<span class='secretSpan'>" + this.getStars(5) + "</span>";
+            }
+
+            this.enableButtons = function () {
+                var button = document.querySelector('.secretButton[id="' + this.uniqueId + '"]');
+
+                button.addEventListener('click', () => {
+                    if (this.isVisible) {
+                        this.hide();
+                    } else {
+                        this.show();
+                    }
+                });
+            }
+
+            this.hide = function () {
+                this.el.innerHTML = this.getSecretSpan();
+                this.el.innerHTML += this.getButton('show');
+                this.isVisible = false;
+                this.enableButtons();
+            }
+
+            this.show = function () {
+                this.el.innerHTML = this.text;
+                this.el.innerHTML += this.getButton('hide');
+                this.isVisible = true;
+                this.enableButtons();
+            }
+        }
+
+        var tableChangeInterval = setInterval(() => {
+            var table = document.getElementsByTagName('table')[0];
+            var rows = table.querySelectorAll('tr');
+
+            if (rows.length > 0) {
+                clearInterval(tableChangeInterval);
+                rows = table.querySelectorAll('tbody tr');
+
+                rows.forEach((row) => {
+                    var uid = row.getAttribute('data-uid');
+                    var columns = row.querySelectorAll("td");
+                    for (var i = 0; i < 2; i++) {
+                        var secretField = new SecretField(columns[i], i);
+                        secretField.hide();
+                    }
+                });
+            };
+        }, 5);
+    </script>
+}
