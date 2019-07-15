@@ -665,7 +665,7 @@ namespace Translation.Tests.Client.Controllers
             var result = SystemUnderTest.LabelListData(OrganizationOneProjectOneUid, One, Two);
 
             // assert
-            AssertView<JsonResult>(result);
+            AssertViewAndHeaders(result, new []{ "label_key", "label_translation_count", "description", "is_active" });
             MockLabelService.Verify_GetLabels();
         }
 
