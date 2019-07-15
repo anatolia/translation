@@ -100,7 +100,6 @@
                 rows = table.querySelectorAll('tbody tr');
 
                 rows.forEach((row) => {
-                    var uid = row.getAttribute('data-uid');
                     var columns = row.querySelectorAll("td");
                     for (var i = 0; i < 2; i++) {
                         var secretField = new SecretField(columns[i], i);
