@@ -103,7 +103,7 @@ function translateScreen() {
         userLanguage = 'en';
     }
 
-    items.forEach(function(item) {
+    items.forEach(function (item) {
         for (var i = 0; i < labels.length; i++) {
             var label = labels[i];
             if (label.key === item.dataset.translation) {
@@ -111,11 +111,11 @@ function translateScreen() {
                 label.translations.forEach(function (translation) {
                     if (translation.languageIsoCode2 === userLanguage) {
                         item.innerHTML = translation.translation;
-                        return;  
+                        return;
                     }
                 });
 
-                break;   
+                break;
             }
         }
     });
@@ -131,4 +131,3 @@ if (localStorage.getItem('labels') == undefined) {
 } else {
     translateScreen();
 }
-

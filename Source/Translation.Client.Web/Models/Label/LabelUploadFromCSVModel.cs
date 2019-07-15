@@ -36,7 +36,6 @@ namespace Translation.Client.Web.Models.Label
         public override void SetInputModelValues()
         {
             OrganizationUidInput.Value = OrganizationUid.ToUidString();
-
             ProjectUidInput.Value = ProjectUid.ToUidString();
             ProjectNameInput.Value = ProjectName;
         }

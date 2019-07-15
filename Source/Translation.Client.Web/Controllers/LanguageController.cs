@@ -36,6 +36,7 @@ namespace Translation.Client.Web.Controllers
         public IActionResult Create()
         {
             var model = new LanguageCreateModel();
+
             return View(model);
         }
 
@@ -45,6 +46,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -62,6 +64,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -86,6 +89,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LanguageMapper.MapLanguageDetailModel(response.Item);
+
             return View(model);
         }
 
@@ -106,6 +110,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LanguageMapper.MapLanguageEditModel(response.Item);
+
             return View(model);
         }
 
@@ -115,6 +120,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -143,6 +149,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -154,6 +161,7 @@ namespace Translation.Client.Web.Controllers
         public ViewResult List()
         {
             var model = new LanguageListModel();
+
             return View(model);
         }
 

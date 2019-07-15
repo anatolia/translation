@@ -23,7 +23,7 @@
 </div>
 
 <div class="bottom-links">
-    <a href="/Project/PendingTranslations" data-translation="pending_translations">pending_translations</a>
+    <a href="/Project/PendingTranslations/@Model.ProjectUid" data-translation="pending_translations_link">pending_translations_link</a>
     <a href="/Project/Edit/@Model.ProjectUid" data-translation="edit_project_link">edit_project_link</a>
     <a href="/Project/Clone/@Model.ProjectUid" data-translation="clone_project_link">clone_project_link</a>
     <a href="/Project/Revisions/@Model.ProjectUid" data-translation="revisions_link">revisions_link</a>
@@ -35,6 +35,15 @@
             onclick="doRedirectIfConfirmedSuccess(this, '/Organization/Detail/@Model.OrganizationUid')"
             data-translation="delete_button">
         delete_button
+    </button>
+    <button type="button"
+            data-confirm-title="change_activation_project_confirm_title"
+            data-confirm-content="change_activation_project_confirm_content"
+            data-url="/Project/ChangeActivation/"
+            data-prm="id=@Model.ProjectUid&organizationUid=@Model.OrganizationUid"
+            onclick="doRedirectIfConfirmedSuccess(this, '/Project/Detail/@Model.ProjectUid')"
+            data-translation="change_activation_button">
+        change_activation_button
     </button>
     <form action="/Project/DownloadLabels" method="post">
         <input type="hidden" id="id" name="id" value=@Model.ProjectUid />

@@ -52,6 +52,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelCreateModel(project.Item.OrganizationUid, projectUid);
+
             return View(model);
         }
 
@@ -61,6 +62,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -69,6 +71,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -77,23 +80,49 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Detail(Guid id)
+        public async Task<IActionResult> Detail(string id)
         {
-            var labelUid = id;
-            if (labelUid.IsEmptyGuid())
+            if (id.IsUid())
             {
-                return RedirectToHome();
-            }
+                Guid.TryParse(id, out var uid);
+                var labelUid = uid;
+                if (labelUid.IsEmptyGuid())
+                {
+                    return RedirectToHome();
+                }
 
-            var request = new LabelReadRequest(CurrentUser.Id, labelUid);
-            var response = await _labelService.GetLabel(request);
-            if (response.Status.IsNotSuccess)
+                var request = new LabelReadRequest(CurrentUser.Id, labelUid);
+                var response = await _labelService.GetLabel(request);
+
+                if (response.Status.IsNotSuccess)
+                {
+                    return RedirectToAccessDenied();
+                }
+
+                var model = LabelMapper.MapLabelDetailModel(response.Item);
+
+                return View(model);
+            }
+            else
             {
-                return RedirectToAccessDenied();
-            }
+                var labelKey = id;
+                if (labelKey.IsEmpty())
+                {
+                    return RedirectToHome();
+                }
 
-            var model = LabelMapper.MapLabelDetailModel(response.Item);
-            return View(model);
+                var request = new LabelReadByKeyRequest(CurrentUser.Id, labelKey);
+                var response = await _labelService.GetLabelByKey(request);
+
+                if (response.Status.IsNotSuccess)
+                {
+                    return RedirectToAccessDenied();
+                }
+
+                var model = LabelMapper.MapLabelDetailModel(response.Item);
+
+                return View(model);
+            }
         }
 
         [HttpGet]
@@ -113,6 +142,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelEditModel(response.Item);
+
             return View(model);
         }
 
@@ -122,6 +152,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -130,6 +161,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -175,6 +207,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelCloneModel(response.Item);
+
             return View(model);
         }
 
@@ -184,6 +217,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -193,11 +227,80 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
             CurrentUser.IsActionSucceed = true;
             return Redirect($"/Label/Detail/{response.Item.Uid}");
+        }
+
+        [HttpGet]
+        public ViewResult SearchList(string search)
+        {
+            var model = new LabelSearchListModel();
+            model.SearchTerm = search;
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchData(string search)
+        {
+            if (search.IsEmpty())
+            {
+                return Json(null);
+            }
+
+            var request = new LabelSearchListRequest(CurrentUser.Id, search);
+            request.PagingInfo.Take = 6;
+
+            var response = await _labelService.GetLabels(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            return Json(response.Items);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchListData(string search, int skip, int take)
+        {
+            if (search.IsEmpty())
+            {
+                return Json(null);
+            }
+
+            var request = new LabelSearchListRequest(CurrentUser.Id, search);
+            SetPaging(skip, take, request);
+
+            var response = await _labelService.GetLabels(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = new DataResult();
+            result.AddHeaders("label_key", "label_translation_count", "description", "is_active");
+
+            for (var i = 0; i < response.Items.Count; i++)
+            {
+                var item = response.Items[i];
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Key}", item.Key)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            result.PagingInfo = response.PagingInfo;
+            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+
+            return Json(result);
         }
 
         [HttpPost,
@@ -340,6 +443,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelUploadFromCSVModel(project.Item);
+
             return View(model);
         }
 
@@ -349,6 +453,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -371,6 +476,7 @@ namespace Translation.Client.Web.Controllers
                 {
                     model.ErrorMessages.Add("file_has_more_columns_than_expected");
                     model.ErrorMessages.Add("error line : " + i);
+                    model.SetInputModelValues();
                     return View(model);
                 }
 
@@ -387,6 +493,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -421,6 +528,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapCreateBulkLabelModel(project.Item);
+
             return View(model);
         }
 
@@ -430,6 +538,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -443,6 +552,7 @@ namespace Translation.Client.Web.Controllers
                 {
                     model.ErrorMessages.Add("file_has_more_columns_than_expected");
                     model.ErrorMessages.Add("error line : " + i);
+                    model.SetInputModelValues();
                     return View(model);
                 }
 
@@ -459,6 +569,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -495,6 +606,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelTranslationCreateModel(response.Item);
+
             return View(model);
         }
 
@@ -504,6 +616,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -514,6 +627,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -538,6 +652,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelTranslationDetailModel(response.Item);
+
             return View(model);
         }
 
@@ -558,6 +673,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelTranslationEditModel(response.Item);
+
             return View(model);
         }
 
@@ -567,6 +683,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -575,6 +692,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -639,6 +757,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapUploadLabelTranslationFromCSVFileModel(label.Item);
+
             return View(model);
         }
 
@@ -648,6 +767,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -670,6 +790,7 @@ namespace Translation.Client.Web.Controllers
                 {
                     model.ErrorMessages.Add("file_has_more_columns_than_expected");
                     model.ErrorMessages.Add("error line : " + i);
+                    model.SetInputModelValues();
                     return View(model);
                 }
 
@@ -685,6 +806,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -721,8 +843,9 @@ namespace Translation.Client.Web.Controllers
             var sb = new StringBuilder();
 
             sb.AppendLine("language,translation");
-            foreach (var item in translations.Items)
+            for (var i = 0; i < translations.Items.Count; i++)
             {
+                var item = translations.Items[i];
                 sb.AppendLine(item.LanguageIsoCode2 + "," + item.Translation);
             }
 

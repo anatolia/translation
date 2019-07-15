@@ -101,7 +101,6 @@ namespace Translation.Tests.Server.Factories
             result.OrganizationUid.ShouldBe(project.OrganizationUid);
             result.OrganizationName.ShouldBe(project.OrganizationName);
 
-            result.Uid.ShouldBe(request.CloningProjectUid);
             result.Name.ShouldBe(request.Name);
 
             result.Description.ShouldBe(request.Description);

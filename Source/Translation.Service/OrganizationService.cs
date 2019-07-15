@@ -18,6 +18,7 @@ using Translation.Common.Models.Responses.Organization;
 using Translation.Common.Models.Responses.User;
 using Translation.Common.Models.Responses.User.LoginLog;
 using Translation.Common.Models.Shared;
+using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
@@ -36,10 +37,12 @@ namespace Translation.Service
         private readonly IUserRepository _userRepository;
         private readonly UserFactory _userFactory;
         private readonly IOrganizationRepository _organizationRepository;
+        private readonly LabelFactory _labelFactory;
         private readonly OrganizationFactory _organizationFactory;
         private readonly IUserLoginLogRepository _userLoginLogRepository;
         private readonly UserLoginLogFactory _userLoginLogFactory;
         private readonly IntegrationFactory _integrationFactory;
+        private readonly ILabelRepository _labelRepository;
         private readonly IntegrationClientFactory _integrationClientFactory;
         private readonly ProjectFactory _projectFactory;
         private readonly ILanguageRepository _languageRepository;
@@ -48,9 +51,12 @@ namespace Translation.Service
                                    ISignUpUnitOfWork signUpUnitOfWork,
                                    ILogOnUnitOfWork logOnUnitOfWork,
                                    IUserRepository userRepository, UserFactory userFactory,
-                                   IOrganizationRepository organizationRepository, OrganizationFactory organizationFactory,
+                                   IOrganizationRepository organizationRepository,
+                                   LabelFactory labelFactory,
+                                   OrganizationFactory organizationFactory,
                                    IUserLoginLogRepository userLoginLogRepository, UserLoginLogFactory userLoginLogFactory,
                                    IntegrationFactory integrationFactory,
+                                   ILabelRepository labelRepository,
                                    IntegrationClientFactory integrationClientFactory,
                                    ProjectFactory projectFactory,
                                    ILanguageRepository languageRepository)
@@ -63,10 +69,12 @@ namespace Translation.Service
             _userRepository = userRepository;
             _userFactory = userFactory;
             _organizationRepository = organizationRepository;
+            _labelFactory = labelFactory;
             _organizationFactory = organizationFactory;
             _userLoginLogRepository = userLoginLogRepository;
             _userLoginLogFactory = userLoginLogFactory;
             _integrationFactory = integrationFactory;
+            _labelRepository = labelRepository;
             _integrationClientFactory = integrationClientFactory;
             _projectFactory = projectFactory;
             _languageRepository = languageRepository;
@@ -298,6 +306,64 @@ namespace Translation.Service
             }
 
             response.SetFailed();
+            return response;
+        }
+
+        public async Task<OrganizationPendingTranslationReadListResponse> GetPendingTranslations(OrganizationPendingTranslationReadListRequest request)
+        {
+            var response = new OrganizationPendingTranslationReadListResponse();
+
+            var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
+            if (organization.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (request.OrganizationUid != currentUser.OrganizationUid)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            Expression<Func<Label, bool>> filter = x => x.OrganizationId == organization.Id 
+                                                        && x.LabelTranslationCount == 0;
+            Expression<Func<Label, object>> orderByColumn = x => x.Id;
+            if (request.SearchTerm.IsNotEmpty())
+            {
+                filter = x => x.Name.Contains(request.SearchTerm) 
+                              && x.OrganizationId == organization.Id
+                              && x.LabelTranslationCount == 0;
+            }
+
+            List<Label> entities;
+            if (request.PagingInfo.Skip < 1)
+            {
+                entities = await _labelRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            }
+            else
+            {
+                entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            }
+
+            if (entities != null)
+            {
+                for (var i = 0; i < entities.Count; i++)
+                {
+                    var entity = entities[i];
+                    var dto = _labelFactory.CreateDtoFromEntity(entity);
+                    response.Items.Add(dto);
+                }
+            }
+
+            response.PagingInfo.Skip = request.PagingInfo.Skip;
+            response.PagingInfo.Take = request.PagingInfo.Take;
+            response.PagingInfo.LastUid = request.PagingInfo.LastUid;
+            response.PagingInfo.IsAscending = request.PagingInfo.IsAscending;
+            response.PagingInfo.TotalItemCount = await _labelRepository.Count(filter);
+
+            response.Status = ResponseStatus.Success;
             return response;
         }
 

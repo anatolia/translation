@@ -330,6 +330,25 @@ namespace Translation.Service
             return response;
         }
 
+        public async Task<LabelReadByKeyResponse> GetLabelByKey(LabelReadByKeyRequest request)
+        {
+            var response = new LabelReadByKeyResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            var label = await _labelRepository.Select(x => x.OrganizationId == currentUser.OrganizationId 
+                                                           && x.Key == request.LabelKey);
+            if (label.IsNotExist())
+            {
+                response.SetInvalidBecauseEntityNotFound();
+                return response;
+            }
+
+            response.Item = _labelFactory.CreateDtoFromEntity(label);
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
         public async Task<LabelReadListResponse> GetLabels(LabelReadListRequest request)
         {
             var response = new LabelReadListResponse();
@@ -367,8 +386,9 @@ namespace Translation.Service
 
             if (entities != null)
             {
-                foreach (var entity in entities)
+                for (var i = 0; i < entities.Count; i++)
                 {
+                    var entity = entities[i];
                     var dto = _labelFactory.CreateDtoFromEntity(entity);
                     response.Items.Add(dto);
                 }
@@ -379,6 +399,31 @@ namespace Translation.Service
             response.PagingInfo.LastUid = request.PagingInfo.LastUid;
             response.PagingInfo.IsAscending = request.PagingInfo.IsAscending;
             response.PagingInfo.TotalItemCount = await _labelRepository.Count(filter);
+
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
+        public async Task<LabelSearchListResponse> GetLabels(LabelSearchListRequest request)
+        {
+            var response = new LabelSearchListResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            Expression<Func<Label, bool>> filter = x => x.Name.Contains(request.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
+            Expression<Func<Label, object>> orderByColumn = x => x.Id;
+
+            List<Label> entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+
+            if (entities != null)
+            {
+                for (var i = 0; i < entities.Count; i++)
+                {
+                    var entity = entities[i];
+                    var dto = _labelFactory.CreateDtoFromEntity(entity);
+                    response.Items.Add(dto);
+                }
+            }
 
             response.Status = ResponseStatus.Success;
             return response;
