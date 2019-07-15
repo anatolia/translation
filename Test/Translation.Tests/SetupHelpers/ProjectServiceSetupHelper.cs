@@ -16,7 +16,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_GetProjectRevisions_Returns_ProjectRevisionReadListResponse_Success(this Mock<IProjectService> service)
         {
             var items = new List<RevisionDto<ProjectDto>>();
-            items.Add(new RevisionDto<ProjectDto>() { RevisionedByUid = UidOne });
+            items.Add(new RevisionDto<ProjectDto>() { RevisionedByUid = UidOne, Revision = One, Item = new ProjectDto(){Uid = UidOne}});
 
             service.Setup(x => x.GetProjectRevisions(It.IsAny<ProjectRevisionReadListRequest>()))
                    .Returns(Task.FromResult(new ProjectRevisionReadListResponse() { Status = ResponseStatus.Success, Items = items }));
