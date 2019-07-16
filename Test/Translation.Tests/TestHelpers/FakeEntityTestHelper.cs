@@ -307,5 +307,19 @@ namespace Translation.Tests.TestHelpers
 
             return list;
         }
+
+        public static List<EntityRevision<Integration>> GetOrganizationOneIntegrationOneRevisions()
+        {
+            var list = new List<EntityRevision<Integration>>();
+            var revision = new EntityRevision<Integration>();
+            revision.Id = LongOne;
+            revision.Revision = One;
+            revision.RevisionedAt = DateTimeOne;
+            revision.Entity = GetOrganizationOneIntegrationOne();
+
+            list.Add(revision);
+
+            return list;
+        }
     }
 }
