@@ -647,6 +647,5 @@ namespace Translation.Tests.Server.Services
             AssertReturnType<ProjectPendingTranslationReadListResponse>(result);
             MockProjectRepository.Verify_Select();
         }
-
     }
 }

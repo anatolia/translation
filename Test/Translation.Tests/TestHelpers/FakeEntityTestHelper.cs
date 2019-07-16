@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-
+using System.IO;
+using Microsoft.AspNetCore.Http.Internal;
 using StandardRepository.Models.Entities;
 
 using Translation.Common.Models.Shared;
@@ -288,6 +289,8 @@ namespace Translation.Tests.TestHelpers
         public static Language GetLanguageOne()
         {
             var language = new Language();
+            language.Name = "Language One";
+            language.OriginalName = "Language One Original Name";
             language.IsoCode2Char = IsoCode2One;
             language.IsoCode3Char = IsoCode3One;
 

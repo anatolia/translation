@@ -51,5 +51,48 @@
 
         public const string AcceptInviteAction = "AcceptInvite";
         public const string AcceptInviteDoneAction = "AcceptInviteDone";
+
+        public const string IntegrationListDataAction = "IntegrationListData";
+        public const string ProjectListDataAction = "ProjectListData";
+
+        public const string SearchListAction = "SearchList";
+        public const string SearchDataAction = "SearchData";
+        public const string SearchListDataAction = "SearchListData";
+
+        public const string UploadLabelFromCSVFileAction = "UploadLabelFromCSVFile";
+
+        public const string CreateBulkLabelAction = "CreateBulkLabel";
+
+        public const string LabelTranslationCreateAction = "LabelTranslationCreate";
+        public const string LabelTranslationDetailAction = "LabelTranslationDetail";
+        public const string LabelTranslationEditAction = "LabelTranslationEdit";
+        public const string LabelTranslationListDataAction = "LabelTranslationListData";
+        public const string UploadLabelTranslationFromCSVFileAction = "UploadLabelTranslationFromCSVFile";
+        public const string DownloadTranslationsAction = "DownloadTranslations";
+        public const string RestoreLabelTranslationAction = "RestoreLabelTranslation";
+        public const string LabelTranslationRevisionsAction = "LabelTranslationRevisions";
+        public const string LabelTranslationRevisionsDataAction = "LabelTranslationRevisionsData";
+
+        public const string ClientCreateAction = "ClientCreate";
+        public const string ClientChangeActivationAction = "ClientChangeActivation";
+        public const string ClientRefreshAction = "ClientRefresh";
+        public const string ClientActiveTokensAction = "ClientActiveTokens";
+        public const string ClientActiveTokensDataAction = "ClientActiveTokensData";
+        public const string ClientListDataAction = "ClientListData";
+
+        public const string ActiveTokensAction = "ActiveTokens";
+        public const string ActiveTokensDataAction = "ActiveTokensData";
+
+        public const string SignUpAction = "SignUp";
+        public const string ValidateEmailDoneAction = "ValidateEmailDone";
+        public const string LogOnAction = "LogOn";
+        public const string DemandPasswordResetAction = "DemandPasswordReset";
+        public const string DemandPasswordResetDoneAction = "DemandPasswordResetDone";
+        public const string ResetPasswordAction = "ResetPassword";
+        public const string ResetPasswordDoneAction = "ResetPasswordDone";
+        public const string ChangePasswordAction = "ChangePassword";
+        public const string ChangePasswordDoneAction = "ChangePasswordDone";
+
+        public const string LogOffAction = "LogOff";
     }
 }

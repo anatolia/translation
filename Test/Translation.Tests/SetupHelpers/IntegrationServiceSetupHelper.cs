@@ -18,6 +18,12 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class IntegrationServiceSetupHelper
     {
+        public static void Setup_GetIntegrations_Returns_IntegrationReadListResponse_Success(this Mock<IIntegrationService> service)
+        {
+            service.Setup(x => x.GetIntegrations(It.IsAny<IntegrationReadListRequest>()))
+                   .Returns(Task.FromResult(new IntegrationReadListResponse { Status = ResponseStatus.Success }));
+        }
+
         public static void Setup_GetIntegration_Returns_IntegrationReadResponse_Success(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.GetIntegration(It.IsAny<IntegrationReadRequest>()))
@@ -132,6 +138,12 @@ namespace Translation.Tests.SetupHelpers
                    .Returns(Task.FromResult(new IntegrationClientTokenRequestLogReadListResponse { Status = ResponseStatus.Success }));
         }
 
+        public static void Setup_GetIntegrations_Returns_IntegrationReadListResponse_Failed(this Mock<IIntegrationService> service)
+        {
+            service.Setup(x => x.GetIntegrations(It.IsAny<IntegrationReadListRequest>()))
+                .Returns(Task.FromResult(new IntegrationReadListResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+        }
+
         public static void Setup_GetIntegration_Returns_IntegrationReadResponse_Failed(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.GetIntegration(It.IsAny<IntegrationReadRequest>()))
@@ -244,6 +256,12 @@ namespace Translation.Tests.SetupHelpers
         {
             service.Setup(x => x.GetTokenRequestLogsOfIntegrationClient(It.IsAny<IntegrationClientTokenRequestLogReadListRequest>()))
                    .Returns(Task.FromResult(new IntegrationClientTokenRequestLogReadListResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Setup_GetIntegrations_Returns_IntegrationReadListResponse_Invalid(this Mock<IIntegrationService> service)
+        {
+            service.Setup(x => x.GetIntegrations(It.IsAny<IntegrationReadListRequest>()))
+                   .Returns(Task.FromResult(new IntegrationReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_GetIntegration_Returns_IntegrationReadResponse_Invalid(this Mock<IIntegrationService> service)
@@ -364,6 +382,11 @@ namespace Translation.Tests.SetupHelpers
         {
             service.Setup(x => x.GetTokenRequestLogsOfIntegrationClient(It.IsAny<IntegrationClientTokenRequestLogReadListRequest>()))
                    .Returns(Task.FromResult(new IntegrationClientTokenRequestLogReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Verify_GetIntegrations(this Mock<IIntegrationService> service)
+        {
+            service.Verify(x => x.GetIntegrations(It.IsAny<IntegrationReadListRequest>()));
         }
 
         public static void Verify_GetIntegration(this Mock<IIntegrationService> service)
