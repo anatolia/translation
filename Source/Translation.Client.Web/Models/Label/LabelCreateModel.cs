@@ -10,6 +10,7 @@ namespace Translation.Client.Web.Models.Label
         public Guid OrganizationUid { get; set; }
 
         public Guid ProjectUid { get; set; }
+        public string ProjectName { get; set; }
         public string Key { get; set; }
         public string Description { get; set; }
 
