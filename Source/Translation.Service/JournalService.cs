@@ -49,9 +49,8 @@ namespace Translation.Service
             }
 
             Expression<Func<Journal, bool>> filter = x => x.OrganizationId == organization.Id;
-            Expression<Func<Journal, object>> orderByColumn = x => x.Id;
-
-            var entities = await _journalRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            
+            var entities = await _journalRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
 
             if (entities != null)
             {
@@ -85,9 +84,8 @@ namespace Translation.Service
             }
 
             Expression<Func<Journal, bool>> filter = x => x.UserId == user.Id;
-            Expression<Func<Journal, object>> orderByColumn = x => x.Id;
-
-            var entities = await _journalRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            
+            var entities = await _journalRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             if (entities != null)
             {
                 for (var i = 0; i < entities.Count; i++)

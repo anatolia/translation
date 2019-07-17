@@ -122,7 +122,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
             Expression<Func<Integration, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
-            Expression<Func<Integration, object>> orderByColumn = x => x.Id;
+
             if (request.SearchTerm.IsNotEmpty())
             {
                 filter = x => x.OrganizationId == currentUser.OrganizationId && x.Name.Contains(request.SearchTerm);
@@ -131,11 +131,11 @@ namespace Translation.Service
             List<Integration> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _integrationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _integrationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _integrationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _integrationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)
@@ -446,7 +446,7 @@ namespace Translation.Service
 
             var integrationId = integration.Id;
             Expression<Func<IntegrationClient, bool>> filter = x => x.IntegrationId == integrationId;
-            Expression<Func<IntegrationClient, object>> orderByColumn = x => x.Id;
+
             if (request.SearchTerm.IsNotEmpty())
             {
                 filter = x => x.IntegrationId == integrationId && x.Name.Contains(request.SearchTerm);
@@ -455,11 +455,11 @@ namespace Translation.Service
             List<IntegrationClient> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _integrationClientRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _integrationClientRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _integrationClientRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _integrationClientRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)
