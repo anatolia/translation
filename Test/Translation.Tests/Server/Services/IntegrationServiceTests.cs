@@ -27,6 +27,58 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
+        public async Task IntegrationService_GetIntegration_Success()
+        {
+            // arrange
+            var request = GetIntegrationReadRequest();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOne();
+
+            // act
+            var result = await SystemUnderTest.GetIntegration(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Success);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationReadResponse>(result);
+            MockIntegrationRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetIntegration_Failed()
+        {
+            // arrange
+            var request = GetIntegrationReadRequest();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOne();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationTwoIntegrationOne();
+
+            // act
+            var result = await SystemUnderTest.GetIntegration(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Failed);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationReadResponse>(result);
+            MockIntegrationRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetIntegration_InvalidIntegrationEntity()
+        {
+            // arrange
+            var request = GetIntegrationReadRequest();
+            MockIntegrationRepository.Setup_Select_Returns_InvalidIntegration();
+
+            // act
+            var result = await SystemUnderTest.GetIntegration(request);
+
+            // assert
+            result.ErrorMessages.ShouldNotBeNull();
+            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            AssertReturnType<IntegrationReadResponse>(result);
+            MockIntegrationRepository.Verify_Select();
+        }
+
+        [Test]
         public async Task IntegrationService_GetIntegrations_Success()
         {
             // arrange
@@ -62,7 +114,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task IntegrationService_GetIntegrationRevisions__Success()
+        public async Task IntegrationService_GetIntegrationRevisions_Success()
         {
             //arrange
             var request = GetIntegrationRevisionReadListRequest();
@@ -82,24 +134,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task IntegrationService_GetIntegration_InvalidIntegrationEntity()
-        {
-            // arrange
-            var request = GetIntegrationReadRequest();
-            MockIntegrationRepository.Setup_Select_Returns_InvalidIntegration();
-
-            // act
-            var result = await SystemUnderTest.GetIntegration(request);
-
-            // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
-            AssertReturnType<IntegrationReadResponse>(result);
-            MockIntegrationRepository.Verify_Select();
-        }
-
-        [Test]
-        public async Task IntegrationService_CreateIntegration__Success()
+        public async Task IntegrationService_CreateIntegration_Success()
         {
             //arrange
             var request = GetIntegrationCreateRequest();
@@ -119,8 +154,9 @@ namespace Translation.Tests.Server.Services
             MockOrganizationRepository.Verify_Any();
             MockIntegrationRepository.Verify_Any();
         }
+
         [Test]
-        public async Task IntegrationService_CreateIntegration__Failed()
+        public async Task IntegrationService_CreateIntegration_Failed()
         {
             //arrange
             var request = GetIntegrationCreateRequest();
