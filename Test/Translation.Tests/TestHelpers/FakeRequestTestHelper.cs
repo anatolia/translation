@@ -1,4 +1,5 @@
-﻿using Translation.Common.Models.Requests.Project;
+﻿using Translation.Common.Models.Requests.Journal;
+using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
@@ -9,6 +10,13 @@ namespace Translation.Tests.TestHelpers
 {
     public class FakeRequestTestHelper
     {
+        public static JournalCreateRequest GetJournalCreateRequest()
+        {
+            var request = new JournalCreateRequest(CurrentUserId, StringOne);
+
+            return request;
+        }
+
         public static ProjectCreateRequest GetProjectCreateRequest()
         {
             var project = GetOrganizationOneProjectOne();
@@ -122,6 +130,21 @@ namespace Translation.Tests.TestHelpers
         {
             var project = GetOrganizationOneProjectOne();
             var request = new ProjectPendingTranslationReadListRequest(CurrentUserId, project.Uid);
+
+            return request;
+        }
+
+        public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequest()
+        {
+            var organization = GetOrganizationOne();
+            var request = new OrganizationJournalReadListRequest(CurrentUserId, organization.Uid);
+
+            return request;
+        }
+
+        public static UserJournalReadListRequest GetUserJournalReadListRequest()
+        {
+            var request = new UserJournalReadListRequest(CurrentUserId, OrganizationOneUserOneUid);
 
             return request;
         }
