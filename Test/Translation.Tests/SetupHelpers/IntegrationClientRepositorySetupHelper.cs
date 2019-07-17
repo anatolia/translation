@@ -11,7 +11,35 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class IntegrationClientRepositorySetupHelper
     {
-        public static void Setup_SelectById_Returns_ParkNetIntegrationClient(this Mock<IIntegrationClientRepository> repository)
+        public static void Setup_Any_Returns_False(this Mock<IIntegrationClientRepository> repository)
+        {
+            repository.Setup(x => x.Any(It.IsAny<Expression<Func<IntegrationClient, bool>>>(), It.IsAny<bool>()))
+                .ReturnsAsync(false);
+        }
+        public static void Setup_Any_Returns_True(this Mock<IIntegrationClientRepository> repository)
+        {
+            repository.Setup(x => x.Any(It.IsAny<Expression<Func<IntegrationClient, bool>>>(), It.IsAny<bool>()))
+                .ReturnsAsync(true);
+        }
+        public static void Verify_Any(this Mock<IIntegrationClientRepository> repository)
+        {
+            repository.Verify(x => x.Any(It.IsAny<Expression<Func<IntegrationClient, bool>>>(), It.IsAny<bool>()));
+            
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOneNotExist(this Mock<IIntegrationClientRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<IntegrationClient, bool>>>(), false))
+                .ReturnsAsync(GetOrganizationOneIntegrationOneIntegrationClientOneNotExist);
+        }
+
+        public static void Setup_Select_Returns_InvalidIntegration(this Mock<IIntegrationClientRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<IntegrationClient, bool>>>(), false))
+                .ReturnsAsync(new IntegrationClient());
+        }
+
+        public static void Setup_SelectById_Returns_OrganizationOneIntegrationOneIntegrationClientOne(this Mock<IIntegrationClientRepository> repository)
         {
             repository.Setup(x => x.SelectById(It.IsAny<long>()))
                       .ReturnsAsync(GetOrganizationOneIntegrationOneIntegrationClientOne());
@@ -22,19 +50,13 @@ namespace Translation.Tests.SetupHelpers
             repository.Verify(x => x.SelectById(It.IsAny<long>()));
         }
 
-        public static void Setup_Select_Returns_ParkNetIntegrationClient(this Mock<IIntegrationClientRepository> repository)
+        public static void Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne(this Mock<IIntegrationClientRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<IntegrationClient, bool>>>(), false))
                       .ReturnsAsync(GetOrganizationOneIntegrationOneIntegrationClientOne());
         }
 
-        public static void Setup_Select_Returns_BlueSoftIntegrationClient(this Mock<IIntegrationClientRepository> repository)
-        {
-            repository.Setup(x => x.Select(It.IsAny<Expression<Func<IntegrationClient, bool>>>(), false))
-                      .ReturnsAsync(GetOrganizationTwoIntegrationOneIntegrationClientOne());
-        }
-
-        public static void Setup_Select_Returns_NotExistParkNetIntegrationClient(this Mock<IIntegrationClientRepository> repository)
+        public static void Setup_Select_Returns_OrganizationTwoIntegrationOneIntegrationClientOne(this Mock<IIntegrationClientRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<IntegrationClient, bool>>>(), false))
                       .ReturnsAsync(GetOrganizationTwoIntegrationOneIntegrationClientOne());
