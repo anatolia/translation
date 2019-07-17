@@ -1,8 +1,7 @@
-﻿using Translation.Common.Models.Requests.Admin;
+using Translation.Common.Models.Requests.Admin;
 using Translation.Common.Models.Requests.Integration;
 using Translation.Common.Models.Requests.Journal;
 using Translation.Common.Models.Requests.Integration.IntegrationClient;
-
 using Translation.Common.Models.Requests.Organization;
 using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Requests.User;
@@ -24,11 +23,122 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static IntegrationClientChangeActivationRequest GetIntegrationClientChangeActivationRequest()
+        {
+            var request = new IntegrationClientChangeActivationRequest(CurrentUserId, OrganizationOneIntegrationOneIntegrationClientOneUid);
+
+            return request;
+        }
+        public static IntegrationClientDeleteRequest GetIntegrationClientDeleteRequest()
+        {
+            var request = new IntegrationClientDeleteRequest(CurrentUserId, OrganizationOneIntegrationOneIntegrationClientOneUid);
+
+            return request;
+        }
+        public static IntegrationClientRefreshRequest GetIntegrationClientRefreshRequest()
+        {
+            var request = new IntegrationClientRefreshRequest(CurrentUserId, OrganizationOneIntegrationOneIntegrationClientOneUid);
+
+            return request;
+        }
+
+        public static IntegrationClientReadListRequest GetIntegrationClientReadListRequest()
+        {
+            var request = new IntegrationClientReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static IntegrationClientReadRequest GetIntegrationClientReadRequest()
+        {
+
+            var request = new IntegrationClientReadRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static IntegrationClientCreateRequest GetIntegrationClientCreateRequest()
+        {
+
+            var request = new IntegrationClientCreateRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static IntegrationRestoreRequest GetIntegrationRestoreRequest()
+        {
+            var request = new IntegrationRestoreRequest(CurrentUserId, UidOne, One);
+
+            return request;
+        }
+
+        public static IntegrationChangeActivationRequest GetIntegrationChangeActivationRequest()
+        {
+            var request = new IntegrationChangeActivationRequest(CurrentUserId, UidOne);
+            return request;
+        }
+
+        public static IntegrationCreateRequest GetIntegrationCreateRequest()
+        {
+            var request = new IntegrationCreateRequest(CurrentUserId, OrganizationOneUid, StringOne,
+                                                      StringOne);
+            return request;
+        }
+
+        public static IntegrationReadListRequest GetIntegrationReadListRequest()
+        {
+            var request = new IntegrationReadListRequest(CurrentUserId, OrganizationOneUid);
+
+            return request;
+        }
+
+        public static IntegrationReadListRequest GetIntegrationReadListRequestForSelectAfter()
+        {
+            var request = new IntegrationReadListRequest(CurrentUserId, OrganizationOneUid);
+            request.PagingInfo.Skip = 0;
+
+            return request;
+        }
+
+        public static IntegrationReadListRequest GetIntegrationReadListRequestForSelectMany()
+        {
+
+            var request = new IntegrationReadListRequest(CurrentUserId, OrganizationOneUid);
+            request.PagingInfo.Skip = 1;
+
+            return request;
+        }
+
+        public static IntegrationRevisionReadListRequest GetIntegrationRevisionReadListRequest()
+        {
+            var request = new IntegrationRevisionReadListRequest(CurrentUserId, OrganizationOneIntegrationOneUid);
+
+            return request;
+        }
+
+        public static IntegrationReadRequest GetIntegrationReadRequest()
+        {
+            var request = new IntegrationReadRequest(CurrentUserId, OrganizationOneIntegrationOneUid);
+
+            return request;
+        }
+
+        public static IntegrationEditRequest GetIntegrationEditRequest()
+        {
+            var request = new IntegrationEditRequest(CurrentUserId, OrganizationOneIntegrationOneUid, StringOne,
+                                                    StringOne);
+            return request;
+        }
+        public static IntegrationDeleteRequest GetIntegrationDeleteRequest()
+        {
+            var request = new IntegrationDeleteRequest(CurrentUserId, OrganizationOneIntegrationOneUid);
+
+            return request;
+        }
+
         public static ProjectCreateRequest GetProjectCreateRequest()
         {
-            var project = GetOrganizationOneProjectOne();
-            var request = new ProjectCreateRequest(CurrentUserId, project.OrganizationUid, project.Name,
-                                                   project.Url, project.Description);
+            var request = new ProjectCreateRequest(CurrentUserId, OrganizationOneUid, StringOne, HttpUrl, StringOne);
 
             return request;
         }
@@ -51,9 +161,8 @@ namespace Translation.Tests.TestHelpers
 
         public static ProjectEditRequest GetProjectEditRequest()
         {
-            var project = GetOrganizationOneProjectOne();
-            var request = new ProjectEditRequest(CurrentUserId, project.OrganizationUid, project.Uid,
-                                                 project.Name, project.Url, project.Description);
+            var request = new ProjectEditRequest(CurrentUserId, OrganizationOneUid, UidOne,
+                                                 StringOne, HttpUrl, StringOne);
 
             return request;
         }
@@ -68,10 +177,8 @@ namespace Translation.Tests.TestHelpers
 
         public static ProjectCloneRequest GetProjectCloneRequest()
         {
-            var project = GetOrganizationOneProjectOne();
-            var request = new ProjectCloneRequest(CurrentUserId, project.OrganizationUid, project.Uid,
-                                                  project.Name, project.Url, project.Description,
-                                                  project.LabelCount, project.LabelTranslationCount, project.IsSuperProject);
+            var request = new ProjectCloneRequest(CurrentUserId, OrganizationOneUid, UidOne, StringOne,
+                HttpUrl, StringOne, One, Two, BooleanTrue);
 
             return request;
         }
@@ -87,32 +194,28 @@ namespace Translation.Tests.TestHelpers
 
         public static ProjectReadListRequest GetProjectReadListRequest()
         {
-            var organization = GetOrganizationOne();
-            var request = new ProjectReadListRequest(CurrentUserId, organization.Uid);
+            var request = new ProjectReadListRequest(CurrentUserId, OrganizationOneUid);
 
             return request;
         }
 
         public static ProjectReadRequest GetProjectReadRequest()
         {
-            var project = GetOrganizationOneProjectOne();
-            var request = new ProjectReadRequest(CurrentUserId, project.Uid);
+            var request = new ProjectReadRequest(CurrentUserId, OrganizationOneProjectOneUid);
 
             return request;
         }
 
         public static ProjectDeleteRequest GetProjectDeleteRequest()
         {
-            var project = GetOrganizationOneProjectOne();
-            var request = new ProjectDeleteRequest(CurrentUserId, project.Uid);
+            var request = new ProjectDeleteRequest(CurrentUserId, OrganizationOneProjectOneUid);
 
             return request;
         }
 
         public static ProjectChangeActivationRequest GetProjectChangeActivationRequest()
         {
-            var project = GetOrganizationOneProjectOne();
-            var request = new ProjectChangeActivationRequest(CurrentUserId, project.OrganizationUid, project.Uid);
+            var request = new ProjectChangeActivationRequest(CurrentUserId, OrganizationOneUid, OrganizationOneProjectOneUid);
 
             return request;
         }
@@ -147,24 +250,21 @@ namespace Translation.Tests.TestHelpers
 
         public static ProjectRestoreRequest GetProjectRestoreRequest()
         {
-            var project = GetOrganizationOneProjectOne();
-            var request = new ProjectRestoreRequest(CurrentUserId, project.OrganizationUid, One);
+            var request = new ProjectRestoreRequest(CurrentUserId, OrganizationOneUid, One);
 
             return request;
         }
 
         public static ProjectRevisionReadListRequest GetProjectRevisionReadListRequest()
         {
-            var project = GetOrganizationOneProjectOne();
-            var request = new ProjectRevisionReadListRequest(CurrentUserId, project.Uid);
+            var request = new ProjectRevisionReadListRequest(CurrentUserId, OrganizationOneProjectOneUid);
 
             return request;
         }
 
         public static ProjectPendingTranslationReadListRequest GetProjectPendingTranslationReadListRequest()
         {
-            var project = GetOrganizationOneProjectOne();
-            var request = new ProjectPendingTranslationReadListRequest(CurrentUserId, project.Uid);
+            var request = new ProjectPendingTranslationReadListRequest(CurrentUserId, OrganizationOneProjectOneUid);
 
             return request;
         }
