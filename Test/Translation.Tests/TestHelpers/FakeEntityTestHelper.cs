@@ -180,10 +180,31 @@ namespace Translation.Tests.TestHelpers
             integration.Name = OrganizationOneIntegrationOneName;
 
             integration.CreatedAt = DateTimeOne;
+            integration.IsActive = BooleanTrue;
 
             return integration;
         }
+        public static Integration GetOrganizationOneIntegrationOneNotActive()
+        {
+            var integration = GetOrganizationOneIntegrationOne();
+            integration.IsActive = BooleanFalse;
 
+            return integration;
+        }
+        public static Integration GetOrganizationOneIntegrationOneNotExist()
+        {
+            var integration = GetOrganizationOneIntegrationOne();
+            integration.Id = Zero;
+
+            return integration;
+        }
+        public static IntegrationClient GetOrganizationOneIntegrationOneIntegrationClientOneNotExist()
+        {
+            var integrationClient = GetOrganizationOneIntegrationOneIntegrationClientOne();
+            integrationClient.Id = Zero;
+
+            return integrationClient;
+        }
         public static IntegrationClient GetOrganizationOneIntegrationOneIntegrationClientOne()
         {
             var integrationClient = new IntegrationClient();
@@ -202,6 +223,7 @@ namespace Translation.Tests.TestHelpers
             integrationClient.ClientId = UidOne;
             integrationClient.ClientSecret = UidTwo;
             integrationClient.CreatedAt = DateTimeOne;
+            integrationClient.IsActive = BooleanTrue;
 
             return integrationClient;
         }
@@ -218,6 +240,7 @@ namespace Translation.Tests.TestHelpers
             integration.Name = OrganizationTwoIntegrationOneName;
 
             integration.CreatedAt = DateTimeOne;
+            integration.IsActive = BooleanTrue;
 
             return integration;
         }
@@ -240,6 +263,7 @@ namespace Translation.Tests.TestHelpers
             integrationClient.ClientId = UidOne;
             integrationClient.ClientSecret = UidTwo;
             integrationClient.CreatedAt = DateTimeOne;
+            integrationClient.IsActive = BooleanTrue;
 
             return integrationClient;
         }

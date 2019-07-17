@@ -8,6 +8,7 @@ using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Models.Requests.Integration;
 using Translation.Common.Models.Responses.Integration;
+using Translation.Common.Models.Responses.Integration.IntegrationClient;
 using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
@@ -118,7 +119,6 @@ namespace Translation.Tests.Server.Services
             MockOrganizationRepository.Verify_Any();
             MockIntegrationRepository.Verify_Any();
         }
-
         [Test]
         public async Task IntegrationService_CreateIntegration__Failed()
         {
@@ -199,7 +199,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task IntegrationService_EditIntegration_OrganizationNotExist()
+        public async Task IntegrationService_EditIntegration_Invalid_OrganizationNotExist()
         {
             // arrange
             var request = GetIntegrationEditRequest();
@@ -266,52 +266,13 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task IntegrationService_DeleteIntegration__InvalidIntegrationEntity()
-        {
-            // arrange
-            var request = GetIntegrationDeleteRequest();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
-            MockIntegrationRepository.Setup_Select_Returns_InvalidIntegration();
-            MockOrganizationRepository.Setup_Any_Returns_False();
-            // act
-            var result = await SystemUnderTest.DeleteIntegration(request);
-
-            // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
-            AssertReturnType<IntegrationDeleteResponse>(result);
-            MockUserRepository.Verify_SelectById();
-            MockIntegrationRepository.Verify_Select();
-            MockOrganizationRepository.Verify_Any();
-        }
-
-        [Test]
-        public async Task IntegrationService_DeleteIntegration__OrganizationNotExist()
-        {
-            // arrange
-            var request = GetIntegrationDeleteRequest();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
-            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOne();
-            MockOrganizationRepository.Setup_Any_Returns_True();
-
-            // act
-            var result = await SystemUnderTest.DeleteIntegration(request);
-
-            // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            AssertReturnType<IntegrationDeleteResponse>(result);
-            MockUserRepository.Verify_SelectById();
-            MockIntegrationRepository.Verify_Select();
-            MockOrganizationRepository.Verify_Any();
-        }
-
-        [Test]
         public async Task IntegrationService_DeleteIntegration_Success()
         {
             // arrange
             var request = GetIntegrationDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOne();
             MockIntegrationRepository.Setup_Delete_Success();
 
             // act
@@ -322,7 +283,9 @@ namespace Translation.Tests.Server.Services
             result.ErrorMessages.ShouldNotBeNull();
             result.ErrorMessages.Count.ShouldBe(0);
             AssertReturnType<IntegrationDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
+            MockIntegrationRepository.Verify_Select();
             MockIntegrationRepository.Verify_Delete();
         }
 
@@ -331,18 +294,126 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetIntegrationDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOne();
             MockIntegrationRepository.Setup_Delete_Failed();
 
             // act
             var result = await SystemUnderTest.DeleteIntegration(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
             result.Status.ShouldBe(ResponseStatus.Failed);
+            result.ErrorMessages.ShouldNotBeNull();
             AssertReturnType<IntegrationDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
+            MockIntegrationRepository.Verify_Select();
             MockIntegrationRepository.Verify_Delete();
+        }
+
+        [Test]
+        public async Task IntegrationService_DeleteIntegration_Invalid_UserNotAdmin()
+        {
+            // arrange
+            var request = GetIntegrationDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+
+            // act
+            var result = await SystemUnderTest.DeleteIntegration(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task IntegrationService_DeleteIntegration_OrganizationIsActive()
+        {
+            // arrange
+            var request = GetIntegrationDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.DeleteIntegration(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+
+        }
+
+        [Test]
+        public async Task IntegrationService_DeleteIntegration_InvalidIntegrationEntity()
+        {
+            // arrange
+            var request = GetIntegrationDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationRepository.Setup_Select_Returns_InvalidIntegration();
+
+
+            // act
+            var result = await SystemUnderTest.DeleteIntegration(request);
+
+            // assert
+            result.ErrorMessages.ShouldNotBeNull();
+            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            AssertReturnType<IntegrationDeleteResponse>(result);
+            MockIntegrationRepository.Verify_Select();
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+        }
+
+        [Test]
+        public async Task IntegrationService_DeleteIntegration_NotOrganizationId()
+        {
+            // arrange
+            var request = GetIntegrationDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationTwoIntegrationOne();
+
+            // act
+            var result = await SystemUnderTest.DeleteIntegration(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationRepository.Verify_Select();
+
+        }
+
+        [Test]
+        public async Task IntegrationService_DeleteIntegration_IntegrationIsExit()
+        {
+            // arrange
+            var request = GetIntegrationDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+            MockIntegrationRepository.Setup_SelectById_Returns_OrganizationOneIntegrationOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.DeleteIntegration(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+            MockIntegrationRepository.Verify_SelectById();
         }
 
         [Test]
@@ -475,5 +546,650 @@ namespace Translation.Tests.Server.Services
             MockIntegrationRepository.Verify_RestoreRevision();
         }
 
+        [Test]
+        public async Task IntegrationService_CreateIntegrationClient__Success()
+        {
+            //arrange
+            var request = GetIntegrationClientCreateRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOne();
+
+            //act
+            var result = await SystemUnderTest.CreateIntegrationClient(request);
+
+            //assert
+            result.Status.ShouldBe(ResponseStatus.Success);
+            result.ErrorMessages.ShouldNotBeNull();
+            result.ErrorMessages.Count.ShouldBe(0);
+            AssertReturnType<IntegrationClientCreateResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationRepository.Verify_Select();
+
+        }
+
+        [Test]
+        public async Task IntegrationService_CreateIntegrationClient_Invalid_OrganizationNotExist()
+        {
+            //arrange
+            var request = GetIntegrationClientCreateRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_True();
+
+            //act
+            var result = await SystemUnderTest.CreateIntegrationClient(request);
+
+            //assert
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientCreateResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+
+        }
+
+        [Test]
+        public async Task IntegrationService_CreateIntegrationClient_Invalid_UserNotAdmin()
+        {
+            //arrange
+            var request = GetIntegrationClientCreateRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+
+            //act
+            var result = await SystemUnderTest.CreateIntegrationClient(request);
+
+            //assert
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientCreateResponse>(result);
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetIntegrationClient_Success()
+        {
+            // arrange
+            var request = GetIntegrationClientReadRequest();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+
+            // act
+            var result = await SystemUnderTest.GetIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Success);
+            result.ErrorMessages.ShouldNotBeNull();
+            result.ErrorMessages.Count.ShouldBe(0);
+            AssertReturnType<IntegrationClientReadResponse>(result);
+            MockIntegrationClientRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetIntegrationClient_InvalidIntegrationEntity()
+        {
+            // arrange
+            var request = GetIntegrationClientReadRequest();
+            MockIntegrationClientRepository.Setup_Select_Returns_InvalidIntegration();
+
+            // act
+            var result = await SystemUnderTest.GetIntegrationClient(request);
+
+            // assert
+            result.ErrorMessages.ShouldNotBeNull();
+            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            AssertReturnType<IntegrationClientReadResponse>(result);
+            MockIntegrationClientRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetIntegrationClients_Success()
+        {
+            // arrange
+            var request = GetIntegrationClientReadListRequest();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOne();
+
+            // act
+            var result = await SystemUnderTest.GetIntegrationClients(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Success);
+            result.ErrorMessages.ShouldNotBeNull();
+            result.ErrorMessages.Count.ShouldBe(0);
+            AssertReturnType<IntegrationClientReadListResponse>(result);
+            MockIntegrationRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetIntegrationClients_InvalidIntegrationEntity()
+        {
+            // arrange
+            var request = GetIntegrationClientReadListRequest();
+            MockIntegrationRepository.Setup_Select_Returns_InvalidIntegration();
+
+            // act
+            var result = await SystemUnderTest.GetIntegrationClients(request);
+
+            // assert
+            result.ErrorMessages.ShouldNotBeNull();
+            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            AssertReturnType<IntegrationClientReadListResponse>(result);
+            MockIntegrationRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task IntegrationService_RefreshIntegrationClient_Success()
+        {
+            // arrange
+            var request = GetIntegrationClientRefreshRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+            MockIntegrationRepository.Setup_SelectById_Returns_OrganizationOneIntegrationOne();
+
+            // act
+            var result = await SystemUnderTest.RefreshIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Success);
+            result.ErrorMessages.ShouldNotBeNull();
+            result.ErrorMessages.Count.ShouldBe(0);
+            AssertReturnType<IntegrationClientRefreshResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+            MockIntegrationRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task IntegrationService_RefreshIntegrationClient_InvalidIntegrationEntity()
+        {
+            // arrange
+            var request = GetIntegrationClientRefreshRequest();
+            MockIntegrationClientRepository.Setup_Select_Returns_InvalidIntegration();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+
+            // act
+            var result = await SystemUnderTest.RefreshIntegrationClient(request);
+
+            // assert
+            result.ErrorMessages.ShouldNotBeNull();
+            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            AssertReturnType<IntegrationClientRefreshResponse>(result);
+            MockIntegrationClientRepository.Verify_Select();
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task IntegrationService_RefreshIntegrationClient_UserNotAdmin()
+        {
+            // arrange
+            var request = GetIntegrationClientRefreshRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+
+            // act
+            var result = await SystemUnderTest.RefreshIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientRefreshResponse>(result);
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task IntegrationService_RefreshIntegrationClient_OrganizationIsActive()
+        {
+            // arrange
+            var request = GetIntegrationClientRefreshRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.RefreshIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientRefreshResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+
+        }
+
+        [Test]
+        public async Task IntegrationService_RefreshIntegrationClient_IntegrationClientNotOrganizationId()
+        {
+            // arrange
+            var request = GetIntegrationClientRefreshRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationTwoIntegrationOneIntegrationClientOne();
+
+            // act
+            var result = await SystemUnderTest.RefreshIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientRefreshResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+
+        }
+
+        [Test]
+        public async Task IntegrationService_RefreshIntegrationClient_IntegrationIsExist()
+        {
+            // arrange
+            var request = GetIntegrationClientRefreshRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+            MockIntegrationRepository.Setup_SelectById_Returns_OrganizationOneIntegrationOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.RefreshIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientRefreshResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+            MockIntegrationRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task IntegrationService_RefreshIntegrationClient_IntegrationNotIsActive()
+        {
+            // arrange
+            var request = GetIntegrationClientRefreshRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+            MockIntegrationRepository.Setup_SelectById_Returns_OrganizationOneIntegrationOneNotActive();
+            // act
+            var result = await SystemUnderTest.RefreshIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientRefreshResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+            MockIntegrationRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task IntegrationService_DeleteIntegrationClient_Success()
+        {
+            // arrange
+            var request = GetIntegrationClientDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+            MockIntegrationRepository.Setup_SelectById_Returns_OrganizationOneIntegrationOne();
+            MockIntegrationClientRepository.Setup_Delete_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.DeleteIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Success);
+            result.ErrorMessages.ShouldNotBeNull();
+            result.ErrorMessages.Count.ShouldBe(0);
+            AssertReturnType<IntegrationClientDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+            MockIntegrationRepository.Verify_SelectById();
+            MockIntegrationClientRepository.Verify_Delete();
+        }
+
+        [Test]
+        public async Task IntegrationService_DeleteIntegrationClient_Failed()
+        {
+            // arrange
+            var request = GetIntegrationClientDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+            MockIntegrationRepository.Setup_SelectById_Returns_OrganizationOneIntegrationOne();
+            MockIntegrationClientRepository.Setup_Delete_Returns_False();
+
+            // act
+            var result = await SystemUnderTest.DeleteIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Failed);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+            MockIntegrationRepository.Verify_SelectById();
+            MockIntegrationClientRepository.Verify_Delete();
+        }
+
+        [Test]
+        public async Task IntegrationService_DeleteIntegrationClient_InvalidIntegrationEntity()
+        {
+            // arrange
+            var request = GetIntegrationClientDeleteRequest();
+            MockIntegrationClientRepository.Setup_Select_Returns_InvalidIntegration();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+
+            // act
+            var result = await SystemUnderTest.DeleteIntegrationClient(request);
+
+            // assert
+            result.ErrorMessages.ShouldNotBeNull();
+            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            AssertReturnType<IntegrationClientDeleteResponse>(result);
+            MockIntegrationClientRepository.Verify_Select();
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task IntegrationService_DeleteIntegrationClient_Invalid_UserNotAdmin()
+        {
+            // arrange
+            var request = GetIntegrationClientDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+
+            // act
+            var result = await SystemUnderTest.DeleteIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task IntegrationService_DeleteIntegrationClient_OrganizationIsActive()
+        {
+            // arrange
+            var request = GetIntegrationClientDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.DeleteIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+
+        }
+
+        [Test]
+        public async Task IntegrationService_DeleteIntegrationClient_IntegrationClientNotOrganizationId()
+        {
+            // arrange
+            var request = GetIntegrationClientDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationTwoIntegrationOneIntegrationClientOne();
+
+            // act
+            var result = await SystemUnderTest.DeleteIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+
+        }
+
+        [Test]
+        public async Task IntegrationService_DeleteIntegrationClient_IntegrationClientIsExist()
+        {
+            // arrange
+            var request = GetIntegrationClientDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.DeleteIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task IntegrationService_DeleteIntegrationClient_IntegrationIsExit()
+        {
+            // arrange
+            var request = GetIntegrationClientDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+            MockIntegrationRepository.Setup_SelectById_Returns_OrganizationOneIntegrationOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.DeleteIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+            MockIntegrationRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_Success()
+        {
+            // arrange
+            var request = GetIntegrationClientChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+            MockIntegrationRepository.Setup_SelectById_Returns_OrganizationOneIntegrationOne();
+            MockIntegrationClientRepository.Setup_Update_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Success);
+            result.ErrorMessages.ShouldNotBeNull();
+            result.ErrorMessages.Count.ShouldBe(0);
+            AssertReturnType<IntegrationClientChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+            MockIntegrationRepository.Verify_SelectById();
+            MockIntegrationClientRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_Failed()
+        {
+            // arrange
+            var request = GetIntegrationClientChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+            MockIntegrationRepository.Setup_SelectById_Returns_OrganizationOneIntegrationOne();
+            MockIntegrationClientRepository.Setup_Update_Returns_False();
+
+            // act
+            var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Failed);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+            MockIntegrationRepository.Verify_SelectById();
+            MockIntegrationClientRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_InvalidIntegrationEntity()
+        {
+            // arrange
+            var request = GetIntegrationClientChangeActivationRequest();
+            MockIntegrationClientRepository.Setup_Select_Returns_InvalidIntegration();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+
+            // act
+            var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
+
+            // assert
+            result.ErrorMessages.ShouldNotBeNull();
+            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            AssertReturnType<IntegrationClientChangeActivationResponse>(result);
+            MockIntegrationClientRepository.Verify_Select();
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_Invalid_UserNotAdmin()
+        {
+            // arrange
+            var request = GetIntegrationClientChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+
+            // act
+            var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_OrganizationIsActive()
+        {
+            // arrange
+            var request = GetIntegrationClientChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.InvalidBecauseParentNotActive);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+
+        }
+
+        [Test]
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_IntegrationClientIsExist()
+        {
+            // arrange
+            var request = GetIntegrationClientChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_IntegrationClientNotOrganizationId()
+        {
+            // arrange
+            var request = GetIntegrationClientChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationTwoIntegrationOneIntegrationClientOne();
+
+            // act
+            var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+
+        }
+
+        [Test]
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_IntegrationIsExit()
+        {
+            // arrange
+            var request = GetIntegrationClientChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+            MockIntegrationRepository.Setup_SelectById_Returns_OrganizationOneIntegrationOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+            MockIntegrationRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_IntegrationNotIsActive()
+        {
+            // arrange
+            var request = GetIntegrationClientChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+            MockIntegrationRepository.Setup_SelectById_Returns_OrganizationOneIntegrationOneNotActive();
+
+            // act
+            var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
+
+            // assert
+            result.Status.ShouldBe(ResponseStatus.InvalidBecauseParentNotActive);
+            result.ErrorMessages.ShouldNotBeNull();
+            AssertReturnType<IntegrationClientChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+            MockIntegrationRepository.Verify_SelectById();
+        }
     }
 }

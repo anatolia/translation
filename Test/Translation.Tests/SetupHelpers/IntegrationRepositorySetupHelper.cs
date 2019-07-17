@@ -13,15 +13,18 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class IntegrationRepositorySetupHelper
     {
+
         public static void Setup_RestoreRevision_Returns_True(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
                 .ReturnsAsync(BooleanTrue);
         }
+
         public static void Verify_RestoreRevision(this Mock<IIntegrationRepository> repository)
         {
             repository.Verify(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()));
         }
+
         public static void Setup_SelectRevisions_Returns_InvalidRevision(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
@@ -70,7 +73,16 @@ namespace Translation.Tests.SetupHelpers
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Integration, bool>>>(), false))
                 .ReturnsAsync(GetOrganizationOneIntegrationOne());
         }
-
+        public static void Setup_SelectById_Returns_OrganizationOneIntegrationOneNotExist(this Mock<IIntegrationRepository> repository)
+        {
+            repository.Setup(x => x.SelectById(It.IsAny<long>()))
+                .ReturnsAsync(GetOrganizationOneIntegrationOneNotExist());
+        }
+        public static void Setup_SelectById_Returns_OrganizationOneIntegrationOneNotActive(this Mock<IIntegrationRepository> repository)
+        {
+            repository.Setup(x => x.SelectById(It.IsAny<long>()))
+                .ReturnsAsync(GetOrganizationOneIntegrationOneNotActive());
+        }
         public static void Setup_SelectRevisions_Returns_OrganizationOneIntegrationOneRevisions(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
@@ -128,13 +140,13 @@ namespace Translation.Tests.SetupHelpers
                     It.IsAny<long>()));
         }
 
-        public static void Setup_SelectById_Returns_ParkNetIntegration(this Mock<IIntegrationRepository> repository)
+        public static void Setup_SelectById_Returns_OrganizationOneIntegrationOne(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.SelectById(It.IsAny<long>()))
                       .ReturnsAsync(GetOrganizationOneIntegrationOne());
         }
 
-        public static void Setup_SelectById_Returns_BlueSoftIntegration(this Mock<IIntegrationRepository> repository)
+        public static void Setup_SelectById_Returns_OrganizationTwoIntegrationOne(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.SelectById(It.IsAny<long>()))
                       .ReturnsAsync(GetOrganizationTwoIntegrationOne());
@@ -153,13 +165,13 @@ namespace Translation.Tests.SetupHelpers
                 It.IsAny<bool>(), false));
         }
 
-        public static void Setup_Select_Returns_ParkNetIntegration(this Mock<IIntegrationRepository> repository)
+        public static void Setup_Select_Returns_etOrganizationOneIntegrationOne(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Integration, bool>>>(), false))
                       .ReturnsAsync(GetOrganizationOneIntegrationOne());
         }
 
-        public static void Setup_Select_Returns_BlueSoftIntegration(this Mock<IIntegrationRepository> repository)
+        public static void Setup_Select_Returns_OrganizationTwoIntegrationOne(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Integration, bool>>>(), false))
                       .ReturnsAsync(GetOrganizationTwoIntegrationOne);
