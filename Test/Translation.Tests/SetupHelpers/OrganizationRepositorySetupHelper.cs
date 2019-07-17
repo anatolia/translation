@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 using Moq;
@@ -12,6 +13,26 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class OrganizationRepositorySetupHelper
     {
+        public static void Setup_SelectAfter_Returns_Organizations(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Organization, bool>>>(), 
+                                                It.IsAny<Guid>(), 
+                                                It.IsAny<int>(),
+                                                It.IsAny<Expression<Func<Organization, object>>>(),
+                                                It.IsAny<bool>(), false))
+                      .ReturnsAsync(new List<Organization>{GetOrganization()});
+        }
+
+        public static void Setup_SelectMany_Returns_Organizations(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<Organization, bool>>>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<Expression<Func<Organization, object>>>(),
+                                                It.IsAny<bool>(), false))
+                      .ReturnsAsync(new List<Organization> { GetOrganization() });
+        }
+
         public static void Setup_SelectById_Returns_OrganizationOne(this Mock<IOrganizationRepository> repository)
         {
             repository.Setup(x => x.SelectById(It.IsAny<long>()))
@@ -42,7 +63,7 @@ namespace Translation.Tests.SetupHelpers
             repository.Verify(x => x.Any(It.IsAny<Expression<Func<Organization, bool>>>(), It.IsAny<bool>()));
         }
 
-        public static void Setup_Count_Returns_POSITIVE_INT_NUMBER_10(this Mock<IOrganizationRepository> repository)
+        public static void Setup_Count_Returns_Ten(this Mock<IOrganizationRepository> repository)
         {
             repository.Setup(x => x.Count(It.IsAny<Expression<Func<Organization, bool>>>(),                    
                                           It.IsAny<bool>()))

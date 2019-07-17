@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Moq;
@@ -8,7 +10,10 @@ using Translation.Common.Enumerations;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Journal;
 using Translation.Common.Models.Responses.Journal;
+using Translation.Data.Entities.Main;
+using Translation.Data.Repositories.Contracts;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Tests.SetupHelpers
 {

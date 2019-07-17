@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 using Moq;
@@ -12,6 +13,59 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class UserRepositorySetupHelper
     {
+        public static void Setup_SelectAfter_Returns_Users(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<User, bool>>>(),
+                                                It.IsAny<Guid>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<Expression<Func<User, object>>>(),
+                                                It.IsAny<bool>(), false))
+                      .ReturnsAsync(new List<User> { GetUser() });
+        }
+
+        public static void Setup_SelectMany_Returns_Users(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<User, bool>>>(),
+                                                It.IsAny<Guid>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<Expression<Func<User, object>>>(),
+                                                It.IsAny<bool>(), false))
+                      .ReturnsAsync(new List<User> { GetUser() });
+        }
+
+        public static void Setup_SelectAfter_Returns_SuperAdmins(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<User, bool>>>(),
+                                                It.IsAny<Guid>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<Expression<Func<User, object>>>(),
+                                                It.IsAny<bool>(), false))
+                      .ReturnsAsync(new List<User> { GetSuperAdmin() });
+        }
+
+        public static void Setup_SelectMany_Returns_SuperAdmins(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<User, bool>>>(),
+                                                It.IsAny<Guid>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<Expression<Func<User, object>>>(),
+                                                It.IsAny<bool>(), false))
+                      .ReturnsAsync(new List<User> { GetSuperAdmin() });
+        }
+
+        public static void Setup_Count_Returns_Ten(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.Count(It.IsAny<Expression<Func<User, bool>>>(),
+                                          It.IsAny<bool>()))
+                      .ReturnsAsync(Ten);
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneSuperAdminUserInvitedAtOneDayBefore(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneSuperAdminUserOneInvitedAtOneDayBefore());
+        }
+
         public static void Setup_SelectById_Returns_OrganizationOneUserOne(this Mock<IUserRepository> repository)
         {
             repository.Setup(x => x.SelectById(It.IsAny<long>()))
@@ -40,6 +94,12 @@ namespace Translation.Tests.SetupHelpers
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false))
                       .ReturnsAsync(GetOrganizationOneUserOne());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneUserOneNotExist(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneUserOneNotExist());
         }
 
         public static void Verify_SelectById(this Mock<IUserRepository> repository)

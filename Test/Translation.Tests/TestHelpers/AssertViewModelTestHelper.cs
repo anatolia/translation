@@ -8,7 +8,9 @@ using Shouldly;
 using Translation.Client.Web.Controllers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.InputModels;
+using Translation.Common.Models.Shared;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Tests.TestHelpers
 {
@@ -189,6 +191,26 @@ namespace Translation.Tests.TestHelpers
         {
             result.ShouldNotBeNull();
             result.ShouldBeAssignableTo<T>();
+        }
+
+        public static void AssertPagingInfoForSelectAfter(PagingInfo info, int totalItemCountOfPagingInfo)
+        {
+            var pagingInfo = GetPagingInfoForSelectAfter();
+            pagingInfo.Skip.ShouldBe(info.Skip);
+            pagingInfo.Take.ShouldBe(info.Take);
+            pagingInfo.LastUid.ShouldBe(info.LastUid);
+            pagingInfo.IsAscending.ShouldBe(info.IsAscending);
+            pagingInfo.TotalItemCount.ShouldBe(totalItemCountOfPagingInfo);
+        }
+
+        public static void AssertPagingInfoForSelectMany(PagingInfo info, int totalItemCountOfPagingInfo)
+        {
+            var pagingInfo = GetPagingInfoForSelectMany();
+            pagingInfo.Skip.ShouldBe(info.Skip);
+            pagingInfo.Take.ShouldBe(info.Take);
+            pagingInfo.LastUid.ShouldBe(info.LastUid);
+            pagingInfo.IsAscending.ShouldBe(info.IsAscending);
+            pagingInfo.TotalItemCount.ShouldBe(totalItemCountOfPagingInfo);
         }
     }
 }

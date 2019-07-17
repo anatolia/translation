@@ -1,8 +1,5 @@
 ﻿using Translation.Common.Models.Requests.Admin;
-using Translation.Common.Models.Requests.Integration;
 using Translation.Common.Models.Requests.Journal;
-using Translation.Common.Models.Requests.Integration.IntegrationClient;
-
 using Translation.Common.Models.Requests.Organization;
 using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Requests.User;

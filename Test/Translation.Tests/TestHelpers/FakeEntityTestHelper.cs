@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Http.Internal;
 using StandardRepository.Models.Entities;
@@ -13,6 +14,65 @@ namespace Translation.Tests.TestHelpers
 {
     public class FakeEntityTestHelper
     {
+        public static Organization GetOrganization()
+        {
+            var organization = new Organization();
+            organization.Id = LongOne;
+            organization.Uid = UidOne;
+            organization.Name = StringOne;
+            organization.CreatedAt = DateTimeOne;
+            organization.Description = StringOne;
+            organization.IsActive = BooleanTrue;
+            organization.ObfuscationKey = StringSixtyFourOne;
+
+            return organization;
+        }
+
+        public static User GetUser()
+        {
+            var user = new User();
+            user.OrganizationId = LongOne;
+            user.OrganizationUid = UidOne;
+            user.OrganizationName = StringOne;
+
+            user.Id = LongOne;
+            user.Uid = UidOne;
+            user.Name = StringOne;
+
+            user.Email = EmailOne;
+            user.IsActive = BooleanTrue;
+
+            return user;
+        }
+
+        public static User GetSuperAdmin()
+        {
+            var user = GetUser();
+            user.IsSuperAdmin = BooleanTrue;
+
+            return user;
+        }
+
+        public static Journal GetJournal()
+        {
+            var journal = new Journal();
+            journal.OrganizationId = LongOne;
+            journal.OrganizationUid = UidOne;
+            journal.OrganizationName = StringOne;
+
+            journal.IntegrationId = LongOne;
+            journal.IntegrationUid = UidOne;
+            journal.IntegrationName = StringOne;
+
+            journal.UserId = LongOne;
+            journal.UserUid = UidOne;
+            journal.UserName = StringOne;
+
+            journal.Message = StringOne;
+
+            return journal;
+        }
+
         public static Organization GetOrganizationOne()
         {
             var organization = new Organization();
@@ -66,6 +126,22 @@ namespace Translation.Tests.TestHelpers
 
             user.Email = OrganizationOneUserOneEmail;
             user.IsActive = BooleanTrue;
+
+            return user;
+        }
+
+        public static User GetOrganizationOneSuperAdminUserOneInvitedAtOneDayBefore()
+        {
+            var user = GetOrganizationOneSuperAdminUserOne();
+            user.InvitedAt = DateTimeOneDayBefore;
+
+            return user;
+        }
+
+        public static User GetOrganizationOneUserOneNotExist()
+        {
+            var user = GetOrganizationOneUserOne();
+            user.Id = Zero;
 
             return user;
         }
@@ -309,6 +385,31 @@ namespace Translation.Tests.TestHelpers
             list.Add(revision);
 
             return list;
+        }
+
+        public static PagingInfo GetPagingInfoForSelectAfter()
+        {
+            var pagingInfo = new PagingInfo();
+            pagingInfo.Skip = Zero;
+            pagingInfo.Take = Three;
+            pagingInfo.IsAscending = BooleanTrue;
+            pagingInfo.LastUid = UidOne;
+            pagingInfo.TotalItemCount = Ten;
+
+            return pagingInfo;
+        }
+
+        public static PagingInfo GetPagingInfoForSelectMany()
+        {
+            var pagingInfo = new PagingInfo();
+            pagingInfo.Skip = One;
+            pagingInfo.Take = Three;
+            pagingInfo.IsAscending = BooleanTrue;
+            pagingInfo.TotalItemCount = Ten;
+            pagingInfo.LastUid = UidOne;
+            pagingInfo.TotalItemCount = Ten;
+
+            return pagingInfo;
         }
     }
 }
