@@ -93,7 +93,7 @@ namespace Translation.Tests.Client.Controllers
         public void Controller_Derived_From_ControllerBaseTests()
         {
             var type = SystemUnderTest.GetType();
-            type.BaseType.Name.StartsWith("ControllerBaseTests").ShouldBeTrue();
+            type.BaseType.Name.StartsWith("BaseController").ShouldBeTrue();
         }
 
         [Test]

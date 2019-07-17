@@ -8,17 +8,47 @@ using Translation.Common.Enumerations;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Organization;
 using Translation.Common.Models.Requests.User;
+using Translation.Common.Models.Requests.User.LoginLog;
 using Translation.Common.Models.Responses.Organization;
 using Translation.Common.Models.Responses.User;
+using Translation.Common.Models.Responses.User.LoginLog;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
 namespace Translation.Tests.SetupHelpers
 {
     public static class OrganizationServiceSetupHelper
     {
+        public static void Setup_GetUsers_Returns_UserReadListResponse_Success(this Mock<IOrganizationService> service)
+        {
+            var items = new List<UserDto>();
+            items.Add(new UserDto() { Uid = UidOne });
+
+            service.Setup(x => x.GetUsers(It.IsAny<UserReadListRequest>()))
+                   .Returns(Task.FromResult(new UserReadListResponse() { Status = ResponseStatus.Success, Items = items }));
+        }
+
+        public static void Setup_GetUserLoginLogsOfOrganization_Returns_OrganizationLoginLogReadListResponse_Success(this Mock<IOrganizationService> service)
+        {
+            var items = new List<UserLoginLogDto>();
+            items.Add(new UserLoginLogDto() { Uid = UidOne });
+
+            service.Setup(x => x.GetUserLoginLogsOfOrganization(It.IsAny<OrganizationLoginLogReadListRequest>()))
+                   .Returns(Task.FromResult(new OrganizationLoginLogReadListResponse() { Status = ResponseStatus.Success, Items = items }));
+        }
+
+        public static void Setup_GetPendingTranslations_Returns_OrganizationPendingTranslationReadListResponse_Success(this Mock<IOrganizationService> service)
+        {
+            var items = new List<LabelDto>();
+            items.Add(new LabelDto() { Uid = UidOne });
+
+            service.Setup(x => x.GetPendingTranslations(It.IsAny<OrganizationPendingTranslationReadListRequest>()))
+                   .Returns(Task.FromResult(new OrganizationPendingTranslationReadListResponse { Status = ResponseStatus.Success, Items = items }));
+        }
+
         public static void Setup_GetOrganization_Returns_OrganizationReadResponse_Success(this Mock<IOrganizationService> service)
         {
-            service.Setup(x => x.GetOrganization(It.IsAny<OrganizationReadRequest>())).Returns(new OrganizationReadResponse { Status = ResponseStatus.Success });
+            service.Setup(x => x.GetOrganization(It.IsAny<OrganizationReadRequest>()))
+                   .Returns(new OrganizationReadResponse { Status = ResponseStatus.Success });
         }
 
         public static void Verify_GetOrganization(this Mock<IOrganizationService> service)
@@ -50,6 +80,24 @@ namespace Translation.Tests.SetupHelpers
                    .Returns(Task.FromResult(new ValidateEmailResponse { Status = ResponseStatus.Success }));
         }
 
+        public static void Setup_GetUserLoginLogsOfOrganization_Returns_OrganizationLoginLogReadListResponse_Failed(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.GetUserLoginLogsOfOrganization(It.IsAny<OrganizationLoginLogReadListRequest>()))
+                   .Returns(Task.FromResult(new OrganizationLoginLogReadListResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Setup_GetUsers_Returns_UserReadListResponse_Failed(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.GetUsers(It.IsAny<UserReadListRequest>()))
+                   .Returns(Task.FromResult(new UserReadListResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Setup_GetPendingTranslations_Returns_OrganizationPendingTranslationReadListResponse_Failed(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.GetPendingTranslations(It.IsAny<OrganizationPendingTranslationReadListRequest>()))
+                   .Returns(Task.FromResult(new OrganizationPendingTranslationReadListResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+        }
+
         public static void Setup_ValidateEmail_Returns_ValidateEmailResponse_Failed(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.ValidateEmail(It.IsAny<ValidateEmailRequest>()))
@@ -78,6 +126,12 @@ namespace Translation.Tests.SetupHelpers
         {
             service.Setup(x => x.LogOn(It.IsAny<LogOnRequest>()))
                    .Returns(Task.FromResult(new LogOnResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Setup_GetUserLoginLogsOfOrganization_Returns_OrganizationLoginLogReadListResponse_Invalid(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.GetUserLoginLogsOfOrganization(It.IsAny<OrganizationLoginLogReadListRequest>()))
+                   .Returns(Task.FromResult(new OrganizationLoginLogReadListResponse() { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_LogOn_Returns_LogOnResponse_Failed(this Mock<IOrganizationService> service)
@@ -242,6 +296,18 @@ namespace Translation.Tests.SetupHelpers
                    .Returns(Task.FromResult(new DemandPasswordResetResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, }));
         }
 
+        public static void Setup_GetPendingTranslations_Returns_OrganizationPendingTranslationReadListResponse_Invalid(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.GetPendingTranslations(It.IsAny<OrganizationPendingTranslationReadListRequest>()))
+                   .Returns(Task.FromResult(new OrganizationPendingTranslationReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Setup_GetUsers_Returns_UserReadListResponse_Invalid(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.GetUsers(It.IsAny<UserReadListRequest>()))
+                   .Returns(Task.FromResult(new UserReadListResponse() { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
         public static void Setup_ValidatePasswordReset_Returns_PasswordResetValidateResponse_Invalid(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.ValidatePasswordReset(It.IsAny<PasswordResetValidateRequest>()))
@@ -314,9 +380,25 @@ namespace Translation.Tests.SetupHelpers
                 .Returns(new UserReadResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne }, });
         }
 
+
+        public static void Verify_GetUsers(this Mock<IOrganizationService> service)
+        {
+            service.Verify(x => x.GetUsers(It.IsAny<UserReadListRequest>()));
+        }
+
         public static void Verify_CreateOrganizationWithAdmin(this Mock<IOrganizationService> service)
         {
             service.Verify(x => x.CreateOrganizationWithAdmin(It.IsAny<SignUpRequest>()));
+        }
+
+        public static void Verify_GetPendingTranslations(this Mock<IOrganizationService> service)
+        {
+            service.Verify(x => x.GetPendingTranslations(It.IsAny<OrganizationPendingTranslationReadListRequest>()));
+        }
+
+        public static void Verify_GetUserLoginLogsOfOrganization(this Mock<IOrganizationService> service)
+        {
+            service.Verify(x => x.GetUserLoginLogsOfOrganization(It.IsAny<OrganizationLoginLogReadListRequest>()));
         }
 
         public static void Verify_ValidateEmail(this Mock<IOrganizationService> service)

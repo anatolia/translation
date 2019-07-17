@@ -53,8 +53,6 @@ namespace Translation.Service
         {
             var response = new LanguageReadListResponse();
 
-            Expression<Func<Language, object>> orderByColumn = x => x.Id;
-
             Expression<Func<Language, bool>> filter = null;
             if (request.SearchTerm.IsNotEmpty())
             {
@@ -67,11 +65,11 @@ namespace Translation.Service
             List<Language> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _languageRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _languageRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _languageRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _languageRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)

@@ -368,7 +368,7 @@ namespace Translation.Service
             }
 
             Expression<Func<Label, bool>> filter = x => x.ProjectId == project.Id;
-            Expression<Func<Label, object>> orderByColumn = x => x.Id;
+
             if (request.SearchTerm.IsNotEmpty())
             {
                 filter = x => x.Name.Contains(request.SearchTerm) && x.ProjectId == project.Id;
@@ -377,11 +377,11 @@ namespace Translation.Service
             List<Label> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _labelRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _labelRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)
@@ -411,9 +411,8 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
             Expression<Func<Label, bool>> filter = x => x.Name.Contains(request.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
-            Expression<Func<Label, object>> orderByColumn = x => x.Id;
-
-            List<Label> entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            
+            List<Label> entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
 
             if (entities != null)
             {
@@ -1004,7 +1003,7 @@ namespace Translation.Service
             }
 
             Expression<Func<LabelTranslation, bool>> filter = x => x.LabelId == label.Id;
-            Expression<Func<LabelTranslation, object>> orderByColumn = x => x.Id;
+
             if (request.SearchTerm.IsNotEmpty())
             {
                 filter = x => x.Name.Contains(request.SearchTerm) && x.ProjectId == label.Id;
@@ -1013,11 +1012,11 @@ namespace Translation.Service
             List<LabelTranslation> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _labelTranslationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _labelTranslationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _labelTranslationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _labelTranslationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)

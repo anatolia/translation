@@ -4,6 +4,7 @@ using Moq;
 
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
+using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Responses.Language;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
@@ -12,6 +13,21 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class LanguageServiceSetupHelper
     {
+        public static void Setup_RestoreLanguage_Returns_LanguageRestoreResponse_Success(this Mock<ILanguageService> service)
+        {
+            service.Setup(x => x.RestoreLanguage(It.IsAny<LanguageRestoreRequest>()))
+                   .Returns(Task.FromResult(new LanguageRestoreResponse { Status = ResponseStatus.Success }));
+        }
+
+        public static void Setup_GetLanguageRevisions_Returns_LanguageRevisionReadListResponse_Success(this Mock<ILanguageService> service)
+        {
+            var items = new List<RevisionDto<LanguageDto>>();
+            items.Add(new RevisionDto<LanguageDto>() { RevisionedByUid = UidOne, Revision = One, Item = new LanguageDto() { Uid = UidOne } });
+
+            service.Setup(x => x.GetLanguageRevisions(It.IsAny<LanguageRevisionReadListRequest>()))
+                   .Returns(Task.FromResult(new LanguageRevisionReadListResponse() { Status = ResponseStatus.Success, Items = items }));
+        }
+
         public static void Setup_GetLanguage_Returns_LanguageReadResponse_Success(this Mock<ILanguageService> service)
         {
             service.Setup(x => x.GetLanguage(It.IsAny<LanguageReadRequest>()))
@@ -40,6 +56,21 @@ namespace Translation.Tests.SetupHelpers
         {
             service.Setup(x => x.DeleteLanguage(It.IsAny<LanguageDeleteRequest>()))
                    .Returns(Task.FromResult(new LanguageDeleteResponse { Status = ResponseStatus.Success }));
+        }
+
+        public static void Setup_RestoreLanguage_Returns_LanguageRestoreResponse_Failed(this Mock<ILanguageService> service)
+        {
+            service.Setup(x => x.RestoreLanguage(It.IsAny<LanguageRestoreRequest>()))
+                   .Returns(Task.FromResult(new LanguageRestoreResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Setup_GetLanguageRevisions_Returns_LanguageRevisionReadListResponse_Failed(this Mock<ILanguageService> service)
+        {
+            var items = new List<RevisionDto<LanguageDto>>();
+            items.Add(new RevisionDto<LanguageDto>() { RevisionedByUid = UidOne });
+
+            service.Setup(x => x.GetLanguageRevisions(It.IsAny<LanguageRevisionReadListRequest>()))
+                   .Returns(Task.FromResult(new LanguageRevisionReadListResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne }}));
         }
 
         public static void Setup_GetLanguage_Returns_LanguageReadResponse_Failed(this Mock<ILanguageService> service)
@@ -72,6 +103,21 @@ namespace Translation.Tests.SetupHelpers
                    .Returns(Task.FromResult(new LanguageDeleteResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
         }
 
+        public static void Setup_RestoreLanguage_Returns_LanguageRestoreResponse_Invalid(this Mock<ILanguageService> service)
+        {
+            service.Setup(x => x.RestoreLanguage(It.IsAny<LanguageRestoreRequest>()))
+                .Returns(Task.FromResult(new LanguageRestoreResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Setup_GetLanguageRevisions_Returns_LanguageRevisionReadListResponse_Invalid(this Mock<ILanguageService> service)
+        {
+            var items = new List<RevisionDto<LanguageDto>>();
+            items.Add(new RevisionDto<LanguageDto>() { RevisionedByUid = UidOne });
+
+            service.Setup(x => x.GetLanguageRevisions(It.IsAny<LanguageRevisionReadListRequest>()))
+                   .Returns(Task.FromResult(new LanguageRevisionReadListResponse() { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
         public static void Setup_GetLanguage_Returns_LanguageReadResponse_Invalid(this Mock<ILanguageService> service)
         {
             service.Setup(x => x.GetLanguage(It.IsAny<LanguageReadRequest>()))
@@ -100,6 +146,16 @@ namespace Translation.Tests.SetupHelpers
         {
             service.Setup(x => x.DeleteLanguage(It.IsAny<LanguageDeleteRequest>()))
                    .Returns(Task.FromResult(new LanguageDeleteResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Verify_RestoreLanguage(this Mock<ILanguageService> service)
+        {
+            service.Verify(x => x.RestoreLanguage(It.IsAny<LanguageRestoreRequest>()));
+        }
+
+        public static void Verify_GetLanguageRevisions(this Mock<ILanguageService> service)
+        {
+            service.Verify(x => x.GetLanguageRevisions(It.IsAny<LanguageRevisionReadListRequest>()));
         }
 
         public static void Verify_GetLanguage(this Mock<ILanguageService> service)

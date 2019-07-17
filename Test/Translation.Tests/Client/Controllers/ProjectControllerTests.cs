@@ -873,7 +873,7 @@ namespace Translation.Tests.Client.Controllers
             var result = SystemUnderTest.RevisionsData(OrganizationOneProjectOneUid);
 
             // assert
-            AssertView<JsonResult>(result);
+            AssertViewAndHeaders(result, new[] { "revision", "revisioned_by", "revisioned_at", "project_name", "is_active", "created_at", "" });
             MockProjectService.Verify_GetProjectRevisions();
         }
 
@@ -917,6 +917,7 @@ namespace Translation.Tests.Client.Controllers
             AssertView<ForbidResult>(result);
         }
 
+        [Test]
         public async Task Restore_Post()
         {
             // arrange
