@@ -138,8 +138,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("project_not_found");
+                response.SetInvalidBecauseNotFound("project");
                 return response;
             }
 
@@ -167,16 +166,14 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("organization_not_active");
+                response.SetInvalidBecauseNotActive("organization");
                 return response;
             }
             
             if (await _projectRepository.Any(x => x.Name == request.ProjectName
                                                        && x.OrganizationId == currentUser.OrganizationId))
             {
-                response.ErrorMessages.Add("project_name_must_be_unique");
-                response.Status = ResponseStatus.Failed;
+                response.SetFailedBecauseNameMustBeUnique("project");
                 return response;
             }
 

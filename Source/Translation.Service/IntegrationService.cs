@@ -284,8 +284,7 @@ namespace Translation.Service
             var integrationId = integration.Id;
             if (await _integrationClientRepository.Any(x => x.IntegrationId == integrationId))
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("has_children");
+                response.SetInvalidBecauseHasChildren("integration");
                 return response;
             }
 
