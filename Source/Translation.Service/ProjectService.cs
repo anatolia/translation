@@ -168,7 +168,7 @@ namespace Translation.Service
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalid();
-                response.ErrorMessages.Add("organization_not_found");
+                response.ErrorMessages.Add("organization_not_active");
                 return response;
             }
             
@@ -207,7 +207,7 @@ namespace Translation.Service
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalid();
-                response.ErrorMessages.Add("organization_not_found");
+                response.ErrorMessages.Add("organization_not_active");
                 return response;
             }
 
