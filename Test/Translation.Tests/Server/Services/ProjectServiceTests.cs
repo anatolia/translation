@@ -36,8 +36,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetProjects(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<ProjectReadListResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -53,9 +52,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetProjects(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectReadListResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -88,9 +85,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetProjectRevisions(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectRevisionReadListResponse>(result);
             MockProjectRepository.Verify_Select();
             MockProjectRepository.Verify_SelectRevisions();
@@ -124,7 +119,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetProject(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectReadResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
@@ -151,7 +146,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task ProjectService_CreateProject_OrganizationAlreadyExist()
+        public async Task ProjectService_CreateProject_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetProjectCreateRequest();
@@ -162,7 +157,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateProject(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<ProjectCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -230,7 +225,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task ProjectService_EditProject_Invalid_OrganizationNotFound()
+        public async Task ProjectService_EditProject_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetProjectEditRequest();
@@ -241,7 +236,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.EditProject(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<ProjectEditResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();

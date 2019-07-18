@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Microsoft.AspNetCore.Http;
+
 using Shouldly;
 
 using Translation.Common.Enumerations;
@@ -46,12 +46,20 @@ namespace Translation.Tests.TestHelpers
             result.ErrorMessages.Any(x => x == errorMessage).ShouldBeTrue();
         }
 
-        public static void AssertResponseStatusAndErrorMessages(BaseResponse result)
+        public static void AssertResponseStatusAndErrorMessages(BaseResponse result, ResponseStatus status)
         {
             result.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.Success);
+            result.Status.ShouldBe(status);
             result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+
+            if (status == ResponseStatus.Invalid || status == ResponseStatus.Failed)
+            {
+                result.ErrorMessages.Count.ShouldNotBe(0);
+            }
+            else if(status == ResponseStatus.Success)
+            {
+                result.ErrorMessages.Count.ShouldBe(0);
+            }
         }
     }
 }
