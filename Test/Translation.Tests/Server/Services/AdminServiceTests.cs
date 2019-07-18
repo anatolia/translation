@@ -41,9 +41,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetOrganizations(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<OrganizationReadListResponse>(result);
             AssertPagingInfoForSelectAfter(request.PagingInfo, Ten);
             MockUserRepository.Verify_SelectById();

@@ -19,7 +19,7 @@ namespace Translation.Tests.TestHelpers
         public const string LanguageNotFound = "language_not_found";
         public const string IntegrationNotFound = "integration_not_found";
         public const string IntegrationClientNotFound = "integration_client_not_found";
-        public const string TokenClientNotFound = "token_client_not_found";
+        public const string TokenNotFound = "token_not_found";
         public const string LabelNotFound = "label_not_found";
         public const string LabelTranslationNotFound = "label_translation_not_found";
 
@@ -29,14 +29,29 @@ namespace Translation.Tests.TestHelpers
         public const string LanguageNotActive = "language_not_active";
         public const string IntegrationNotActive = "integration_not_active";
         public const string IntegrationClientNotActive = "integration_client_not_active";
-        public const string TokenClientNotActive = "token_client_not_active";
+        public const string TokenNotActive = "token_not_active";
         public const string LabelNotActive = "label_not_active";
         public const string LabelTranslationNotActive = "label_translation_not_active";
 
-        public const string RevisionNotFound = "revision_not_found";
+        public const string OrganizationRevisionNotFound = "organization_revision_not_found";
+        public const string ProjectRevisionNotFound = "project_revision_not_found";
+        public const string UserRevisionNotFound = "user_revision_not_found";
+        public const string LanguageRevisionNotFound = "language_revision_not_found";
+        public const string IntegrationRevisionNotFound = "integration_revision_not_found";
+        public const string IntegrationRevisionClientNotFound = "integration_revision_client_not_found";
+        public const string TokenRevisionNotFound = "token_revision_not_found";
+        public const string LabelRevisionNotFound = "label_revision_not_found";
+        public const string LabelTranslationRevisionNotFound = "label_translation_revision_not_found";
 
-        public const string HasChildren = "has_children";
-
+        public const string OrganizationHasChildren = "organization_has_children";
+        public const string ProjectHasChildren  = "project_has_children";
+        public const string UserHasChildren = "user_has_children";
+        public const string LanguageHasChildren = "language_has_children";
+        public const string IntegrationHasChildren = "integration_has_children";
+        public const string IntegrationClientHasChildren = "integration_client_has_children";
+        public const string TokenHasChildren = "token_has_children";
+        public const string LabelHasChildren = "label_has_children";
+        public const string LabelTranslationHasChildren = "label_translation_has_children";
 
         public static void AssertResponseStatusAndErrorMessages(BaseResponse result, ResponseStatus status, string errorMessage)
         {

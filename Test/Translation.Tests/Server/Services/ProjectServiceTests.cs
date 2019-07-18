@@ -92,7 +92,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task ProjectService_GetProject_InvalidProjectEntity()
+        public async Task ProjectService_GetProject_Invalid_ProjectNotFound()
         {
             // arrange
             var request = GetProjectReadRequest();
@@ -560,7 +560,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.RestoreProject(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, RevisionNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectRevisionNotFound);
             AssertReturnType<ProjectRestoreResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
