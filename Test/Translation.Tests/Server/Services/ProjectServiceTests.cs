@@ -138,7 +138,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateProject(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNameMustBeUniquie);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNameMustBeUnique);
             AssertReturnType<ProjectCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -256,7 +256,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.EditProject(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNameMustBeUniquie);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNameMustBeUnique);
             AssertReturnType<ProjectEditResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();

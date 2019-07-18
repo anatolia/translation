@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using StandardRepository.Helpers;
 using StandardRepository.Models.Entities;
 
 using Translation.Common.Models.Shared;
@@ -12,20 +12,48 @@ namespace Translation.Tests.TestHelpers
 {
     public class FakeEntityTestHelper
     {
+
+        public static Integration GetIntegration()
+        {
+            var integration = new Integration();
+            integration.OrganizationId = LongOne;
+            integration.OrganizationUid = UidOne;
+            integration.OrganizationName = StringOne;
+
+            integration.Id = LongOne;
+            integration.Uid = UidOne;
+            integration.Name = StringOne;
+
+            integration.CreatedAt = DateTimeOne;
+            integration.IsActive = BooleanTrue;
+
+            return integration;
+        }
+
+
+        public static Integration GetIntegrationNotExist()
+        {
+            var integration = GetIntegration();
+            integration.Id = Zero;
+
+            return integration;
+        }
         public static Organization GetOrganization()
         {
             var organization = new Organization();
             organization.Id = LongOne;
             organization.Uid = UidOne;
             organization.Name = StringOne;
+
             organization.CreatedAt = DateTimeOne;
             organization.Description = StringOne;
             organization.IsActive = BooleanTrue;
+
             organization.ObfuscationKey = StringSixtyFourOne;
 
             return organization;
         }
-
+      
         public static User GetUser()
         {
             var user = new User();

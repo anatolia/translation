@@ -55,7 +55,7 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetOrganizationReadListRequestForSelectMany();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
-            MockOrganizationRepository.Setup_SelectAfter_Returns_Organizations();
+            MockOrganizationRepository.Setup_SelectMany_Returns_Organizations();
             MockOrganizationRepository.Setup_Count_Returns_Ten();
 
             // act

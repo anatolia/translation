@@ -13,13 +13,70 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class IntegrationRepositorySetupHelper
     {
+        public static void Setup_Select_Returns_OrganizationOneIntegrationOneNotExist(this Mock<IIntegrationRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Integration, bool>>>(), false))
+                .ReturnsAsync(GetIntegrationNotExist);
+        }
 
+        public static void Setup_SelectMany_Returns_Integrations(this Mock<IIntegrationRepository> repository)
+        {
+            repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<Integration, bool>>>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<Expression<Func<Integration, object>>>(),
+                    It.IsAny<bool>(), false))
+                .ReturnsAsync(new List<Integration> { GetIntegration() });
+        }
+
+        public static void Verify_SelectMany(this Mock<IIntegrationRepository> repository)
+        {
+            repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<Integration, bool>>>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<Expression<Func<Integration, object>>>(),
+                    It.IsAny<bool>(), false));
+        }
+
+        public static void Setup_Count_Returns_Ten(this Mock<IIntegrationRepository> repository)
+        {
+            repository.Setup(x => x.Count(It.IsAny<Expression<Func<Integration, bool>>>(),
+                                           It.IsAny<bool>()))
+                .ReturnsAsync(Ten);
+        }
+        public static void Verify_Count(this Mock<IIntegrationRepository> repository)
+        {
+            repository.Verify(x => x.Count(It.IsAny<Expression<Func<Integration, bool>>>(),
+                                            It.IsAny<bool>()));
+        }
+        public static void Setup_SelectAfter(this Mock<IIntegrationRepository> repository)
+        {
+            repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<Integration, bool>>>(),
+                    It.IsAny<Guid>(),
+                    It.IsAny<int>(),
+                    It.IsAny<Expression<Func<Integration, object>>>(),
+                    It.IsAny<bool>(), false));
+
+        }
+        public static void Setup_SelectAfter_Returns_Integrations(this Mock<IIntegrationRepository> repository)
+        {
+            repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Integration, bool>>>(),
+                    It.IsAny<Guid>(),
+                    It.IsAny<int>(),
+                    It.IsAny<Expression<Func<Integration, object>>>(),
+                    It.IsAny<bool>(), false))
+                .ReturnsAsync(new List<Integration> { GetIntegration() });
+        }
         public static void Setup_RestoreRevision_Returns_True(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
-                .ReturnsAsync(BooleanTrue);
+                .ReturnsAsync(true);
         }
-
+        public static void Setup_RestoreRevision_Returns_False(this Mock<IIntegrationRepository> repository)
+        {
+            repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
+                .ReturnsAsync(false);
+        }
         public static void Verify_RestoreRevision(this Mock<IIntegrationRepository> repository)
         {
             repository.Verify(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()));
@@ -50,18 +107,37 @@ namespace Translation.Tests.SetupHelpers
             repository.Setup(x => x.Any(It.IsAny<Expression<Func<Integration, bool>>>(), false))
                 .ReturnsAsync(true);
         }
+
         public static void Setup_Any_Returns_False(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.Any(It.IsAny<Expression<Func<Integration, bool>>>(), false))
                 .ReturnsAsync(false);
         }
 
-        public static void Setup_Update_Success(this Mock<IIntegrationRepository> repository)
+        public static void Setup_Update_Returns_True(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.Update(It.IsAny<long>(),
                     It.IsAny<Integration>()))
                 .ReturnsAsync(true);
         }
+
+        public static void Setup_Update_Returns_False(this Mock<IIntegrationRepository> repository)
+        {
+            repository.Setup(x => x.Update(It.IsAny<long>(), It.IsAny<Integration>()))
+                .ReturnsAsync(false);
+        }
+
+        public static void Setup_Update_Success(this Mock<IIntegrationRepository> repository)
+        {
+            repository.Setup(x => x.Update(It.IsAny<long>(), It.IsAny<Integration>()))
+                .ReturnsAsync(true);
+        }
+        public static void Setup_Update_Failed(this Mock<IIntegrationRepository> repository)
+        {
+            repository.Setup(x => x.Update(It.IsAny<long>(), It.IsAny<Integration>()))
+                .ReturnsAsync(false);
+        }
+
         public static void Setup_Select_Returns_InvalidIntegration(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Integration, bool>>>(), false))
@@ -73,6 +149,7 @@ namespace Translation.Tests.SetupHelpers
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Integration, bool>>>(), false))
                 .ReturnsAsync(GetOrganizationOneIntegrationOne());
         }
+
         public static void Setup_SelectById_Returns_OrganizationOneIntegrationOneNotExist(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.SelectById(It.IsAny<long>()))
@@ -100,19 +177,6 @@ namespace Translation.Tests.SetupHelpers
                     It.IsAny<Guid>(), It.IsAny<int>(),
                     It.IsAny<Expression<Func<Integration, object>>>(),
                     It.IsAny<bool>(), false));
-        }
-
-        public static void Setup_Update_Returns_True(this Mock<IIntegrationRepository> repository)
-        {
-            repository.Setup(x => x.Update(It.IsAny<long>(),
-                                           It.IsAny<Integration>()))
-                      .ReturnsAsync(true);
-        }
-
-        public static void Setup_Update_Returns_False(this Mock<IIntegrationRepository> repository)
-        {
-            repository.Setup(x => x.Update(It.IsAny<long>(), It.IsAny<Integration>()))
-                      .ReturnsAsync(false);
         }
 
         public static void Verify_Update(this Mock<IIntegrationRepository> repository)
@@ -157,20 +221,6 @@ namespace Translation.Tests.SetupHelpers
             repository.Verify(x => x.SelectById(It.IsAny<long>()));
         }
 
-        public static void Verify_SelectMany(this Mock<IIntegrationRepository> repository)
-        {
-            repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<Integration, bool>>>(),
-                It.IsAny<int>(), It.IsAny<int>(),
-                It.IsAny<Expression<Func<Integration, object>>>(),
-                It.IsAny<bool>(), false));
-        }
-
-        public static void Setup_Select_Returns_etOrganizationOneIntegrationOne(this Mock<IIntegrationRepository> repository)
-        {
-            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Integration, bool>>>(), false))
-                      .ReturnsAsync(GetOrganizationOneIntegrationOne());
-        }
-
         public static void Setup_Select_Returns_OrganizationTwoIntegrationOne(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Integration, bool>>>(), false))
@@ -180,36 +230,6 @@ namespace Translation.Tests.SetupHelpers
         public static void Verify_Select(this Mock<IIntegrationRepository> repository)
         {
             repository.Verify(x => x.Select(It.IsAny<Expression<Func<Integration, bool>>>(), false));
-        }
-
-        public static void Setup_Any_True(this Mock<IIntegrationRepository> repository)
-        {
-            repository.Setup(x => x.Any(It.IsAny<Expression<Func<Integration, bool>>>(), false))
-                      .ReturnsAsync(true);
-        }
-
-        public static void Setup_Any_False(this Mock<IIntegrationRepository> repository)
-        {
-            repository.Setup(x => x.Any(It.IsAny<Expression<Func<Integration, bool>>>(), false))
-                      .ReturnsAsync(false);
-        }
-
-        public static void Setup_Count_Returns_POSITIVE_INT_NUMBER_10(this Mock<IIntegrationRepository> repository)
-        {
-            repository.Setup(x => x.Count(It.IsAny<Expression<Func<Integration, bool>>>(), false))
-                      .ReturnsAsync(Ten);
-        }
-
-        public static void Setup_IntegrationAlreadyExist(this Mock<IIntegrationRepository> repository)
-        {
-            repository.Setup(x => x.Any(It.IsAny<Expression<Func<Integration, bool>>>(), false))
-                      .ReturnsAsync(true);
-        }
-
-        public static void Setup_IntegrationNotExist(this Mock<IIntegrationRepository> repository)
-        {
-            repository.Setup(x => x.Any(It.IsAny<Expression<Func<Integration, bool>>>(), false))
-                      .ReturnsAsync(false);
         }
 
         public static void Verify_Any(this Mock<IIntegrationRepository> repository)
