@@ -29,10 +29,40 @@ namespace Translation.Common.Models.Base
             ErrorMessages.Add(ResponseStatus.Invalid.Description);
         }
 
+        public void SetInvalidBecauseNotFound(string entityName = "entity")
+        {
+            Status = ResponseStatus.Invalid;
+            ErrorMessages.Add(entityName + "_not_found");
+        }
+
+        public void SetInvalidBecauseNotActive(string entityName = "entity")
+        {
+            Status = ResponseStatus.Invalid;
+            ErrorMessages.Add(entityName + "_not_active");
+        }
+
+        public void SetInvalidBecauseHasChildren(string entityName = "entity")
+        {
+            Status = ResponseStatus.Invalid;
+            ErrorMessages.Add(entityName + "_has_children");
+        }
+
+        public void SetInvalidBecauseRevisionNotFound(string entityName = "entity")
+        {
+            Status = ResponseStatus.Invalid;
+            ErrorMessages.Add(entityName + "_revision_not_found");
+        }
+
         public void SetFailed()
         {
             Status = ResponseStatus.Failed;
             ErrorMessages.Add(ResponseStatus.Failed.Description);
+        }
+
+        public void SetFailedBecauseNameMustBeUnique(string entityName = "entity")
+        {
+            Status = ResponseStatus.Failed;
+            ErrorMessages.Add(entityName + "_name_must_be_unique");
         }
     }
 
