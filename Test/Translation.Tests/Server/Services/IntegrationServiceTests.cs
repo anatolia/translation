@@ -56,7 +56,6 @@ namespace Translation.Tests.Server.Services
 
             // assert
             result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             AssertReturnType<IntegrationRevisionReadListResponse>(result);
             MockIntegrationRepository.Verify_Select();
         }
@@ -93,7 +92,6 @@ namespace Translation.Tests.Server.Services
 
             // assert
             result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             AssertReturnType<IntegrationReadResponse>(result);
             MockIntegrationRepository.Verify_Select();
         }
@@ -191,7 +189,6 @@ namespace Translation.Tests.Server.Services
 
             // assert
             result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             AssertReturnType<IntegrationEditResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockIntegrationRepository.Verify_Select();
@@ -364,7 +361,6 @@ namespace Translation.Tests.Server.Services
 
             // assert
             result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             AssertReturnType<IntegrationDeleteResponse>(result);
             MockIntegrationRepository.Verify_Select();
             MockUserRepository.Verify_SelectById();
@@ -407,7 +403,6 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteIntegration(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             result.ErrorMessages.ShouldNotBeNull();
             AssertReturnType<IntegrationDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
@@ -429,7 +424,6 @@ namespace Translation.Tests.Server.Services
 
             // assert
             result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             AssertReturnType<IntegrationChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockIntegrationRepository.Verify_Select();
@@ -493,7 +487,6 @@ namespace Translation.Tests.Server.Services
 
             // assert
             result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             result.InfoMessages.Any(x => x == "integration_not_found").ShouldBeTrue();
             AssertReturnType<IntegrationRestoreResponse>(result);
             MockUserRepository.Verify_SelectById();
@@ -514,7 +507,6 @@ namespace Translation.Tests.Server.Services
 
             // assert
             result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             result.InfoMessages.Any(x => x == "revision_not_found").ShouldBeTrue();
             AssertReturnType<IntegrationRestoreResponse>(result);
             MockUserRepository.Verify_SelectById();
@@ -636,7 +628,6 @@ namespace Translation.Tests.Server.Services
 
             // assert
             result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             AssertReturnType<IntegrationClientReadResponse>(result);
             MockIntegrationClientRepository.Verify_Select();
         }
@@ -671,7 +662,6 @@ namespace Translation.Tests.Server.Services
 
             // assert
             result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             AssertReturnType<IntegrationClientReadListResponse>(result);
             MockIntegrationRepository.Verify_Select();
         }
@@ -713,7 +703,6 @@ namespace Translation.Tests.Server.Services
 
             // assert
             result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             AssertReturnType<IntegrationClientRefreshResponse>(result);
             MockIntegrationClientRepository.Verify_Select();
             MockUserRepository.Verify_SelectById();
@@ -792,7 +781,6 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.RefreshIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             result.ErrorMessages.ShouldNotBeNull();
             AssertReturnType<IntegrationClientRefreshResponse>(result);
             MockUserRepository.Verify_SelectById();
@@ -887,7 +875,6 @@ namespace Translation.Tests.Server.Services
 
             // assert
             result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             AssertReturnType<IntegrationClientDeleteResponse>(result);
             MockIntegrationClientRepository.Verify_Select();
             MockUserRepository.Verify_SelectById();
@@ -965,7 +952,6 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             result.ErrorMessages.ShouldNotBeNull();
             AssertReturnType<IntegrationClientDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
@@ -987,7 +973,6 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             result.ErrorMessages.ShouldNotBeNull();
             AssertReturnType<IntegrationClientDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
@@ -1060,7 +1045,6 @@ namespace Translation.Tests.Server.Services
 
             // assert
             result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockIntegrationClientRepository.Verify_Select();
             MockUserRepository.Verify_SelectById();
@@ -1095,7 +1079,6 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseParentNotActive);
             result.ErrorMessages.ShouldNotBeNull();
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
@@ -1160,7 +1143,6 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
             result.ErrorMessages.ShouldNotBeNull();
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
@@ -1183,7 +1165,6 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseParentNotActive);
             result.ErrorMessages.ShouldNotBeNull();
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();

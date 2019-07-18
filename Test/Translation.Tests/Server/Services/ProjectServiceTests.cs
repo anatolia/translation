@@ -10,6 +10,7 @@ using Translation.Common.Models.Responses.Project;
 using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
+using static Translation.Tests.TestHelpers.AssertResponseTestHelper;
 
 namespace Translation.Tests.Server.Services
 {
@@ -70,8 +71,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetProjectRevisions(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
             AssertReturnType<ProjectRevisionReadListResponse>(result);
             MockProjectRepository.Verify_Select();
         }
@@ -107,8 +107,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
             AssertReturnType<ProjectReadResponse>(result);
             MockProjectRepository.Verify_Select();
         }
@@ -125,9 +124,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetProject(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result);
             AssertReturnType<ProjectReadResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
@@ -146,9 +143,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.Failed);
-            result.ErrorMessages.Any(x => x == "project_name_must_be_unique").ShouldBeTrue();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNameMustBeUniquie);
             AssertReturnType<ProjectCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -167,8 +162,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseParentNotActive);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
             AssertReturnType<ProjectCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -216,7 +210,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task ProjectService_EditProject_InvalidProjectEntity()
+        public async Task ProjectService_EditProject_Invalid_ProjectNotFound()
         {
             // arrange
             var request = GetProjectEditRequest();
@@ -228,8 +222,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.EditProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
             AssertReturnType<ProjectEditResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
@@ -237,7 +230,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task ProjectService_EditProject_OrganizationNotExist()
+        public async Task ProjectService_EditProject_Invalid_OrganizationNotFound()
         {
             // arrange
             var request = GetProjectEditRequest();
@@ -248,15 +241,14 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.EditProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseParentNotActive);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
             AssertReturnType<ProjectEditResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
         }
 
         [Test]
-        public async Task ProjectService_EditProject_ProjectAlreadyExist()
+        public async Task ProjectService_EditProject_Failed_ProjectNameMustBeUniquie()
         {
             // arrange
             var request = GetProjectEditRequest();
@@ -269,9 +261,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.EditProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.Failed);
-            result.ErrorMessages.Any(x => x == "project_name_must_be_unique").ShouldBeTrue();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNameMustBeUniquie);
             AssertReturnType<ProjectEditResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -325,7 +315,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task ProjectService_CloneProject_InvalidProjectEntity()
+        public async Task ProjectService_CloneProject_Invalid_ProjectNotFound()
         {
             // arrange
             var request = GetProjectCloneRequest();
@@ -335,8 +325,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CloneProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
             AssertReturnType<ProjectCloneResponse>(result);
             MockProjectRepository.Verify_Select();
         }
@@ -405,7 +394,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task ProjectService_DeleteProject__InvalidProjectEntity()
+        public async Task ProjectService_DeleteProject__Invalid_ProjectNotFound()
         {
             // arrange
             var request = GetProjectDeleteRequest();
@@ -416,8 +405,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
             AssertReturnType<ProjectDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
@@ -484,7 +472,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task ProjectService_ChangeActivationForProject_InvalidProjectEntity()
+        public async Task ProjectService_ChangeActivationForProject_Invalid_ProjectNotFound()
         {
             // arrange
             var request = GetProjectChangeActivationRequest();
@@ -495,8 +483,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
             AssertReturnType<ProjectChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
@@ -548,7 +535,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task ProjectService_RestoreProject_InvalidProjectEntity()
+        public async Task ProjectService_RestoreProject_Invalid_ProjectNotFound()
         {
             // arrange
             var request = GetProjectRestoreRequest();
@@ -559,16 +546,14 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.RestoreProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
-            result.InfoMessages.Any(x => x == "project_not_found").ShouldBeTrue();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
             AssertReturnType<ProjectRestoreResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
         }
 
         [Test]
-        public async Task ProjectService_RestoreProject_InvalidRevisionEntity()
+        public async Task ProjectService_RestoreProject_Invalid_RevisionNotFound()
         {
             // arrange
             var request = GetProjectRestoreRequest();
@@ -580,9 +565,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.RestoreProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
-            result.InfoMessages.Any(x => x == "revision_not_found").ShouldBeTrue();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, RevisionNotFound);
             AssertReturnType<ProjectRestoreResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
@@ -614,7 +597,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task ProjectService_GetPendingTranslations_InvalidProjectEntity()
+        public async Task ProjectService_GetPendingTranslations_Invalid_ProjectNotFound()
         {
             // arrange
             var request = GetProjectPendingTranslationReadListRequest();
@@ -624,8 +607,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetPendingTranslations(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
             AssertReturnType<ProjectPendingTranslationReadListResponse>(result);
             MockProjectRepository.Verify_Select();
         }

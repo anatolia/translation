@@ -100,7 +100,8 @@ namespace Translation.Service
             var entity = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
             if (entity.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_found");
                 return response;
             }
 
@@ -167,7 +168,8 @@ namespace Translation.Service
             var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
             if (integration.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_found");
                 return response;
             }
 
@@ -214,7 +216,8 @@ namespace Translation.Service
             var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
             if (integration.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_found");
                 return response;
             }
 
@@ -267,7 +270,8 @@ namespace Translation.Service
             var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
             if (integration.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_found");
                 return response;
             }
 
@@ -280,7 +284,8 @@ namespace Translation.Service
             var integrationId = integration.Id;
             if (await _integrationClientRepository.Any(x => x.IntegrationId == integrationId))
             {
-                response.SetInvalidForDeleteBecauseHasChildren();
+                response.SetInvalid();
+                response.ErrorMessages.Add("has_children");
                 return response;
             }
 
@@ -315,7 +320,8 @@ namespace Translation.Service
             var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
             if (integration.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_found");
                 return response;
             }
 
@@ -352,7 +358,7 @@ namespace Translation.Service
             var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
             if (integration.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
                 response.InfoMessages.Add("integration_not_found");
                 return response;
             }
@@ -360,7 +366,7 @@ namespace Translation.Service
             var revisions = await _integrationRepository.SelectRevisions(integration.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
                 response.InfoMessages.Add("revision_not_found");
                 return response;
             }
@@ -399,7 +405,8 @@ namespace Translation.Service
             var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
             if (integration.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_found");
                 return response;
             }
 
@@ -424,7 +431,8 @@ namespace Translation.Service
             var integrationClient = await _integrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
             if (integrationClient.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_client_not_found");
                 return response;
             }
 
@@ -440,7 +448,8 @@ namespace Translation.Service
             var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
             if (integration.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_found");
                 return response;
             }
 
@@ -502,7 +511,8 @@ namespace Translation.Service
             var integrationClient = await _integrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
             if (integrationClient.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_found");
                 return response;
             }
 
@@ -515,7 +525,8 @@ namespace Translation.Service
             var integration = await _integrationRepository.SelectById(integrationClient.IntegrationId);
             if (integration.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_found");
                 return response;
             }
 
@@ -554,7 +565,8 @@ namespace Translation.Service
             var integrationClient = await _integrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
             if (integrationClient.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_client_not_found");
                 return response;
             }
 
@@ -567,7 +579,8 @@ namespace Translation.Service
             var integration = await _integrationRepository.SelectById(integrationClient.IntegrationId);
             if (integration.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_found");
                 return response;
             }
 
@@ -595,14 +608,16 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseParentNotActive();
+                response.SetInvalid();
+                response.ErrorMessages.Add("organization_not_active");
                 return response;
             }
 
             var integrationClient = await _integrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
             if (integrationClient.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_found");
                 return response;
             }
 
@@ -615,13 +630,15 @@ namespace Translation.Service
             var integration = await _integrationRepository.SelectById(integrationClient.IntegrationId);
             if (integration.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_found");
                 return response;
             }
 
             if (!integration.IsActive)
             {
-                response.SetInvalidBecauseParentNotActive();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_active");
                 return response;
             }
 
@@ -649,14 +666,16 @@ namespace Translation.Service
             var integrationClient = await _integrationClientRepository.Select(x => x.ClientId == request.ClientId && x.ClientSecret == request.ClientSecret);
             if (integrationClient.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_found");
                 return response;
             }
 
             if (await _organizationRepository.Any(x => x.Id == integrationClient.OrganizationId && !x.IsActive)
                 || await _integrationRepository.Any(x => x.Id == integrationClient.IntegrationId && !x.IsActive))
             {
-                response.SetInvalidBecauseParentNotActive();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_client_not_found");
                 return response;
             }
 
@@ -687,14 +706,16 @@ namespace Translation.Service
             var integrationClient = await _integrationClientRepository.Select(x => x.OrganizationId == currentUser.OrganizationId && x.IsActive);
             if (integrationClient.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_found");
                 return response;
             }
 
             if (await _organizationRepository.Any(x => x.Id == integrationClient.OrganizationId && !x.IsActive)
                 || await _integrationRepository.Any(x => x.Id == integrationClient.IntegrationId && !x.IsActive))
             {
-                response.SetInvalidBecauseParentNotActive();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_client_not_found");
                 return response;
             }
 
@@ -725,7 +746,8 @@ namespace Translation.Service
             var integrationClient = await _integrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
             if (integrationClient.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_client_not_found");
                 return response;
             }
 
@@ -738,7 +760,8 @@ namespace Translation.Service
             var token = await _tokenRepository.Select(x => x.AccessToken == request.Token);
             if (token.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("token_not_found");
                 return response;
             }
 
@@ -760,7 +783,8 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid && x.IsActive);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("project_not_found");
                 return response;
             }
 
@@ -886,7 +910,8 @@ namespace Translation.Service
             var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
             if (integration.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("integration_not_found");
                 return response;
             }
 

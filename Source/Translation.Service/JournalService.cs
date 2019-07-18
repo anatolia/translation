@@ -44,7 +44,8 @@ namespace Translation.Service
             var organization = _cacheManager.GetCachedOrganization(request.OrganizationUid);
             if (organization == null)
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("organization_not_found");
                 return response;
             }
 
@@ -79,7 +80,8 @@ namespace Translation.Service
             var user = _cacheManager.GetCachedUser(request.UserUid);
             if (user == null)
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("user_not_found");
                 return response;
             }
 

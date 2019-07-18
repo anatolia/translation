@@ -13,6 +13,7 @@ using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
+using static Translation.Tests.TestHelpers.AssertResponseTestHelper;
 
 namespace Translation.Tests.Server.Services
 {
@@ -393,7 +394,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task AdminService_AcceptSuperAdminUserInvite_Invalid_UserNoteExist()
+        public async Task AdminService_AcceptSuperAdminUserInvite_Invalid_UserNotFound()
         {
             // arrange
             var request = GetAdminAcceptInviteRequest();
@@ -404,8 +405,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.AcceptSuperAdminUserInvite(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseParentNotActive);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
             AssertReturnType<AdminAcceptInviteResponse>(result);
             MockUserRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
@@ -662,9 +662,8 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DemoteToUser(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            result.Status.ShouldBe(ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
             AssertReturnType<AdminDemoteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();
@@ -743,9 +742,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.UpgradeToAdmin(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.InvalidBecauseEntityNotFound);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
             AssertReturnType<AdminUpgradeResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();

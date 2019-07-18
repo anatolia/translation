@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 using Translation.Common.Enumerations;
 using Translation.Common.Models.Shared;
 
@@ -26,24 +27,6 @@ namespace Translation.Common.Models.Base
         {
             Status = ResponseStatus.Invalid;
             ErrorMessages.Add(ResponseStatus.Invalid.Description);
-        }
-
-        public void SetInvalidBecauseEntityNotFound()
-        {
-            Status = ResponseStatus.InvalidBecauseEntityNotFound;
-            ErrorMessages.Add(ResponseStatus.InvalidBecauseEntityNotFound.Description);
-        }
-
-        public void SetInvalidForDeleteBecauseHasChildren()
-        {
-            Status = ResponseStatus.Invalid;
-            ErrorMessages.Add("can_not_delete_because_has_children_entity");
-        }
-
-        public void SetInvalidBecauseParentNotActive()
-        {
-            Status = ResponseStatus.InvalidBecauseParentNotActive;
-            ErrorMessages.Add(ResponseStatus.InvalidBecauseParentNotActive.Description);
         }
 
         public void SetFailed()
