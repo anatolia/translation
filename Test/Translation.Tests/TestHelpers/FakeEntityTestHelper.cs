@@ -71,6 +71,71 @@ namespace Translation.Tests.TestHelpers
             return journal;
         }
 
+        public static TokenRequestLog GetTokenRequestLog()
+        {
+            var tokenRequestLog = new TokenRequestLog();
+            tokenRequestLog.OrganizationId = LongOne;
+            tokenRequestLog.OrganizationUid = UidOne;
+            tokenRequestLog.OrganizationName = StringOne;
+
+            tokenRequestLog.IntegrationId = LongOne;
+            tokenRequestLog.IntegrationUid = UidOne;
+            tokenRequestLog.IntegrationName = StringOne;
+
+            tokenRequestLog.IntegrationClientId = LongOne;
+            tokenRequestLog.IntegrationClientUid = UidOne;
+            tokenRequestLog.IntegrationClientName = StringOne;
+
+            tokenRequestLog.Id = LongOne;
+            tokenRequestLog.Uid = UidOne;
+            tokenRequestLog.Name = StringOne;
+            tokenRequestLog.CreatedAt = DateTimeOne;
+
+            tokenRequestLog.City = StringOne;
+            tokenRequestLog.Country = StringOne;
+            tokenRequestLog.Ip = IpOne;
+
+            return tokenRequestLog;
+        }
+
+        public static SendEmailLog GetSendEmailLog()
+        {
+            var sendEmailLog = new SendEmailLog();
+            sendEmailLog.OrganizationId = LongOne;
+            sendEmailLog.OrganizationUid = UidOne;
+            sendEmailLog.OrganizationName = StringOne;
+
+            sendEmailLog.Id = LongOne;
+            sendEmailLog.Uid = UidOne;
+            sendEmailLog.Name = StringOne;
+            sendEmailLog.CreatedAt = DateTimeOne;
+
+            sendEmailLog.EmailFrom = StringOne;
+            sendEmailLog.EmailTo = StringOne;
+            sendEmailLog.Subject = StringOne;
+
+            return sendEmailLog;
+        }
+
+        public static UserLoginLog GetUserLoginLog()
+        {
+            var userLoginLog = new UserLoginLog();
+            userLoginLog.OrganizationId = LongOne;
+            userLoginLog.OrganizationUid = UidOne;
+            userLoginLog.OrganizationName = StringOne;
+
+            userLoginLog.Id = LongOne;
+            userLoginLog.Uid = UidOne;
+            userLoginLog.Name = StringOne;
+            userLoginLog.CreatedAt = DateTimeOne;
+
+            userLoginLog.City = StringOne;
+            userLoginLog.Country = StringOne;
+            userLoginLog.Ip = IpOne;
+
+            return userLoginLog;
+        }
+
         public static Organization GetOrganizationOne()
         {
             var organization = new Organization();
@@ -125,6 +190,9 @@ namespace Translation.Tests.TestHelpers
             user.Email = OrganizationOneUserOneEmail;
             user.IsActive = BooleanTrue;
 
+            user.ObfuscationSalt = StringSixtyFourOne;
+            user.PasswordHash = StringSixtyFourTwo;
+
             return user;
         }
 
@@ -132,6 +200,14 @@ namespace Translation.Tests.TestHelpers
         {
             var user = GetOrganizationOneSuperAdminUserOne();
             user.InvitedAt = DateTimeOneDayBefore;
+
+            return user;
+        }
+
+        public static User GetOrganizationOneSuperAdminUserOneInvitedAtOneWeekBefore()
+        {
+            var user = GetOrganizationOneSuperAdminUserOne();
+            user.InvitedAt = DateTimeOneWeekBefore;
 
             return user;
         }

@@ -66,6 +66,13 @@ namespace Translation.Tests.SetupHelpers
                       .ReturnsAsync(GetOrganizationOneSuperAdminUserOneInvitedAtOneDayBefore());
         }
 
+
+        public static void Setup_Select_Returns_OrganizationOneSuperAdminUserInvitedAtOneWeekBefore(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneSuperAdminUserOneInvitedAtOneWeekBefore());
+        }
+
         public static void Setup_SelectById_Returns_OrganizationOneUserOne(this Mock<IUserRepository> repository)
         {
             repository.Setup(x => x.SelectById(It.IsAny<long>()))

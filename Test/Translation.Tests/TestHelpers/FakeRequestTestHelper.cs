@@ -2,9 +2,12 @@ using Translation.Common.Models.Requests.Admin;
 using Translation.Common.Models.Requests.Integration;
 using Translation.Common.Models.Requests.Journal;
 using Translation.Common.Models.Requests.Integration.IntegrationClient;
+using Translation.Common.Models.Requests.Integration.Token;
 using Translation.Common.Models.Requests.Organization;
 using Translation.Common.Models.Requests.Project;
+using Translation.Common.Models.Requests.SendEmailLog;
 using Translation.Common.Models.Requests.User;
+using Translation.Common.Models.Requests.User.LoginLog;
 using Translation.Common.Models.Responses.Admin;
 using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
@@ -94,7 +97,7 @@ namespace Translation.Tests.TestHelpers
 
         public static IntegrationReadListRequest GetIntegrationReadListRequestForSelectAfter()
         {
-            var request = new IntegrationReadListRequest(CurrentUserId, OrganizationOneUid);
+            var request = GetIntegrationReadListRequest();
             request.PagingInfo.Skip = 0;
 
             return request;
@@ -103,7 +106,7 @@ namespace Translation.Tests.TestHelpers
         public static IntegrationReadListRequest GetIntegrationReadListRequestForSelectMany()
         {
 
-            var request = new IntegrationReadListRequest(CurrentUserId, OrganizationOneUid);
+            var request = GetIntegrationReadListRequest();
             request.PagingInfo.Skip = 1;
 
             return request;
@@ -394,6 +397,75 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetAllJournalReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+
+            return request;
+        }
+
+        public static AllTokenRequestLogReadListRequest GetAllTokenRequestLogReadListRequest()
+        {
+            var request = new AllTokenRequestLogReadListRequest(CurrentUserId);
+
+            return request;
+        }
+
+        public static AllTokenRequestLogReadListRequest GetAllTokenRequestLogReadListRequestForSelectAfter()
+        {
+            var request = GetAllTokenRequestLogReadListRequest();
+            request.PagingInfo.Skip = 0;
+
+            return request;
+        }
+
+        public static AllTokenRequestLogReadListRequest GetAllTokenRequestLogReadListRequestForSelectMany()
+        {
+            var request = GetAllTokenRequestLogReadListRequest();
+            request.PagingInfo.Skip = 1;
+
+            return request;
+        }
+
+        public static AllSendEmailLogReadListRequest GetAllSendEmailLogReadListRequest()
+        {
+            var request = new AllSendEmailLogReadListRequest(CurrentUserId);
+
+            return request;
+        }
+
+        public static AllSendEmailLogReadListRequest GetAllSendEmailLogReadListRequestForSelectAfter()
+        {
+            var request = GetAllSendEmailLogReadListRequest();
+            request.PagingInfo.Skip = 0;
+
+            return request;
+        }
+
+        public static AllSendEmailLogReadListRequest GetAllSendEmailLogReadListRequestForSelectMany()
+        {
+            var request = GetAllSendEmailLogReadListRequest();
+            request.PagingInfo.Skip = 1;
+
+            return request;
+        }
+
+        public static AllLoginLogReadListRequest GetAllLoginLogReadListRequest()
+        {
+            var request = new AllLoginLogReadListRequest(CurrentUserId);
+
+            return request;
+        }
+
+        public static AllLoginLogReadListRequest GetAllLoginLogReadListRequestForSelectAfter()
+        {
+            var request = GetAllLoginLogReadListRequest();
+            request.PagingInfo.Skip = 0;
+
+            return request;
+        }
+
+        public static AllLoginLogReadListRequest GetAllLoginLogReadListRequestForSelectMany()
+        {
+            var request = GetAllLoginLogReadListRequest();
+            request.PagingInfo.Skip = 1;
 
             return request;
         }

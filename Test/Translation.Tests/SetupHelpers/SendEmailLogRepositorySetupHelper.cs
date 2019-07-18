@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 using Moq;
@@ -12,22 +13,48 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class SendEmailLogRepositorySetupHelper
     {
+        public static void Setup_SelectAfter_Returns_SendEmailLogs(this Mock<ISendEmailLogRepository> repository)
+        {
+            repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<SendEmailLog, bool>>>(),
+                                                It.IsAny<Guid>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<Expression<Func<SendEmailLog, object>>>(),
+                                                It.IsAny<bool>(), false))
+                      .ReturnsAsync(new List<SendEmailLog> { GetSendEmailLog() });
+        }
+
+        public static void Setup_SelectMany_Returns_SendEmailLogs(this Mock<ISendEmailLogRepository> repository)
+        {
+            repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<SendEmailLog, bool>>>(),
+                                               It.IsAny<int>(),
+                                               It.IsAny<int>(),
+                                               It.IsAny<Expression<Func<SendEmailLog, object>>>(),
+                                               It.IsAny<bool>(), false))
+                      .ReturnsAsync(new List<SendEmailLog> { GetSendEmailLog() });
+        }
+
+        public static void Setup_Count_Returns_Ten(this Mock<ISendEmailLogRepository> repository)
+        {
+            repository.Setup(x => x.Count(It.IsAny<Expression<Func<SendEmailLog, bool>>>(), false))
+                      .ReturnsAsync(Ten);
+        }
+
         public static void Verify_SelectMany(this Mock<ISendEmailLogRepository> repository)
         {
             repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<SendEmailLog, bool>>>(),
-                    It.IsAny<int>(),
-                    It.IsAny<int>(),
-                    It.IsAny<Expression<Func<SendEmailLog, object>>>(),
-                    It.IsAny<bool>(), false));
+                                                It.IsAny<int>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<Expression<Func<SendEmailLog, object>>>(),
+                                                It.IsAny<bool>(), false));
         }
 
         public static void Verify_SelectAfter(this Mock<ISendEmailLogRepository> repository)
         {
             repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<SendEmailLog, bool>>>(),
-                    It.IsAny<Guid>(),
-                    It.IsAny<int>(),
-                    It.IsAny<Expression<Func<SendEmailLog, object>>>(),
-                    It.IsAny<bool>(), false));
+                                                 It.IsAny<Guid>(),
+                                                 It.IsAny<int>(),
+                                                 It.IsAny<Expression<Func<SendEmailLog, object>>>(),
+                                                 It.IsAny<bool>(), false));
         }
 
         public static void Setup_Count_Returns_POSITIVE_INT_NUMBER_10(this Mock<ISendEmailLogRepository> repository)

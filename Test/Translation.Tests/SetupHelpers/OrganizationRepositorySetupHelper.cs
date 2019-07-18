@@ -26,10 +26,10 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_SelectMany_Returns_Organizations(this Mock<IOrganizationRepository> repository)
         {
             repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<Organization, bool>>>(),
-                                                It.IsAny<int>(),
-                                                It.IsAny<int>(),
-                                                It.IsAny<Expression<Func<Organization, object>>>(),
-                                                It.IsAny<bool>(), false))
+                                               It.IsAny<int>(),
+                                               It.IsAny<int>(),
+                                               It.IsAny<Expression<Func<Organization, object>>>(),
+                                               It.IsAny<bool>(), false))
                       .ReturnsAsync(new List<Organization> { GetOrganization() });
         }
 

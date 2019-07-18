@@ -6,9 +6,12 @@ using Shouldly;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Models.Responses.Admin;
+using Translation.Common.Models.Responses.Integration.Token.RequestLog;
 using Translation.Common.Models.Responses.Journal;
 using Translation.Common.Models.Responses.Organization;
+using Translation.Common.Models.Responses.SendEmailLog;
 using Translation.Common.Models.Responses.User;
+using Translation.Common.Models.Responses.User.LoginLog;
 using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
@@ -55,16 +58,14 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetOrganizationReadListRequestForSelectMany();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
-            MockOrganizationRepository.Setup_SelectAfter_Returns_Organizations();
+            MockOrganizationRepository.Setup_SelectMany_Returns_Organizations();
             MockOrganizationRepository.Setup_Count_Returns_Ten();
 
             // act
             var result = await SystemUnderTest.GetOrganizations(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<OrganizationReadListResponse>(result);
             AssertPagingInfoForSelectMany(request.PagingInfo, Ten);
             MockUserRepository.Verify_SelectById();
@@ -83,8 +84,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetOrganizations(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<OrganizationReadListResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -102,9 +102,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetAllUsers(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<AllUserReadListResponse>(result);
             AssertPagingInfoForSelectAfter(request.PagingInfo, Ten);
             MockUserRepository.Verify_SelectById();
@@ -125,9 +123,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetAllUsers(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<AllUserReadListResponse>(result);
             AssertPagingInfoForSelectMany(request.PagingInfo, Ten);
             MockUserRepository.Verify_SelectById();
@@ -146,8 +142,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetAllUsers(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<AllUserReadListResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -165,9 +160,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetSuperAdmins(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<SuperAdminUserReadListResponse>(result);
             AssertPagingInfoForSelectAfter(request.PagingInfo, Ten);
             MockUserRepository.Verify_SelectById();
@@ -188,9 +181,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetSuperAdmins(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<SuperAdminUserReadListResponse>(result);
             AssertPagingInfoForSelectMany(request.PagingInfo, Ten);
             MockUserRepository.Verify_SelectById();
@@ -209,8 +200,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetSuperAdmins(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<SuperAdminUserReadListResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -228,9 +218,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.InviteSuperAdminUser(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<AdminInviteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();
@@ -248,8 +236,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.InviteSuperAdminUser(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<AdminInviteResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -266,8 +253,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.InviteSuperAdminUser(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, "user_already_invited");
             AssertReturnType<AdminInviteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();
@@ -286,8 +272,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.InviteSuperAdminUser(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<AdminInviteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();
@@ -306,16 +291,14 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ValidateSuperAdminUserInvitation(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<AdminInviteValidateResponse>(result);
             MockUserRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
         }
 
         [Test]
-        public async Task AdminService_ValidateSuperAdminUserInvitation_Invalid_UserNotExist()
+        public async Task AdminService_ValidateSuperAdminUserInvitation_Invalid_UserNotFound()
         {
             // arrange
             var request = GetAdminInviteValidateRequest();
@@ -325,14 +308,13 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ValidateSuperAdminUserInvitation(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
             AssertReturnType<AdminInviteValidateResponse>(result);
             MockUserRepository.Verify_Select();
         }
 
         [Test]
-        public async Task AdminService_ValidateSuperAdminUserInvitation_Invalid_OrganizationNotExist()
+        public async Task AdminService_ValidateSuperAdminUserInvitation_Invalid_OrganizationNotFound()
         {
             // arrange
             var request = GetAdminInviteValidateRequest();
@@ -343,8 +325,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ValidateSuperAdminUserInvitation(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
             AssertReturnType<AdminInviteValidateResponse>(result);
             MockUserRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
@@ -362,8 +343,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ValidateSuperAdminUserInvitation(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Failed);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<AdminInviteValidateResponse>(result);
             MockUserRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
@@ -377,40 +357,22 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Setup_Select_Returns_OrganizationOneSuperAdminUserInvitedAtOneDayBefore();
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockUserRepository.Setup_Update_Success();
+            MockOrganizationRepository.Setup_Update_Success();
 
             // act
             var result = await SystemUnderTest.AcceptSuperAdminUserInvite(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<AdminAcceptInviteResponse>(result);
             MockUserRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
             MockUserRepository.Verify_Update();
+            MockOrganizationRepository.Verify_Update();
         }
 
         [Test]
         public async Task AdminService_AcceptSuperAdminUserInvite_Invalid_UserNotFound()
-        {
-            // arrange
-            var request = GetAdminAcceptInviteRequest();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneSuperAdminUserInvitedAtOneDayBefore();
-            MockOrganizationRepository.Setup_Any_Returns_True();
-
-            // act
-            var result = await SystemUnderTest.AcceptSuperAdminUserInvite(request);
-
-            // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
-            AssertReturnType<AdminAcceptInviteResponse>(result);
-            MockUserRepository.Verify_Select();
-            MockOrganizationRepository.Verify_Any();
-        }
-
-        [Test]
-        public async Task AdminService_AcceptSuperAdminUserInvite_Invalid_OrganizationNotExist()
         {
             // arrange
             var request = GetAdminAcceptInviteRequest();
@@ -420,10 +382,27 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.AcceptSuperAdminUserInvite(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
             AssertReturnType<AdminAcceptInviteResponse>(result);
             MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task AdminService_AcceptSuperAdminUserInvite_Invalid_OrganizationNotFound()
+        {
+            // arrange
+            var request = GetAdminAcceptInviteRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.AcceptSuperAdminUserInvite(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertReturnType<AdminAcceptInviteResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockOrganizationRepository.Verify_Any();
         }
 
         [Test]
@@ -431,20 +410,17 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetAdminAcceptInviteRequest();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneSuperAdminUserInvitedAtOneDayBefore();
-            MockOrganizationRepository.Setup_Any_Returns_True();
-            MockUserRepository.Setup_Update_Failed();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneSuperAdminUserInvitedAtOneWeekBefore();
+            MockOrganizationRepository.Setup_Any_Returns_False();
 
             // act
             var result = await SystemUnderTest.AcceptSuperAdminUserInvite(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Failed);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<AdminAcceptInviteResponse>(result);
             MockUserRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
-            MockUserRepository.Verify_Update();
         }
 
         [Test]
@@ -460,9 +436,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivation(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<UserChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();
@@ -480,14 +454,13 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivation(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<UserChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
 
         [Test]
-        public async Task AdminService_ChangeActivation_Invalid_UserNotExist()
+        public async Task AdminService_ChangeActivation_Invalid_UserNotFound()
         {
             // arrange
             var request = GetUserChangeActivationRequest();
@@ -498,8 +471,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivation(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
             AssertReturnType<UserChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();
@@ -518,8 +490,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivation(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Failed);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<UserChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();
@@ -540,9 +511,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.OrganizationChangeActivation(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<OrganizationChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Select();
@@ -632,7 +601,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task AdminService_DemoteToUser_Invalid_CurrenctUserNotSuperAdmin()
+        public async Task AdminService_DemoteToUser_Invalid_CurrentUserNotSuperAdmin()
         {
             // arrange
             var request = GetAdminDemoteRequest();
@@ -642,14 +611,13 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DemoteToUser(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<AdminDemoteResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
 
         [Test]
-        public async Task AdminService_DemoteToUser_Invalid_UserNotExist()
+        public async Task AdminService_DemoteToUser_Invalid_UserNotFound()
         {
             // arrange
             var request = GetAdminDemoteRequest();
@@ -660,7 +628,6 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DemoteToUser(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
             AssertReturnType<AdminDemoteResponse>(result);
             MockUserRepository.Verify_SelectById();
@@ -680,9 +647,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DemoteToUser(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Failed);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<AdminDemoteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();
@@ -702,9 +667,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.UpgradeToAdmin(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<AdminUpgradeResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();
@@ -722,14 +685,13 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.UpgradeToAdmin(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<AdminUpgradeResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
 
         [Test]
-        public async Task AdminService_UpgradeToAdmin_Invalid_UserNotExist()
+        public async Task AdminService_UpgradeToAdmin_Invalid_UserNotFound()
         {
             // arrange
             var request = GetAdminUpgradeRequest();
@@ -759,9 +721,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.UpgradeToAdmin(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Failed);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<AdminUpgradeResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();
@@ -781,9 +741,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetJournals(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<JournalReadListResponse>(result);
             AssertPagingInfoForSelectAfter(request.PagingInfo, Ten);
             MockUserRepository.Verify_SelectById();
@@ -804,9 +762,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetJournals(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<JournalReadListResponse>(result);
             AssertPagingInfoForSelectAfter(request.PagingInfo, Ten);
             MockUserRepository.Verify_SelectById();
@@ -825,9 +781,182 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetJournals(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<JournalReadListResponse>(result);
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task AdminService_GetTokenRequestLogs_Success_SelectAfter()
+        {
+            // arrange
+            var request = GetAllTokenRequestLogReadListRequestForSelectAfter();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockTokenRequestLogRepository.Setup_SelectAfter_Returns_TokenRequestLogs();
+            MockTokenRequestLogRepository.Setup_Count_Returns_Ten();
+
+            // act
+            var result = await SystemUnderTest.GetTokenRequestLogs(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<AllTokenRequestLogReadListResponse>(result);
+            AssertPagingInfoForSelectAfter(request.PagingInfo, Ten);
+            MockUserRepository.Verify_SelectById();
+            MockTokenRequestLogRepository.Verify_SelectAfter();
+            MockTokenRequestLogRepository.Verify_Count();
+        }
+
+        [Test]
+        public async Task AdminService_GetTokenRequestLogs_Success_SelectMany()
+        {
+            // arrange
+            var request = GetAllTokenRequestLogReadListRequestForSelectMany();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockTokenRequestLogRepository.Setup_SelectMany_Returns_TokenRequestLogs();
+            MockTokenRequestLogRepository.Setup_Count_Returns_Ten();
+
+            // act
+            var result = await SystemUnderTest.GetTokenRequestLogs(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<AllTokenRequestLogReadListResponse>(result);
+            AssertPagingInfoForSelectMany(request.PagingInfo, Ten);
+            MockUserRepository.Verify_SelectById();
+            MockTokenRequestLogRepository.Verify_SelectMany();
+            MockTokenRequestLogRepository.Verify_Count();
+        }
+
+        [Test]
+        public async Task AdminService_GetTokenRequestLogs_Invalid_CurrentUserNotSuperAdmin()
+        {
+            // arrange
+            var request = GetAllTokenRequestLogReadListRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+
+            // act
+            var result = await SystemUnderTest.GetTokenRequestLogs(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertReturnType<AllTokenRequestLogReadListResponse>(result);
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task AdminService_GetSendEmailLogs_Success_SelectAfter()
+        {
+            // arrange
+            var request = GetAllSendEmailLogReadListRequestForSelectAfter();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockSendEmailLogRepository.Setup_SelectAfter_Returns_SendEmailLogs();
+            MockSendEmailLogRepository.Setup_Count_Returns_Ten();
+
+            // act
+            var result = await SystemUnderTest.GetSendEmailLogs(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<AllSendEmailReadListResponse>(result);
+            AssertPagingInfoForSelectAfter(request.PagingInfo, Ten);
+            MockUserRepository.Verify_SelectById();
+            MockSendEmailLogRepository.Verify_SelectAfter();
+            MockSendEmailLogRepository.Verify_Count();
+        }
+
+        [Test]
+        public async Task AdminService_GetSendEmailLogs_Success_SelectMany()
+        {
+            // arrange
+            var request = GetAllSendEmailLogReadListRequestForSelectMany();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockSendEmailLogRepository.Setup_SelectMany_Returns_SendEmailLogs();
+            MockSendEmailLogRepository.Setup_Count_Returns_Ten();
+
+            // act
+            var result = await SystemUnderTest.GetSendEmailLogs(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<AllSendEmailReadListResponse>(result);
+            AssertPagingInfoForSelectMany(request.PagingInfo, Ten);
+            MockUserRepository.Verify_SelectById();
+            MockSendEmailLogRepository.Verify_SelectMany();
+            MockSendEmailLogRepository.Verify_Count();
+        }
+
+        [Test]
+        public async Task AdminService_GetSendEmailLogs_Invalid_CurrentUserNotSuperAdmin()
+        {
+            // arrange
+            var request = GetAllSendEmailLogReadListRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+
+            // act
+            var result = await SystemUnderTest.GetSendEmailLogs(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertReturnType<AllSendEmailReadListResponse>(result);
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task AdminService_AllUserLoginLogs_Success_SelectAfter()
+        {
+            // arrange
+            var request = GetAllLoginLogReadListRequestForSelectAfter();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockUserLoginLogRepository.Setup_SelectAfter_Returns_UserLoginLogs();
+            MockUserLoginLogRepository.Setup_Count_Returns_Ten();
+
+            // act
+            var result = await SystemUnderTest.GetAllUserLoginLogs(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<AllLoginLogReadListResponse>(result);
+            AssertPagingInfoForSelectAfter(request.PagingInfo, Ten);
+            MockUserRepository.Verify_SelectById();
+            MockUserLoginLogRepository.Verify_SelectAfter();
+            MockUserLoginLogRepository.Verify_Count();
+        }
+
+        [Test]
+        public async Task AdminService_AllUserLoginLogs_Success_SelectMany()
+        {
+            // arrange
+            var request = GetAllLoginLogReadListRequestForSelectMany();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockUserLoginLogRepository.Setup_SelectMany_Returns_UserLoginLogs();
+            MockUserLoginLogRepository.Setup_Count_Returns_Ten();
+
+            // act
+            var result = await SystemUnderTest.GetAllUserLoginLogs(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<AllLoginLogReadListResponse>(result);
+            AssertPagingInfoForSelectMany(request.PagingInfo, Ten);
+            MockUserRepository.Verify_SelectById();
+            MockUserLoginLogRepository.Verify_SelectMany();
+            MockUserLoginLogRepository.Verify_Count();
+        }
+
+        [Test]
+        public async Task AdminService_AllUserLoginLogs_Invalid_CurrentUserNotSuperAdmin()
+        {
+            // arrange
+            var request = GetAllLoginLogReadListRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+
+            // act
+            var result = await SystemUnderTest.GetAllUserLoginLogs(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertReturnType<AllLoginLogReadListResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
     }
