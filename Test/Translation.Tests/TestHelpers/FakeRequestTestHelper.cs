@@ -94,20 +94,18 @@ namespace Translation.Tests.TestHelpers
 
             return request;
         }
-
         public static IntegrationReadListRequest GetIntegrationReadListRequestForSelectAfter()
         {
             var request = GetIntegrationReadListRequest();
-            request.PagingInfo.Skip = 0;
+            request.PagingInfo = GetPagingInfoForSelectAfter();
 
             return request;
         }
 
         public static IntegrationReadListRequest GetIntegrationReadListRequestForSelectMany()
         {
-
             var request = GetIntegrationReadListRequest();
-            request.PagingInfo.Skip = 1;
+            request.PagingInfo = GetPagingInfoForSelectMany();
 
             return request;
         }
@@ -284,7 +282,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new UserJournalReadListRequest(CurrentUserId, OrganizationOneUserOneUid);
 
-            return request;
+              return request;
         }
 
         public static OrganizationReadListRequest GetOrganizationReadListRequest()

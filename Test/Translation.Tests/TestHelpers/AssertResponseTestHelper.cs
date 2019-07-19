@@ -9,9 +9,10 @@ namespace Translation.Tests.TestHelpers
 {
     public class AssertResponseTestHelper
     {
-        public const string OrganizationNameMustBeUniquie = "organization_name_must_be_unique";
-        public const string ProjectNameMustBeUniquie = "project_name_must_be_unique";
-        public const string UserNameMustBeUniquie = "user_name_must_be_unique";
+        public const string OrganizationNameMustBeUnique = "organization_name_must_be_unique";
+        public const string ProjectNameMustBeUnique = "project_name_must_be_unique";
+        public const string UserNameMustBeUnique = "user_name_must_be_unique";
+        public const string IntegrationNameMustBeUnique = "integration_name_must_be_unique";
 
         public const string OrganizationNotFound = "organization_not_found";
         public const string ProjectNotFound = "project_not_found";
