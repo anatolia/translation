@@ -45,7 +45,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task IntegrationService_GetIntegration_Invalid_OrganizationNotMatch()
+        public async Task IntegrationService_GetIntegration_Failed_OrganizationNotMatch()
         {
             // arrange
             var request = GetIntegrationReadRequest();
@@ -65,7 +65,7 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetIntegrationReadRequest();
-            MockIntegrationRepository.Setup_Select_Returns_InvalidIntegration();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOneNotExist();
 
             // act
             var result = await SystemUnderTest.GetIntegration(request);
@@ -137,7 +137,7 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetIntegrationRevisionReadListRequest();
-            MockIntegrationRepository.Setup_Select_Returns_InvalidIntegration();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOneNotExist();
 
             // act
             var result = await SystemUnderTest.GetIntegrationRevisions(request);
@@ -432,7 +432,6 @@ namespace Translation.Tests.Server.Services
             var request = GetIntegrationDeleteRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
-            // MockIntegrationRepository.Setup_Select_Returns_InvalidIntegration();
             MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOneNotExist();
 
             // act
@@ -570,7 +569,7 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetIntegrationChangeActivationRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
-            MockIntegrationRepository.Setup_Select_Returns_InvalidIntegration();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOneNotExist();
 
             // act
             var result = await SystemUnderTest.ChangeActivationForIntegration(request);
@@ -668,7 +667,7 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetIntegrationRestoreRequest();
             MockOrganizationRepository.Setup_Any_Returns_False();
-            MockIntegrationRepository.Setup_Select_Returns_InvalidIntegration();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOneNotExist();
 
             // act
             var result = await SystemUnderTest.RestoreIntegration(request);
@@ -686,7 +685,7 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetIntegrationRestoreRequest();
             MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOne();
-            MockIntegrationRepository.Setup_SelectRevisions_Returns_InvalidRevision();
+            MockIntegrationRepository.Setup_SelectRevisions_Returns_RevisionTwo();
 
             // act
             var result = await SystemUnderTest.RestoreIntegration(request);
@@ -712,9 +711,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateIntegrationClient(request);
 
             //assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<IntegrationClientCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -723,7 +720,23 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task IntegrationService_CreateIntegrationClient_Invalid_OrganizationNotExist()
+        public async Task IntegrationService_CreateIntegrationClient__Invalid_CurrentUserNotAdmin()
+        {
+            //arrange
+            var request = GetIntegrationClientCreateRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+
+            //act
+            var result = await SystemUnderTest.CreateIntegrationClient(request);
+
+            //assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertReturnType<IntegrationClientCreateResponse>(result);
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task IntegrationService_CreateIntegrationClient_Invalid_OrganizationNotActive()
         {
             //arrange
             var request = GetIntegrationClientCreateRequest();
@@ -734,29 +747,48 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateIntegrationClient(request);
 
             //assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<IntegrationClientCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
-
         }
 
         [Test]
-        public async Task IntegrationService_CreateIntegrationClient_Invalid_UserNotAdmin()
+        public async Task IntegrationService_CreateIntegrationClient_Invalid_IntegrationNotFound()
         {
             //arrange
             var request = GetIntegrationClientCreateRequest();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
-
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOneNotExist();
             //act
             var result = await SystemUnderTest.CreateIntegrationClient(request);
 
             //assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
             AssertReturnType<IntegrationClientCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task IntegrationService_CreateIntegrationClient_Invalid_OrganizationNotMatch()
+        {
+            //arrange
+            var request = GetIntegrationClientCreateRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationTwoIntegrationOne();
+            //act
+            var result = await SystemUnderTest.CreateIntegrationClient(request);
+
+            //assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertReturnType<IntegrationClientCreateResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationRepository.Verify_Select();
         }
 
         [Test]
@@ -770,59 +802,80 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<IntegrationClientReadResponse>(result);
             MockIntegrationClientRepository.Verify_Select();
         }
 
         [Test]
-        public async Task IntegrationService_GetIntegrationClient_InvalidIntegrationEntity()
+        public async Task IntegrationService_GetIntegrationClient_Invalid_IntegrationClientNotFound()
         {
             // arrange
             var request = GetIntegrationClientReadRequest();
-            MockIntegrationClientRepository.Setup_Select_Returns_InvalidIntegration();
-
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOneNotExist();
             // act
             var result = await SystemUnderTest.GetIntegrationClient(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationClientNotFound);
             AssertReturnType<IntegrationClientReadResponse>(result);
             MockIntegrationClientRepository.Verify_Select();
         }
 
         [Test]
-        public async Task IntegrationService_GetIntegrationClients_Success()
+        public async Task IntegrationService_GetIntegrationClients_Success_SelectAfter()
         {
             // arrange
-            var request = GetIntegrationClientReadListRequest();
+            var request = GetIntegrationClientReadListRequestForSelectAfter();
             MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOne();
+            MockIntegrationClientRepository.Setup_SelectAfter_Returns_IntegrationClients();
+            MockIntegrationClientRepository.Setup_Count_Returns_Ten();
 
             // act
             var result = await SystemUnderTest.GetIntegrationClients(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<IntegrationClientReadListResponse>(result);
+            AssertPagingInfoForSelectAfter(request.PagingInfo, Ten);
             MockIntegrationRepository.Verify_Select();
+            MockIntegrationClientRepository.Verify_SelectAfter();
+            MockIntegrationClientRepository.Verify_Count();
         }
 
         [Test]
-        public async Task IntegrationService_GetIntegrationClients_InvalidIntegrationEntity()
+        public async Task IntegrationService_GetIntegrationClients_Success_SelectMany()
         {
             // arrange
-            var request = GetIntegrationClientReadListRequest();
-            MockIntegrationRepository.Setup_Select_Returns_InvalidIntegration();
+            var request = GetIntegrationClientReadListRequestForSelectMany();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOne();
+            MockIntegrationClientRepository.Setup_SelectMany_Returns_IntegrationClients();
+            MockIntegrationClientRepository.Setup_Count_Returns_Ten();
 
             // act
             var result = await SystemUnderTest.GetIntegrationClients(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<IntegrationClientReadListResponse>(result);
+            AssertPagingInfoForSelectMany(request.PagingInfo, Ten);
+            MockIntegrationRepository.Verify_Select();
+            MockIntegrationClientRepository.Verify_SelectMany();
+            MockIntegrationClientRepository.Verify_Count();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetIntegrationClients_Invalid_IntegrationNotFound()
+        {
+            // arrange
+            var request = GetIntegrationClientReadListRequest();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.GetIntegrationClients(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
             AssertReturnType<IntegrationClientReadListResponse>(result);
             MockIntegrationRepository.Verify_Select();
         }
@@ -841,9 +894,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.RefreshIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<IntegrationClientRefreshResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -852,25 +903,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task IntegrationService_RefreshIntegrationClient_InvalidIntegrationEntity()
-        {
-            // arrange
-            var request = GetIntegrationClientRefreshRequest();
-            MockIntegrationClientRepository.Setup_Select_Returns_InvalidIntegration();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
-
-            // act
-            var result = await SystemUnderTest.RefreshIntegrationClient(request);
-
-            // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            AssertReturnType<IntegrationClientRefreshResponse>(result);
-            MockIntegrationClientRepository.Verify_Select();
-            MockUserRepository.Verify_SelectById();
-        }
-
-        [Test]
-        public async Task IntegrationService_RefreshIntegrationClient_UserNotAdmin()
+        public async Task IntegrationService_RefreshIntegrationClient_Invalid_CurrentUserNotAdmin()
         {
             // arrange
             var request = GetIntegrationClientRefreshRequest();
@@ -880,14 +913,13 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.RefreshIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<IntegrationClientRefreshResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
 
         [Test]
-        public async Task IntegrationService_RefreshIntegrationClient_OrganizationIsActive()
+        public async Task IntegrationService_RefreshIntegrationClient_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetIntegrationClientRefreshRequest();
@@ -898,38 +930,55 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.RefreshIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<IntegrationClientRefreshResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
-
         }
 
         [Test]
-        public async Task IntegrationService_RefreshIntegrationClient_IntegrationClientNotOrganizationId()
+        public async Task IntegrationService_RefreshIntegrationClient_Invalid_IntegrationClientNotFound()
         {
             // arrange
             var request = GetIntegrationClientRefreshRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.RefreshIntegrationClient(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationClientNotFound);
+            AssertReturnType<IntegrationClientRefreshResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task IntegrationService_RefreshIntegrationClient_Invalid_OrganizationNotMatch()
+        {
+            // arrange
+            var request = GetIntegrationClientRefreshRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
             MockIntegrationClientRepository.Setup_Select_Returns_OrganizationTwoIntegrationOneIntegrationClientOne();
 
             // act
             var result = await SystemUnderTest.RefreshIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<IntegrationClientRefreshResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
             MockIntegrationClientRepository.Verify_Select();
-
         }
 
         [Test]
-        public async Task IntegrationService_RefreshIntegrationClient_IntegrationIsExist()
+        public async Task IntegrationService_RefreshIntegrationClient_Invalid_IntegrationNotFound()
         {
             // arrange
             var request = GetIntegrationClientRefreshRequest();
@@ -942,7 +991,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.RefreshIntegrationClient(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
             AssertReturnType<IntegrationClientRefreshResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -951,7 +1000,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task IntegrationService_RefreshIntegrationClient_IntegrationNotIsActive()
+        public async Task IntegrationService_RefreshIntegrationClient_Invalid_IntegrationNotActive()
         {
             // arrange
             var request = GetIntegrationClientRefreshRequest();
@@ -959,12 +1008,12 @@ namespace Translation.Tests.Server.Services
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
             MockIntegrationRepository.Setup_SelectById_Returns_OrganizationOneIntegrationOneNotActive();
+
             // act
             var result = await SystemUnderTest.RefreshIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotActive);
             AssertReturnType<IntegrationClientRefreshResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -987,9 +1036,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<IntegrationClientDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -997,7 +1044,6 @@ namespace Translation.Tests.Server.Services
             MockIntegrationRepository.Verify_SelectById();
             MockIntegrationClientRepository.Verify_Delete();
         }
-
         [Test]
         public async Task IntegrationService_DeleteIntegrationClient_Failed()
         {
@@ -1013,8 +1059,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Failed);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<IntegrationClientDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1022,27 +1067,8 @@ namespace Translation.Tests.Server.Services
             MockIntegrationRepository.Verify_SelectById();
             MockIntegrationClientRepository.Verify_Delete();
         }
-
         [Test]
-        public async Task IntegrationService_DeleteIntegrationClient_InvalidIntegrationEntity()
-        {
-            // arrange
-            var request = GetIntegrationClientDeleteRequest();
-            MockIntegrationClientRepository.Setup_Select_Returns_InvalidIntegration();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
-
-            // act
-            var result = await SystemUnderTest.DeleteIntegrationClient(request);
-
-            // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            AssertReturnType<IntegrationClientDeleteResponse>(result);
-            MockIntegrationClientRepository.Verify_Select();
-            MockUserRepository.Verify_SelectById();
-        }
-
-        [Test]
-        public async Task IntegrationService_DeleteIntegrationClient_Invalid_UserNotAdmin()
+        public async Task IntegrationService_DeleteIntegrationClient_Invalid_CurrentUserNotAdmin()
         {
             // arrange
             var request = GetIntegrationClientDeleteRequest();
@@ -1052,14 +1078,13 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<IntegrationClientDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
 
         [Test]
-        public async Task IntegrationService_DeleteIntegrationClient_OrganizationIsActive()
+        public async Task IntegrationService_DeleteIntegrationClient_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetIntegrationClientDeleteRequest();
@@ -1070,38 +1095,14 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<IntegrationClientDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
-
         }
 
         [Test]
-        public async Task IntegrationService_DeleteIntegrationClient_IntegrationClientNotOrganizationId()
-        {
-            // arrange
-            var request = GetIntegrationClientDeleteRequest();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
-            MockOrganizationRepository.Setup_Any_Returns_False();
-            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationTwoIntegrationOneIntegrationClientOne();
-
-            // act
-            var result = await SystemUnderTest.DeleteIntegrationClient(request);
-
-            // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
-            AssertReturnType<IntegrationClientDeleteResponse>(result);
-            MockUserRepository.Verify_SelectById();
-            MockOrganizationRepository.Verify_Any();
-            MockIntegrationClientRepository.Verify_Select();
-
-        }
-
-        [Test]
-        public async Task IntegrationService_DeleteIntegrationClient_IntegrationClientIsExist()
+        public async Task IntegrationService_DeleteIntegrationClient_Invalid_IntegrationClientNotFound()
         {
             // arrange
             var request = GetIntegrationClientDeleteRequest();
@@ -1113,7 +1114,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteIntegrationClient(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationClientNotFound);
             AssertReturnType<IntegrationClientDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1121,7 +1122,28 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task IntegrationService_DeleteIntegrationClient_IntegrationIsExit()
+        public async Task IntegrationService_DeleteIntegrationClient_Invalid_OrganizationNotMatch()
+        {
+            // arrange
+            var request = GetIntegrationClientDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationTwoIntegrationOneIntegrationClientOne();
+
+            // act
+            var result = await SystemUnderTest.DeleteIntegrationClient(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertReturnType<IntegrationClientDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationClientRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task IntegrationService_DeleteIntegrationClient_Invalid_IntegrationNotFound()
         {
             // arrange
             var request = GetIntegrationClientDeleteRequest();
@@ -1134,7 +1156,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteIntegrationClient(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
             AssertReturnType<IntegrationClientDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1157,9 +1179,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1183,8 +1203,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Failed);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1194,25 +1213,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task IntegrationService_ChangeActivationForIntegrationClient_InvalidIntegrationEntity()
-        {
-            // arrange
-            var request = GetIntegrationClientChangeActivationRequest();
-            MockIntegrationClientRepository.Setup_Select_Returns_InvalidIntegration();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
-
-            // act
-            var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
-
-            // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            AssertReturnType<IntegrationClientChangeActivationResponse>(result);
-            MockIntegrationClientRepository.Verify_Select();
-            MockUserRepository.Verify_SelectById();
-        }
-
-        [Test]
-        public async Task IntegrationService_ChangeActivationForIntegrationClient_Invalid_UserNotAdmin()
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_Invalid_CurrentUserNotAdmin()
         {
             // arrange
             var request = GetIntegrationClientChangeActivationRequest();
@@ -1222,14 +1223,13 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
 
         [Test]
-        public async Task IntegrationService_ChangeActivationForIntegrationClient_OrganizationIsActive()
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetIntegrationClientChangeActivationRequest();
@@ -1240,15 +1240,14 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
-
         }
 
         [Test]
-        public async Task IntegrationService_ChangeActivationForIntegrationClient_IntegrationClientIsExist()
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_Invalid_IntegrationClientNotFound()
         {
             // arrange
             var request = GetIntegrationClientChangeActivationRequest();
@@ -1260,8 +1259,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationClientNotFound);
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1269,7 +1267,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task IntegrationService_ChangeActivationForIntegrationClient_IntegrationClientNotOrganizationId()
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_Invalid_OrganizationNotMatch()
         {
             // arrange
             var request = GetIntegrationClientChangeActivationRequest();
@@ -1281,17 +1279,15 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
             MockIntegrationClientRepository.Verify_Select();
-
         }
 
         [Test]
-        public async Task IntegrationService_ChangeActivationForIntegrationClient_IntegrationIsExit()
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_Invalid_IntegrationNotFound()
         {
             // arrange
             var request = GetIntegrationClientChangeActivationRequest();
@@ -1304,7 +1300,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1313,7 +1309,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task IntegrationService_ChangeActivationForIntegrationClient_IntegrationNotIsActive()
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_Invalid_IntegrationNotActive()
         {
             // arrange
             var request = GetIntegrationClientChangeActivationRequest();
@@ -1326,7 +1322,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotActive);
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
