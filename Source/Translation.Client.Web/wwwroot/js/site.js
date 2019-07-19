@@ -94,22 +94,50 @@ function doRedirectIfConfirmedSuccess(btn, redirectUrl) {
     });
 }
 
-
 function translateScreen() {
-    var items = document.querySelectorAll('[data-translation]');
-    var labels = JSON.parse(localStorage.getItem('labels'));
-    var userLanguage = localStorage.getItem('userLanguage');
-    if (userLanguage === null) {
-        userLanguage = 'en';
+    translateElement(document.head);
+    translateElement(document.body);
+}
+
+let labels = JSON.parse(localStorage.getItem('translations'));
+function translateElement(element) {
+    if (element === null || element === undefined) {
+        return;
     }
 
-    items.forEach(function (item) {
-        for (var i = 0; i < labels.length; i++) {
-            var label = labels[i];
-            if (label.key === item.dataset.translation) {
+    if (labels === null || labels === undefined) {
+        return;
+    }
 
+    let defaultLang = 'en';
+
+    console.log(element);
+
+    let placeholders = element.querySelectorAll('[placeholder]');
+    placeholders.forEach(function (item) {
+        for (let i = 0; i < labels.length; i++) {
+            let label = labels[i];
+
+            if (label.key === item.placeholder) {
                 label.translations.forEach(function (translation) {
-                    if (translation.languageIsoCode2 === userLanguage) {
+                    if (translation.languageIsoCode2 === defaultLang) {
+                        item.setAttribute('placeholder', translation.translation);
+                        return;
+                    }
+                });
+
+                break;
+            }
+        }
+    });
+
+    let items = element.querySelectorAll('[data-translation]');
+    items.forEach(function (item) {
+        for (let i = 0; i < labels.length; i++) {
+            let label = labels[i];
+            if (label.key === item.dataset.translation) {
+                label.translations.forEach(function (translation) {
+                    if (translation.languageIsoCode2 === defaultLang) {
                         item.innerHTML = translation.translation;
                         return;
                     }
@@ -121,10 +149,11 @@ function translateScreen() {
     });
 }
 
-if (localStorage.getItem('labels') == undefined) {
+if (localStorage.getItem('translations') == undefined) {
     doGet('/Data/GetMainLabels', function (req) {
         if (199 < req.status && req.status < 300) {
-            localStorage.setItem('labels', req.responseText);
+            labels = JSON.parse(req.responseText);
+            localStorage.setItem('translations', JSON.stringify(labels));
             translateScreen();
         }
     });

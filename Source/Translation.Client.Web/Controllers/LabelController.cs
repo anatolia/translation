@@ -282,7 +282,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var result = new DataResult();
-            result.AddHeaders("label_key", "label_translation_count", "description", "is_active");
+            result.AddHeaders("label_key", "label_translation_count", "is_active");
 
             for (var i = 0; i < response.Items.Count; i++)
             {
@@ -291,7 +291,6 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Key}", item.Key)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());

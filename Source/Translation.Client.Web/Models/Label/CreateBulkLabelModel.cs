@@ -29,6 +29,7 @@ namespace Translation.Client.Web.Models.Label
             ProjectNameInput = new HiddenInputModel("ProjectName");
 
             BulkLabelInput = new TextareaInputModel("BulkLabelData", "bulk_label_data");
+            BulkLabelInput.Rows = 21;
         }
 
         public override void SetInputModelValues()

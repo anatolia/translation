@@ -329,14 +329,14 @@ namespace Translation.Service
                 return response;
             }
 
-            Expression<Func<Label, bool>> filter = x => x.OrganizationId == organization.Id 
-                                                        && x.LabelTranslationCount == 0;
+            Expression<Func<Label, bool>> filter = x => x.OrganizationId == organization.Id
+                                                        && x.LabelTranslationCount < 2;
 
             if (request.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm) 
+                filter = x => x.Name.Contains(request.SearchTerm)
                               && x.OrganizationId == organization.Id
-                              && x.LabelTranslationCount == 0;
+                              && x.LabelTranslationCount < 2;
             }
 
             List<Label> entities;
@@ -839,7 +839,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
             Expression<Func<User, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
-            
+
             if (request.SearchTerm.IsNotEmpty())
             {
                 filter = x => x.OrganizationId == currentUser.OrganizationId && x.Name.Contains(request.SearchTerm);

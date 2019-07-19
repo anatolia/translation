@@ -9,9 +9,9 @@ label_name,en,Label Name
 label_name,tr,Etiket Adı
 home_link,en,Home
 home_link,en,Anasayfa
-admin_list_link,en,admin_list_link
+admin_list_link,en,Admins
 user_list_link,en,user_list_link
-organization_list_link,en,organization_list_link
+organization_list_link,en,Organization
 language_list_link,en,language_list_link
 journal_list_link,en,journal_list_link
 user_login_log_list_link,en,user_login_log_list_link

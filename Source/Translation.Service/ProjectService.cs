@@ -169,7 +169,7 @@ namespace Translation.Service
                 response.SetInvalidBecauseNotActive("organization");
                 return response;
             }
-            
+
             if (await _projectRepository.Any(x => x.Name == request.ProjectName
                                                        && x.OrganizationId == currentUser.OrganizationId))
             {
@@ -288,7 +288,7 @@ namespace Translation.Service
                 response.Status = ResponseStatus.Success;
                 return response;
             }
-            
+
             var uowResult = await _projectUnitOfWork.DoDeleteWork(request.CurrentUserId, project);
             if (uowResult)
             {
@@ -310,7 +310,7 @@ namespace Translation.Service
                 response.SetInvalid();
                 return response;
             }
-            
+
             var project = await _projectRepository.Select(x => x.Uid == request.CloningProjectUid);
             if (project.IsNotExist())
             {
@@ -362,7 +362,7 @@ namespace Translation.Service
                 response.SetInvalid();
                 return response;
             }
-            
+
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
@@ -454,13 +454,13 @@ namespace Translation.Service
             }
 
             Expression<Func<Label, bool>> filter = x => x.ProjectId == project.Id
-                                                        && x.LabelTranslationCount == 0;
+                                                        && x.LabelTranslationCount < 2;
 
             if (request.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm) 
+                filter = x => x.Name.Contains(request.SearchTerm)
                               && x.ProjectId == project.Id
-                              && x.LabelTranslationCount == 0;
+                              && x.LabelTranslationCount < 2;
             }
 
             List<Label> entities;
