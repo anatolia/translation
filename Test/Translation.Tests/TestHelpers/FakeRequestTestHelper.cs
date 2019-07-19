@@ -223,6 +223,22 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static ProjectReadListRequest GetProjectReadListRequestForSelectAfter()
+        {
+            var request = GetProjectReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectAfter();
+
+            return request;
+        }
+
+        public static ProjectReadListRequest GetProjectReadListRequestForSelectMany()
+        {
+            var request = GetProjectReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectMany();
+
+            return request;
+        }
+
         public static ProjectReadRequest GetProjectReadRequest()
         {
             var request = new ProjectReadRequest(CurrentUserId, OrganizationOneProjectOneUid);
@@ -289,6 +305,22 @@ namespace Translation.Tests.TestHelpers
         public static ProjectPendingTranslationReadListRequest GetProjectPendingTranslationReadListRequest()
         {
             var request = new ProjectPendingTranslationReadListRequest(CurrentUserId, OrganizationOneProjectOneUid);
+
+            return request;
+        }
+
+        public static ProjectPendingTranslationReadListRequest GetProjectPendingTranslationReadListRequestForSelectAfter()
+        {
+            var request = GetProjectPendingTranslationReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectAfter();
+
+            return request;
+        }
+
+        public static ProjectPendingTranslationReadListRequest GetProjectPendingTranslationReadListRequestForSelectMany()
+        {
+            var request = GetProjectPendingTranslationReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectMany();
 
             return request;
         }
