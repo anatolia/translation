@@ -46,11 +46,13 @@ namespace Translation.Tests.SetupHelpers
                                            It.IsAny<bool>()))
                 .ReturnsAsync(Ten);
         }
+
         public static void Verify_Count(this Mock<IIntegrationRepository> repository)
         {
             repository.Verify(x => x.Count(It.IsAny<Expression<Func<Integration, bool>>>(),
                                             It.IsAny<bool>()));
         }
+
         public static void Setup_SelectAfter(this Mock<IIntegrationRepository> repository)
         {
             repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<Integration, bool>>>(),
@@ -60,6 +62,7 @@ namespace Translation.Tests.SetupHelpers
                     It.IsAny<bool>(), false));
 
         }
+
         public static void Setup_SelectAfter_Returns_Integrations(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Integration, bool>>>(),
@@ -69,16 +72,19 @@ namespace Translation.Tests.SetupHelpers
                     It.IsAny<bool>(), false))
                 .ReturnsAsync(new List<Integration> { GetIntegration() });
         }
+
         public static void Setup_RestoreRevision_Returns_True(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
                 .ReturnsAsync(true);
         }
+
         public static void Setup_RestoreRevision_Returns_False(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
                 .ReturnsAsync(false);
         }
+
         public static void Verify_RestoreRevision(this Mock<IIntegrationRepository> repository)
         {
             repository.Verify(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()));
@@ -89,11 +95,13 @@ namespace Translation.Tests.SetupHelpers
             repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
                 .ReturnsAsync(new List<EntityRevision<Integration>>());
         }
+
         public static void Setup_SelectRevisions_Returns_RevisionTwo(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
                 .ReturnsAsync(new List<EntityRevision<Integration>>(){GetIntegrationRevisionTwo()});
         }
+
         public static void Setup_Delete_Failed(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.Delete(It.IsAny<long>(),

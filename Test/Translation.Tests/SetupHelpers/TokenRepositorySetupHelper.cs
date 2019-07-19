@@ -13,6 +13,16 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class TokenRepositorySetupHelper
     {
+        public static void Setup_SelectMany_Returns_Tokens(this Mock<ITokenRepository> repository)
+        {
+            repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<Token, bool>>>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<Expression<Func<Token, object>>>(),
+                    It.IsAny<bool>(), false))
+                .ReturnsAsync(new List<Token> {GetToken() });
+        }
+
         public static void Setup_Select_Returns_OrganizationTwoIntegrationOneIntegrationClientOneTokenOne(this Mock<ITokenRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Token, bool>>>(), false))

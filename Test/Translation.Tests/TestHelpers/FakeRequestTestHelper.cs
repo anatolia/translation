@@ -24,24 +24,76 @@ namespace Translation.Tests.TestHelpers
 {
     public class FakeRequestTestHelper
     {
+        public static AllActiveTokenReadListRequest GetAllActiveTokenReadListRequest()
+        {
+            var request = new AllActiveTokenReadListRequest(CurrentUserId);
+
+            return request;
+        }
+
+        public static IntegrationClientTokenRequestLogReadListRequest GetIntegrationClientTokenRequestLogReadListRequest()
+        {
+            var request = new IntegrationClientTokenRequestLogReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static IntegrationTokenRequestLogReadListRequest GetIntegrationTokenRequestLogReadListRequest()
+        {
+            var request = new IntegrationTokenRequestLogReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static OrganizationTokenRequestLogReadListRequest GetOrganizationTokenRequestLogReadListRequest()
+        {
+            var request = new OrganizationTokenRequestLogReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static OrganizationActiveTokenReadListRequest GetOrganizationActiveTokenReadListRequest()
+        {
+            var request = new OrganizationActiveTokenReadListRequest(CurrentUserId,UidOne);
+
+            return request;
+        }
+
+        public static IntegrationClientActiveTokenReadListRequest GetIntegrationClientActiveTokenReadListRequest()
+        {
+            var request = new IntegrationClientActiveTokenReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static IntegrationActiveTokenReadListRequest GetIntegrationActiveTokenReadListRequest()
+        {
+            var request = new IntegrationActiveTokenReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
         public static TokenCreateRequest GetTokenCreateRequest()
         {
             var request = new TokenCreateRequest(UidOne, UidOne,IPAddress.Any);
 
             return request;
         }
+
         public static TokenRevokeRequest GetTokenRevokeRequest()
         {
             var request = new TokenRevokeRequest(CurrentUserId, UidOne, UidOne);
 
             return request;
         }
+
         public static TokenValidateRequest GetTokenValidateRequest()
         {
             var request = new TokenValidateRequest(UidOne,UidOne);
 
             return request;
         }
+
         public static JournalCreateRequest GetJournalCreateRequest()
         {
             var request = new JournalCreateRequest(CurrentUserId, StringOne);

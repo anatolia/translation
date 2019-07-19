@@ -10,6 +10,7 @@ using Translation.Common.Models.Requests.Integration;
 using Translation.Common.Models.Responses.Integration;
 using Translation.Common.Models.Responses.Integration.IntegrationClient;
 using Translation.Common.Models.Responses.Integration.Token;
+using Translation.Common.Models.Responses.Integration.Token.RequestLog;
 using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
@@ -1604,7 +1605,7 @@ namespace Translation.Tests.Server.Services
             var request = GetTokenValidateRequest();
             MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
             MockTokenRepository.Setup_Select_Returns_OrganizationTwoIntegrationOneIntegrationClientOneTokenOne();
-           
+
             // act
             var result = await SystemUnderTest.ValidateToken(request);
 
@@ -1613,6 +1614,152 @@ namespace Translation.Tests.Server.Services
             AssertReturnType<TokenValidateResponse>(result);
             MockProjectRepository.Verify_Select();
             MockTokenRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetActiveTokensOfOrganization_SelectMany_Success()
+        {
+            // arrange
+            var request = GetOrganizationActiveTokenReadListRequest();
+            MockTokenRepository.Setup_SelectMany_Returns_Tokens();
+
+            // act
+            var result = await SystemUnderTest.GetActiveTokensOfOrganization(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<OrganizationActiveTokenReadListResponse>(result);
+            MockTokenRepository.Verify_SelectMany();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetActiveTokensOfIntegration_SelectMany_Success()
+        {
+            // arrange
+            var request = GetIntegrationActiveTokenReadListRequest();
+            MockTokenRepository.Setup_SelectMany_Returns_Tokens();
+
+            // act
+            var result = await SystemUnderTest.GetActiveTokensOfIntegration(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<IntegrationActiveTokenReadListResponse>(result);
+            MockTokenRepository.Verify_SelectMany();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetActiveTokensOfIntegrationClient_SelectMany_Success()
+        {
+            // arrange
+            var request = GetIntegrationClientActiveTokenReadListRequest();
+            MockTokenRepository.Setup_SelectMany_Returns_Tokens();
+
+            // act
+            var result = await SystemUnderTest.GetActiveTokensOfIntegrationClient(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<IntegrationClientActiveTokenReadListResponse>(result);
+            MockTokenRepository.Verify_SelectMany();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetTokenRequestLogsOfOrganization_SelectMany_Success()
+        {
+            // arrange
+            var request = GetOrganizationTokenRequestLogReadListRequest();
+            MockTokenRequestLogRepository.Setup_SelectMany_Returns_TokenRequestLogs();
+
+            // act
+            var result = await SystemUnderTest.GetTokenRequestLogsOfOrganization(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<OrganizationTokenRequestLogReadListResponse>(result);
+            MockTokenRequestLogRepository.Verify_SelectMany();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetTokenRequestLogsOfIntegration_SelectMany_Success()
+        {
+            // arrange
+            var request = GetIntegrationTokenRequestLogReadListRequest();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOne();
+            MockTokenRequestLogRepository.Setup_SelectMany_Returns_TokenRequestLogs();
+
+            // act
+            var result = await SystemUnderTest.GetTokenRequestLogsOfIntegration(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<IntegrationTokenRequestLogReadListResponse>(result);
+            MockIntegrationRepository.Verify_Select();
+            MockTokenRequestLogRepository.Verify_SelectMany();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetTokenRequestLogsOfIntegration_Invalid_IntegrationNotFound()
+        {
+            // arrange
+            var request = GetIntegrationTokenRequestLogReadListRequest();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.GetTokenRequestLogsOfIntegration(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
+            AssertReturnType<IntegrationTokenRequestLogReadListResponse>(result);
+            MockIntegrationRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetTokenRequestLogsOfIntegrationClient_SelectMany_Success()
+        {
+            // arrange
+            var request = GetIntegrationClientTokenRequestLogReadListRequest();
+            MockTokenRequestLogRepository.Setup_SelectMany_Returns_TokenRequestLogs();
+
+            // act
+            var result = await SystemUnderTest.GetTokenRequestLogsOfIntegrationClient(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<IntegrationClientTokenRequestLogReadListResponse>(result);
+            MockTokenRequestLogRepository.Verify_SelectMany();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetAllActiveTokens_SelectMany_Success()
+        {
+            // arrange
+            var request = GetAllActiveTokenReadListRequest();
+            MockTokenRepository.Setup_SelectMany_Returns_Tokens();
+
+            // act
+            var result = await SystemUnderTest.GetAllActiveTokens(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<AllActiveTokenReadListResponse>(result);
+            MockTokenRepository.Verify_SelectMany();
+        }
+
+        [Test]
+        public async Task IntegrationService_GetAllTokenRequestLogs_SelectMany_Success()
+        {
+            // arrange
+            var request = GetAllTokenRequestLogReadListRequest();
+            MockTokenRequestLogRepository.Setup_SelectMany_Returns_TokenRequestLogs();
+
+            // act
+            var result = await SystemUnderTest.GetAllTokenRequestLogs(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<AllTokenRequestLogReadListResponse>(result);
+            MockTokenRequestLogRepository.Verify_SelectMany();
         }
 
 

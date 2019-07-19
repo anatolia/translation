@@ -884,8 +884,7 @@ namespace Translation.Service
             var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
             if (integration.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("integration_not_found");
+                response.SetInvalidBecauseNotFound("integration");
                 return response;
             }
 
@@ -943,6 +942,7 @@ namespace Translation.Service
         }
 
         public async Task<AllTokenRequestLogReadListResponse> GetAllTokenRequestLogs(AllTokenRequestLogReadListRequest request)
+
         {
             var response = new AllTokenRequestLogReadListResponse();
 
