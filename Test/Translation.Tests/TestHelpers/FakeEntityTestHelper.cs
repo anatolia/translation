@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using StandardRepository.Models.Entities;
-
+using Translation.Common.Models.Requests.Label;
+using Translation.Common.Models.Requests.Label.LabelTranslation;
 using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
@@ -37,6 +38,7 @@ namespace Translation.Tests.TestHelpers
 
             return integration;
         }
+
         public static Organization GetOrganization()
         {
             var organization = new Organization();
@@ -550,6 +552,35 @@ namespace Translation.Tests.TestHelpers
             list.Add(revision);
 
             return list;
+        }
+
+        public static LabelListInfo GetLabelListInfo()
+        {
+            var labelListInfo = new LabelListInfo();
+            labelListInfo.LabelKey = StringOne;
+            labelListInfo.LanguageIsoCode2 = IsoCode2One;
+            labelListInfo.Translation = StringOne;
+
+            return labelListInfo;
+        }
+
+        public static TranslationListInfo GetTranslationListInfo()
+        {
+            var translationListInfo = new TranslationListInfo();
+            translationListInfo.LanguageIsoCode2 = IsoCode2One;
+            translationListInfo.Translation = StringOne;
+
+            return translationListInfo;
+        }
+
+        public static ClientLogInfo GetClientLogInfo()
+        {
+            var clientLogInfo = new ClientLogInfo();
+            clientLogInfo.Country = StringOne;
+            clientLogInfo.City = StringOne;
+            clientLogInfo.Ip = IpOne;
+
+            return clientLogInfo;
         }
     }
 }
