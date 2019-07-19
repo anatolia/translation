@@ -272,8 +272,23 @@ namespace Translation.Tests.TestHelpers
 
         public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequest()
         {
-            var organization = GetOrganizationOne();
-            var request = new OrganizationJournalReadListRequest(CurrentUserId, organization.Uid);
+            var request = new OrganizationJournalReadListRequest(CurrentUserId, OrganizationOneUid);
+
+            return request;
+        }
+
+        public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequestForSelectAfter()
+        {
+            var request = GetOrganizationJournalReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectAfter();
+
+            return request;
+        }
+
+        public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequestForSelectMany()
+        {
+            var request = GetOrganizationJournalReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectMany();
 
             return request;
         }
@@ -283,6 +298,22 @@ namespace Translation.Tests.TestHelpers
             var request = new UserJournalReadListRequest(CurrentUserId, OrganizationOneUserOneUid);
 
               return request;
+        }
+
+        public static UserJournalReadListRequest GetUserJournalReadListRequestForSelectAfter()
+        {
+            var request = GetUserJournalReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectAfter();
+
+            return request;
+        }
+
+        public static UserJournalReadListRequest GetUserJournalReadListRequestForSelectMany()
+        {
+            var request = GetUserJournalReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectMany();
+
+            return request;
         }
 
         public static OrganizationReadListRequest GetOrganizationReadListRequest()

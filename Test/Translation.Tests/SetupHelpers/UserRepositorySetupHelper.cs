@@ -79,6 +79,12 @@ namespace Translation.Tests.SetupHelpers
                       .ReturnsAsync(GetOrganizationOneUserOne());
         }
 
+        public static void Setup_SelectById_Returns_OrganizationOneUserOneNotExist(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.SelectById(It.IsAny<long>()))
+                      .ReturnsAsync(GetOrganizationOneUserOneNotExist());
+        }
+
         public static void Setup_SelectById_Returns_OrganizationTwoUserOne(this Mock<IUserRepository> repository)
         {
             repository.Setup(x => x.SelectById(It.IsAny<long>()))

@@ -33,6 +33,14 @@ namespace Translation.Tests.SetupHelpers
                       .ReturnsAsync(new List<Organization> { GetOrganization() });
         }
 
+
+        public static void Setup_Count_Returns_Ten(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Setup(x => x.Count(It.IsAny<Expression<Func<Organization, bool>>>(),
+                                          It.IsAny<bool>()))
+                      .ReturnsAsync(Ten);
+        }
+
         public static void Setup_SelectById_Returns_OrganizationOne(this Mock<IOrganizationRepository> repository)
         {
             repository.Setup(x => x.SelectById(It.IsAny<long>()))
@@ -61,13 +69,6 @@ namespace Translation.Tests.SetupHelpers
         public static void Verify_Any(this Mock<IOrganizationRepository> repository)
         {
             repository.Verify(x => x.Any(It.IsAny<Expression<Func<Organization, bool>>>(), It.IsAny<bool>()));
-        }
-
-        public static void Setup_Count_Returns_Ten(this Mock<IOrganizationRepository> repository)
-        {
-            repository.Setup(x => x.Count(It.IsAny<Expression<Func<Organization, bool>>>(),                    
-                                          It.IsAny<bool>()))
-                      .ReturnsAsync(Ten);
         }
 
         public static void Verify_Count(this Mock<IOrganizationRepository> repository)
