@@ -3,16 +3,18 @@
 using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Common.Models.DataTransferObjects;
+using Translation.Data.Entities.Domain;
 
 namespace Translation.Client.Web.Helpers.Mappers
 {
     public class LabelMapper
     {
-        public static LabelCreateModel MapLabelCreateModel(Guid organizationUid, Guid projectUid)
+        public static LabelCreateModel MapLabelCreateModel(ProjectDto dto)
         {
             var model = new LabelCreateModel();
-            model.OrganizationUid = organizationUid;
-            model.ProjectUid = projectUid;
+            model.OrganizationUid = dto.OrganizationUid;
+            model.ProjectUid = dto.Uid;
+            model.ProjectName = dto.Name;
 
             model.SetInputModelValues();
             return model;

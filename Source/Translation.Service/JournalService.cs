@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-
+using StandardRepository.Helpers;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Models.Requests.Journal;
@@ -44,19 +44,19 @@ namespace Translation.Service
             var organization = _cacheManager.GetCachedOrganization(request.OrganizationUid);
             if (organization == null)
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalidBecauseNotFound("organization");
                 return response;
             }
 
             Expression<Func<Journal, bool>> filter = x => x.OrganizationId == organization.Id;
-            Expression<Func<Journal, object>> orderByColumn = x => x.Id;
-
-            var entities = await _journalRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            
+            var entities = await _journalRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
 
             if (entities != null)
             {
-                foreach (var entity in entities)
+                for (var i = 0; i < entities.Count; i++)
                 {
+                    var entity = entities[i];
                     var dto = _journalFactory.CreateDtoFromEntity(entity);
                     response.Items.Add(dto);
                 }
@@ -79,14 +79,13 @@ namespace Translation.Service
             var user = _cacheManager.GetCachedUser(request.UserUid);
             if (user == null)
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalidBecauseNotFound("user");
                 return response;
             }
 
             Expression<Func<Journal, bool>> filter = x => x.UserId == user.Id;
-            Expression<Func<Journal, object>> orderByColumn = x => x.Id;
-
-            var entities = await _journalRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+            
+            var entities = await _journalRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             if (entities != null)
             {
                 for (var i = 0; i < entities.Count; i++)

@@ -1,14 +1,15 @@
 ﻿using System;
+
 using Translation.Common.Helpers;
 using Translation.Common.Models.Base;
 
-namespace Translation.Common.Models.Requests.Integration.Token
+namespace Translation.Common.Models.Requests.Organization
 {
-    public class UserLoginLogReadListRequest : BaseAuthenticatedPagedRequest
+    public sealed class OrganizationPendingTranslationReadListRequest : BaseAuthenticatedPagedRequest
     {
         public Guid OrganizationUid { get; }
 
-        public UserLoginLogReadListRequest(long currentUserId, Guid organizationUid) : base(currentUserId)
+        public OrganizationPendingTranslationReadListRequest(long currentUserId, Guid organizationUid) : base(currentUserId)
         {
             if (organizationUid.IsEmptyGuid())
             {

@@ -16,5 +16,6 @@ namespace Translation.Common.Contracts
         Task<ProjectCloneResponse> CloneProject(ProjectCloneRequest request);
         Task<ProjectChangeActivationResponse> ChangeActivationForProject(ProjectChangeActivationRequest request);
         Task<ProjectRestoreResponse> RestoreProject(ProjectRestoreRequest request);
+        Task<ProjectPendingTranslationReadListResponse> GetPendingTranslations(ProjectPendingTranslationReadListRequest request);
     }
 }

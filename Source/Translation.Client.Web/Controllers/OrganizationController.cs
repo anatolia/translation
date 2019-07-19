@@ -54,6 +54,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = OrganizationMapper.MapOrganizationDetailModel(response.Item);
+
             return View(model);
         }
 
@@ -74,6 +75,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = OrganizationMapper.MapOrganizationEditModel(response.Item);
+
             return View(model);
         }
 
@@ -83,6 +85,7 @@ namespace Translation.Client.Web.Controllers
         {
             if (model.IsNotValid())
             {
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -92,6 +95,7 @@ namespace Translation.Client.Web.Controllers
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
+                model.SetInputModelValues();
                 return View(model);
             }
 
@@ -119,6 +123,7 @@ namespace Translation.Client.Web.Controllers
                 }
 
                 model.OrganizationUid = organizationUid;
+                model.OrganizationName = response.Item.Name;
                 model.SetInputModelValues();
             }
 
@@ -196,6 +201,56 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> PendingTranslations()
+        {
+            var model = new OrganizationPendingTranslationReadListModel();
+            model.OrganizationUid = CurrentUser.OrganizationUid;
+            model.OrganizationName = CurrentUser.Organization.Name;
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> PendingTranslationsData(Guid id, int skip, int take)
+        {
+            var organizationUid = id;
+            if (organizationUid.IsEmptyGuid())
+            {
+                return Forbid();
+            }
+
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUser.Id, organizationUid);
+            SetPaging(skip, take, request);
+
+            var response = await _organizationService.GetPendingTranslations(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var result = new DataResult();
+            result.AddHeaders("label_key", "label_translation_count", "description", "is_active");
+
+            for (var i = 0; i < response.Items.Count; i++)
+            {
+                var item = response.Items[i];
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Key}", item.Key)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            result.PagingInfo = response.PagingInfo;
+            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+
+            return Json(result);
+        }
+
+        [HttpGet]
         public IActionResult UserLoginLogList(Guid id)
         {
             var organizationUid = id;
@@ -206,6 +261,7 @@ namespace Translation.Client.Web.Controllers
 
             var model = new OrganizationUserLoginLogListModel();
             model.OrganizationUid = organizationUid;
+
             return View(model);
         }
 
@@ -385,6 +441,7 @@ namespace Translation.Client.Web.Controllers
 
             var model = new OrganizationTokenRequestLogListModel();
             model.OrganizationUid = organizationUid;
+
             return View(model);
         }
 
@@ -443,6 +500,7 @@ namespace Translation.Client.Web.Controllers
 
             var model = new OrganizationJournalListModel();
             model.OrganizationUid = organizationUid;
+
             return View(model);
         }
 

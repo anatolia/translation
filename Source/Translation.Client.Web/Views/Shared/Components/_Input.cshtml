@@ -12,8 +12,9 @@
 @if (Model.ErrorMessage.Any())
 {
     <ul class="error">
-        @foreach (var msg in Model.ErrorMessage)
+        @for (var i = 0; i < Model.ErrorMessage.Count; i++)
         {
+            var msg = Model.ErrorMessage[i];
             <li data-translation="@msg">@msg</li>
         }
     </ul>

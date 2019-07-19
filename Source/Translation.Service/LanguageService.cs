@@ -40,7 +40,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
                 return response;
             }
 
@@ -52,8 +52,6 @@ namespace Translation.Service
         public async Task<LanguageReadListResponse> GetLanguages(LanguageReadListRequest request)
         {
             var response = new LanguageReadListResponse();
-
-            Expression<Func<Language, object>> orderByColumn = x => x.Id;
 
             Expression<Func<Language, bool>> filter = null;
             if (request.SearchTerm.IsNotEmpty())
@@ -67,17 +65,18 @@ namespace Translation.Service
             List<Language> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _languageRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _languageRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _languageRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _languageRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)
             {
-                foreach (var entity in entities)
+                for (var i = 0; i < entities.Count; i++)
                 {
+                    var entity = entities[i];
                     var dto = _languageFactory.CreateDtoFromEntity(entity);
                     response.Items.Add(dto);
                 }
@@ -102,7 +101,8 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("language_not_found");
                 return response;
             }
 
@@ -178,7 +178,8 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("language_not_found");
                 return response;
             }
 
@@ -217,7 +218,8 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("language_not_found");
                 return response;
             }
 
@@ -241,7 +243,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
                 response.InfoMessages.Add("language_not_found");
                 return response;
             }
@@ -249,7 +251,7 @@ namespace Translation.Service
             var revisions = await _languageRepository.SelectRevisions(language.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
                 response.InfoMessages.Add("revision_not_found");
                 return response;
             }

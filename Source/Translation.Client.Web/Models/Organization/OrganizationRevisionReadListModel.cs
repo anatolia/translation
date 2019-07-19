@@ -7,6 +7,7 @@ namespace Translation.Client.Web.Models.Organization
     public class OrganizationRevisionReadListModel : BaseModel
     {
         public Guid OrganizationUid { get; set; }
+        public string OrganizationName { get; set; }
 
         public OrganizationRevisionReadListModel()
         {

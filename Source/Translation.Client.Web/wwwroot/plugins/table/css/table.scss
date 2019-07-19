@@ -1,0 +1,109 @@
+﻿.tbl {
+    margin-bottom: 13px;
+    min-height: 111px;
+
+    input {
+        display: inline;
+        width: 34px;
+        font-size: 11px;
+        line-height: 13px;
+        margin-left: 5px;
+        margin-bottom: 8px;
+    }
+
+    table {
+        border-collapse: collapse;
+        margin-top: 8px;
+        margin-bottom: 34px;
+        width: 89%;
+
+        thead {
+            th {
+                background: #84cae6;
+                padding: 5px;
+                margin: 0;
+                border-bottom: 2px solid #222;
+                text-align: left;
+
+                &:last-child {
+                    text-align: right;
+                }
+            }
+        }
+
+        tbody {
+            a {
+                margin: 3px;
+                color: #333;
+            }
+
+            tr {
+                td {
+                    padding: 3px;
+                    padding-left: 8px;
+                    vertical-align: middle;
+
+                    input {
+                        margin: 2px;
+                    }
+
+                    .secretSpan {
+                        float: left;
+                        margin-top: 4px;
+                    }
+
+                    .secretButton {
+                        margin-left: 5px;
+                        text-decoration: underline;
+                        cursor: pointer;
+                    }
+
+                    &:last-child {
+                        text-align: right;
+                    }
+                }
+
+                img {
+                    width: 55px;
+                    vertical-align: middle;
+                }
+
+                &:nth-child(even) {
+                    background-color: #f2f2f2;
+                }
+            }
+        }
+
+        .selectable {
+            width: 34px;
+        }
+    }
+
+    button {
+        display: inline;
+        font-size: 11px;
+        line-height: 10px;
+        margin-left: 5px;
+        margin-top: 3px;
+    }
+}
+
+.pagination {
+    margin-top: -34px;
+
+    button {
+        margin-right: 3px;
+    }
+
+    span {
+        font-size: 15px;
+        padding: 5px;
+        color: #84cae6;
+        font-weight: bold;
+        text-align: center;
+
+        &:last-of-type {
+            color: #333;
+        }
+    }
+}

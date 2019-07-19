@@ -1,0 +1,298 @@
+﻿using Translation.Common.Models.Requests.Admin;
+using Translation.Common.Models.Requests.Journal;
+using Translation.Common.Models.Requests.Organization;
+using Translation.Common.Models.Requests.Project;
+using Translation.Common.Models.Requests.User;
+using Translation.Common.Models.Responses.Admin;
+using Translation.Common.Models.Shared;
+using Translation.Data.Entities.Domain;
+using Translation.Data.Entities.Main;
+using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
+
+namespace Translation.Tests.TestHelpers
+{
+    public class FakeRequestTestHelper
+    {
+        public static JournalCreateRequest GetJournalCreateRequest()
+        {
+            var request = new JournalCreateRequest(CurrentUserId, StringOne);
+
+            return request;
+        }
+
+        public static ProjectCreateRequest GetProjectCreateRequest()
+        {
+            var project = GetOrganizationOneProjectOne();
+            var request = new ProjectCreateRequest(CurrentUserId, project.OrganizationUid, project.Name,
+                                                   project.Url, project.Description);
+
+            return request;
+        }
+
+        public static ProjectCreateRequest GetProjectCreateRequest(Organization organization, Project project)
+        {
+            var request = new ProjectCreateRequest(CurrentUserId, organization.Uid, project.Name,
+                project.Url, project.Description);
+
+            return request;
+        }
+
+        public static ProjectCreateRequest GetProjectCreateRequest(CurrentOrganization organization, Project project)
+        {
+            var request = new ProjectCreateRequest(CurrentUserId, organization.Uid, project.Name,
+                project.Url, project.Description);
+
+            return request;
+        }
+
+        public static ProjectEditRequest GetProjectEditRequest()
+        {
+            var project = GetOrganizationOneProjectOne();
+            var request = new ProjectEditRequest(CurrentUserId, project.OrganizationUid, project.Uid,
+                                                 project.Name, project.Url, project.Description);
+
+            return request;
+        }
+
+        public static ProjectEditRequest GetProjectEditRequest(Project project)
+        {
+            var request = new ProjectEditRequest(CurrentUserId, project.OrganizationUid, project.Uid,
+                project.Name, project.Url, project.Description);
+
+            return request;
+        }
+
+        public static ProjectCloneRequest GetProjectCloneRequest()
+        {
+            var project = GetOrganizationOneProjectOne();
+            var request = new ProjectCloneRequest(CurrentUserId, project.OrganizationUid, project.Uid,
+                                                  project.Name, project.Url, project.Description,
+                                                  project.LabelCount, project.LabelTranslationCount, project.IsSuperProject);
+
+            return request;
+        }
+
+        public static ProjectCloneRequest GetProjectCloneRequest(Project project)
+        {
+            var request = new ProjectCloneRequest(CurrentUserId, project.OrganizationUid, project.Uid,
+                project.Name, project.Url, project.Description,
+                project.LabelCount, project.LabelTranslationCount, project.IsSuperProject);
+
+            return request;
+        }
+
+        public static ProjectReadListRequest GetProjectReadListRequest()
+        {
+            var organization = GetOrganizationOne();
+            var request = new ProjectReadListRequest(CurrentUserId, organization.Uid);
+
+            return request;
+        }
+
+        public static ProjectReadRequest GetProjectReadRequest()
+        {
+            var project = GetOrganizationOneProjectOne();
+            var request = new ProjectReadRequest(CurrentUserId, project.Uid);
+
+            return request;
+        }
+
+        public static ProjectDeleteRequest GetProjectDeleteRequest()
+        {
+            var project = GetOrganizationOneProjectOne();
+            var request = new ProjectDeleteRequest(CurrentUserId, project.Uid);
+
+            return request;
+        }
+
+        public static ProjectChangeActivationRequest GetProjectChangeActivationRequest()
+        {
+            var project = GetOrganizationOneProjectOne();
+            var request = new ProjectChangeActivationRequest(CurrentUserId, project.OrganizationUid, project.Uid);
+
+            return request;
+        }
+
+        public static UserChangeActivationRequest GetUserChangeActivationRequest()
+        {
+            var request = new UserChangeActivationRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static AdminDemoteRequest GetAdminDemoteRequest()
+        {
+            var request = new AdminDemoteRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static AdminUpgradeRequest GetAdminUpgradeRequest()
+        {
+            var request = new AdminUpgradeRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static OrganizationChangeActivationRequest GetOrganizationChangeActivationRequest()
+        {
+            var request = new OrganizationChangeActivationRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static ProjectRestoreRequest GetProjectRestoreRequest()
+        {
+            var project = GetOrganizationOneProjectOne();
+            var request = new ProjectRestoreRequest(CurrentUserId, project.OrganizationUid, One);
+
+            return request;
+        }
+
+        public static ProjectRevisionReadListRequest GetProjectRevisionReadListRequest()
+        {
+            var project = GetOrganizationOneProjectOne();
+            var request = new ProjectRevisionReadListRequest(CurrentUserId, project.Uid);
+
+            return request;
+        }
+
+        public static ProjectPendingTranslationReadListRequest GetProjectPendingTranslationReadListRequest()
+        {
+            var project = GetOrganizationOneProjectOne();
+            var request = new ProjectPendingTranslationReadListRequest(CurrentUserId, project.Uid);
+
+            return request;
+        }
+
+        public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequest()
+        {
+            var organization = GetOrganizationOne();
+            var request = new OrganizationJournalReadListRequest(CurrentUserId, organization.Uid);
+
+            return request;
+        }
+
+        public static UserJournalReadListRequest GetUserJournalReadListRequest()
+        {
+            var request = new UserJournalReadListRequest(CurrentUserId, OrganizationOneUserOneUid);
+
+            return request;
+        }
+
+        public static OrganizationReadListRequest GetOrganizationReadListRequest()
+        {
+            var request = new OrganizationReadListRequest(CurrentUserId);
+
+            return request;
+        }
+
+        public static OrganizationReadListRequest GetOrganizationReadListRequestForSelectAfter()
+        {
+            var request = GetOrganizationReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectAfter();
+
+            return request;
+        }
+
+        public static OrganizationReadListRequest GetOrganizationReadListRequestForSelectMany()
+        {
+            var request = GetOrganizationReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectMany();
+
+            return request;
+        }
+
+        public static AllUserReadListRequest GetAllUserReadListRequest()
+        {
+            var request = new AllUserReadListRequest(CurrentUserId);
+
+            return request;
+        }
+
+        public static AllUserReadListRequest GetAllUserReadListRequestSelectAfter()
+        {
+            var request = GetAllUserReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectAfter();
+
+            return request;
+        }
+
+        public static AllUserReadListRequest GetAllUserReadListRequestSelectMany()
+        {
+            var request = GetAllUserReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectMany();
+
+            return request;
+        }
+
+        public static SuperAdminUserReadListRequest GetSuperAdminUserReadListRequest()
+        {
+            var request = new SuperAdminUserReadListRequest(CurrentUserId);
+
+            return request;
+        }
+
+        public static SuperAdminUserReadListRequest GetSuperAdminUserReadListRequestForSelectAfter()
+        {
+            var request = GetSuperAdminUserReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectAfter();
+
+            return request;
+        }
+
+        public static SuperAdminUserReadListRequest GetSuperAdminUserReadListRequestForSelectMany()
+        {
+            var request = GetSuperAdminUserReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectMany();
+
+            return request;
+        }
+
+        public static AdminInviteRequest GetAdminInviteRequest()
+        {
+            var request = new AdminInviteRequest(CurrentUserId, UidOne, EmailOne, StringOne, StringOne);
+
+            return request;
+        }
+
+        public static AdminInviteValidateRequest GetAdminInviteValidateRequest()
+        {
+            var request = new AdminInviteValidateRequest(UidOne, EmailOne);
+
+            return request;
+        }
+
+        public static AdminAcceptInviteRequest GetAdminAcceptInviteRequest()
+        {
+            var request = new AdminAcceptInviteRequest(UidOne, EmailOne, StringOne, StringOne, PasswordOne);
+
+            return request;
+        }
+
+
+        public static AllJournalReadListRequest GetAllJournalReadListRequest()
+        {
+            var request = new AllJournalReadListRequest(CurrentUserId);
+
+            return request;
+        }
+
+        public static AllJournalReadListRequest GetAllJournalReadListRequestForSelectAfter()
+        {
+            var request = GetAllJournalReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectAfter();
+
+            return request;
+        }
+
+        public static AllJournalReadListRequest GetAllJournalReadListRequestForSelectMany()
+        {
+            var request = GetAllJournalReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectMany();
+
+            return request;
+        }
+    }
+}

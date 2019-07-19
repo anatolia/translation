@@ -18,6 +18,7 @@ using Translation.Common.Models.Responses.Organization;
 using Translation.Common.Models.Responses.User;
 using Translation.Common.Models.Responses.User.LoginLog;
 using Translation.Common.Models.Shared;
+using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
@@ -36,10 +37,12 @@ namespace Translation.Service
         private readonly IUserRepository _userRepository;
         private readonly UserFactory _userFactory;
         private readonly IOrganizationRepository _organizationRepository;
+        private readonly LabelFactory _labelFactory;
         private readonly OrganizationFactory _organizationFactory;
         private readonly IUserLoginLogRepository _userLoginLogRepository;
         private readonly UserLoginLogFactory _userLoginLogFactory;
         private readonly IntegrationFactory _integrationFactory;
+        private readonly ILabelRepository _labelRepository;
         private readonly IntegrationClientFactory _integrationClientFactory;
         private readonly ProjectFactory _projectFactory;
         private readonly ILanguageRepository _languageRepository;
@@ -48,9 +51,12 @@ namespace Translation.Service
                                    ISignUpUnitOfWork signUpUnitOfWork,
                                    ILogOnUnitOfWork logOnUnitOfWork,
                                    IUserRepository userRepository, UserFactory userFactory,
-                                   IOrganizationRepository organizationRepository, OrganizationFactory organizationFactory,
+                                   IOrganizationRepository organizationRepository,
+                                   LabelFactory labelFactory,
+                                   OrganizationFactory organizationFactory,
                                    IUserLoginLogRepository userLoginLogRepository, UserLoginLogFactory userLoginLogFactory,
                                    IntegrationFactory integrationFactory,
+                                   ILabelRepository labelRepository,
                                    IntegrationClientFactory integrationClientFactory,
                                    ProjectFactory projectFactory,
                                    ILanguageRepository languageRepository)
@@ -63,10 +69,12 @@ namespace Translation.Service
             _userRepository = userRepository;
             _userFactory = userFactory;
             _organizationRepository = organizationRepository;
+            _labelFactory = labelFactory;
             _organizationFactory = organizationFactory;
             _userLoginLogRepository = userLoginLogRepository;
             _userLoginLogFactory = userLoginLogFactory;
             _integrationFactory = integrationFactory;
+            _labelRepository = labelRepository;
             _integrationClientFactory = integrationClientFactory;
             _projectFactory = projectFactory;
             _languageRepository = languageRepository;
@@ -145,7 +153,6 @@ namespace Translation.Service
         {
             var response = new OrganizationReadListResponse();
 
-            Expression<Func<Organization, object>> orderByColumn = x => x.Id;
             Expression<Func<Organization, bool>> filter = null;
             if (request.SearchTerm.IsNotEmpty())
             {
@@ -155,11 +162,11 @@ namespace Translation.Service
             List<Organization> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _organizationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _organizationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _organizationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _organizationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)
@@ -191,7 +198,8 @@ namespace Translation.Service
             var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
             if (organization.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("organization_not_found");
                 return response;
             }
 
@@ -231,7 +239,8 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseParentNotActive();
+                response.SetInvalid();
+                response.ErrorMessages.Add("organization_not_found");
                 return response;
             }
 
@@ -277,16 +286,16 @@ namespace Translation.Service
             var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
             if (organization.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
-                response.InfoMessages.Add("organization_setting_not_found");
+                response.SetInvalid();
+                response.ErrorMessages.Add("organization_not_found");
                 return response;
             }
 
             var revisions = await _organizationRepository.SelectRevisions(organization.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalidBecauseEntityNotFound();
-                response.InfoMessages.Add("revision_not_found");
+                response.SetInvalid();
+                response.ErrorMessages.Add("revision_not_found");
                 return response;
             }
 
@@ -298,6 +307,65 @@ namespace Translation.Service
             }
 
             response.SetFailed();
+            return response;
+        }
+
+        public async Task<OrganizationPendingTranslationReadListResponse> GetPendingTranslations(OrganizationPendingTranslationReadListRequest request)
+        {
+            var response = new OrganizationPendingTranslationReadListResponse();
+
+            var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
+            if (organization.IsNotExist())
+            {
+                response.SetInvalid();
+                response.ErrorMessages.Add("organization_not_found");
+                return response;
+            }
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (request.OrganizationUid != currentUser.OrganizationUid)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            Expression<Func<Label, bool>> filter = x => x.OrganizationId == organization.Id
+                                                        && x.LabelTranslationCount < 2;
+
+            if (request.SearchTerm.IsNotEmpty())
+            {
+                filter = x => x.Name.Contains(request.SearchTerm)
+                              && x.OrganizationId == organization.Id
+                              && x.LabelTranslationCount < 2;
+            }
+
+            List<Label> entities;
+            if (request.PagingInfo.Skip < 1)
+            {
+                entities = await _labelRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+            }
+            else
+            {
+                entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+            }
+
+            if (entities != null)
+            {
+                for (var i = 0; i < entities.Count; i++)
+                {
+                    var entity = entities[i];
+                    var dto = _labelFactory.CreateDtoFromEntity(entity);
+                    response.Items.Add(dto);
+                }
+            }
+
+            response.PagingInfo.Skip = request.PagingInfo.Skip;
+            response.PagingInfo.Take = request.PagingInfo.Take;
+            response.PagingInfo.LastUid = request.PagingInfo.LastUid;
+            response.PagingInfo.IsAscending = request.PagingInfo.IsAscending;
+            response.PagingInfo.TotalItemCount = await _labelRepository.Count(filter);
+
+            response.Status = ResponseStatus.Success;
             return response;
         }
 
@@ -379,7 +447,8 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Email == request.Email);
             if (!user.IsExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("user_not_found");
                 return response;
             }
 
@@ -467,7 +536,8 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Id == request.CurrentUserId);
             if (user.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("user_not_found");
                 return response;
             }
 
@@ -527,7 +597,8 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseParentNotActive();
+                response.SetInvalid();
+                response.ErrorMessages.Add("organization_not_found");
                 return response;
             }
 
@@ -566,7 +637,8 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseParentNotActive();
+                response.SetInvalid();
+                response.ErrorMessages.Add("organization_not_found");
                 return response;
             }
 
@@ -580,7 +652,8 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("language_not_found");
                 return response;
             }
 
@@ -612,7 +685,8 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseParentNotActive();
+                response.SetInvalid();
+                response.ErrorMessages.Add("organization_not_found");
                 return response;
             }
 
@@ -649,7 +723,8 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseParentNotActive();
+                response.SetInvalid();
+                response.ErrorMessages.Add("organization_not_found");
                 return response;
             }
 
@@ -764,7 +839,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
             Expression<Func<User, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
-            Expression<Func<User, object>> orderByColumn = x => x.Id;
+
             if (request.SearchTerm.IsNotEmpty())
             {
                 filter = x => x.OrganizationId == currentUser.OrganizationId && x.Name.Contains(request.SearchTerm);
@@ -773,11 +848,11 @@ namespace Translation.Service
             List<User> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _userRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _userRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _userRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _userRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)
@@ -800,7 +875,6 @@ namespace Translation.Service
             return response;
         }
 
-
         public async Task<UserRevisionReadListResponse> GetUserRevisions(UserRevisionReadListRequest request)
         {
             var response = new UserRevisionReadListResponse();
@@ -810,7 +884,8 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Uid == request.UserUid);
             if (user.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalid();
+                response.ErrorMessages.Add("user_not_found");
                 return response;
             }
 
@@ -851,7 +926,7 @@ namespace Translation.Service
             }
 
             Expression<Func<UserLoginLog, bool>> filter = x => x.OrganizationId == user.OrganizationId && x.UserId == user.Id;
-            Expression<Func<UserLoginLog, object>> orderByColumn = x => x.Id;
+
             if (request.SearchTerm.IsNotEmpty())
             {
                 filter = x => x.Name.Contains(request.SearchTerm) && x.OrganizationId == user.OrganizationId && x.UserId == user.Id;
@@ -860,11 +935,11 @@ namespace Translation.Service
             List<UserLoginLog> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _userLoginLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _userLoginLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _userLoginLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _userLoginLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)
@@ -901,7 +976,7 @@ namespace Translation.Service
             }
 
             Expression<Func<UserLoginLog, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
-            Expression<Func<UserLoginLog, object>> orderByColumn = x => x.Id;
+
             if (request.SearchTerm.IsNotEmpty())
             {
                 filter = x => x.Name.Contains(request.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
@@ -910,11 +985,11 @@ namespace Translation.Service
             List<UserLoginLog> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _userLoginLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _userLoginLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _userLoginLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _userLoginLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)
@@ -934,6 +1009,45 @@ namespace Translation.Service
             response.PagingInfo.TotalItemCount = await _userLoginLogRepository.Count(filter);
 
             response.Status = ResponseStatus.Success;
+            return response;
+        }
+
+
+        public async Task<UserRestoreResponse> RestoreUser(UserRestoreRequest request)
+        {
+            var response = new UserRestoreResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            var user = await _userRepository.Select(x => x.Uid == request.UserUid);
+            if (user.IsNotExist())
+            {
+                response.SetInvalid();
+                response.InfoMessages.Add("user_not_found");
+                return response;
+            }
+
+            var revisions = await _userRepository.SelectRevisions(user.Id);
+            if (revisions.All(x => x.Revision != request.Revision))
+            {
+                response.SetInvalid();
+                response.InfoMessages.Add("revision_not_found");
+                return response;
+            }
+
+            var result = await _userRepository.RestoreRevision(request.CurrentUserId, user.Id, request.Revision);
+            if (result)
+            {
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+            response.SetFailed();
             return response;
         }
 
@@ -973,44 +1087,5 @@ namespace Translation.Service
 
             return true;
         }
-
-        public async Task<UserRestoreResponse> RestoreUser(UserRestoreRequest request)
-        {
-            var response = new UserRestoreResponse();
-
-            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
-            {
-                response.SetInvalid();
-                return response;
-            }
-
-            var user = await _userRepository.Select(x => x.Uid == request.UserUid);
-            if (user.IsNotExist())
-            {
-                response.SetInvalidBecauseEntityNotFound();
-                response.InfoMessages.Add("user_setting_not_found");
-                return response;
-            }
-
-            var revisions = await _userRepository.SelectRevisions(user.Id);
-            if (revisions.All(x => x.Revision != request.Revision))
-            {
-                response.SetInvalidBecauseEntityNotFound();
-                response.InfoMessages.Add("revision_not_found");
-                return response;
-            }
-
-            var result = await _userRepository.RestoreRevision(request.CurrentUserId, user.Id, request.Revision);
-            if (result)
-            {
-                response.Status = ResponseStatus.Success;
-                return response;
-            }
-
-            response.SetFailed();
-            return response;
-        }
-
     }
 }

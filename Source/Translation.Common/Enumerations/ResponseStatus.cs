@@ -6,7 +6,6 @@
         public static readonly ResponseStatus Success = new ResponseStatus(1, "Success", "worked_successfully");
         public static readonly ResponseStatus Failed = new ResponseStatus(2, "Failed", "request_failed");
         public static readonly ResponseStatus Invalid = new ResponseStatus(3, "Invalid", "request_not_valid");
-        public static readonly ResponseStatus InvalidBecauseEntityNotFound = new ResponseStatus(4, "InvalidBecauseEntityNotFound", "request_failed_because_entity_not_found");
 
         private ResponseStatus(int value, string displayName, string description) : base(value, displayName, description) { }
 

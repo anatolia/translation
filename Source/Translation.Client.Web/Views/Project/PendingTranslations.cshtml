@@ -1,0 +1,10 @@
+﻿@model ProjectPendingTranslationReadListModel
+
+<div id="nav-help">
+    <a href="/Project/Detail/@Model.ProjectUid">@Model.ProjectName</a>
+</div>
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+
+<div class="tbl">
+    <table data-result="/Project/PendingTranslationsData/@Model.ProjectUid"></table>
+</div>

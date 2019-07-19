@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-
 using StandardRepository.Helpers;
 
 using Translation.Common.Contracts;
@@ -89,7 +88,6 @@ namespace Translation.Service
                 return response;
             }
 
-            Expression<Func<Organization, object>> orderByColumn = x => x.Id;
             Expression<Func<Organization, bool>> filter = null;
             if (request.SearchTerm.IsNotEmpty())
             {
@@ -99,11 +97,11 @@ namespace Translation.Service
             List<Organization> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _organizationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _organizationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _organizationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _organizationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)
@@ -137,7 +135,6 @@ namespace Translation.Service
                 return response;
             }
 
-            Expression<Func<User, object>> orderByColumn = x => x.Id;
             Expression<Func<User, bool>> filter = null;
             if (request.SearchTerm.IsNotEmpty())
             {
@@ -147,17 +144,18 @@ namespace Translation.Service
             List<User> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _userRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _userRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _userRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _userRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)
             {
-                foreach (var entity in entities)
+                for (var i = 0; i < entities.Count; i++)
                 {
+                    var entity = entities[i];
                     var dto = _userFactory.CreateDtoFromEntity(entity);
                     response.Items.Add(dto);
                 }
@@ -185,7 +183,7 @@ namespace Translation.Service
             }
 
             Expression<Func<User, bool>> filter = x => x.IsAdmin;
-            Expression<Func<User, object>> orderByColumn = x => x.Id;
+
             if (request.SearchTerm.IsNotEmpty())
             {
                 filter = x => x.Name.Contains(request.SearchTerm) && x.IsAdmin;
@@ -194,11 +192,11 @@ namespace Translation.Service
             List<User> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _userRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _userRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _userRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _userRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)
@@ -235,7 +233,7 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Email == request.Email);
             if (user.IsExist())
             {
-                response.ErrorMessages.Add("email_already_invited");
+                response.ErrorMessages.Add("user_already_invited");
                 response.Status = ResponseStatus.Invalid;
                 return response;
             }
@@ -261,13 +259,13 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.InvitationToken == request.Token && x.Email == request.Email);
             if (user.IsNotExist())
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotFound("user");
                 return response;
             }
 
             if (await _organizationRepository.Any(x => x.Id == user.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseParentNotActive();
+                response.SetInvalidBecauseNotFound("organization");
                 return response;
             }
 
@@ -292,13 +290,13 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.InvitationToken == request.Token && x.Email == request.Email);
             if (user.IsNotExist())
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotFound("user");
                 return response;
             }
 
             if (await _organizationRepository.Any(x => x.Id == user.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseParentNotActive();
+                response.SetInvalidBecauseNotFound("organization");
                 return response;
             }
 
@@ -348,7 +346,7 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Uid == request.UserUid);
             if (user.IsNotExist())
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotFound("user");
                 return response;
             }
 
@@ -380,7 +378,7 @@ namespace Translation.Service
             var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
             if (organization.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalidBecauseNotFound("organization");
                 return response;
             }
 
@@ -412,7 +410,7 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Uid == request.UserUid);
             if (user.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalidBecauseNotFound("user");
                 return response;
             }
 
@@ -445,7 +443,7 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Uid == request.UserUid);
             if (user.IsNotExist())
             {
-                response.SetInvalidBecauseEntityNotFound();
+                response.SetInvalidBecauseNotFound("user");
                 return response;
             }
 
@@ -475,7 +473,6 @@ namespace Translation.Service
                 return response;
             }
 
-            Expression<Func<Journal, object>> orderByColumn = x => x.Id;
             Expression<Func<Journal, bool>> filter = null;
             if (request.SearchTerm.IsNotEmpty())
             {
@@ -485,11 +482,11 @@ namespace Translation.Service
             List<Journal> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _journalRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _journalRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _journalRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _journalRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)
@@ -523,7 +520,6 @@ namespace Translation.Service
                 return response;
             }
 
-            Expression<Func<TokenRequestLog, object>> orderByColumn = x => x.Id;
             Expression<Func<TokenRequestLog, bool>> filter = null;
             if (request.SearchTerm.IsNotEmpty())
             {
@@ -533,11 +529,11 @@ namespace Translation.Service
             List<TokenRequestLog> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _tokenRequestLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _tokenRequestLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _tokenRequestLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _tokenRequestLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)
@@ -571,7 +567,6 @@ namespace Translation.Service
                 return response;
             }
 
-            Expression<Func<SendEmailLog, object>> orderByColumn = x => x.Id;
             Expression<Func<SendEmailLog, bool>> filter = null;
             if (request.SearchTerm.IsNotEmpty())
             {
@@ -581,11 +576,11 @@ namespace Translation.Service
             List<SendEmailLog> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _sendEmailLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _sendEmailLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _sendEmailLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _sendEmailLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)
@@ -619,7 +614,6 @@ namespace Translation.Service
                 return response;
             }
 
-            Expression<Func<UserLoginLog, object>> orderByColumn = x => x.Id;
             Expression<Func<UserLoginLog, bool>> filter = null;
             if (request.SearchTerm.IsNotEmpty())
             {
@@ -629,11 +623,11 @@ namespace Translation.Service
             List<UserLoginLog> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _userLoginLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _userLoginLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
             }
             else
             {
-                entities = await _userLoginLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, orderByColumn, request.PagingInfo.IsAscending);
+                entities = await _userLoginLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
             }
 
             if (entities != null)

@@ -44,6 +44,15 @@
             data-translation="delete_button">
         delete_button
     </button>
+    <button type="button"
+            data-confirm-title="change_activation_label_confirm_title"
+            data-confirm-content="change_activation_label_confirm_content"
+            data-url="/Label/ChangeActivation/"
+            data-prm="id=@Model.LabelUid&organizationUid=@Model.OrganizationUid"
+            onclick="doRedirectIfConfirmedSuccess(this, '/Label/Detail/@Model.LabelUid')"
+            data-translation="change_activation_button">
+        change_activation_button
+    </button>
     <form action="/Label/DownloadTranslations" method="post">
         <input type="hidden" id="id" name="id" value="@Model.LabelUid" />
         @Html.AntiForgeryToken()
