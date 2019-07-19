@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-
+using StandardRepository.Helpers;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Models.Requests.Journal;
@@ -44,8 +44,7 @@ namespace Translation.Service
             var organization = _cacheManager.GetCachedOrganization(request.OrganizationUid);
             if (organization == null)
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("organization_not_found");
+                response.SetInvalidBecauseNotFound("organization");
                 return response;
             }
 
@@ -80,8 +79,7 @@ namespace Translation.Service
             var user = _cacheManager.GetCachedUser(request.UserUid);
             if (user == null)
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("user_not_found");
+                response.SetInvalidBecauseNotFound("user");
                 return response;
             }
 
