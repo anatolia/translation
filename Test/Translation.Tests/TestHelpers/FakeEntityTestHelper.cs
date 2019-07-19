@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+
 using StandardRepository.Models.Entities;
+
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
 using Translation.Common.Models.Shared;
@@ -12,6 +14,27 @@ namespace Translation.Tests.TestHelpers
 {
     public class FakeEntityTestHelper
     {
+        public static IntegrationClient GetIntegrationClient()
+        {
+            var integrationClient = new IntegrationClient();
+            integrationClient.OrganizationId = LongOne;
+            integrationClient.OrganizationUid = UidOne;
+            integrationClient.OrganizationName = StringOne;
+
+            integrationClient.IntegrationId = LongOne;
+            integrationClient.IntegrationUid = UidOne;
+            integrationClient.IntegrationName = StringOne;
+
+            integrationClient.ClientId = UidOne;
+            integrationClient.Id = LongOne;
+            integrationClient.Uid = UidOne;
+
+            integrationClient.Name = StringOne;
+            integrationClient.CreatedAt = DateTimeOne;
+            integrationClient.IsActive = BooleanTrue;
+        
+            return integrationClient;
+        }
 
         public static Integration GetIntegration()
         {
@@ -30,6 +53,18 @@ namespace Translation.Tests.TestHelpers
             return integration;
         }
 
+        public static EntityRevision<Integration> GetIntegrationRevisionTwo()
+        {
+            var revision = new EntityRevision<Integration>();
+           
+            revision.Id = LongOne;
+            revision.Entity = GetIntegration();
+            revision.Revision = Two;
+            revision.RevisionedAt = DateTimeOne;
+            revision.RevisionedBy = LongOne;
+
+            return revision;
+        }
 
         public static Integration GetIntegrationNotExist()
         {

@@ -102,6 +102,20 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static IntegrationClientReadListRequest GetIntegrationClientReadListRequestForSelectAfter()
+        {
+            var request = GetIntegrationClientReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectAfter();
+            return request;
+        }
+
+        public static IntegrationClientReadListRequest GetIntegrationClientReadListRequestForSelectMany()
+        {
+            var request = GetIntegrationClientReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectMany();
+            return request;
+        }
+
         public static IntegrationReadListRequest GetIntegrationReadListRequestForSelectAfter()
         {
             var request = GetIntegrationReadListRequest();

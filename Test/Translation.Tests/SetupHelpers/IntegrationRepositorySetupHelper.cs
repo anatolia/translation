@@ -4,10 +4,12 @@ using System.Linq.Expressions;
 
 using Moq;
 using StandardRepository.Models.Entities;
+
 using Translation.Data.Entities.Main;
 using Translation.Data.Repositories.Contracts;
 using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
 
 namespace Translation.Tests.SetupHelpers
 {
@@ -87,7 +89,11 @@ namespace Translation.Tests.SetupHelpers
             repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
                 .ReturnsAsync(new List<EntityRevision<Integration>>());
         }
-
+        public static void Setup_SelectRevisions_Returns_RevisionTwo(this Mock<IIntegrationRepository> repository)
+        {
+            repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
+                .ReturnsAsync(new List<EntityRevision<Integration>>(){GetIntegrationRevisionTwo()});
+        }
         public static void Setup_Delete_Failed(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.Delete(It.IsAny<long>(),
