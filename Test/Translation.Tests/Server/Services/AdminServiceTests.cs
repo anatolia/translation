@@ -265,7 +265,7 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetAdminInviteRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
             MockUserRepository.Setup_Insert_Failed();
 
             // act
@@ -504,7 +504,7 @@ namespace Translation.Tests.Server.Services
             var request = GetOrganizationChangeActivationRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
             MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockOrganizationRepository.Setup_Update_Success();
             MockUserRepository.Setup_Update_Success();
 
             // act
@@ -515,7 +515,7 @@ namespace Translation.Tests.Server.Services
             AssertReturnType<OrganizationChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Select();
-            MockUserRepository.Verify_Select();
+            MockOrganizationRepository.Verify_Update();
             MockUserRepository.Verify_Update();
         }
 
@@ -562,20 +562,17 @@ namespace Translation.Tests.Server.Services
             var request = GetOrganizationChangeActivationRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
             MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
-            MockUserRepository.Setup_Update_Failed();
+            MockOrganizationRepository.Setup_Update_Failed();
 
             // act
             var result = await SystemUnderTest.OrganizationChangeActivation(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Failed);
-            result.ErrorMessages.ShouldNotBeNull();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<OrganizationChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Select();
-            MockUserRepository.Verify_Select();
-            MockUserRepository.Verify_Update();
+            MockOrganizationRepository.Verify_Update();
         }
 
         [Test]
@@ -611,7 +608,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DemoteToUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<AdminDemoteResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -764,7 +761,7 @@ namespace Translation.Tests.Server.Services
             // assert
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<JournalReadListResponse>(result);
-            AssertPagingInfoForSelectAfter(request.PagingInfo, Ten);
+            AssertPagingInfoForSelectMany(request.PagingInfo, Ten);
             MockUserRepository.Verify_SelectById();
             MockJournalRepository.Verify_SelectMany();
             MockJournalRepository.Verify_Count();

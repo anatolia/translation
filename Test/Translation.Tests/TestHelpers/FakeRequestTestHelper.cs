@@ -409,7 +409,7 @@ namespace Translation.Tests.TestHelpers
         public static AllTokenRequestLogReadListRequest GetAllTokenRequestLogReadListRequestForSelectAfter()
         {
             var request = GetAllTokenRequestLogReadListRequest();
-            request.PagingInfo.Skip = 0;
+            request.PagingInfo = GetPagingInfoForSelectAfter();
 
             return request;
         }
@@ -417,7 +417,7 @@ namespace Translation.Tests.TestHelpers
         public static AllTokenRequestLogReadListRequest GetAllTokenRequestLogReadListRequestForSelectMany()
         {
             var request = GetAllTokenRequestLogReadListRequest();
-            request.PagingInfo.Skip = 1;
+            request.PagingInfo = GetPagingInfoForSelectMany();
 
             return request;
         }
@@ -432,7 +432,7 @@ namespace Translation.Tests.TestHelpers
         public static AllSendEmailLogReadListRequest GetAllSendEmailLogReadListRequestForSelectAfter()
         {
             var request = GetAllSendEmailLogReadListRequest();
-            request.PagingInfo.Skip = 0;
+            request.PagingInfo = GetPagingInfoForSelectAfter();
 
             return request;
         }
@@ -440,7 +440,7 @@ namespace Translation.Tests.TestHelpers
         public static AllSendEmailLogReadListRequest GetAllSendEmailLogReadListRequestForSelectMany()
         {
             var request = GetAllSendEmailLogReadListRequest();
-            request.PagingInfo.Skip = 1;
+            request.PagingInfo = GetPagingInfoForSelectMany();
 
             return request;
         }
@@ -455,7 +455,7 @@ namespace Translation.Tests.TestHelpers
         public static AllLoginLogReadListRequest GetAllLoginLogReadListRequestForSelectAfter()
         {
             var request = GetAllLoginLogReadListRequest();
-            request.PagingInfo.Skip = 0;
+            request.PagingInfo = GetPagingInfoForSelectAfter();
 
             return request;
         }
@@ -463,7 +463,7 @@ namespace Translation.Tests.TestHelpers
         public static AllLoginLogReadListRequest GetAllLoginLogReadListRequestForSelectMany()
         {
             var request = GetAllLoginLogReadListRequest();
-            request.PagingInfo.Skip = 1;
+            request.PagingInfo = GetPagingInfoForSelectMany();
 
             return request;
         }
