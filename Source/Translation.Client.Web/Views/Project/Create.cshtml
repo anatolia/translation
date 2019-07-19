@@ -7,6 +7,7 @@
     <partial name="Components/_Hidden" model="@Model.OrganizationUidInput" />
 
     <partial name="Components/_Input" model="@Model.NameInput" />
+    <partial name="Components/_Input" model="@Model.SlugInput" />
     <partial name="Components/_Url" model="@Model.UrlInput" />
     <partial name="Components/_LongInput" model="@Model.DescriptionInput" />
 
@@ -14,3 +15,23 @@
 
     <button type="submit" data-translation="create_project_button">create_project_button</button>
 </form>
+
+@section Scripts
+{
+    <script>
+        let nameInput = getElement('@Model.NameInput.Name');
+        nameInput.onchange = function() {
+
+            let slugInput = getElement('@Model.SlugInput.Name');
+
+            if (nameInput.value === '') {
+                slugInput.value = '';
+                return;
+            }
+
+            if (slugInput.value === '') {
+                slugInput.value = getLowerCase(this.value);
+            }
+        };
+    </script>
+}

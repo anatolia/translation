@@ -80,12 +80,25 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Detail(string id)
+        public async Task<IActionResult> Detail(string project, string label)
         {
-            if (id.IsUid())
+            if (project.IsEmpty())
             {
-                Guid.TryParse(id, out var uid);
-                var labelUid = uid;
+                return RedirectToHome();
+            }
+
+            var projectSlug = project;
+            var projectReadBySlugRequest = new ProjectReadBySlugRequest(CurrentUser.Id, projectSlug);
+            var projectReadBySlugResponse = await _projectService.GetProjectBySlug(projectReadBySlugRequest);
+            if (projectReadBySlugResponse.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var projectName = projectReadBySlugResponse.Item.Name;
+            if (label.IsUid())
+            {
+                Guid.TryParse(label, out var labelUid);
                 if (labelUid.IsEmptyGuid())
                 {
                     return RedirectToHome();
@@ -93,7 +106,6 @@ namespace Translation.Client.Web.Controllers
 
                 var request = new LabelReadRequest(CurrentUser.Id, labelUid);
                 var response = await _labelService.GetLabel(request);
-
                 if (response.Status.IsNotSuccess)
                 {
                     return RedirectToAccessDenied();
@@ -105,13 +117,13 @@ namespace Translation.Client.Web.Controllers
             }
             else
             {
-                var labelKey = id;
+                var labelKey = label;
                 if (labelKey.IsEmpty())
                 {
                     return RedirectToHome();
                 }
 
-                var request = new LabelReadByKeyRequest(CurrentUser.Id, labelKey);
+                var request = new LabelReadByKeyRequest(CurrentUser.Id, labelKey, projectName);
                 var response = await _labelService.GetLabelByKey(request);
 
                 if (response.Status.IsNotSuccess)

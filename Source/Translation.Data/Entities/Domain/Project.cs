@@ -17,5 +17,7 @@ namespace Translation.Data.Entities.Domain
         public int LabelCount { get; set; }
         public int LabelTranslationCount { get; set; }
         public bool IsSuperProject { get; set; }
+
+        public string Slug { get; set; }
     }
 }

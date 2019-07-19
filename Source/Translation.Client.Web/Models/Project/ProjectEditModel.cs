@@ -13,11 +13,13 @@ namespace Translation.Client.Web.Models.Project
         public string Name { get; set; }
         public string Url { get; set; }
         public string Description { get; set; }
+        public string Slug { get; set; }
 
         public HiddenInputModel OrganizationUidInput { get; }
         public HiddenInputModel ProjectUidInput { get; }
 
         public InputModel NameInput { get; }
+        public InputModel SlugInput { get; }
         public UrlInputModel UrlInput { get; }
         public LongInputModel DescriptionInput { get; }
 
@@ -29,6 +31,7 @@ namespace Translation.Client.Web.Models.Project
             ProjectUidInput = new HiddenInputModel("ProjectUid");
 
             NameInput = new InputModel("Name", "name", true);
+            SlugInput = new InputModel("Slug", "slug", true);
             UrlInput = new UrlInputModel("Url", "url");
             DescriptionInput = new LongInputModel("Description", "description");
         }
@@ -39,6 +42,7 @@ namespace Translation.Client.Web.Models.Project
             ProjectUidInput.Value = ProjectUid.ToUidString();
 
             NameInput.Value = Name;
+            SlugInput.Value = Slug;
             UrlInput.Value = Url;
             DescriptionInput.Value = Description;
         }
@@ -60,6 +64,13 @@ namespace Translation.Client.Web.Models.Project
             {
                 NameInput.ErrorMessage.Add("project_name_required_error_message");
                 InputErrorMessages.AddRange(NameInput.ErrorMessage);
+            }
+
+            Slug = Slug.TrimOrDefault();
+            if (Slug.IsEmpty())
+            {
+                SlugInput.ErrorMessage.Add("project_slug_required_error_message");
+                InputErrorMessages.AddRange(SlugInput.ErrorMessage);
             }
 
             Url = Url.TrimOrDefault();

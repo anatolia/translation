@@ -11,6 +11,7 @@ namespace Translation.Client.Web.Models.Project
         public Guid ProjectUid { get; set; }
 
         public string Name { get; set; }
+        public string ProjectSlug { get; set; }
         public string Description { get; set; }
         public string OrganizationName { get; set; }
         public string Url { get; set; }

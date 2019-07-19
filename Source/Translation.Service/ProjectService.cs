@@ -152,6 +152,30 @@ namespace Translation.Service
             return response;
         }
 
+        public async Task<ProjectReadBySlugResponse> GetProjectBySlug(ProjectReadBySlugRequest request)
+        {
+            var response = new ProjectReadBySlugResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            var project = await _projectRepository.Select(x => x.Slug == request.ProjectSlug);
+            if (project.IsNotExist())
+            {
+                response.SetInvalidBecauseNotFound("project");
+                return response;
+            }
+
+            if (project.OrganizationId != currentUser.OrganizationId)
+            {
+                response.SetFailed();
+                return response;
+            }
+
+            response.Item = _projectFactory.CreateDtoFromEntity(project);
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
         public async Task<ProjectCreateResponse> CreateProject(ProjectCreateRequest request)
         {
             var response = new ProjectCreateResponse();
@@ -170,7 +194,14 @@ namespace Translation.Service
             }
             
             if (await _projectRepository.Any(x => x.Name == request.ProjectName
-                                                       && x.OrganizationId == currentUser.OrganizationId))
+                                                  && x.OrganizationId == currentUser.OrganizationId))
+            {
+                response.SetFailedBecauseNameMustBeUnique("project");
+                return response;
+            }
+
+            if (await _projectRepository.Any(x => x.Slug == request.ProjectSlug
+                                                  && x.OrganizationId == currentUser.OrganizationId))
             {
                 response.SetFailedBecauseNameMustBeUnique("project");
                 return response;

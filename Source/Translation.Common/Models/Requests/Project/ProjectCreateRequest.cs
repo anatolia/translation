@@ -11,9 +11,10 @@ namespace Translation.Common.Models.Requests.Project
         public string ProjectName { get; }
         public string Url { get; }
         public string Description { get; }
+        public string ProjectSlug { get; set; }
 
         public ProjectCreateRequest(long currentUserId, Guid organizationUid, string projectName,
-                                    string url, string description) : base(currentUserId)
+                                    string url, string description, string projectSlug) : base(currentUserId)
         {
             if (organizationUid.IsEmptyGuid())
             {
@@ -25,6 +26,11 @@ namespace Translation.Common.Models.Requests.Project
                 ThrowArgumentException(nameof(projectName), projectName);
             }
 
+            if (projectSlug.IsEmpty())
+            {
+                ThrowArgumentException(nameof(projectSlug), projectSlug);
+            }
+
             if (url.IsNotEmpty()
                 && url.IsNotUrl())
             {
@@ -33,6 +39,7 @@ namespace Translation.Common.Models.Requests.Project
 
             OrganizationUid = organizationUid;
             ProjectName = projectName;
+            ProjectSlug = projectSlug;
             Url = url;
             Description = description;
         }
