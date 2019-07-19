@@ -11,6 +11,7 @@ namespace Translation.Data.Factories
         public Project CreateEntityFromRequest(ProjectEditRequest request, Project entity)
         {
             entity.Name = request.ProjectName;
+            entity.Slug = request.ProjectSlug;
 
             entity.Description = request.Description;
             entity.Url = request.Url;
@@ -26,6 +27,7 @@ namespace Translation.Data.Factories
             entity.OrganizationName = organization.Name;
 
             entity.Name = request.ProjectName;
+            entity.Slug = request.ProjectSlug;
 
             entity.Description = request.Description;
             entity.Url = request.Url;
@@ -42,6 +44,7 @@ namespace Translation.Data.Factories
             entity.OrganizationName = organization.Name;
 
             entity.Name = request.ProjectName;
+            entity.Slug = request.ProjectSlug;
 
             entity.Description = request.Description;
             entity.Url = request.Url;
@@ -58,6 +61,7 @@ namespace Translation.Data.Factories
             entity.OrganizationName = cloningProject.OrganizationName;
 
             entity.Name = request.Name;
+            entity.Slug = request.Slug;
 
             entity.LabelCount = cloningProject.LabelCount;
             entity.LabelTranslationCount = cloningProject.LabelTranslationCount;
@@ -78,6 +82,7 @@ namespace Translation.Data.Factories
 
             dto.Uid = entity.Uid;
             dto.Name = entity.Name;
+            dto.Slug = entity.Slug;
 
             dto.LabelCount = entity.LabelCount;
 
@@ -105,6 +110,7 @@ namespace Translation.Data.Factories
             entity.OrganizationName = organization.Name;
 
             entity.Name = "Default";
+            entity.Slug = "default";
 
             entity.IsActive = true;
 

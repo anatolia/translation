@@ -64,7 +64,8 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            var request = new ProjectCreateRequest(CurrentUser.Id, model.OrganizationUid, model.Name, model.Url, model.Description);
+            var request = new ProjectCreateRequest(CurrentUser.Id, model.OrganizationUid, model.Name,
+                                                   model.Url, model.Description, model.Slug);
             var response = await _projectService.CreateProject(request);
             if (response.Status.IsNotSuccess)
             {
@@ -130,7 +131,8 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new ProjectEditRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
-                                                 model.Name, model.Url, model.Description);
+                                                 model.Name, model.Url, model.Description,
+                                                 model.Slug);
             var response = await _projectService.EditProject(request);
             if (response.Status.IsNotSuccess)
             {
@@ -196,7 +198,8 @@ namespace Translation.Client.Web.Controllers
 
             var request = new ProjectCloneRequest(CurrentUser.Id, model.OrganizationUid, model.CloningProjectUid,
                                                   model.Name, model.Url, model.Description,
-                                                  model.LabelCount, model.LabelTranslationCount, model.IsSuperProject);
+                                                  model.LabelCount, model.LabelTranslationCount, model.IsSuperProject,
+                                                  model.Slug);
             var response = await _projectService.CloneProject(request);
             if (response.Status.IsNotSuccess)
             {
@@ -305,6 +308,15 @@ namespace Translation.Client.Web.Controllers
                 return Forbid();
             }
 
+            var projectReadRequest = new ProjectReadRequest(CurrentUser.Id, projectUid);
+            var projectReadResponse = await _projectService.GetProject(projectReadRequest);
+            if (projectReadResponse.Status.IsNotSuccess)
+            {
+                return NotFound();
+            }
+
+            var projectSlug = projectReadResponse.Item.Slug;
+
             var request = new LabelReadListRequest(CurrentUser.Id, projectUid);
             SetPaging(skip, take, request);
 
@@ -322,7 +334,7 @@ namespace Translation.Client.Web.Controllers
                 var item = response.Items[i];
                 var stringBuilder = new StringBuilder();
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Key}", item.Key)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{projectSlug}/{item.Key}", item.Key)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");

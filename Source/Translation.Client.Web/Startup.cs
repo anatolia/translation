@@ -65,6 +65,7 @@ namespace Translation.Client.Web
 
             app.UseAuthentication();
             app.UseMvc(x => { x.MapRoute("default", "{controller=Home}/{action=Index}/{id?}"); });
+            app.UseMvc(x => { x.MapRoute("label", "{controller=Home}/{action=Index}/{project?}/{label?}"); });
 
             Container.Install(new SettingAndHelperInstaller());
             Container.Install(new FactoryAndMapperInstaller());
