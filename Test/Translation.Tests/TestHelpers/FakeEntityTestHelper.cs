@@ -32,7 +32,7 @@ namespace Translation.Tests.TestHelpers
             integrationClient.Name = StringOne;
             integrationClient.CreatedAt = DateTimeOne;
             integrationClient.IsActive = BooleanTrue;
-        
+
             return integrationClient;
         }
 
@@ -56,7 +56,7 @@ namespace Translation.Tests.TestHelpers
         public static EntityRevision<Integration> GetIntegrationRevisionTwo()
         {
             var revision = new EntityRevision<Integration>();
-           
+
             revision.Id = LongOne;
             revision.Entity = GetIntegration();
             revision.Revision = Two;
@@ -74,6 +74,13 @@ namespace Translation.Tests.TestHelpers
             return integration;
         }
 
+        public static Token GetOrganizationOneIntegrationOneIntegrationClientOneTokenOneNotExist()
+        {
+            var token = GetOrganizationOneIntegrationOneIntegrationClientOneTokenOne();
+            token.Id = Zero;
+            return token;
+        }
+
         public static Organization GetOrganization()
         {
             var organization = new Organization();
@@ -89,7 +96,7 @@ namespace Translation.Tests.TestHelpers
 
             return organization;
         }
-      
+
         public static User GetUser()
         {
             var user = new User();
@@ -133,6 +140,51 @@ namespace Translation.Tests.TestHelpers
             journal.Message = StringOne;
 
             return journal;
+        }
+
+        public static Token GetOrganizationOneIntegrationOneIntegrationClientOneTokenOne()
+        {
+
+            var token = new Token();
+            token.OrganizationId = OrganizationOneId;
+            token.OrganizationUid = OrganizationOneUid;
+            token.OrganizationName = OrganizationOneName;
+
+            token.IntegrationId = OrganizationOneIntegrationOneId;
+            token.IntegrationUid = OrganizationOneIntegrationOneUid;
+            token.IntegrationName = OrganizationOneIntegrationOneName;
+
+            token.Id = OrganizationOneIntegrationOneIntegrationClientOneId;
+            token.Uid = OrganizationOneIntegrationOneIntegrationClientOneUid;
+            token.Name = OrganizationOneIntegrationOneIntegrationClientOneName;
+
+
+            token.CreatedAt = DateTimeOne;
+            token.IsActive = BooleanTrue;
+
+            return token;
+        }
+
+        public static Token GetOrganizationTwoIntegrationOneIntegrationClientOneTokenOne()
+        {
+            var token = new Token();
+            token.OrganizationId = OrganizationTwoId;
+            token.OrganizationUid = OrganizationOneUid;
+            token.OrganizationName = OrganizationOneName;
+
+            token.IntegrationId = OrganizationOneIntegrationOneId;
+            token.IntegrationUid = OrganizationOneIntegrationOneUid;
+            token.IntegrationName = OrganizationOneIntegrationOneName;
+
+            token.Id = OrganizationOneIntegrationOneIntegrationClientOneId;
+            token.Uid = OrganizationOneIntegrationOneIntegrationClientOneUid;
+            token.Name = OrganizationOneIntegrationOneIntegrationClientOneName;
+
+
+            token.CreatedAt = DateTimeOne;
+            token.IsActive = BooleanTrue;
+
+            return token;
         }
 
         public static TokenRequestLog GetTokenRequestLog()
@@ -236,6 +288,14 @@ namespace Translation.Tests.TestHelpers
             project.IsActive = BooleanTrue;
             project.Url = HttpUrl;
             project.CreatedAt = DateTimeOne;
+
+            return project;
+        }
+
+        public static Project GetOrganizationOneProjectOneNotExist()
+        {
+            var project = GetOrganizationOneProjectOne();
+            project.Id = Zero;
 
             return project;
         }

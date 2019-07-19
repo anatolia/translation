@@ -652,8 +652,7 @@ namespace Translation.Service
             if (await _organizationRepository.Any(x => x.Id == integrationClient.OrganizationId && !x.IsActive)
                 || await _integrationRepository.Any(x => x.Id == integrationClient.IntegrationId && !x.IsActive))
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("integration_client_not_found");
+                response.SetInvalidBecauseNotActive("integration_client");
                 return response;
             }
 
@@ -724,8 +723,7 @@ namespace Translation.Service
             var integrationClient = await _integrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
             if (integrationClient.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("integration_client_not_found");
+                response.SetInvalidBecauseNotFound("integration_client");
                 return response;
             }
 
@@ -738,8 +736,7 @@ namespace Translation.Service
             var token = await _tokenRepository.Select(x => x.AccessToken == request.Token);
             if (token.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("token_not_found");
+                response.SetInvalidBecauseNotFound("token");
                 return response;
             }
 
@@ -761,8 +758,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid && x.IsActive);
             if (project.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("project_not_found");
+                response.SetInvalidBecauseNotFound("project");
                 return response;
             }
 
@@ -770,7 +766,7 @@ namespace Translation.Service
             var token = await _tokenRepository.Select(x => x.AccessToken == request.Token && x.ExpiresAt > now);
             if (token.IsNotExist())
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotFound("token");
                 return response;
             }
 
@@ -782,7 +778,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == project.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotActive("organization");
                 return response;
             }
 

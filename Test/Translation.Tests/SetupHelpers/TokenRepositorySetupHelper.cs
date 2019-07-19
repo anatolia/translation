@@ -13,6 +13,45 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class TokenRepositorySetupHelper
     {
+        public static void Setup_Select_Returns_OrganizationTwoIntegrationOneIntegrationClientOneTokenOne(this Mock<ITokenRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Token, bool>>>(), false))
+                .ReturnsAsync(GetOrganizationTwoIntegrationOneIntegrationClientOneTokenOne());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOneTokenOne(this Mock<ITokenRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Token, bool>>>(), false))
+                .ReturnsAsync(GetOrganizationOneIntegrationOneIntegrationClientOneTokenOne());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOneTokenOneNotExist(this Mock<ITokenRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Token, bool>>>(), false))
+                .ReturnsAsync(GetOrganizationOneIntegrationOneIntegrationClientOneTokenOneNotExist());
+        }
+
+        public static void Verify_Select(this Mock<ITokenRepository> repository)
+        {
+            repository.Verify(x => x.Select(It.IsAny<Expression<Func<Token, bool>>>(), false));
+        }
+        public static void Setup_Any_Returns_False(this Mock<ITokenRepository> repository)
+        {
+            repository.Setup(x => x.Any(It.IsAny<Expression<Func<Token, bool>>>(), false))
+                .ReturnsAsync(false);
+        }
+
+        public static void Setup_Any_Returns_True(this Mock<ITokenRepository> repository)
+        {
+            repository.Setup(x => x.Any(It.IsAny<Expression<Func<Token, bool>>>(), false))
+                .ReturnsAsync(true);
+        }
+
+        public static void Verify_Any(this Mock<ITokenRepository> repository)
+        {
+            repository.Verify(x => x.Any(It.IsAny<Expression<Func<Token, bool>>>(), false));
+        }
+
         public static void Verify_SelectMany(this Mock<ITokenRepository> repository)
         {
             repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<Token, bool>>>(),

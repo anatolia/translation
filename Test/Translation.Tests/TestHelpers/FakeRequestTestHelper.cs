@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-
+using System.Net;
 using Translation.Common.Models.Requests.Admin;
 using Translation.Common.Models.Requests.Integration;
 using Translation.Common.Models.Requests.Journal;
@@ -24,6 +24,24 @@ namespace Translation.Tests.TestHelpers
 {
     public class FakeRequestTestHelper
     {
+        public static TokenCreateRequest GetTokenCreateRequest()
+        {
+            var request = new TokenCreateRequest(UidOne, UidOne,IPAddress.Any);
+
+            return request;
+        }
+        public static TokenRevokeRequest GetTokenRevokeRequest()
+        {
+            var request = new TokenRevokeRequest(CurrentUserId, UidOne, UidOne);
+
+            return request;
+        }
+        public static TokenValidateRequest GetTokenValidateRequest()
+        {
+            var request = new TokenValidateRequest(UidOne,UidOne);
+
+            return request;
+        }
         public static JournalCreateRequest GetJournalCreateRequest()
         {
             var request = new JournalCreateRequest(CurrentUserId, StringOne);
@@ -621,7 +639,7 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelTranslationCreateListRequest GetLabelTranslationCreateListRequest()
         {
-            var request = new LabelTranslationCreateListRequest(CurrentUserId, UidOne, UidOne, new List<TranslationListInfo>(){GetTranslationListInfo()});
+            var request = new LabelTranslationCreateListRequest(CurrentUserId, UidOne, UidOne, new List<TranslationListInfo>() { GetTranslationListInfo() });
 
             return request;
         }
@@ -752,7 +770,7 @@ namespace Translation.Tests.TestHelpers
         public static SignUpRequest GetSignUpRequest()
         {
             var request = new SignUpRequest(StringOne, StringOne, StringOne, EmailOne, PasswordOne, GetClientLogInfo());
-            
+
             return request;
         }
 

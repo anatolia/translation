@@ -37,7 +37,11 @@ namespace Translation.Tests.SetupHelpers
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Project, bool>>>(), false))
                       .ReturnsAsync(GetOrganizationOneProjectOne());
         }
-
+        public static void Setup_Select_Returns_OrganizationOneProjectOneNotExist(this Mock<IProjectRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Project, bool>>>(), false))
+                .ReturnsAsync(GetOrganizationOneProjectOneNotExist());
+        }
         public static void Setup_Select_Returns_InvalidProject(this Mock<IProjectRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Project, bool>>>(), false))
