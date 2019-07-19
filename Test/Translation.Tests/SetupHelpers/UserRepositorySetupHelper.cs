@@ -56,8 +56,8 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_Count_Returns_Ten(this Mock<IUserRepository> repository)
         {
             repository.Setup(x => x.Count(It.IsAny<Expression<Func<User, bool>>>(),
-                                          It.IsAny<bool>()))
-                      .ReturnsAsync(Ten);
+                    It.IsAny<bool>()))
+                .ReturnsAsync(Ten);
         }
 
         public static void Setup_Select_Returns_OrganizationOneSuperAdminUserInvitedAtOneDayBefore(this Mock<IUserRepository> repository)

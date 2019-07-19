@@ -320,6 +320,29 @@ namespace Translation.Tests.TestHelpers
             return user;
         }
 
+        public static User GetOrganizationOneUserOneNotExist()
+        {
+            var user = GetOrganizationOneUserOne();
+            user.Id = Zero;
+
+            return user;
+        }
+
+        public static User GetOrganizationOneUserOneNotActive()
+        {
+            var user = GetOrganizationOneUserOne();
+            user.IsActive = BooleanFalse;
+
+            return user;
+        }
+
+        public static User GetOrganizationOneUserOneNotValid()
+        {
+            var user = new User();
+
+            return user;
+        }
+
         public static User GetOrganizationOneSuperAdminUserOneInvitedAtOneDayBefore()
         {
             var user = GetOrganizationOneSuperAdminUserOne();
@@ -332,14 +355,6 @@ namespace Translation.Tests.TestHelpers
         {
             var user = GetOrganizationOneSuperAdminUserOne();
             user.InvitedAt = DateTimeOneWeekBefore;
-
-            return user;
-        }
-
-        public static User GetOrganizationOneUserOneNotExist()
-        {
-            var user = GetOrganizationOneUserOne();
-            user.Id = Zero;
 
             return user;
         }
@@ -459,6 +474,7 @@ namespace Translation.Tests.TestHelpers
 
             return integration;
         }
+
         public static Integration GetOrganizationOneIntegrationOneNotActive()
         {
             var integration = GetOrganizationOneIntegrationOne();
@@ -466,6 +482,7 @@ namespace Translation.Tests.TestHelpers
 
             return integration;
         }
+
         public static Integration GetOrganizationOneIntegrationOneNotExist()
         {
             var integration = GetOrganizationOneIntegrationOne();
@@ -473,6 +490,7 @@ namespace Translation.Tests.TestHelpers
 
             return integration;
         }
+
         public static IntegrationClient GetOrganizationOneIntegrationOneIntegrationClientOneNotExist()
         {
             var integrationClient = GetOrganizationOneIntegrationOneIntegrationClientOne();
@@ -480,6 +498,7 @@ namespace Translation.Tests.TestHelpers
 
             return integrationClient;
         }
+
         public static IntegrationClient GetOrganizationOneIntegrationOneIntegrationClientOne()
         {
             var integrationClient = new IntegrationClient();
@@ -541,47 +560,6 @@ namespace Translation.Tests.TestHelpers
             integrationClient.IsActive = BooleanTrue;
 
             return integrationClient;
-        }
-
-        public static Label GetOrganizationOneProjectOneLabelOne()
-        {
-            var label = new Label();
-            label.OrganizationId = OrganizationOneId;
-            label.OrganizationUid = OrganizationOneUid;
-            label.OrganizationName = OrganizationOneName;
-
-            label.ProjectId = OrganizationOneProjectOneId;
-            label.ProjectUid = OrganizationOneProjectOneUid;
-            label.ProjectName = OrganizationOneProjectOneName;
-
-            label.Id = OrganizationOneProjectOneLabelOneId;
-            label.Uid = OrganizationOneProjectOneLabelOneUid;
-            label.Name = OrganizationOneProjectOneLabelOneName;
-            label.Key = OrganizationOneProjectOneLabelOneKey;
-
-            return label;
-        }
-
-        public static LabelTranslation GetOrganizationOneProjectOneLabelOneLabelTranslationOne()
-        {
-            var labelTranslation = new LabelTranslation();
-            labelTranslation.OrganizationId = OrganizationOneId;
-            labelTranslation.OrganizationUid = OrganizationOneUid;
-            labelTranslation.OrganizationName = OrganizationOneName;
-
-            labelTranslation.ProjectId = OrganizationOneProjectOneId;
-            labelTranslation.ProjectUid = OrganizationOneProjectOneUid;
-            labelTranslation.ProjectName = OrganizationOneProjectOneName;
-
-            labelTranslation.LabelId = OrganizationOneProjectOneLabelOneId;
-            labelTranslation.LabelUid = OrganizationOneProjectOneLabelOneUid;
-            labelTranslation.LabelName = OrganizationOneProjectOneLabelOneName;
-
-            labelTranslation.Id = OrganizationOneProjectOneLabelOneId;
-            labelTranslation.Uid = OrganizationOneProjectOneLabelOneUid;
-            labelTranslation.Name = OrganizationOneProjectOneLabelOneName;
-
-            return labelTranslation;
         }
 
         public static Language GetLanguageOne()
@@ -676,6 +654,195 @@ namespace Translation.Tests.TestHelpers
             clientLogInfo.Ip = IpOne;
 
             return clientLogInfo;
+        }
+
+        public static Project GetProject()
+        {
+            var project = new Project();
+            project.OrganizationId = LongOne;
+            project.OrganizationUid = UidOne;
+            project.OrganizationName = StringOne;
+
+            project.LabelCount = One;
+            project.LabelTranslationCount = Two;
+
+            project.IsActive = BooleanTrue;
+
+            return project;
+        }
+
+        public static Label GetLabel()
+        {
+            var label = new Label();
+            label.OrganizationId = LongOne;
+            label.OrganizationUid = UidOne;
+            label.OrganizationName = StringOne;
+
+            label.ProjectId = LongOne;
+            label.ProjectUid = UidOne;
+            label.ProjectName = StringOne;
+
+            label.Id = LongOne;
+            label.Uid = UidOne;
+            label.Name = StringOne;
+            label.Key = StringOne;
+
+            return label;
+        }
+
+        public static Label GetLabelNotExist()
+        {
+            var label = GetLabel();
+            label.Id = Zero;
+
+            return label;
+        }
+
+        public static Label GetLabelNotActive()
+        {
+            var label = GetLabel();
+            label.IsActive = BooleanFalse;
+
+            return label;
+        }
+
+        public static Label GetLabelNotValid()
+        {
+            var label = new Label();
+
+            return label;
+        }
+
+        public static Label GetOrganizationOneProjectOneLabelOne()
+        {
+            var label = new Label();
+            label.OrganizationId = OrganizationOneId;
+            label.OrganizationUid = OrganizationOneUid;
+            label.OrganizationName = OrganizationOneName;
+
+            label.ProjectId = OrganizationOneProjectOneId;
+            label.ProjectUid = OrganizationOneProjectOneUid;
+            label.ProjectName = OrganizationOneProjectOneName;
+
+            label.Id = OrganizationOneProjectOneLabelOneId;
+            label.Uid = OrganizationOneProjectOneLabelOneUid;
+            label.Name = OrganizationOneProjectOneLabelOneName;
+            label.Key = OrganizationOneProjectOneLabelOneKey;
+
+            return label;
+        }
+
+        public static Label GetOrganizationOneProjectOneLabelOneNotExist()
+        {
+            var label = GetOrganizationOneProjectOneLabelOne();
+            label.Id = Zero;
+
+            return label;
+        }
+
+        public static Label GetOrganizationOneProjectOneLabelOneNotActive()
+        {
+            var label = GetOrganizationOneProjectOneLabelOne();
+            label.IsActive = BooleanFalse;
+
+            return label;
+        }
+
+        public static Label GetOrganizationOneProjectOneLabelOneNotValid()
+        {
+            var label = new Label();
+
+            return label;
+        }
+
+        public static LabelTranslation GetLabelTranslation()
+        {
+            var labelTranslation = new LabelTranslation();
+            labelTranslation.OrganizationId = LongOne;
+            labelTranslation.OrganizationUid = UidOne;
+            labelTranslation.OrganizationName = StringOne;
+
+            labelTranslation.ProjectId = LongOne;
+            labelTranslation.ProjectUid = UidOne;
+            labelTranslation.ProjectName = StringOne;
+
+            labelTranslation.LabelId = LongOne;
+            labelTranslation.LabelUid = UidOne;
+            labelTranslation.LabelName = StringOne;
+
+            labelTranslation.Id = LongOne;
+            labelTranslation.Uid = UidOne;
+            labelTranslation.Name = StringOne;
+
+            return labelTranslation;
+        }
+
+        public static LabelTranslation GetLabelTranslationNotExist()
+        {
+            var labelTranslation = GetLabelTranslation();
+            labelTranslation.Id = Zero;
+
+            return labelTranslation;
+        }
+
+        public static LabelTranslation GetLabelTranslationNotActive()
+        {
+            var labelTranslation = GetLabelTranslation();
+            labelTranslation.IsActive = BooleanFalse;
+
+            return labelTranslation;
+        }
+
+        public static LabelTranslation GetLabelTranslationNotValid()
+        {
+            var labelTranslation = new LabelTranslation();
+
+            return labelTranslation;
+        }
+
+        public static LabelTranslation GetOrganizationOneProjectOneLabelOneLabelTranslationOne()
+        {
+            var labelTranslation = new LabelTranslation();
+            labelTranslation.OrganizationId = OrganizationOneId;
+            labelTranslation.OrganizationUid = OrganizationOneUid;
+            labelTranslation.OrganizationName = OrganizationOneName;
+
+            labelTranslation.ProjectId = OrganizationOneProjectOneId;
+            labelTranslation.ProjectUid = OrganizationOneProjectOneUid;
+            labelTranslation.ProjectName = OrganizationOneProjectOneName;
+
+            labelTranslation.LabelId = OrganizationOneProjectOneLabelOneId;
+            labelTranslation.LabelUid = OrganizationOneProjectOneLabelOneUid;
+            labelTranslation.LabelName = OrganizationOneProjectOneLabelOneName;
+
+            labelTranslation.Id = OrganizationOneProjectOneLabelOneId;
+            labelTranslation.Uid = OrganizationOneProjectOneLabelOneUid;
+            labelTranslation.Name = OrganizationOneProjectOneLabelOneName;
+
+            return labelTranslation;
+        }
+
+        public static LabelTranslation GetOrganizationOneProjectOneLabelOneLabelTranslationOneNotExist()
+        {
+            var labelTranslation = GetOrganizationOneProjectOneLabelOneLabelTranslationOne();
+            labelTranslation.Id = Zero;
+
+            return labelTranslation;
+        }
+
+        public static LabelTranslation GetOrganizationOneProjectOneLabelOneLabelTranslationOneNotActive()
+        {
+            var labelTranslation = GetOrganizationOneProjectOneLabelOneLabelTranslationOne();
+            labelTranslation.IsActive = BooleanFalse;
+
+            return labelTranslation;
+        }
+
+        public static LabelTranslation GetOrganizationOneProjectOneLabelOneLabelTranslationOneNotValid()
+        {
+            var labelTranslation = new LabelTranslation();
+
+            return labelTranslation;
         }
     }
 }
