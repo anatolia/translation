@@ -875,7 +875,6 @@ namespace Translation.Service
             return response;
         }
 
-
         public async Task<UserRevisionReadListResponse> GetUserRevisions(UserRevisionReadListRequest request)
         {
             var response = new UserRevisionReadListResponse();
@@ -1013,42 +1012,6 @@ namespace Translation.Service
             return response;
         }
 
-        public CurrentUser GetCurrentUser(CurrentUserRequest request)
-        {
-            var currentUser = _cacheManager.GetCachedCurrentUser(request.Email);
-            if (currentUser == null)
-            {
-                throw new ApplicationException("Current user not mapped!");
-            }
-
-            return currentUser;
-        }
-
-        public async Task<bool> LoadOrganizationsToCache()
-        {
-            var organizations = await _organizationRepository.SelectAll(x => x.IsActive);
-
-            for (var i = 0; i < organizations.Count; i++)
-            {
-                var organization = organizations[i];
-                _cacheManager.UpsertOrganizationCache(organization, _organizationFactory.MapCurrentOrganization(organization));
-            }
-
-            return true;
-        }
-
-        public async Task<bool> LoadUsersToCache()
-        {
-            var users = await _userRepository.SelectAll(x => x.IsActive);
-
-            for (var i = 0; i < users.Count; i++)
-            {
-                var user = users[i];
-                _cacheManager.UpsertUserCache(user, _userFactory.MapCurrentUser(user));
-            }
-
-            return true;
-        }
 
         public async Task<UserRestoreResponse> RestoreUser(UserRestoreRequest request)
         {
@@ -1088,5 +1051,41 @@ namespace Translation.Service
             return response;
         }
 
+        public CurrentUser GetCurrentUser(CurrentUserRequest request)
+        {
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.Email);
+            if (currentUser == null)
+            {
+                throw new ApplicationException("Current user not mapped!");
+            }
+
+            return currentUser;
+        }
+
+        public async Task<bool> LoadOrganizationsToCache()
+        {
+            var organizations = await _organizationRepository.SelectAll(x => x.IsActive);
+
+            for (var i = 0; i < organizations.Count; i++)
+            {
+                var organization = organizations[i];
+                _cacheManager.UpsertOrganizationCache(organization, _organizationFactory.MapCurrentOrganization(organization));
+            }
+
+            return true;
+        }
+
+        public async Task<bool> LoadUsersToCache()
+        {
+            var users = await _userRepository.SelectAll(x => x.IsActive);
+
+            for (var i = 0; i < users.Count; i++)
+            {
+                var user = users[i];
+                _cacheManager.UpsertUserCache(user, _userFactory.MapCurrentUser(user));
+            }
+
+            return true;
+        }
     }
 }
