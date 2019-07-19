@@ -73,8 +73,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("project_not_found");
+                response.SetInvalidBecauseNotFound("project");
                 return response;
             }
 
@@ -117,8 +116,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid && x.IsActive);
             if (project.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("project_not_found");
+                response.SetInvalidBecauseNotFound("project");
                 return response;
             }
 
@@ -126,7 +124,7 @@ namespace Translation.Service
             var token = await _tokenRepository.Select(x => x.AccessToken == request.Token && x.ExpiresAt > now);
             if (token.IsNotExist())
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotFound("token");
                 return response;
             }
 
@@ -138,7 +136,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == project.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotFound("organization");
                 return response;
             }
 
