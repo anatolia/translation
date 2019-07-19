@@ -45,13 +45,13 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new ProjectReadRequest(CurrentUser.Id, projectUid);
-            var project = await _projectService.GetProject(request);
-            if (project.Status.IsNotSuccess)
+            var response = await _projectService.GetProject(request);
+            if (response.Status.IsNotSuccess)
             {
                 return RedirectToAccessDenied();
             }
 
-            var model = LabelMapper.MapLabelCreateModel(project.Item.OrganizationUid, projectUid);
+            var model = LabelMapper.MapLabelCreateModel(response.Item);
 
             return View(model);
         }

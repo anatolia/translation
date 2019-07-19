@@ -945,18 +945,6 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public void JournalList_GET_InvalidParameter()
-        {
-            // arrange
-
-            // act
-            var result = SystemUnderTest.JournalList(EmptyUid);
-
-            // assert
-            AssertViewRedirectToHome(result);
-        }
-
-        [Test]
         public void JournalListData_GET()
         {
             // arrange

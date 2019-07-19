@@ -171,6 +171,7 @@ namespace Translation.Tests.TestHelpers
         public static InviteAcceptModel GetOrganizationOneUserOneInviteAcceptModel()
         {
             var model = new InviteAcceptModel();
+            model.Token = UidOne;
             model.Email = OrganizationOneUserOneEmail;
             model.FirstName = StringOne;
             model.LastName = StringTwo;

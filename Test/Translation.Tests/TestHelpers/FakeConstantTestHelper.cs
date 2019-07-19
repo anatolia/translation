@@ -71,6 +71,8 @@ namespace Translation.Tests.TestHelpers
 
         public static DateTime DateTimeOne => new DateTime(2019, 01, 01, 09, 00, 00);
         public static DateTime DateTimeTwo => new DateTime(2019, 01, 02, 18, 00, 00);
+        public static DateTime DateTimeOneDayBefore => DateTime.Now.AddDays(-1);
+        public static DateTime DateTimeOneWeekBefore => DateTime.Now.AddDays(-7);
 
         public const string StringEmpty = "";
         public const string StringOne = "String One";
