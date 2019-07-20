@@ -1,12 +1,9 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using NUnit.Framework;
-using Shouldly;
 
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
-using Translation.Common.Models.Requests.Integration;
 using Translation.Common.Models.Responses.Integration;
 using Translation.Common.Models.Responses.Integration.IntegrationClient;
 using Translation.Common.Models.Responses.Integration.Token;

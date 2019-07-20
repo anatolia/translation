@@ -889,6 +889,14 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LanguageRestoreRequest GetLanguageRestoreRequestRevisionOneInIt()
+        {
+            var request = new LanguageRestoreRequest(CurrentUserId, UidOne, One);
+            request.Revision = One;
+
+            return request;
+        }
+
         public static SignUpRequest GetSignUpRequest()
         {
             var request = new SignUpRequest(StringOne, StringOne, StringOne,
@@ -977,20 +985,6 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
-        public static UserReadListRequest GetUserReadListRequest()
-        {
-            var request = new UserReadListRequest(CurrentUserId, UidOne);
-
-            return request;
-        }
-
-        public static UserRevisionReadListRequest GetUserRevisionReadListRequest()
-        {
-            var request = new UserRevisionReadListRequest(CurrentUserId, UidOne);
-
-            return request;
-        }
-
         public static UserLoginLogReadListRequest GetUserLoginLogReadListRequest()
         {
             var request = new UserLoginLogReadListRequest(CurrentUserId, UidOne);
@@ -1015,6 +1009,20 @@ namespace Translation.Tests.TestHelpers
         public static UserRestoreRequest GetUserRestoreRequest()
         {
             var request = new UserRestoreRequest(CurrentUserId, UidOne, One);
+
+            return request;
+        }
+
+        public static UserReadListRequest GetUserReadListRequest()
+        {
+            var request = new UserReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static UserRevisionReadListRequest GetUserRevisionReadListRequest()
+        {
+            var request = new UserRevisionReadListRequest(CurrentUserId, UidOne);
 
             return request;
         }

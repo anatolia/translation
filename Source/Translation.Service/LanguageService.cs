@@ -40,7 +40,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotFound("language");
                 return response;
             }
 
@@ -185,7 +185,9 @@ namespace Translation.Service
                                                          || x.IsoCode2Char == request.IsoCode2
                                                          || x.IsoCode3Char == request.IsoCode3) && x.Uid != request.LanguageUid))
             {
-
+                response.SetFailed();
+                response.ErrorMessages.Add("language_already_exist");
+                return response;
             }
 
             var updatedEntity = _languageFactory.CreateEntityFromRequest(request, language);
@@ -246,7 +248,7 @@ namespace Translation.Service
             var revisions = await _languageRepository.SelectRevisions(language.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalidBecauseNotFound("language");
+                response.SetInvalidBecauseNotFound("language_revision");
                 return response;
             }
 
