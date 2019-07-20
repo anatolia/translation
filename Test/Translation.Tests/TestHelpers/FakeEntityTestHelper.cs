@@ -313,9 +313,11 @@ namespace Translation.Tests.TestHelpers
             project.Id = OrganizationTwoProjectOneId;
             project.Uid = OrganizationTwoProjectOneUid;
             project.Name = OrganizationTwoProjectOneName;
+
             project.OrganizationId = OrganizationTwoId;
             project.OrganizationUid = OrganizationTwoUid;
             project.OrganizationName = OrganizationTwoName;
+
             project.IsActive = BooleanTrue;
             project.Url = HttpUrl;
             project.CreatedAt = DateTimeOne;
@@ -329,12 +331,22 @@ namespace Translation.Tests.TestHelpers
             project.Id = OrganizationOneProjectOneId;
             project.Uid = OrganizationOneProjectOneUid;
             project.Name = OrganizationOneProjectOneName;
+
             project.OrganizationId = OrganizationOneId;
             project.OrganizationUid = OrganizationOneUid;
             project.OrganizationName = OrganizationOneName;
+
             project.IsActive = BooleanTrue;
             project.Url = HttpUrl;
             project.CreatedAt = DateTimeOne;
+
+            return project;
+        }
+
+        public static Project GetOrganizationOneSuperProjectOne()
+        {
+            var project = GetOrganizationOneProjectOne();
+            project.IsSuperProject = BooleanTrue;
 
             return project;
         }
@@ -634,6 +646,25 @@ namespace Translation.Tests.TestHelpers
             return label;
         }
 
+        public static Label GetOrganizationTwoProjectOneLabelOne()
+        {
+            var label = new Label();
+            label.OrganizationId = OrganizationTwoId;
+            label.OrganizationUid = OrganizationTwoUid;
+            label.OrganizationName = OrganizationTwoName;
+
+            label.ProjectId = OrganizationTwoProjectOneId;
+            label.ProjectUid = OrganizationTwoProjectOneUid;
+            label.ProjectName = OrganizationTwoProjectOneName;
+
+            label.Id = OrganizationTwoProjectOneLabelOneId;
+            label.Uid = OrganizationTwoProjectOneLabelOneUid;
+            label.Name = OrganizationTwoProjectOneLabelOneName;
+            label.Key = OrganizationTwoProjectOneLabelOneKey;
+
+            return label;
+        }
+
         public static Label GetOrganizationOneProjectOneLabelOneNotExist()
         {
             var label = GetOrganizationOneProjectOneLabelOne();
@@ -766,6 +797,34 @@ namespace Translation.Tests.TestHelpers
             revision.Revision = One;
             revision.RevisionedAt = DateTimeOne;
             revision.Entity = GetOrganizationOneProjectOne();
+
+            list.Add(revision);
+
+            return list;
+        }
+
+        public static List<EntityRevision<Label>> GetOrganizationOneProjectOneLabelOneRevisionsRevisionOneInIt()
+        {
+            var list = new List<EntityRevision<Label>>();
+            var revision = new EntityRevision<Label>();
+            revision.Id = LongOne;
+            revision.Revision = One;
+            revision.RevisionedAt = DateTimeOne;
+            revision.Entity = GetOrganizationOneProjectOneLabelOne();
+
+            list.Add(revision);
+
+            return list;
+        }
+
+        public static List<EntityRevision<Label>> GetOrganizationOneProjectOneLabelOneRevisionsRevisionTwoInIt()
+        {
+            var list = new List<EntityRevision<Label>>();
+            var revision = new EntityRevision<Label>();
+            revision.Id = LongOne;
+            revision.Revision = Two;
+            revision.RevisionedAt = DateTimeOne;
+            revision.Entity = GetOrganizationOneProjectOneLabelOne();
 
             list.Add(revision);
 

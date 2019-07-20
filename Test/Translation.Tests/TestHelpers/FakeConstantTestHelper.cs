@@ -33,9 +33,14 @@ namespace Translation.Tests.TestHelpers
         public const string OrganizationOneIntegrationOneIntegrationClientOneName = "Organization One Integration One Integration Client One";
 
         public const long OrganizationOneProjectOneLabelOneId = 3164161549L;
-        public static Guid OrganizationOneProjectOneLabelOneUid => new Guid("0aae2e10-2a3d-4ee6-adc5-658d83c50c8b");
+        public static Guid OrganizationOneProjectOneLabelOneUid => new Guid("246a0211-c84f-4c92-b1df-7d606d1bdf02");
         public const string OrganizationOneProjectOneLabelOneName = "Organization One Project One Label One";
         public const string OrganizationOneProjectOneLabelOneKey = "organization_one_project_one_label_one";
+
+        public const long OrganizationTwoProjectOneLabelOneId = 3164161549L;
+        public static Guid OrganizationTwoProjectOneLabelOneUid => new Guid("3b278fca-4d8c-43a9-9060-510cc3278f0a");
+        public const string OrganizationTwoProjectOneLabelOneName = "Organization Two Project One Label One";
+        public const string OrganizationTwoProjectOneLabelOneKey = "organization_two_project_one_label_one";
 
         public const long OrganizationOneProjectOneLabelOneLabelTranslationOneId = 3164161549L;
         public static Guid OrganizationOneProjectOneLabelOneLabelTranslationOneUid => new Guid("26b4f65d-f4c9-40f2-a973-0529389d6f3e");

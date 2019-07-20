@@ -619,7 +619,7 @@ namespace Translation.Tests.TestHelpers
 
             return request;
         }
-
+        
         public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequest()
         {
             var request = new LabelCreateWithTokenRequest(UidOne, UidOne, StringOne);
@@ -678,6 +678,14 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelSearchListRequest GetLabelSearchListRequestForSelectMany()
+        {
+            var request = new LabelSearchListRequest(CurrentUserId, StringOne);
+            request.PagingInfo = GetPagingInfoForSelectMany();
+
+            return request;
+        }
+
         public static LabelRevisionReadListRequest GetLabelRevisionReadListRequest()
         {
             var request = new LabelRevisionReadListRequest(CurrentUserId, UidOne);
@@ -723,6 +731,20 @@ namespace Translation.Tests.TestHelpers
         public static LabelRestoreRequest GetLabelRestoreRequest()
         {
             var request = new LabelRestoreRequest(CurrentUserId, UidOne, One);
+
+            return request;
+        }
+
+        public static LabelRestoreRequest GetLabelRestoreRequestRevisionOneInIt()
+        {
+            var request = new LabelRestoreRequest(CurrentUserId, UidOne, One);
+
+            return request;
+        }
+
+        public static LabelRestoreRequest GetLabelRestoreRequestRevisionTwoInIt()
+        {
+            var request = new LabelRestoreRequest(CurrentUserId, UidOne, Two);
 
             return request;
         }
