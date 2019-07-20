@@ -286,37 +286,121 @@ namespace Translation.Tests.Server.Services
         [Test]
         public async Task LabelService_CreateLabelFromList_Success()
         {
-            //todo this test will refactor after LanguageServiceTests finished.
+            // arrange
+            var request = GetLabelCreateListRequest();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockLanguageRepository.Setup_SelectAll_Returns_Languages();
+            MockLabelRepository.Setup_SelectAll_Returns_Labels();
+            MockLabelTranslationRepository.Setup_SelectAll_Returns_LabelTranslations();
+            MockLabelUnitOfWork.Setup_DoCreateWorkBulk_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.CreateLabelFromList(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<LabelCreateListResponse>(result);
+            MockProjectRepository.Verify_Select();
+            MockOrganizationRepository.Verify_Any();
+            MockLanguageRepository.Verify_SelectAll();
+            MockLabelRepository.Verify_SelectAll();
+            MockLabelTranslationRepository.Verify_SelectAll();
+            MockLabelUnitOfWork.Verify_DoCreateWorkBulk();
         }
 
         [Test]
         public async Task LabelService_CreateLabelFromList_Invalid_ProjectNotFound()
         {
-            //todo this test will refactor after LanguageServiceTests finished.
+            // arrange
+            var request = GetLabelCreateListRequest();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.CreateLabelFromList(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
+            AssertReturnType<LabelCreateListResponse>(result);
+            MockProjectRepository.Verify_Select();
         }
 
         [Test]
         public async Task LabelService_CreateLabelFromList_Invalid_ProjectNotActive()
         {
-            //todo this test will refactor after LanguageServiceTests finished.
+            // arrange
+            var request = GetLabelCreateListRequest();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOneNotActive();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockLanguageRepository.Setup_SelectAll_Returns_Languages();
+
+            // act
+            var result = await SystemUnderTest.CreateLabelFromList(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotActive);
+            AssertReturnType<LabelCreateListResponse>(result);
+            MockProjectRepository.Verify_Select();
         }
 
         [Test]
         public async Task LabelService_CreateLabelFromList_Invalid_OrganizationNotMatch()
         {
-            //todo this test will refactor after LanguageServiceTests finished.
+            // arrange
+            var request = GetLabelCreateListRequest();
+            MockProjectRepository.Setup_Select_Returns_OrganizationTwoProjectOne();
+
+            // act
+            var result = await SystemUnderTest.CreateLabelFromList(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertReturnType<LabelCreateListResponse>(result);
+            MockProjectRepository.Verify_Select();
         }
 
         [Test]
         public async Task LabelService_CreateLabelFromList_Invalid_OrganizationNotFound()
         {
-            //todo this test will refactor after LanguageServiceTests finished.
+            // arrange
+            var request = GetLabelCreateListRequest();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
+            MockOrganizationRepository.Setup_Any_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.CreateLabelFromList(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertReturnType<LabelCreateListResponse>(result);
+            MockProjectRepository.Verify_Select();
+            MockOrganizationRepository.Verify_Any();
         }
 
         [Test]
         public async Task LabelService_CreateLabelFromList_Failed()
         {
-            //todo this test will refactor after LanguageServiceTests finished.
+            // arrange
+            var request = GetLabelCreateListRequest();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockLanguageRepository.Setup_SelectAll_Returns_Languages();
+            MockLabelRepository.Setup_SelectAll_Returns_Labels();
+            MockLabelTranslationRepository.Setup_SelectAll_Returns_LabelTranslations();
+            MockLabelUnitOfWork.Setup_DoCreateWorkBulk_Returns_False();
+
+            // act
+            var result = await SystemUnderTest.CreateLabelFromList(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<LabelCreateListResponse>(result);
+            MockProjectRepository.Verify_Select();
+            MockOrganizationRepository.Verify_Any();
+            MockLanguageRepository.Verify_SelectAll();
+            MockLabelRepository.Verify_SelectAll();
+            MockLabelTranslationRepository.Verify_SelectAll();
+            MockLabelUnitOfWork.Verify_DoCreateWorkBulk();
         }
 
         [Test]
@@ -721,7 +805,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
             AssertReturnType<LabelChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockLabelRepository.Verify_Select();
@@ -799,7 +883,7 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetLabelEditRequest();
             MockLabelRepository.Setup_Select_Returns_OrganizationTwoProjectOneLabelOne();
-            
+
             // act
             var result = await SystemUnderTest.EditLabel(request);
 
@@ -835,7 +919,7 @@ namespace Translation.Tests.Server.Services
             MockLabelRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockProjectRepository.Setup_Any_Returns_True();
-            
+
             // act
             var result = await SystemUnderTest.EditLabel(request);
 
@@ -901,7 +985,7 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockLabelRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOne();
-            MockLabelRepository.Setup_Any_Returns_True();
+            MockLabelRepository.Setup_Any_Returns_False();
             MockLabelUnitOfWork.Setup_DoCloneWork_Returns_True();
 
             // act
@@ -940,7 +1024,7 @@ namespace Translation.Tests.Server.Services
             var request = GetLabelCloneRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_True();
-            
+
             // act
             var result = await SystemUnderTest.CloneLabel(request);
 
@@ -959,7 +1043,7 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockLabelRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOneNotExist();
-            
+
             // act
             var result = await SystemUnderTest.CloneLabel(request);
 
@@ -1005,7 +1089,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CloneLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, "label_key_must_be_unique");
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, "label_key_must_be_unique");
             AssertReturnType<LabelCloneResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1021,7 +1105,7 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockLabelRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOne();
-            MockLabelRepository.Setup_Any_Returns_True();
+            MockLabelRepository.Setup_Any_Returns_False();
             MockLabelUnitOfWork.Setup_DoCloneWork_Returns_False();
 
             // act
@@ -1201,7 +1285,7 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetLabelTranslationCreateRequest();
             MockLabelRepository.Setup_Select_Returns_OrganizationTwoProjectOneLabelOne();
-            
+
             // act
             var result = await SystemUnderTest.CreateTranslation(request);
 
@@ -1211,7 +1295,6 @@ namespace Translation.Tests.Server.Services
             MockLabelRepository.Verify_Select();
         }
 
-
         [Test]
         public async Task LabelService_CreateTranslation_Invalid_OrganizationNotActive()
         {
@@ -1219,7 +1302,7 @@ namespace Translation.Tests.Server.Services
             var request = GetLabelTranslationCreateRequest();
             MockLabelRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOne();
             MockOrganizationRepository.Setup_Any_Returns_True();
-            
+
             // act
             var result = await SystemUnderTest.CreateTranslation(request);
 
@@ -1249,5 +1332,85 @@ namespace Translation.Tests.Server.Services
             MockOrganizationRepository.Verify_Any();
             MockProjectRepository.Verify_Any();
         }
+
+        [Test]
+        public async Task LabelService_CreateTranslation_Invalid_LanguageNotFound()
+        {
+            // arrange
+            var request = GetLabelTranslationCreateRequest();
+            MockLabelRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockProjectRepository.Setup_Any_Returns_False();
+            MockLanguageRepository.Setup_Select_Returns_LanguageNotExist();
+
+            // act
+            var result = await SystemUnderTest.CreateTranslation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LanguageNotFound);
+            AssertReturnType<LabelTranslationCreateResponse>(result);
+            MockLabelRepository.Verify_Select();
+            MockOrganizationRepository.Verify_Any();
+            MockProjectRepository.Verify_Any();
+            MockLanguageRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task LabelService_CreateTranslation_Failed_LabelTranslationMustBeUnique()
+        {
+            // arrange
+            var request = GetLabelTranslationCreateRequest();
+            MockLabelRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockProjectRepository.Setup_Any_Returns_False();
+            MockLanguageRepository.Setup_Select_Returns_Language();
+            MockLabelTranslationRepository.Setup_Any_Return_True();
+
+            // act
+            var result = await SystemUnderTest.CreateTranslation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, "label_translation_must_be_unique");
+            AssertReturnType<LabelTranslationCreateResponse>(result);
+            MockLabelRepository.Verify_Select();
+            MockOrganizationRepository.Verify_Any();
+            MockProjectRepository.Verify_Any();
+            MockLanguageRepository.Verify_Select();
+            MockLabelTranslationRepository.Verify_Any();
+        }
+
+        [Test]
+        public async Task LabelService_CreateTranslation_Failed()
+        {
+            // arrange
+            var request = GetLabelTranslationCreateRequest();
+            MockLabelRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockProjectRepository.Setup_Any_Returns_False();
+            MockLanguageRepository.Setup_Select_Returns_Language();
+            MockLabelTranslationRepository.Setup_Any_Return_False();
+            MockLabelUnitOfWork.Setup_DoCreateTranslationWork_Returns_False();
+
+            // act
+            var result = await SystemUnderTest.CreateTranslation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<LabelTranslationCreateResponse>(result);
+            MockLabelRepository.Verify_Select();
+            MockOrganizationRepository.Verify_Any();
+            MockProjectRepository.Verify_Any();
+            MockLanguageRepository.Verify_Select();
+            MockLabelTranslationRepository.Verify_Any();
+            MockLabelUnitOfWork.Verify_DoCreateTranslationWork();
+        }
+
+        // todo: CreateTranslationFromList tests
+        // todo: GetTranslation tests
+        // todo: GetTranslations tests
+        // todo: GetLabelTranslationRevisions tests
+        // todo: EditTranslation tests
+        // todo: DeleteTranslation tests
+        // todo: RestoreLabelTranslation tests
     }
 }

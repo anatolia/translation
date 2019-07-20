@@ -359,6 +359,14 @@ namespace Translation.Tests.TestHelpers
             return project;
         }
 
+        public static Project GetOrganizationOneProjectOneNotActive()
+        {
+            var project = GetOrganizationOneProjectOne();
+            project.IsActive = BooleanFalse;
+
+            return project;
+        }
+
         public static Organization GetOrganization()
         {
             var organization = new Organization();

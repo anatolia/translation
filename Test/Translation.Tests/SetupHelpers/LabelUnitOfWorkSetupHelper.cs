@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System.Collections.Generic;
+using Moq;
 
 using Translation.Data.Entities.Domain;
 using Translation.Data.UnitOfWorks.Contracts;
@@ -8,6 +9,32 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class LabelUnitOfWorkSetupHelper
     {
+        public static void Setup_DoCreateWorkBulk_Returns_True(this Mock<ILabelUnitOfWork> unitOfWork)
+        {
+            unitOfWork.Setup(x => x.DoCreateWorkBulk(It.IsAny<long>(), 
+                                                     It.IsAny<List<Label>>(),
+                                                     It.IsAny<List<LabelTranslation>>(),
+                                                     It.IsAny<List<LabelTranslation>>()))
+                      .ReturnsAsync(BooleanTrue);
+        }
+
+        public static void Setup_DoCreateWorkBulk_Returns_False(this Mock<ILabelUnitOfWork> unitOfWork)
+        {
+            unitOfWork.Setup(x => x.DoCreateWorkBulk(It.IsAny<long>(),
+                                                     It.IsAny<List<Label>>(),
+                                                     It.IsAny<List<LabelTranslation>>(),
+                                                     It.IsAny<List<LabelTranslation>>()))
+                      .ReturnsAsync(BooleanFalse);
+        }
+
+        public static void Verify_DoCreateWorkBulk(this Mock<ILabelUnitOfWork> unitOfWork)
+        {
+            unitOfWork.Verify(x => x.DoCreateWorkBulk(It.IsAny<long>(),
+                                                      It.IsAny<List<Label>>(),
+                                                      It.IsAny<List<LabelTranslation>>(),
+                                                      It.IsAny<List<LabelTranslation>>()));
+        }
+
         public static void Setup_DoCreateTranslationWork_Returns_True(this Mock<ILabelUnitOfWork> unitOfWork)
         {
             unitOfWork.Setup(x => x.DoCreateTranslationWork(It.IsAny<long>(),

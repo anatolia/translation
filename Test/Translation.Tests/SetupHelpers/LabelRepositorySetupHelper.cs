@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 
 using Moq;
-
+using Shouldly;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Repositories.Contracts;
 using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
@@ -13,6 +13,23 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class LabelRepositorySetupHelper
     {
+        public static void Setup_SelectAll_Returns_Labels(this Mock<ILabelRepository> repository)
+        {
+            repository.Setup(x => x.SelectAll(It.IsAny<Expression<Func<Label, bool>>>(),
+                                              It.IsAny<Expression<Func<Label, object>>>(),
+                                              It.IsAny<bool>(), 
+                                              It.IsAny<bool>()))
+                      .ReturnsAsync(new List<Label> { GetLabel() });
+        }
+
+        public static void Verify_SelectAll(this Mock<ILabelRepository> repository)
+        {
+            repository.Verify(x => x.SelectAll(It.IsAny<Expression<Func<Label, bool>>>(),
+                                               It.IsAny<Expression<Func<Label, object>>>(),
+                                               It.IsAny<bool>(),
+                                               It.IsAny<bool>()));
+        }
+
         public static void Setup_SelectAfter_Returns_Labels(this Mock<ILabelRepository> repository)
         {
             repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Label, bool>>>(),

@@ -96,7 +96,6 @@ namespace Translation.Tests.SetupHelpers
                       .ReturnsAsync(GetOrganizationOneSuperProjectOne());
         }
 
-
         public static void Setup_Select_Returns_OrganizationTwoProjectOne(this Mock<IProjectRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Project, bool>>>(), false))
@@ -107,6 +106,12 @@ namespace Translation.Tests.SetupHelpers
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Project, bool>>>(), false))
                       .ReturnsAsync(GetOrganizationOneProjectOneNotExist());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneProjectOneNotActive(this Mock<IProjectRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Project, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneProjectOneNotActive());
         }
 
         public static void Setup_Select_Returns_InvalidProject(this Mock<IProjectRepository> repository)
