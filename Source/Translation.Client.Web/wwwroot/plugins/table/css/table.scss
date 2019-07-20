@@ -1,57 +1,4 @@
-﻿table {
-    border-collapse: collapse;
-    margin-top: 8px;
-    margin-bottom: 34px;
-    width: 89%;
-
-    thead {
-        th {
-            background: #84cae6;
-            padding: 5px;
-            margin: 0;
-            border-bottom: 2px solid #222;
-            text-align: left;
-
-            &:last-child {
-                text-align: right;
-            }
-        }
-    }
-
-    tbody {
-        td {
-            padding: 3px;
-            padding-left: 8px;
-            vertical-align: middle;
-
-            &:last-child {
-                text-align: right;
-            }
-        }
-
-        a {
-            margin: 3px;
-            color: #333;
-        }
-
-        tr {
-            img {
-                width: 55px;
-                vertical-align: middle;
-            }
-
-            &:nth-child(even) {
-                background-color: #f2f2f2;
-            }
-        }
-    }
-
-    .selectable {
-        width: 34px;
-    }
-}
-
-.tbl {
+﻿.tbl {
     margin-bottom: 13px;
     min-height: 111px;
 
@@ -65,14 +12,70 @@
     }
 
     table {
+        border-collapse: collapse;
+        margin-top: 8px;
+        margin-bottom: 34px;
+        width: 89%;
+
+        thead {
+            th {
+                background: #84cae6;
+                padding: 5px;
+                margin: 0;
+                border-bottom: 2px solid #222;
+                text-align: left;
+
+                &:last-child {
+                    text-align: right;
+                }
+            }
+        }
+
         tbody {
+            a {
+                margin: 3px;
+                color: #333;
+            }
+
             tr {
                 td {
+                    padding: 3px;
+                    padding-left: 8px;
+                    vertical-align: middle;
+
                     input {
                         margin: 2px;
                     }
+
+                    .secretSpan {
+                        float: left;
+                        margin-top: 4px;
+                    }
+
+                    .secretButton {
+                        margin-left: 5px;
+                        text-decoration: underline;
+                        cursor: pointer;
+                    }
+
+                    &:last-child {
+                        text-align: right;
+                    }
+                }
+
+                img {
+                    width: 55px;
+                    vertical-align: middle;
+                }
+
+                &:nth-child(even) {
+                    background-color: #f2f2f2;
                 }
             }
+        }
+
+        .selectable {
+            width: 34px;
         }
     }
 
