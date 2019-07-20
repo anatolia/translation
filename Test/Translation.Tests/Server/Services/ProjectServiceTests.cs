@@ -7,6 +7,7 @@ using Translation.Common.Enumerations;
 using Translation.Common.Models.Responses.Project;
 using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
+using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
 using static Translation.Tests.TestHelpers.AssertResponseTestHelper;
 
@@ -54,6 +55,7 @@ namespace Translation.Tests.Server.Services
             // assert
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectReadListResponse>(result);
+            AssertPagingInfoForSelectAfter(request.PagingInfo, Ten);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_SelectAfter();
             MockProjectRepository.Verify_Count();
@@ -74,6 +76,7 @@ namespace Translation.Tests.Server.Services
             // assert
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectReadListResponse>(result);
+            AssertPagingInfoForSelectMany(request.PagingInfo, Ten);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_SelectMany();
             MockProjectRepository.Verify_Count();
@@ -194,7 +197,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateProject(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNameMustBeUnique);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, "project_name_and_slug_must_be_unique");
             AssertReturnType<ProjectCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();

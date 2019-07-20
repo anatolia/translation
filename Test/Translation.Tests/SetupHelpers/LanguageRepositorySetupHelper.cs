@@ -74,6 +74,23 @@ namespace Translation.Tests.SetupHelpers
             repository.Verify(x => x.SelectRevisions(It.IsAny<long>()));
         }
 
+        public static void Setup_SelectAll_Returns_Languages(this Mock<ILanguageRepository> repository)
+        {
+            repository.Setup(x => x.SelectAll(It.IsAny<Expression<Func<Language, bool>>>(),
+                                              It.IsAny<Expression<Func<Language, object>>>(),
+                                              It.IsAny<bool>(), 
+                                              It.IsAny<bool>()))
+                      .ReturnsAsync(new List<Language> { GetLanguageOne() });
+        }
+
+        public static void Verify_SelectAll(this Mock<ILanguageRepository> repository)
+        {
+            repository.Verify(x => x.SelectAll(It.IsAny<Expression<Func<Language, bool>>>(),
+                                               It.IsAny<Expression<Func<Language, object>>>(),
+                                               It.IsAny<bool>(),
+                                               It.IsAny<bool>()));
+        }
+
         public static void Setup_SelectAfter_Returns_Languages(this Mock<ILanguageRepository> repository)
         {
             repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Language, bool>>>(),

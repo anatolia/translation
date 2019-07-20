@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Moq;
@@ -10,12 +12,43 @@ using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
 using Translation.Common.Models.Responses.Label;
 using Translation.Common.Models.Responses.Label.LabelTranslation;
+using Translation.Data.Entities.Domain;
+using Translation.Data.Repositories.Contracts;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Tests.SetupHelpers
 {
     public static class LabelServiceSetupHelper
     {
+        public static void Setup_RestoreRevision_Returns_True(this Mock<ILabelRepository> repository)
+        {
+            repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
+                      .ReturnsAsync(BooleanTrue);
+        }
+
+        public static void Setup_RestoreRevision_Returns_False(this Mock<ILabelRepository> repository)
+        {
+            repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
+                      .ReturnsAsync(BooleanFalse);
+        }
+
+        public static void Verify_RestoreRevision(this Mock<ILabelRepository> repository)
+        {
+            repository.Verify(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()));
+        }
+
+        public static void Setup_SelectRevisions_Returns_OrganizationOneProjectOneLabelOneRevisionsRevisionOneInIt(this Mock<ILabelRepository> repository)
+        {
+            repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
+                      .ReturnsAsync(GetOrganizationOneProjectOneLabelOneRevisionsRevisionOneInIt());
+        }
+
+        public static void Verify_SelectRevisions(this Mock<ILabelRepository> repository)
+        {
+            repository.Verify(x => x.SelectRevisions(It.IsAny<long>()));
+        }
+
         public static void Setup_GetLabels_Returns_LabelReadListResponse_Success(this Mock<ILabelService> service)
         {
             var items = new List<LabelDto>();

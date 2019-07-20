@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 using Moq;
@@ -11,6 +12,23 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class LabelTranslationRepositorySetupHelper
     {
+        public static void Setup_SelectAll_Returns_LabelTranslations(this Mock<ILabelTranslationRepository> repository)
+        {
+            repository.Setup(x => x.SelectAll(It.IsAny<Expression<Func<LabelTranslation, bool>>>(),
+                                              It.IsAny<Expression<Func<LabelTranslation, object>>>(),
+                                              It.IsAny<bool>(),
+                                              It.IsAny<bool>()))
+                      .ReturnsAsync(new List<LabelTranslation> { GetLabelTranslation() });
+        }
+
+        public static void Verify_SelectAll(this Mock<ILabelTranslationRepository> repository)
+        {
+            repository.Verify(x => x.SelectAll(It.IsAny<Expression<Func<LabelTranslation, bool>>>(),
+                                               It.IsAny<Expression<Func<LabelTranslation, object>>>(),
+                                               It.IsAny<bool>(),
+                                               It.IsAny<bool>()));
+        }
+
         public static void Setup_SelectById_Returns_ParkNetLabelTranslation(this Mock<ILabelTranslationRepository> repository)
         {
             repository.Setup(x => x.SelectById(It.IsAny<long>()))
@@ -123,7 +141,7 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_Any_Return_True(this Mock<ILabelTranslationRepository> repository)
         {
-            repository.Setup(x => x.Any(It.IsAny<Expression<Func<LabelTranslation, bool>>>(),                           It.IsAny<bool>()))
+            repository.Setup(x => x.Any(It.IsAny<Expression<Func<LabelTranslation, bool>>>(), It.IsAny<bool>()))
                       .ReturnsAsync(true);
         }
 
