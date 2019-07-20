@@ -85,7 +85,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == project.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotActive("organization");
                 return response;
             }
 
@@ -608,7 +608,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == label.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotActive("organization");
                 return response;
             }
 
@@ -616,8 +616,8 @@ namespace Translation.Service
                                                 && x.ProjectId == label.ProjectId
                                                 && x.Uid != request.LabelUid))
             {
+                response.SetFailed();
                 response.ErrorMessages.Add("label_key_already_exist_in_this_project");
-                response.Status = ResponseStatus.Failed;
                 return response;
             }
 
@@ -781,7 +781,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotActive("organization");
                 return response;
             }
 
