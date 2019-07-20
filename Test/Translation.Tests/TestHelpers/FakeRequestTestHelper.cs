@@ -54,7 +54,7 @@ namespace Translation.Tests.TestHelpers
 
         public static OrganizationActiveTokenReadListRequest GetOrganizationActiveTokenReadListRequest()
         {
-            var request = new OrganizationActiveTokenReadListRequest(CurrentUserId,UidOne);
+            var request = new OrganizationActiveTokenReadListRequest(CurrentUserId, UidOne);
 
             return request;
         }
@@ -75,7 +75,14 @@ namespace Translation.Tests.TestHelpers
 
         public static TokenCreateRequest GetTokenCreateRequest()
         {
-            var request = new TokenCreateRequest(UidOne, UidOne,IPAddress.Any);
+            var request = new TokenCreateRequest(UidOne, UidOne, IPAddress.Any);
+
+            return request;
+        }
+
+        public static TokenGetRequest GetTokenGetRequest()
+        {
+            var request = new TokenGetRequest(CurrentUserId);
 
             return request;
         }
@@ -89,7 +96,7 @@ namespace Translation.Tests.TestHelpers
 
         public static TokenValidateRequest GetTokenValidateRequest()
         {
-            var request = new TokenValidateRequest(UidOne,UidOne);
+            var request = new TokenValidateRequest(UidOne, UidOne);
 
             return request;
         }
@@ -155,6 +162,7 @@ namespace Translation.Tests.TestHelpers
         public static IntegrationChangeActivationRequest GetIntegrationChangeActivationRequest()
         {
             var request = new IntegrationChangeActivationRequest(CurrentUserId, UidOne);
+
             return request;
         }
 
@@ -162,6 +170,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new IntegrationCreateRequest(CurrentUserId, OrganizationOneUid, StringOne,
                                                       StringOne);
+
             return request;
         }
 
@@ -176,6 +185,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetIntegrationClientReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+
             return request;
         }
 
@@ -183,6 +193,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetIntegrationClientReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+
             return request;
         }
 
@@ -220,6 +231,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new IntegrationEditRequest(CurrentUserId, OrganizationOneIntegrationOneUid, StringOne,
                                                     StringOne);
+
             return request;
         }
 
@@ -502,7 +514,8 @@ namespace Translation.Tests.TestHelpers
 
         public static AdminInviteRequest GetAdminInviteRequest()
         {
-            var request = new AdminInviteRequest(CurrentUserId, UidOne, EmailOne, StringOne, StringOne);
+            var request = new AdminInviteRequest(CurrentUserId, UidOne, EmailOne,
+                                                 StringOne, StringOne);
 
             return request;
         }
@@ -516,7 +529,8 @@ namespace Translation.Tests.TestHelpers
 
         public static AdminAcceptInviteRequest GetAdminAcceptInviteRequest()
         {
-            var request = new AdminAcceptInviteRequest(UidOne, EmailOne, StringOne, StringOne, PasswordOne);
+            var request = new AdminAcceptInviteRequest(UidOne, EmailOne, StringOne,
+                                                       StringOne, PasswordOne);
 
             return request;
         }
@@ -615,7 +629,8 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelCreateRequest GetLabelCreateRequest()
         {
-            var request = new LabelCreateRequest(CurrentUserId, UidOne, UidOne, StringOne, StringOne);
+            var request = new LabelCreateRequest(CurrentUserId, UidOne, UidOne,
+                                                 StringOne, StringOne);
 
             return request;
         }
@@ -629,7 +644,8 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelCreateListRequest GetLabelCreateListRequest()
         {
-            var request = new LabelCreateListRequest(CurrentUserId, UidOne, UidOne, new List<LabelListInfo>() { GetLabelListInfo() });
+            var request = new LabelCreateListRequest(CurrentUserId, UidOne, UidOne,
+                                                     new List<LabelListInfo>() { GetLabelListInfo() });
 
             return request;
         }
@@ -702,7 +718,8 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelEditRequest GetLabelEditRequest()
         {
-            var request = new LabelEditRequest(CurrentUserId, UidOne, UidOne, StringOne, StringOne);
+            var request = new LabelEditRequest(CurrentUserId, UidOne, UidOne, StringOne,
+                                               StringOne);
 
             return request;
         }
@@ -723,7 +740,8 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelCloneRequest GetLabelCloneRequest()
         {
-            var request = new LabelCloneRequest(CurrentUserId, UidOne, UidOne, UidOne, StringOne, StringOne);
+            var request = new LabelCloneRequest(CurrentUserId, UidOne, UidOne,
+                                                UidOne, StringOne, StringOne);
 
             return request;
         }
@@ -751,14 +769,16 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelTranslationCreateRequest GetLabelTranslationCreateRequest()
         {
-            var request = new LabelTranslationCreateRequest(CurrentUserId, UidOne, UidOne, UidOne, StringOne);
+            var request = new LabelTranslationCreateRequest(CurrentUserId, UidOne, UidOne,
+                                                            UidOne, StringOne);
 
             return request;
         }
 
         public static LabelTranslationCreateListRequest GetLabelTranslationCreateListRequest()
         {
-            var request = new LabelTranslationCreateListRequest(CurrentUserId, UidOne, UidOne, new List<TranslationListInfo>() { GetTranslationListInfo() });
+            var request = new LabelTranslationCreateListRequest(CurrentUserId, UidOne, UidOne,
+                                                                new List<TranslationListInfo>() { GetTranslationListInfo() });
 
             return request;
         }
@@ -802,7 +822,8 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelTranslationEditRequest GetLabelTranslationEditRequest()
         {
-            var request = new LabelTranslationEditRequest(CurrentUserId, UidOne, UidOne, StringOne);
+            var request = new LabelTranslationEditRequest(CurrentUserId, UidOne, UidOne,
+                                                          StringOne);
 
             return request;
         }
@@ -860,14 +881,18 @@ namespace Translation.Tests.TestHelpers
 
         public static LanguageCreateRequest GetLanguageCreateRequest()
         {
-            var request = new LanguageCreateRequest(CurrentUserId, StringOne, StringOne, IsoCode2One, IsoCode3One, StringOne, StringOne);
+            var request = new LanguageCreateRequest(CurrentUserId, StringOne, StringOne,
+                                                    IsoCode2One, IsoCode3One, StringOne,
+                                                    StringOne);
 
             return request;
         }
 
         public static LanguageEditRequest GetLanguageEditRequest()
         {
-            var request = new LanguageEditRequest(CurrentUserId, UidOne, StringOne, StringOne, IsoCode2One, IsoCode3One, StringOne, StringOne);
+            var request = new LanguageEditRequest(CurrentUserId, UidOne, StringOne,
+                                                  StringOne, IsoCode2One, IsoCode3One,
+                                                  StringOne, StringOne);
 
             return request;
         }
@@ -886,9 +911,18 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LanguageRestoreRequest GetLanguageRestoreRequestRevisionOneInIt()
+        {
+            var request = new LanguageRestoreRequest(CurrentUserId, UidOne, One);
+            request.Revision = One;
+
+            return request;
+        }
+
         public static SignUpRequest GetSignUpRequest()
         {
-            var request = new SignUpRequest(StringOne, StringOne, StringOne, EmailOne, PasswordOne, GetClientLogInfo());
+            var request = new SignUpRequest(StringOne, StringOne, StringOne,
+                                            EmailOne, PasswordOne, GetClientLogInfo());
 
             return request;
         }
@@ -932,7 +966,8 @@ namespace Translation.Tests.TestHelpers
 
         public static OrganizationEditRequest GetOrganizationEditRequest()
         {
-            var request = new OrganizationEditRequest(CurrentUserId, UidOne, StringOne, StringOne);
+            var request = new OrganizationEditRequest(CurrentUserId, UidOne, StringOne,
+                                                      StringOne);
 
             return request;
         }
@@ -972,20 +1007,6 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
-        public static UserReadListRequest GetUserReadListRequest()
-        {
-            var request = new UserReadListRequest(CurrentUserId, UidOne);
-
-            return request;
-        }
-
-        public static UserRevisionReadListRequest GetUserRevisionReadListRequest()
-        {
-            var request = new UserRevisionReadListRequest(CurrentUserId, UidOne);
-
-            return request;
-        }
-
         public static UserLoginLogReadListRequest GetUserLoginLogReadListRequest()
         {
             var request = new UserLoginLogReadListRequest(CurrentUserId, UidOne);
@@ -1010,6 +1031,20 @@ namespace Translation.Tests.TestHelpers
         public static UserRestoreRequest GetUserRestoreRequest()
         {
             var request = new UserRestoreRequest(CurrentUserId, UidOne, One);
+
+            return request;
+        }
+
+        public static UserReadListRequest GetUserReadListRequest()
+        {
+            var request = new UserReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static UserRevisionReadListRequest GetUserRevisionReadListRequest()
+        {
+            var request = new UserRevisionReadListRequest(CurrentUserId, UidOne);
 
             return request;
         }

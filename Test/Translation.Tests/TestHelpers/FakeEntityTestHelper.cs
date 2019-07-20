@@ -778,15 +778,47 @@ namespace Translation.Tests.TestHelpers
             return labelTranslation;
         }
 
+        public static Language GetLanguageOneNotExist()
+        {
+            var language = GetLanguageOne();
+            language.Id = Zero;
+
+            return language;
+        }
+
         public static Language GetLanguageOne()
         {
             var language = new Language();
             language.Name = "Language One";
+            language.Id = LongOne;
+            language.Uid = UidOne;
+
             language.OriginalName = "Language One Original Name";
             language.IsoCode2Char = IsoCode2One;
             language.IsoCode3Char = IsoCode3One;
-
+            
             return language;
+        }
+
+        public static EntityRevision<Language> GetLanguageRevisionOne()
+        {
+            var revision = new EntityRevision<Language>();
+
+            revision.Id = LongOne;
+            revision.Entity = GetLanguageOne();
+            revision.Revision = One;
+            revision.RevisionedAt = DateTimeOne;
+            revision.RevisionedBy = LongOne;
+
+            return revision;
+        }
+
+        public static EntityRevision<Language> GetLanguageRevisionTwo()
+        {
+            var revision = GetLanguageRevisionOne();
+            revision.Revision = Two;
+
+            return revision;
         }
 
         public static List<EntityRevision<Project>> GetOrganizationOneProjectOneRevisions()

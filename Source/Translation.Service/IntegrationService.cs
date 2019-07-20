@@ -669,7 +669,7 @@ namespace Translation.Service
             return response;
         }
 
-        public async Task<TokenCreateResponse> CreateToken(TokenGetRequest request)
+        public async Task<TokenCreateResponse> CreateTokenWhenUserAuthenticated(TokenGetRequest request)
         {
             var response = new TokenCreateResponse();
 
@@ -683,16 +683,14 @@ namespace Translation.Service
             var integrationClient = await _integrationClientRepository.Select(x => x.OrganizationId == currentUser.OrganizationId && x.IsActive);
             if (integrationClient.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("integration_not_found");
+                response.SetInvalidBecauseNotFound("integration_client");
                 return response;
             }
 
             if (await _organizationRepository.Any(x => x.Id == integrationClient.OrganizationId && !x.IsActive)
                 || await _integrationRepository.Any(x => x.Id == integrationClient.IntegrationId && !x.IsActive))
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("integration_client_not_found");
+                response.SetInvalidBecauseNotActive("integration");
                 return response;
             }
 

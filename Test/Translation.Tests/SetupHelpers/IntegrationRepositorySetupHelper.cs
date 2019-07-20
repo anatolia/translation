@@ -146,6 +146,7 @@ namespace Translation.Tests.SetupHelpers
             repository.Setup(x => x.Update(It.IsAny<long>(), It.IsAny<Integration>()))
                 .ReturnsAsync(true);
         }
+
         public static void Setup_Update_Failed(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.Update(It.IsAny<long>(), It.IsAny<Integration>()))
@@ -169,11 +170,13 @@ namespace Translation.Tests.SetupHelpers
             repository.Setup(x => x.SelectById(It.IsAny<long>()))
                 .ReturnsAsync(GetOrganizationOneIntegrationOneNotExist());
         }
+
         public static void Setup_SelectById_Returns_OrganizationOneIntegrationOneNotActive(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.SelectById(It.IsAny<long>()))
                 .ReturnsAsync(GetOrganizationOneIntegrationOneNotActive());
         }
+
         public static void Setup_SelectRevisions_Returns_OrganizationOneIntegrationOneRevisions(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
