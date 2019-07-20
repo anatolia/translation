@@ -232,7 +232,8 @@ namespace Translation.Tests.TestHelpers
 
         public static ProjectCreateRequest GetProjectCreateRequest()
         {
-            var request = new ProjectCreateRequest(CurrentUserId, OrganizationOneUid, StringOne, HttpUrl, StringOne);
+            var request = new ProjectCreateRequest(CurrentUserId, OrganizationOneUid, StringOne,
+                                                   HttpUrl, StringOne, StringOne);
 
             return request;
         }
@@ -240,7 +241,7 @@ namespace Translation.Tests.TestHelpers
         public static ProjectCreateRequest GetProjectCreateRequest(Organization organization, Project project)
         {
             var request = new ProjectCreateRequest(CurrentUserId, organization.Uid, project.Name,
-                project.Url, project.Description);
+                                                   project.Url, project.Description, project.Slug);
 
             return request;
         }
@@ -248,7 +249,7 @@ namespace Translation.Tests.TestHelpers
         public static ProjectCreateRequest GetProjectCreateRequest(CurrentOrganization organization, Project project)
         {
             var request = new ProjectCreateRequest(CurrentUserId, organization.Uid, project.Name,
-                project.Url, project.Description);
+                                                   project.Url, project.Description, project.Slug);
 
             return request;
         }
@@ -256,7 +257,8 @@ namespace Translation.Tests.TestHelpers
         public static ProjectEditRequest GetProjectEditRequest()
         {
             var request = new ProjectEditRequest(CurrentUserId, OrganizationOneUid, UidOne,
-                                                 StringOne, HttpUrl, StringOne);
+                                                 StringOne, HttpUrl, StringOne,
+                                                 StringOne);
 
             return request;
         }
@@ -264,15 +266,18 @@ namespace Translation.Tests.TestHelpers
         public static ProjectEditRequest GetProjectEditRequest(Project project)
         {
             var request = new ProjectEditRequest(CurrentUserId, project.OrganizationUid, project.Uid,
-                project.Name, project.Url, project.Description);
+                                                 project.Name, project.Url, project.Description,
+                                                 project.Slug);
 
             return request;
         }
 
         public static ProjectCloneRequest GetProjectCloneRequest()
         {
-            var request = new ProjectCloneRequest(CurrentUserId, OrganizationOneUid, UidOne, StringOne,
-                HttpUrl, StringOne, One, Two, BooleanTrue);
+            var request = new ProjectCloneRequest(CurrentUserId, OrganizationOneUid, UidOne,
+                                                  StringOne, HttpUrl, StringOne,
+                                                  One, Two, BooleanTrue,
+                                                  StringOne);
 
             return request;
         }
@@ -280,8 +285,9 @@ namespace Translation.Tests.TestHelpers
         public static ProjectCloneRequest GetProjectCloneRequest(Project project)
         {
             var request = new ProjectCloneRequest(CurrentUserId, project.OrganizationUid, project.Uid,
-                project.Name, project.Url, project.Description,
-                project.LabelCount, project.LabelTranslationCount, project.IsSuperProject);
+                                                  project.Name, project.Url, project.Description,
+                                                  project.LabelCount, project.LabelTranslationCount, project.IsSuperProject,
+                                                  project.Slug);
 
             return request;
         }
@@ -630,7 +636,7 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelReadByKeyRequest GetLabelReadByKeyRequest()
         {
-            var request = new LabelReadByKeyRequest(CurrentUserId, StringOne);
+            var request = new LabelReadByKeyRequest(CurrentUserId, StringOne, StringOne);
 
             return request;
         }
