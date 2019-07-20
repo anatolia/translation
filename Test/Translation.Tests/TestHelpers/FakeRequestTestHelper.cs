@@ -162,6 +162,7 @@ namespace Translation.Tests.TestHelpers
         public static IntegrationChangeActivationRequest GetIntegrationChangeActivationRequest()
         {
             var request = new IntegrationChangeActivationRequest(CurrentUserId, UidOne);
+
             return request;
         }
 
@@ -169,6 +170,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new IntegrationCreateRequest(CurrentUserId, OrganizationOneUid, StringOne,
                                                       StringOne);
+
             return request;
         }
 
@@ -183,6 +185,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetIntegrationClientReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+
             return request;
         }
 
@@ -190,6 +193,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetIntegrationClientReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+
             return request;
         }
 
@@ -227,6 +231,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new IntegrationEditRequest(CurrentUserId, OrganizationOneIntegrationOneUid, StringOne,
                                                     StringOne);
+
             return request;
         }
 
@@ -240,7 +245,7 @@ namespace Translation.Tests.TestHelpers
         public static ProjectCreateRequest GetProjectCreateRequest()
         {
             var request = new ProjectCreateRequest(CurrentUserId, OrganizationOneUid, StringOne,
-                HttpUrl, StringOne, StringOne);
+                                                   HttpUrl, StringOne, StringOne);
 
             return request;
         }
@@ -248,7 +253,7 @@ namespace Translation.Tests.TestHelpers
         public static ProjectCreateRequest GetProjectCreateRequest(Organization organization, Project project)
         {
             var request = new ProjectCreateRequest(CurrentUserId, organization.Uid, project.Name,
-                project.Url, project.Description, StringOne);
+                                                   project.Url, project.Description, project.Slug);
 
             return request;
         }
@@ -256,7 +261,7 @@ namespace Translation.Tests.TestHelpers
         public static ProjectCreateRequest GetProjectCreateRequest(CurrentOrganization organization, Project project)
         {
             var request = new ProjectCreateRequest(CurrentUserId, organization.Uid, project.Name,
-                project.Url, project.Description, StringOne);
+                                                   project.Url, project.Description, project.Slug);
 
             return request;
         }
@@ -264,7 +269,8 @@ namespace Translation.Tests.TestHelpers
         public static ProjectEditRequest GetProjectEditRequest()
         {
             var request = new ProjectEditRequest(CurrentUserId, OrganizationOneUid, UidOne,
-                                                 StringOne, HttpUrl, StringOne,StringOne);
+                                                 StringOne, HttpUrl, StringOne,
+                                                 StringOne);
 
             return request;
         }
@@ -272,15 +278,18 @@ namespace Translation.Tests.TestHelpers
         public static ProjectEditRequest GetProjectEditRequest(Project project)
         {
             var request = new ProjectEditRequest(CurrentUserId, project.OrganizationUid, project.Uid,
-                project.Name, project.Url, project.Description,StringOne);
+                                                 project.Name, project.Url, project.Description,
+                                                 project.Slug);
 
             return request;
         }
 
         public static ProjectCloneRequest GetProjectCloneRequest()
         {
-            var request = new ProjectCloneRequest(CurrentUserId, OrganizationOneUid, UidOne, StringOne,
-                HttpUrl, StringOne, One, Two, BooleanTrue,StringOne);
+            var request = new ProjectCloneRequest(CurrentUserId, OrganizationOneUid, UidOne,
+                                                  StringOne, HttpUrl, StringOne,
+                                                  One, Two, BooleanTrue,
+                                                  StringOne);
 
             return request;
         }
@@ -288,8 +297,9 @@ namespace Translation.Tests.TestHelpers
         public static ProjectCloneRequest GetProjectCloneRequest(Project project)
         {
             var request = new ProjectCloneRequest(CurrentUserId, project.OrganizationUid, project.Uid,
-                project.Name, project.Url, project.Description,
-                project.LabelCount, project.LabelTranslationCount, project.IsSuperProject,project.Slug);
+                                                  project.Name, project.Url, project.Description,
+                                                  project.LabelCount, project.LabelTranslationCount, project.IsSuperProject,
+                                                  project.Slug);
 
             return request;
         }
@@ -320,6 +330,13 @@ namespace Translation.Tests.TestHelpers
         public static ProjectReadRequest GetProjectReadRequest()
         {
             var request = new ProjectReadRequest(CurrentUserId, OrganizationOneProjectOneUid);
+
+            return request;
+        }
+
+        public static ProjectReadBySlugRequest GetProjectReadBySlugRequest()
+        {
+            var request = new ProjectReadBySlugRequest(CurrentUserId, StringOne);
 
             return request;
         }
@@ -497,7 +514,8 @@ namespace Translation.Tests.TestHelpers
 
         public static AdminInviteRequest GetAdminInviteRequest()
         {
-            var request = new AdminInviteRequest(CurrentUserId, UidOne, EmailOne, StringOne, StringOne);
+            var request = new AdminInviteRequest(CurrentUserId, UidOne, EmailOne,
+                                                 StringOne, StringOne);
 
             return request;
         }
@@ -511,7 +529,8 @@ namespace Translation.Tests.TestHelpers
 
         public static AdminAcceptInviteRequest GetAdminAcceptInviteRequest()
         {
-            var request = new AdminAcceptInviteRequest(UidOne, EmailOne, StringOne, StringOne, PasswordOne);
+            var request = new AdminAcceptInviteRequest(UidOne, EmailOne, StringOne,
+                                                       StringOne, PasswordOne);
 
             return request;
         }
@@ -610,7 +629,8 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelCreateRequest GetLabelCreateRequest()
         {
-            var request = new LabelCreateRequest(CurrentUserId, UidOne, UidOne, StringOne, StringOne);
+            var request = new LabelCreateRequest(CurrentUserId, UidOne, UidOne,
+                                                 StringOne, StringOne);
 
             return request;
         }
@@ -624,7 +644,8 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelCreateListRequest GetLabelCreateListRequest()
         {
-            var request = new LabelCreateListRequest(CurrentUserId, UidOne, UidOne, new List<LabelListInfo>() { GetLabelListInfo() });
+            var request = new LabelCreateListRequest(CurrentUserId, UidOne, UidOne,
+                                                     new List<LabelListInfo>() { GetLabelListInfo() });
 
             return request;
         }
@@ -638,7 +659,7 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelReadByKeyRequest GetLabelReadByKeyRequest()
         {
-            var request = new LabelReadByKeyRequest(CurrentUserId, StringOne,StringOne);
+            var request = new LabelReadByKeyRequest(CurrentUserId, StringOne, StringOne);
 
             return request;
         }
@@ -689,7 +710,8 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelEditRequest GetLabelEditRequest()
         {
-            var request = new LabelEditRequest(CurrentUserId, UidOne, UidOne, StringOne, StringOne);
+            var request = new LabelEditRequest(CurrentUserId, UidOne, UidOne, StringOne,
+                                               StringOne);
 
             return request;
         }
@@ -710,7 +732,8 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelCloneRequest GetLabelCloneRequest()
         {
-            var request = new LabelCloneRequest(CurrentUserId, UidOne, UidOne, UidOne, StringOne, StringOne);
+            var request = new LabelCloneRequest(CurrentUserId, UidOne, UidOne,
+                                                UidOne, StringOne, StringOne);
 
             return request;
         }
@@ -724,14 +747,16 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelTranslationCreateRequest GetLabelTranslationCreateRequest()
         {
-            var request = new LabelTranslationCreateRequest(CurrentUserId, UidOne, UidOne, UidOne, StringOne);
+            var request = new LabelTranslationCreateRequest(CurrentUserId, UidOne, UidOne,
+                                                            UidOne, StringOne);
 
             return request;
         }
 
         public static LabelTranslationCreateListRequest GetLabelTranslationCreateListRequest()
         {
-            var request = new LabelTranslationCreateListRequest(CurrentUserId, UidOne, UidOne, new List<TranslationListInfo>() { GetTranslationListInfo() });
+            var request = new LabelTranslationCreateListRequest(CurrentUserId, UidOne, UidOne,
+                                                                new List<TranslationListInfo>() { GetTranslationListInfo() });
 
             return request;
         }
@@ -775,7 +800,8 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelTranslationEditRequest GetLabelTranslationEditRequest()
         {
-            var request = new LabelTranslationEditRequest(CurrentUserId, UidOne, UidOne, StringOne);
+            var request = new LabelTranslationEditRequest(CurrentUserId, UidOne, UidOne,
+                                                          StringOne);
 
             return request;
         }
@@ -833,14 +859,18 @@ namespace Translation.Tests.TestHelpers
 
         public static LanguageCreateRequest GetLanguageCreateRequest()
         {
-            var request = new LanguageCreateRequest(CurrentUserId, StringOne, StringOne, IsoCode2One, IsoCode3One, StringOne, StringOne);
+            var request = new LanguageCreateRequest(CurrentUserId, StringOne, StringOne,
+                                                    IsoCode2One, IsoCode3One, StringOne,
+                                                    StringOne);
 
             return request;
         }
 
         public static LanguageEditRequest GetLanguageEditRequest()
         {
-            var request = new LanguageEditRequest(CurrentUserId, UidOne, StringOne, StringOne, IsoCode2One, IsoCode3One, StringOne, StringOne);
+            var request = new LanguageEditRequest(CurrentUserId, UidOne, StringOne,
+                                                  StringOne, IsoCode2One, IsoCode3One,
+                                                  StringOne, StringOne);
 
             return request;
         }
@@ -861,7 +891,8 @@ namespace Translation.Tests.TestHelpers
 
         public static SignUpRequest GetSignUpRequest()
         {
-            var request = new SignUpRequest(StringOne, StringOne, StringOne, EmailOne, PasswordOne, GetClientLogInfo());
+            var request = new SignUpRequest(StringOne, StringOne, StringOne,
+                                            EmailOne, PasswordOne, GetClientLogInfo());
 
             return request;
         }
@@ -905,7 +936,8 @@ namespace Translation.Tests.TestHelpers
 
         public static OrganizationEditRequest GetOrganizationEditRequest()
         {
-            var request = new OrganizationEditRequest(CurrentUserId, UidOne, StringOne, StringOne);
+            var request = new OrganizationEditRequest(CurrentUserId, UidOne, StringOne,
+                                                      StringOne);
 
             return request;
         }
