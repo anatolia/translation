@@ -322,6 +322,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static ProjectReadBySlugRequest GetProjectReadBySlugRequest()
+        {
+            var request = new ProjectReadBySlugRequest(CurrentUserId, StringOne);
+
+            return request;
+        }
+
         public static ProjectDeleteRequest GetProjectDeleteRequest()
         {
             var request = new ProjectDeleteRequest(CurrentUserId, OrganizationOneProjectOneUid);

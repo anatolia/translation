@@ -148,6 +148,40 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
+        public async Task ProjectService_GetProjectBySlug_Invalid_ProjectNotFound()
+        {
+            // arrange
+            var request = GetProjectReadBySlugRequest();
+            MockProjectRepository.Setup_Select_Returns_InvalidProject();
+
+            // act
+            var result = await SystemUnderTest.GetProjectBySlug(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
+            AssertReturnType<ProjectReadBySlugResponse>(result);
+            MockProjectRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task ProjectService_GetProjectBySlug_Success()
+        {
+            // arrange
+            var request = GetProjectReadBySlugRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
+
+            // act
+            var result = await SystemUnderTest.GetProjectBySlug(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<ProjectReadBySlugResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockProjectRepository.Verify_Select();
+        }
+
+        [Test]
         public async Task ProjectService_CreateProject_ProjectAlreadyExist()
         {
             // arrange
