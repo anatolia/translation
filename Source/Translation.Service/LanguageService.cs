@@ -135,7 +135,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedUser(request.CurrentUserId);
             if (!currentUser.IsSuperAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotSuperAdmin("user");
                 return response;
             }
 
@@ -169,7 +169,8 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedUser(request.CurrentUserId);
             if (!currentUser.IsSuperAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotSuperAdmin("user");
+             
                 return response;
             }
 
@@ -210,7 +211,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedUser(request.CurrentUserId);
             if (!currentUser.IsSuperAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotSuperAdmin("user");
                 return response;
             }
 

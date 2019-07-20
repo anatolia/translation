@@ -1,4 +1,5 @@
-﻿using Translation.Client.Web.Models.Language;
+﻿using Translation.Client.Web.Models.Integration;
+using Translation.Client.Web.Models.Language;
 using Translation.Client.Web.Models.Organization;
 using Translation.Client.Web.Models.Project;
 using Translation.Client.Web.Models.User;
@@ -200,5 +201,26 @@ namespace Translation.Tests.TestHelpers
 
             return model;
         }
+
+        public static IntegrationCreateModel GetIntegrationCreateModel()
+        {
+            var model = new IntegrationCreateModel();
+            model.OrganizationUid = UidOne;
+            model.Name = StringOne;
+            model.Description = StringOne;
+            return model;
+        }
+
+        public static IntegrationEditModel GetIntegrationEditModel()
+        {
+            var model = new IntegrationEditModel();
+            model.IntegrationUid = UidOne;
+            model.Name = StringOne;
+            model.Description = StringOne;
+
+            return model;
+        }
+
+
     }
 }

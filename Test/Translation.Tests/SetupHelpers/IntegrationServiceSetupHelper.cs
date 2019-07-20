@@ -5,6 +5,7 @@ using Moq;
 
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
+using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Integration;
 using Translation.Common.Models.Requests.Integration.IntegrationClient;
 using Translation.Common.Models.Requests.Integration.Token;
@@ -18,6 +19,12 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class IntegrationServiceSetupHelper
     {
+        public static void Setup_GetIntegrationRevisions_Returns_IntegrationRevisionReadListResponse_Failed(this Mock<IIntegrationService> service)
+        {
+            service.Setup(x => x.GetIntegrationRevisions(It.IsAny<IntegrationRevisionReadListRequest>()))
+                .Returns(Task.FromResult(new IntegrationRevisionReadListResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+        }
+
         public static void Setup_GetIntegrations_Returns_IntegrationReadListResponse_Success(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.GetIntegrations(It.IsAny<IntegrationReadListRequest>()))
@@ -39,7 +46,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_EditIntegration_Returns_IntegrationEditResponse_Success(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.EditIntegration(It.IsAny<IntegrationEditRequest>()))
-                   .Returns(Task.FromResult(new IntegrationEditResponse { Status = ResponseStatus.Success }));
+                   .Returns(Task.FromResult(new IntegrationEditResponse { Status = ResponseStatus.Success, Item = new IntegrationDto() { Uid = UidOne } }));
         }
 
         public static void Setup_DeleteIntegration_Returns_IntegrationDeleteResponse_Success(this Mock<IIntegrationService> service)
@@ -280,6 +287,29 @@ namespace Translation.Tests.SetupHelpers
         {
             service.Setup(x => x.EditIntegration(It.IsAny<IntegrationEditRequest>()))
                    .Returns(Task.FromResult(new IntegrationEditResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Setup_GetIntegrationRevisions_Returns_IntegrationRevisionReadListResponse_Success(this Mock<IIntegrationService> service)
+        {
+            var items = new List<RevisionDto<IntegrationDto>>();
+            items.Add(new RevisionDto<IntegrationDto>() { RevisionedByUid = UidOne, Revision = One, Item = new IntegrationDto() { Uid = UidOne } });
+
+            service.Setup(x => x.GetIntegrationRevisions(It.IsAny<IntegrationRevisionReadListRequest>()))
+                .Returns(Task.FromResult(new IntegrationRevisionReadListResponse() { Status = ResponseStatus.Success, Items = items }));
+        }
+
+        public static void Setup_GetIntegrationRevisions_Returns_IntegrationRevisionReadListResponse_Invalid(this Mock<IIntegrationService> service)
+        {
+            service.Setup(x => x.GetIntegrations(It.IsAny<IntegrationReadListRequest>()))
+                .Returns(Task.FromResult(new IntegrationReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Verify_GetIntegrationRevisions(this Mock<IIntegrationService> service)
+        {
+            var items = new List<RevisionDto<IntegrationDto>>();
+            items.Add(new RevisionDto<IntegrationDto>() { RevisionedByUid = UidOne, Revision = One, Item = new IntegrationDto() { Uid = UidOne } });
+
+            service.Verify(x => x.GetIntegrationRevisions(It.IsAny<IntegrationRevisionReadListRequest>()));
         }
 
         public static void Setup_DeleteIntegration_Returns_IntegrationDeleteResponse_Invalid(this Mock<IIntegrationService> service)

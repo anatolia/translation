@@ -197,7 +197,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateLanguage(request);
 
             //assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid,UserNotSuperAdmin);
             AssertReturnType<LanguageCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -257,7 +257,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.EditLanguage(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid,UserNotSuperAdmin);
             AssertReturnType<LanguageEditResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -352,7 +352,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteLanguage(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid,UserNotSuperAdmin);
             AssertReturnType<LanguageDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
         }

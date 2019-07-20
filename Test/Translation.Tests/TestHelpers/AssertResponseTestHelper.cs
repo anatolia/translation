@@ -46,7 +46,7 @@ namespace Translation.Tests.TestHelpers
         public const string LabelTranslationRevisionNotFound = "label_translation_revision_not_found";
 
         public const string OrganizationHasChildren = "organization_has_children";
-        public const string ProjectHasChildren  = "project_has_children";
+        public const string ProjectHasChildren = "project_has_children";
         public const string UserHasChildren = "user_has_children";
         public const string LanguageHasChildren = "language_has_children";
         public const string IntegrationHasChildren = "integration_has_children";
@@ -55,6 +55,8 @@ namespace Translation.Tests.TestHelpers
         public const string LabelHasChildren = "label_has_children";
         public const string LabelTranslationHasChildren = "label_translation_has_children";
 
+        public const string UserNotSuperAdmin = "user_not_super_admin";
+        public const string UserNotAdmin = "user_not_admin";
         public static void AssertResponseStatusAndErrorMessages(BaseResponse result, ResponseStatus status, string errorMessage)
         {
             result.ShouldNotBeNull();
@@ -73,7 +75,7 @@ namespace Translation.Tests.TestHelpers
             {
                 result.ErrorMessages.Count.ShouldNotBe(0);
             }
-            else if(status == ResponseStatus.Success)
+            else if (status == ResponseStatus.Success)
             {
                 result.ErrorMessages.Count.ShouldBe(0);
             }

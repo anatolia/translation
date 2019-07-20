@@ -199,7 +199,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateIntegration(request);
 
             //assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<IntegrationCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -280,7 +280,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.EditIntegration(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<IntegrationEditResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -400,7 +400,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteIntegration(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<IntegrationDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -538,7 +538,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForIntegration(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<IntegrationChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
 
@@ -729,7 +729,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateIntegrationClient(request);
 
             //assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<IntegrationClientCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -912,7 +912,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.RefreshIntegrationClient(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<IntegrationClientRefreshResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -1079,7 +1079,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteIntegrationClient(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid,UserNotAdmin);
             AssertReturnType<IntegrationClientDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -1224,7 +1224,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid,UserNotAdmin);
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -1533,7 +1533,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.RevokeToken(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid,UserNotAdmin);
             AssertReturnType<TokenRevokeResponse>(result);
             MockUserRepository.Verify_SelectById();
         }

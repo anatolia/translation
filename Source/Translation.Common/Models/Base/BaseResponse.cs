@@ -35,6 +35,18 @@ namespace Translation.Common.Models.Base
             ErrorMessages.Add(entityName + "_not_found");
         }
 
+        public void SetInvalidBecauseNotSuperAdmin(string entityName = "entity")
+        {
+            Status = ResponseStatus.Invalid;
+            ErrorMessages.Add(entityName + "_not_super_admin");
+        }
+
+        public void SetInvalidBecauseNotAdmin(string entityName = "entity")
+        {
+            Status = ResponseStatus.Invalid;
+            ErrorMessages.Add(entityName + "_not_admin");
+        }
+
         public void SetInvalidBecauseNotActive(string entityName = "entity")
         {
             Status = ResponseStatus.Invalid;
