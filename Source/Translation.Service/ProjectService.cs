@@ -193,17 +193,12 @@ namespace Translation.Service
                 return response;
             }
             
-            if (await _projectRepository.Any(x => x.Name == request.ProjectName
+            if (await _projectRepository.Any(x => (x.Name == request.ProjectName
+                                                  || x.Slug == request.ProjectSlug)
                                                   && x.OrganizationId == currentUser.OrganizationId))
             {
-                response.SetFailedBecauseNameMustBeUnique("project");
-                return response;
-            }
-
-            if (await _projectRepository.Any(x => x.Slug == request.ProjectSlug
-                                                  && x.OrganizationId == currentUser.OrganizationId))
-            {
-                response.SetFailedBecauseNameMustBeUnique("project");
+                response.SetFailed();
+                response.ErrorMessages.Add("project_name_and_slug_must_be_unique");
                 return response;
             }
 
