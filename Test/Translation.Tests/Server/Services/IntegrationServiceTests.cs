@@ -1409,6 +1409,79 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
+        public async Task IntegrationService_CreateTokenWhenUserAuthenticated_Success()
+        {
+            // arrange
+            var request = GetTokenGetRequest();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+            MockIntegrationRepository.Setup_Any_Returns_False();
+            MockTokenRepository.Setup_Insert_Success();
+
+            // act
+            var result = await SystemUnderTest.CreateTokenWhenUserAuthenticated(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<TokenCreateResponse>(result);
+            MockIntegrationClientRepository.Verify_Select();
+            MockTokenRepository.Verify_Insert();
+        }
+
+        [Test]
+        public async Task IntegrationService_CreateTokenWhenUserAuthenticated_Failed()
+        {
+            // arrange
+            var request = GetTokenGetRequest();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+            MockIntegrationRepository.Setup_Any_Returns_False();
+            MockTokenRepository.Setup_Insert_Failed();
+
+            // act
+            var result = await SystemUnderTest.CreateTokenWhenUserAuthenticated(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<TokenCreateResponse>(result);
+            MockIntegrationClientRepository.Verify_Select();
+            MockIntegrationRepository.Verify_Any();
+            MockTokenRepository.Verify_Insert();
+        }
+
+        [Test]
+        public async Task IntegrationService_CreateTokenWhenUserAuthenticated_Invalid_IntegrationClientNotFound()
+        {
+            // arrange
+            var request = GetTokenGetRequest();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.CreateTokenWhenUserAuthenticated(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationClientNotFound);
+            AssertReturnType<TokenCreateResponse>(result);
+            MockIntegrationClientRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task IntegrationService_CreateTokenWhenUserAuthenticated_Invalid_IntegrationNotActive()
+        {
+            // arrange
+            var request = GetTokenGetRequest();
+            MockIntegrationClientRepository.Setup_Select_Returns_OrganizationOneIntegrationOneIntegrationClientOne();
+            MockIntegrationRepository.Setup_Any_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.CreateTokenWhenUserAuthenticated(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotActive);
+            AssertReturnType<TokenCreateResponse>(result);
+            MockIntegrationClientRepository.Verify_Select();
+            MockIntegrationRepository.Verify_Any();
+        }
+
+        [Test]
         public async Task IntegrationService_RevokeToken_Success()
         {
             // arrange

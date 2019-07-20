@@ -54,7 +54,7 @@ namespace Translation.Tests.TestHelpers
 
         public static OrganizationActiveTokenReadListRequest GetOrganizationActiveTokenReadListRequest()
         {
-            var request = new OrganizationActiveTokenReadListRequest(CurrentUserId,UidOne);
+            var request = new OrganizationActiveTokenReadListRequest(CurrentUserId, UidOne);
 
             return request;
         }
@@ -75,7 +75,14 @@ namespace Translation.Tests.TestHelpers
 
         public static TokenCreateRequest GetTokenCreateRequest()
         {
-            var request = new TokenCreateRequest(UidOne, UidOne,IPAddress.Any);
+            var request = new TokenCreateRequest(UidOne, UidOne, IPAddress.Any);
+
+            return request;
+        }
+
+        public static TokenGetRequest GetTokenGetRequest()
+        {
+            var request = new TokenGetRequest(CurrentUserId);
 
             return request;
         }
@@ -89,7 +96,7 @@ namespace Translation.Tests.TestHelpers
 
         public static TokenValidateRequest GetTokenValidateRequest()
         {
-            var request = new TokenValidateRequest(UidOne,UidOne);
+            var request = new TokenValidateRequest(UidOne, UidOne);
 
             return request;
         }
@@ -232,7 +239,8 @@ namespace Translation.Tests.TestHelpers
 
         public static ProjectCreateRequest GetProjectCreateRequest()
         {
-            var request = new ProjectCreateRequest(CurrentUserId, OrganizationOneUid, StringOne, HttpUrl, StringOne);
+            var request = new ProjectCreateRequest(CurrentUserId, OrganizationOneUid, StringOne,
+                HttpUrl, StringOne, StringOne);
 
             return request;
         }
@@ -240,7 +248,7 @@ namespace Translation.Tests.TestHelpers
         public static ProjectCreateRequest GetProjectCreateRequest(Organization organization, Project project)
         {
             var request = new ProjectCreateRequest(CurrentUserId, organization.Uid, project.Name,
-                project.Url, project.Description);
+                project.Url, project.Description, StringOne);
 
             return request;
         }
@@ -248,7 +256,7 @@ namespace Translation.Tests.TestHelpers
         public static ProjectCreateRequest GetProjectCreateRequest(CurrentOrganization organization, Project project)
         {
             var request = new ProjectCreateRequest(CurrentUserId, organization.Uid, project.Name,
-                project.Url, project.Description);
+                project.Url, project.Description, StringOne);
 
             return request;
         }
@@ -256,7 +264,7 @@ namespace Translation.Tests.TestHelpers
         public static ProjectEditRequest GetProjectEditRequest()
         {
             var request = new ProjectEditRequest(CurrentUserId, OrganizationOneUid, UidOne,
-                                                 StringOne, HttpUrl, StringOne);
+                                                 StringOne, HttpUrl, StringOne,StringOne);
 
             return request;
         }
@@ -264,7 +272,7 @@ namespace Translation.Tests.TestHelpers
         public static ProjectEditRequest GetProjectEditRequest(Project project)
         {
             var request = new ProjectEditRequest(CurrentUserId, project.OrganizationUid, project.Uid,
-                project.Name, project.Url, project.Description);
+                project.Name, project.Url, project.Description,StringOne);
 
             return request;
         }
@@ -272,7 +280,7 @@ namespace Translation.Tests.TestHelpers
         public static ProjectCloneRequest GetProjectCloneRequest()
         {
             var request = new ProjectCloneRequest(CurrentUserId, OrganizationOneUid, UidOne, StringOne,
-                HttpUrl, StringOne, One, Two, BooleanTrue);
+                HttpUrl, StringOne, One, Two, BooleanTrue,StringOne);
 
             return request;
         }
@@ -281,7 +289,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new ProjectCloneRequest(CurrentUserId, project.OrganizationUid, project.Uid,
                 project.Name, project.Url, project.Description,
-                project.LabelCount, project.LabelTranslationCount, project.IsSuperProject);
+                project.LabelCount, project.LabelTranslationCount, project.IsSuperProject,project.Slug);
 
             return request;
         }
@@ -630,7 +638,7 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelReadByKeyRequest GetLabelReadByKeyRequest()
         {
-            var request = new LabelReadByKeyRequest(CurrentUserId, StringOne);
+            var request = new LabelReadByKeyRequest(CurrentUserId, StringOne,StringOne);
 
             return request;
         }

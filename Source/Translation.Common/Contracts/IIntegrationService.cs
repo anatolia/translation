@@ -29,7 +29,7 @@ namespace Translation.Common.Contracts
         Task<IntegrationClientChangeActivationResponse> ChangeActivationForIntegrationClient(IntegrationClientChangeActivationRequest request);
         Task<IntegrationRestoreResponse> RestoreIntegration(IntegrationRestoreRequest request);
         Task<TokenCreateResponse> CreateToken(TokenCreateRequest request);
-        Task<TokenCreateResponse> CreateToken(TokenGetRequest request);
+        Task<TokenCreateResponse> CreateTokenWhenUserAuthenticated(TokenGetRequest request);
         Task<TokenRevokeResponse> RevokeToken(TokenRevokeRequest request);
         Task<TokenValidateResponse> ValidateToken(TokenValidateRequest request);
         Task<OrganizationActiveTokenReadListResponse> GetActiveTokensOfOrganization(OrganizationActiveTokenReadListRequest request);
