@@ -13,6 +13,17 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class OrganizationRepositorySetupHelper
     {
+        public static void Setup_SelectRevisions_Returns_OrganizationOneRevisions(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
+                      .ReturnsAsync(GetOrganizationOneRevisions());
+        }
+
+        public static void Verify_SelectRevisions(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Verify(x => x.SelectRevisions(It.IsAny<long>()));
+        }
+
         public static void Setup_SelectAfter_Returns_Organizations(this Mock<IOrganizationRepository> repository)
         {
             repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Organization, bool>>>(), 
@@ -33,7 +44,6 @@ namespace Translation.Tests.SetupHelpers
                       .ReturnsAsync(new List<Organization> { GetOrganization() });
         }
 
-
         public static void Setup_Count_Returns_Ten(this Mock<IOrganizationRepository> repository)
         {
             repository.Setup(x => x.Count(It.IsAny<Expression<Func<Organization, bool>>>(),
@@ -47,10 +57,28 @@ namespace Translation.Tests.SetupHelpers
                       .ReturnsAsync(GetOrganizationOne());
         }
 
+        public static void Setup_SelectById_Returns_OrganizationTwo(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Setup(x => x.SelectById(It.IsAny<long>()))
+                      .ReturnsAsync(GetOrganizationTwo());
+        }
+
         public static void Setup_Select_Returns_OrganizationOne(this Mock<IOrganizationRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Organization, bool>>>(), false))
                       .ReturnsAsync(GetOrganizationOne());
+        }
+
+        public static void Setup_Select_Returns_OrganizationTwo(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Organization, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationTwo());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneNotExist(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Organization, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneNotExist());
         }
 
         public static void Setup_Any_Returns_False(this Mock<IOrganizationRepository> repository)
