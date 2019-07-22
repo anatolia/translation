@@ -656,10 +656,11 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public void LabelListData_GET()
+        public void LabelListData_GET_Success()
         {
             // arrange
             MockLabelService.Setup_GetLabels_Returns_LabelReadListResponse_Success();
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
 
             // act
             var result = SystemUnderTest.LabelListData(OrganizationOneProjectOneUid, One, Two);
@@ -667,6 +668,7 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertViewAndHeaders(result, new []{ "label_key", "label_translation_count", "description", "is_active" });
             MockLabelService.Verify_GetLabels();
+            MockProjectService.Verify_GetProject();
         }
 
         [Test]
@@ -674,6 +676,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLabelService.Setup_GetLabels_Returns_LabelReadListResponse_Failed();
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
 
             // act
             var result = SystemUnderTest.LabelListData(OrganizationOneProjectOneUid, One, Two);
@@ -681,6 +684,7 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertView<NotFoundResult>(result);
             MockLabelService.Verify_GetLabels();
+            MockProjectService.Verify_GetProject();
         }
 
         [Test]
@@ -688,6 +692,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLabelService.Setup_GetLabels_Returns_LabelReadListResponse_Invalid();
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
 
             // act
             var result = SystemUnderTest.LabelListData(OrganizationOneProjectOneUid, One, Two);
@@ -695,6 +700,7 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertView<NotFoundResult>(result);
             MockLabelService.Verify_GetLabels();
+            MockProjectService.Verify_GetProject();
         }
 
         [Test]
@@ -703,7 +709,7 @@ namespace Translation.Tests.Client.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.LabelListData(OrganizationOneProjectOneUid, One, Two);
+            var result = SystemUnderTest.LabelListData(EmptyUid, One, Two);
 
             // assert
             AssertView<ForbidResult>(result);
@@ -718,6 +724,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLabelService.Setup_GetLabels_Returns_LabelReadListResponse_Success();
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
 
             // act
             var result = (JsonResult)await SystemUnderTest.LabelListData(OrganizationOneProjectOneUid, skip, take);
@@ -725,6 +732,7 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertView<DataResult>(result);
             AssertPagingInfo(result);
+            MockProjectService.Verify_GetProject();
         }
 
         [Test]

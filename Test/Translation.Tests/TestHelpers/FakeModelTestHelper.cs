@@ -1,4 +1,7 @@
-﻿using Translation.Client.Web.Models.Integration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
+using Moq;
+using Translation.Client.Web.Models.Integration;
 using Translation.Client.Web.Models.Language;
 using Translation.Client.Web.Models.Organization;
 using Translation.Client.Web.Models.Project;
@@ -56,6 +59,7 @@ namespace Translation.Tests.TestHelpers
             model.OrganizationUid = OrganizationOneUid;
             model.Name = OrganizationOneProjectOneName;
             model.Url = HttpsUrl;
+            model.Slug = OrganizationOneProjectOneSlug;
 
             return model;
         }
@@ -67,6 +71,7 @@ namespace Translation.Tests.TestHelpers
             model.ProjectUid = OrganizationOneProjectOneUid;
             model.Name = OrganizationOneProjectOneName;
             model.Url = HttpsUrl;
+            model.Slug = OrganizationOneProjectOneSlug;
 
             return model;
         }
@@ -80,6 +85,7 @@ namespace Translation.Tests.TestHelpers
             model.LabelCount = One;
             model.LabelTranslationCount = Two;
             model.Url = HttpsUrl;
+            model.Slug = StringOne;
 
             return model;
         }
@@ -91,7 +97,7 @@ namespace Translation.Tests.TestHelpers
             model.OriginalName = "Language One Original Name";
             model.IsoCode2 = IsoCode2One;
             model.IsoCode3 = IsoCode3One;
-            // todo: model.Icon = 
+            // todo: model.Icon =  
 
             return model;
         }
@@ -141,8 +147,10 @@ namespace Translation.Tests.TestHelpers
         public static ResetPasswordModel GetOrganizationOneUserOneResetPasswordModel()
         {
             var model = new ResetPasswordModel();
+            model.Token = UidOne;
             model.Email = OrganizationOneUserOneEmail;
             model.Password = PasswordOne;
+            model.ReEnterPassword = PasswordOne;
 
             return model;
         }

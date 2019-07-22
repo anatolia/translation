@@ -102,6 +102,7 @@ namespace Translation.Tests.Server.Factories
             result.OrganizationName.ShouldBe(project.OrganizationName);
 
             result.Name.ShouldBe(request.Name);
+            result.Slug.ShouldBe(request.Slug);
 
             result.Description.ShouldBe(request.Description);
             result.Url.ShouldBe(request.Url);

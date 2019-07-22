@@ -68,8 +68,8 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Verify_SelectMany(this Mock<ILabelRepository> repository)
         {
-            repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<Label, bool>>>(),
-                                                 It.IsAny<Guid>(),
+            repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<Label, bool>>>(),
+                                                 It.IsAny<int>(),
                                                  It.IsAny<int>(),
                                                  It.IsAny<Expression<Func<Label, object>>>(),
                                                  It.IsAny<bool>(), false));
