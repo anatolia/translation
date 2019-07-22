@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http.Internal;
 using Moq;
 using Translation.Client.Web.Models.Integration;
+using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.Language;
 using Translation.Client.Web.Models.Organization;
 using Translation.Client.Web.Models.Project;
@@ -229,6 +230,55 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static LabelCreateModel GetLabelCreateModel()
+        {
+            var model = new LabelCreateModel();
+            model.OrganizationUid = UidOne;
+            model.ProjectUid = UidOne;
+            model.Key = StringOne;
+            model.ProjectName = StringOne;
+            model.Description = StringOne;
 
+
+            return model;
+        }
+
+        public static LabelEditModel GetLabelEditModel()
+        {
+            var model = new LabelEditModel();
+            model.OrganizationUid = UidOne;
+            model.LabelUid = UidOne;
+            model.Key = StringOne;
+            model.Description = StringOne;
+
+
+            return model;
+        }
+
+        public static LabelCloneModel GetLabelCloneModel()
+        {
+            var model = new LabelCloneModel();
+
+            model.OrganizationUid = OrganizationOneUid;
+            model.ProjectUid = OrganizationOneProjectOneUid;
+            model.Description = StringOne;
+            model.CloningLabelKey = StringOne;
+            model.CloningLabelDescription = StringOne;
+            model.CloningLabelUid = UidOne;
+            model.Key = StringOne;
+
+            return model;
+        }
+
+        public static LabelUploadFromCSVModel GetLabelUploadFromCSVModel()
+        {
+            var model=new LabelUploadFromCSVModel();
+
+            model.ProjectName = StringOne;
+            model.OrganizationUid = UidOne;
+            model.ProjectUid = UidOne;
+
+            return model;
+        }
     }
 }

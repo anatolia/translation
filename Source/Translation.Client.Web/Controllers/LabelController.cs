@@ -96,7 +96,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var projectName = projectReadBySlugResponse.Item.Name;
-            if (label.IsUid())
+            if (label.IsAnyUid())
             {
                 Guid.TryParse(label, out var labelUid);
                 if (labelUid.IsEmptyGuid())
@@ -116,6 +116,7 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
             else
+
             {
                 var labelKey = label;
                 if (labelKey.IsEmpty())
@@ -315,36 +316,6 @@ namespace Translation.Client.Web.Controllers
             return Json(result);
         }
 
-        [HttpPost,
-         JournalFilter(Message = "journal_label_restore")]
-        public async Task<IActionResult> Restore(Guid id, int revision)
-        {
-            var model = new CommonResult { IsOk = false };
-
-            var labelUid = id;
-            if (labelUid.IsEmptyGuid())
-            {
-                return Json(model);
-            }
-
-            if (revision < 1)
-            {
-                return Json(model);
-            }
-
-            var request = new LabelRestoreRequest(CurrentUser.Id, labelUid, revision);
-            var response = await _labelService.RestoreLabel(request);
-            if (response.Status.IsNotSuccess)
-            {
-                model.Messages = response.ErrorMessages;
-                return Json(model);
-            }
-
-            model.IsOk = true;
-            CurrentUser.IsActionSucceed = true;
-            return Json(model);
-        }
-
         [HttpGet]
         public async Task<IActionResult> Revisions(Guid id)
         {
@@ -413,6 +384,36 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpPost,
+         JournalFilter(Message = "journal_label_restore")]
+        public async Task<IActionResult> Restore(Guid id, int revision)
+        {
+            var model = new CommonResult { IsOk = false };
+
+            var labelUid = id;
+            if (labelUid.IsEmptyGuid())
+            {
+                return Json(model);
+            }
+
+            if (revision < 1)
+            {
+                return Json(model);
+            }
+
+            var request = new LabelRestoreRequest(CurrentUser.Id, labelUid, revision);
+            var response = await _labelService.RestoreLabel(request);
+            if (response.Status.IsNotSuccess)
+            {
+                model.Messages = response.ErrorMessages;
+                return Json(model);
+            }
+
+            model.IsOk = true;
+            CurrentUser.IsActionSucceed = true;
+            return Json(model);
+        }
+
+        [HttpPost,
          JournalFilter(Message = "journal_label_change_activation")]
         public async Task<IActionResult> ChangeActivation(Guid id, Guid organizationUid)
         {
@@ -436,7 +437,6 @@ namespace Translation.Client.Web.Controllers
             CurrentUser.IsActionSucceed = true;
             return Json(model);
         }
-
 
         [HttpGet]
         public async Task<IActionResult> UploadLabelFromCSVFile(Guid id)

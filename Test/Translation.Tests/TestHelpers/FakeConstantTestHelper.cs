@@ -54,7 +54,7 @@ namespace Translation.Tests.TestHelpers
         public const long OrganizationTwoProjectOneId = 2157161649L;
         public static Guid OrganizationTwoProjectOneUid => new Guid("c67d7fa4-5626-4777-a591-ded84dc76e50");
         public const string OrganizationTwoProjectOneName = "BlueSoft Project One";
-        
+
         public const long OrganizationTwoUserOneId = 6065151649L;
         public static Guid OrganizationTwoUserOneUid => new Guid("6ca74999-22d7-4bcd-b3ee-dbd88a38598e");
         public const string OrganizationTwoUserOneName = "Organization Two User One";
@@ -100,7 +100,7 @@ namespace Translation.Tests.TestHelpers
         public const int Eight = 8;
         public const int Nine = 9;
         public const int Ten = 10;
-        
+
         public const double MinusDoubleOne = -1.04;
         public const double MinusDoubleTwo = -2.04;
         public const double MinusDoubleThree = -3.04;
@@ -124,6 +124,7 @@ namespace Translation.Tests.TestHelpers
         public const string PasswordTwo = "Test+-2018*+";
         public const string PasswordThree = "Test+-2018**";
 
+        public const string EmptyUidString = "00000000-0000-0000-0000-000000000000";
         public const string UidStringOne = "ee4c5b8a-3498-4a7d-a9c8-74e86075853c";
         public const string UidStringTwo = "b64c5b8a-3498-4a7d-a9c8-74e86075853c";
         public const string UidStringThree = "1f6f9edc-4da4-444f-82dd-e089c9ebd68d";

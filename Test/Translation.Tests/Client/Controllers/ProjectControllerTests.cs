@@ -105,17 +105,17 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public void Create_GET_InvalidParameter()
+        public void Create_GET_InvalidParameterIf()
         {
             // arrange
-            MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Success();
+          
 
             // act
-            var result = SystemUnderTest.Create(OrganizationOneUid);
+            var result = SystemUnderTest.Create(EmptyUid);
 
             // assert
-            AssertViewWithModel<ProjectCreateModel>(result);
-            MockOrganizationService.Verify_GetOrganization();
+
+           
         }
 
         [Test]
@@ -219,7 +219,7 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task Detail_GET_InvalidParameter()
+        public async Task Detail_GET_InvalidParameter_AccessDenied()
         {
             // arrange
 
