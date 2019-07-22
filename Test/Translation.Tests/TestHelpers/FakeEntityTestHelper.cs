@@ -178,6 +178,34 @@ namespace Translation.Tests.TestHelpers
             return revision;
         }
 
+        public static List<EntityRevision<LabelTranslation>> GetOrganizationOneProjectOneLabelOneLabelTranslationOneRevisionsRevisionOneInIt()
+        {
+            var list = new List<EntityRevision<LabelTranslation>>();
+            var revision = new EntityRevision<LabelTranslation>();
+            revision.Id = LongOne;
+            revision.Revision = One;
+            revision.RevisionedAt = DateTimeOne;
+            revision.Entity = GetOrganizationOneProjectOneLabelOneLabelTranslationOne();
+
+            list.Add(revision);
+
+            return list;
+        }
+
+        public static List<EntityRevision<LabelTranslation>> GetOrganizationOneProjectOneLabelOneLabelTranslationOneRevisionsRevisionTwoInIt()
+        {
+            var list = new List<EntityRevision<LabelTranslation>>();
+            var revision = new EntityRevision<LabelTranslation>();
+            revision.Id = LongOne;
+            revision.Revision = Two;
+            revision.RevisionedAt = DateTimeOne;
+            revision.Entity = GetOrganizationOneProjectOneLabelOneLabelTranslationOne();
+
+            list.Add(revision);
+
+            return list;
+        }
+
         public static List<EntityRevision<Integration>> GetOrganizationOneIntegrationOneRevisions()
         {
             var list = new List<EntityRevision<Integration>>();
@@ -775,6 +803,30 @@ namespace Translation.Tests.TestHelpers
             labelTranslation.Id = OrganizationOneProjectOneLabelOneId;
             labelTranslation.Uid = OrganizationOneProjectOneLabelOneUid;
             labelTranslation.Name = OrganizationOneProjectOneLabelOneName;
+
+            labelTranslation.IsActive = BooleanTrue;
+
+            return labelTranslation;
+        }
+
+        public static LabelTranslation GetOrganizationTwoProjectOneLabelOneLabelTranslationOne()
+        {
+            var labelTranslation = new LabelTranslation();
+            labelTranslation.OrganizationId = OrganizationTwoId;
+            labelTranslation.OrganizationUid = OrganizationTwoUid;
+            labelTranslation.OrganizationName = OrganizationTwoName;
+
+            labelTranslation.ProjectId = OrganizationTwoProjectOneId;
+            labelTranslation.ProjectUid = OrganizationTwoProjectOneUid;
+            labelTranslation.ProjectName = OrganizationTwoProjectOneName;
+
+            labelTranslation.LabelId = OrganizationTwoProjectOneLabelOneId;
+            labelTranslation.LabelUid = OrganizationTwoProjectOneLabelOneUid;
+            labelTranslation.LabelName = OrganizationTwoProjectOneLabelOneName;
+
+            labelTranslation.Id = OrganizationTwoProjectOneLabelOneId;
+            labelTranslation.Uid = OrganizationTwoProjectOneLabelOneUid;
+            labelTranslation.Name = OrganizationTwoProjectOneLabelOneName;
 
             labelTranslation.IsActive = BooleanTrue;
 

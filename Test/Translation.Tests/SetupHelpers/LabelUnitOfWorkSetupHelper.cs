@@ -35,6 +35,26 @@ namespace Translation.Tests.SetupHelpers
                                                       It.IsAny<List<LabelTranslation>>()));
         }
 
+        public static void Setup_DoCreateTranslationWorkBulk_Returns_True(this Mock<ILabelUnitOfWork> unitOfWork)
+        {
+            unitOfWork.Setup(x => x.DoCreateTranslationWorkBulk(It.IsAny<long>(),
+                                                                It.IsAny<List<LabelTranslation>>()))
+                      .ReturnsAsync(BooleanTrue);
+        }
+
+        public static void Setup_DoCreateTranslationWorkBulk_Returns_False(this Mock<ILabelUnitOfWork> unitOfWork)
+        {
+            unitOfWork.Setup(x => x.DoCreateTranslationWorkBulk(It.IsAny<long>(),
+                                                                It.IsAny<List<LabelTranslation>>()))
+                      .ReturnsAsync(BooleanFalse);
+        }
+
+        public static void Verify_DoCreateTranslationWorkBulk(this Mock<ILabelUnitOfWork> unitOfWork)
+        {
+            unitOfWork.Verify(x => x.DoCreateTranslationWorkBulk(It.IsAny<long>(),
+                                                                 It.IsAny<List<LabelTranslation>>()));
+        }
+
         public static void Setup_DoCreateTranslationWork_Returns_True(this Mock<ILabelUnitOfWork> unitOfWork)
         {
             unitOfWork.Setup(x => x.DoCreateTranslationWork(It.IsAny<long>(),
@@ -116,6 +136,26 @@ namespace Translation.Tests.SetupHelpers
         {
             unitOfWork.Verify(x => x.DoCreateWork(It.IsAny<long>(),
                                                   It.IsAny<Label>()));
+        }
+
+        public static void Setup_DoDeleteTranslationWork_Returns_True(this Mock<ILabelUnitOfWork> unitOfWork)
+        {
+            unitOfWork.Setup(x => x.DoDeleteTranslationWork(It.IsAny<long>(),
+                                                            It.IsAny<LabelTranslation>()))
+                      .ReturnsAsync(BooleanTrue);
+        }
+
+        public static void Setup_DoDeleteTranslationWork_Returns_False(this Mock<ILabelUnitOfWork> unitOfWork)
+        {
+            unitOfWork.Setup(x => x.DoDeleteTranslationWork(It.IsAny<long>(),
+                                                 It.IsAny<LabelTranslation>()))
+                      .ReturnsAsync(BooleanFalse);
+        }
+
+        public static void Verify_DoDeleteTranslationWork(this Mock<ILabelUnitOfWork> unitOfWork)
+        {
+            unitOfWork.Verify(x => x.DoDeleteTranslationWork(It.IsAny<long>(),
+                                                  It.IsAny<LabelTranslation>()));
         }
     }
 }
