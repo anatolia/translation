@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using NUnit.Framework;
@@ -8,7 +7,6 @@ using Shouldly;
 
 using Translation.Client.Web.Controllers;
 using Translation.Client.Web.Models.Base;
-using Translation.Client.Web.Models.Project;
 using Translation.Client.Web.Models.User;
 using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
@@ -37,12 +35,11 @@ namespace Translation.Tests.Client.Controllers
         [TestCase(LogOnAction, new Type[] { typeof(string) }, typeof(HttpGetAttribute))]
         [TestCase(LogOnAction, new[] { typeof(LogOnModel) }, typeof(HttpPostAttribute))]
         [TestCase(DemandPasswordResetAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(DemandPasswordResetDoneAction, new[] { typeof(DemandPasswordResetModel) }, typeof(HttpPostAttribute))]
         [TestCase(DemandPasswordResetDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
         [TestCase(ResetPasswordAction, new[] { typeof(string), typeof(Guid) }, typeof(HttpGetAttribute))]
         [TestCase(ResetPasswordAction, new[] { typeof(ResetPasswordModel) }, typeof(HttpPostAttribute))]
         [TestCase(ResetPasswordDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(DetailAction, new Type[] { }, typeof(HttpGetAttribute))]
+        [TestCase(DetailAction, new [] { typeof(Guid) }, typeof(HttpGetAttribute))]
         [TestCase(ChangePasswordAction, new Type[] { }, typeof(HttpGetAttribute))]
         [TestCase(ChangePasswordAction, new [] { typeof(ChangePasswordModel) }, typeof(HttpPostAttribute))]
         [TestCase(ChangePasswordDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
@@ -54,7 +51,7 @@ namespace Translation.Tests.Client.Controllers
         [TestCase(AcceptInviteAction, new[] { typeof(string), typeof(Guid) }, typeof(HttpGetAttribute))]
         [TestCase(AcceptInviteAction, new[] { typeof(InviteAcceptModel) }, typeof(HttpPostAttribute))]
         [TestCase(AcceptInviteDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(ChangeActivationAction, new [] { typeof(Guid) }, typeof(HttpGetAttribute))]
+        [TestCase(ChangeActivationAction, new [] { typeof(Guid) }, typeof(HttpPostAttribute))]
         [TestCase(LogOffAction, new Type[] { }, typeof(HttpPostAttribute))]
         [TestCase(JournalListAction, new[] { typeof(Guid)}, typeof(HttpGetAttribute))]
         [TestCase(JournalListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
@@ -1014,6 +1011,143 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertView<DataResult>(result);
             AssertPagingInfo(result);
+        }
+
+
+        [Test]
+        public void Revisions_GET()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetUser_Returns_UserReadResponse_Success();
+
+            // act
+            var result = SystemUnderTest.Revisions(OrganizationOneUserOneUid);
+
+            // assert
+            AssertViewWithModel<UserRevisionReadListModel>(result);
+            MockOrganizationService.Verify_GetUser();
+        }
+
+        [Test]
+        public void Revisions_GET_InvalidParameter()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetUser_Returns_UserReadResponse_Success();
+
+            // act
+            var result = SystemUnderTest.Revisions(EmptyUid);
+
+            // assert
+            AssertViewRedirectToHome(result);
+            MockOrganizationService.Verify_GetUser();
+        }
+
+        [Test]
+        public void RevisionsData_GET()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetUserRevisions_Returns_UserRevisionReadListResponse_Success();
+
+            // act
+            var result = SystemUnderTest.RevisionsData(OrganizationOneUserOneUid);
+
+            // assert
+            AssertViewAndHeaders(result, new[] { "revision", "revisioned_by", "revisioned_at", "user_name", "email", "is_active", "created_at", "" });
+            MockOrganizationService.Verify_GetUserRevisions();
+        }
+
+        [Test]
+        public void RevisionsData_GET_FailedResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetUserRevisions_Returns_UserRevisionReadListResponse_Failed();
+
+            // act
+            var result = SystemUnderTest.RevisionsData(OrganizationOneUserOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockOrganizationService.Verify_GetUserRevisions();
+        }
+
+        [Test]
+        public void RevisionsData_GET_InvalidResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetUserRevisions_Returns_UserRevisionReadListResponse_Invalid();
+
+            // act
+            var result = SystemUnderTest.RevisionsData(OrganizationOneUserOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockOrganizationService.Verify_GetUserRevisions();
+        }
+
+        [Test]
+        public void RevisionsData_GET_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = SystemUnderTest.RevisionsData(EmptyUid);
+
+            // assert
+            AssertView<ForbidResult>(result);
+        }
+
+        [Test]
+        public async Task Restore_Post()
+        {
+            // arrange
+            MockOrganizationService.Setup_RestoreUser_Returns_UserRestoreResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.Restore(OrganizationOneUserOneUid, One);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockOrganizationService.Verify_RestoreUser();
+        }
+
+        [Test]
+        public async Task Restore_Post_FailedResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_RestoreUser_Returns_UserRestoreResponse_Failed();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(OrganizationOneUserOneUid, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
+            MockOrganizationService.Verify_RestoreUser();
+        }
+
+        [Test]
+        public async Task Restore_Post_InvalidResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_RestoreUser_Returns_UserRestoreResponse_Invalid();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(OrganizationOneUserOneUid, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
+            MockOrganizationService.Verify_RestoreUser();
+        }
+
+        [Test]
+        public async Task Restore_Post_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(EmptyUid, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
         }
     }
 }

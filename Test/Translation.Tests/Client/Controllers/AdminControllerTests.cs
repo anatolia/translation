@@ -33,9 +33,9 @@ namespace Translation.Tests.Client.Controllers
             SetControllerContext(SystemUnderTest);
         }
 
-        [TestCase(InviteAction, new[] { typeof(Guid), typeof(string) })]
-        [TestCase(InviteAction, new[] { typeof(AdminAcceptInviteModel) })]
-        [TestCase(InviteDoneAction, new Type[] { })]
+        [TestCase(AcceptInviteAction, new[] { typeof(Guid), typeof(string) })]
+        [TestCase(AcceptInviteAction, new[] { typeof(AdminAcceptInviteModel) })]
+        [TestCase(AcceptInviteDoneAction, new Type[] { })]
         public void Methods_Has_AllowAnonymousAttribute(string actionMethod, Type[] parameters)
         {
             var type = SystemUnderTest.GetType();
@@ -44,7 +44,7 @@ namespace Translation.Tests.Client.Controllers
             Assert.AreEqual(attributes.Length, 1);
         }
 
-        [TestCase(DashboardAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
+        [TestCase(DashboardAction, new Type[] { }, typeof(HttpGetAttribute))]
         [TestCase(ListAction, new Type[] { }, typeof(HttpGetAttribute))]
         [TestCase(ListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
         [TestCase(OrganizationListAction, new Type[] { }, typeof(HttpGetAttribute))]
@@ -94,14 +94,6 @@ namespace Translation.Tests.Client.Controllers
         {
             var type = SystemUnderTest.GetType();
             type.BaseType.Name.StartsWith("BaseController").ShouldBeTrue();
-        }
-
-        [Test]
-        public void Controller_Has_Authorize_Attribute()
-        {
-            var type = SystemUnderTest.GetType();
-            var attributes = type.BaseType.BaseType.CustomAttributes.ToList();
-            attributes.Any(x => x.AttributeType == typeof(AuthorizeAttribute)).ShouldBeTrue();
         }
 
         [Test]
@@ -262,7 +254,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task OrganizationListData_GET_SetPaging(int skip, int take)
         {
             // arrange
-            MockAdminService.Setup_GetOrganizations_Returns_OrganizationReadListResponse_Success();
+            MockOrganizationService.Setup_GetOrganizations_Returns_OrganizationReadListResponse_Success();
 
             // act
             var result = (JsonResult)await SystemUnderTest.OrganizationListData(skip, take);
@@ -270,6 +262,7 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertView<DataResult>(result);
             AssertPagingInfo(result);
+            MockOrganizationService.Verify_GetOrganizations();
         }
 
         [Test]

@@ -44,7 +44,7 @@ namespace Translation.Tests.Server.Services
         public async Task ProjectService_GetProjects_Success_SelectAfter()
         {
             // arrange
-            var request = GetProjectReadListRequest();
+            var request = GetProjectReadListRequestForSelectAfter();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
             MockProjectRepository.Setup_SelectAfter_Returns_Projects();
             MockProjectRepository.Setup_Count_Returns_Ten();
@@ -65,7 +65,7 @@ namespace Translation.Tests.Server.Services
         public async Task ProjectService_GetProjects_Success_SelectMany()
         {
             // arrange
-            var request = GetProjectReadListRequest();
+            var request = GetProjectReadListRequestForSelectMany();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
             MockProjectRepository.Setup_SelectMany_Returns_Projects();
             MockProjectRepository.Setup_Count_Returns_Ten();

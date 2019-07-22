@@ -29,7 +29,7 @@ namespace Translation.Tests.Client.Controllers
 
         [TestCase(CreateAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
         [TestCase(CreateAction, new[] { typeof(LabelCreateModel) }, typeof(HttpPostAttribute))]
-        [TestCase(DetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
+        [TestCase(DetailAction, new[] { typeof(string), typeof(string) }, typeof(HttpGetAttribute))]
         [TestCase(EditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
         [TestCase(EditAction, new[] { typeof(LabelEditModel) }, typeof(HttpPostAttribute))]
         [TestCase(CloneAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
@@ -48,7 +48,6 @@ namespace Translation.Tests.Client.Controllers
         [TestCase(LabelTranslationCreateAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
         [TestCase(LabelTranslationCreateAction, new[] { typeof(LabelTranslationCreateModel) }, typeof(HttpPostAttribute))]
         [TestCase(LabelTranslationDetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(LabelTranslationDetailAction, new[] { typeof(LabelTranslationDetailModel) }, typeof(HttpPostAttribute))]
         [TestCase(LabelTranslationEditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
         [TestCase(LabelTranslationEditAction, new[] { typeof(LabelTranslationEditModel) }, typeof(HttpPostAttribute))]
         [TestCase(LabelTranslationListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]

@@ -340,6 +340,8 @@ namespace Translation.Tests.TestHelpers
             project.Url = HttpUrl;
             project.CreatedAt = DateTimeOne;
 
+            project.Slug = OrganizationOneProjectOneSlug;
+
             return project;
         }
 
@@ -380,6 +382,8 @@ namespace Translation.Tests.TestHelpers
 
             organization.ObfuscationKey = StringSixtyFourOne;
 
+            organization.IsActive = BooleanTrue;
+
             return organization;
         }
 
@@ -394,6 +398,8 @@ namespace Translation.Tests.TestHelpers
             organization.IsActive = BooleanTrue;
             organization.ObfuscationKey = StringSixtyFourOne;
 
+            organization.IsActive = BooleanTrue;
+
             return organization;
         }
 
@@ -407,6 +413,8 @@ namespace Translation.Tests.TestHelpers
             organization.Description = StringOne;
             organization.IsActive = BooleanTrue;
             organization.ObfuscationKey = StringSixtyFourOne;
+
+            organization.IsActive = BooleanTrue;
 
             return organization;
         }
@@ -609,6 +617,8 @@ namespace Translation.Tests.TestHelpers
             label.Name = StringOne;
             label.Key = StringOne;
 
+            label.IsActive = BooleanTrue;
+
             return label;
         }
 
@@ -651,6 +661,8 @@ namespace Translation.Tests.TestHelpers
             label.Name = OrganizationOneProjectOneLabelOneName;
             label.Key = OrganizationOneProjectOneLabelOneKey;
 
+            label.IsActive = BooleanTrue;
+
             return label;
         }
 
@@ -669,6 +681,8 @@ namespace Translation.Tests.TestHelpers
             label.Uid = OrganizationTwoProjectOneLabelOneUid;
             label.Name = OrganizationTwoProjectOneLabelOneName;
             label.Key = OrganizationTwoProjectOneLabelOneKey;
+
+            label.IsActive = BooleanTrue;
 
             return label;
         }
@@ -715,6 +729,8 @@ namespace Translation.Tests.TestHelpers
             labelTranslation.Uid = UidOne;
             labelTranslation.Name = StringOne;
 
+            labelTranslation.IsActive = BooleanTrue;
+
             return labelTranslation;
         }
 
@@ -759,6 +775,8 @@ namespace Translation.Tests.TestHelpers
             labelTranslation.Id = OrganizationOneProjectOneLabelOneId;
             labelTranslation.Uid = OrganizationOneProjectOneLabelOneUid;
             labelTranslation.Name = OrganizationOneProjectOneLabelOneName;
+
+            labelTranslation.IsActive = BooleanTrue;
 
             return labelTranslation;
         }

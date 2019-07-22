@@ -55,6 +55,26 @@ namespace Translation.Tests.SetupHelpers
                                                              It.IsAny<LabelTranslation>()));
         }
 
+        public static void Setup_DoDeleteWork_Returns_True(this Mock<ILabelUnitOfWork> unitOfWork)
+        {
+            unitOfWork.Setup(x => x.DoDeleteWork(It.IsAny<long>(),
+                                                 It.IsAny<Label>()))
+                      .ReturnsAsync(BooleanTrue);
+        }
+
+        public static void Setup_DoDeleteWork_Returns_False(this Mock<ILabelUnitOfWork> unitOfWork)
+        {
+            unitOfWork.Setup(x => x.DoDeleteWork(It.IsAny<long>(),
+                                                 It.IsAny<Label>()))
+                      .ReturnsAsync(BooleanFalse);
+        }
+
+        public static void Verify_DoDeleteWork(this Mock<ILabelUnitOfWork> unitOfWork)
+        {
+            unitOfWork.Verify(x => x.DoDeleteWork(It.IsAny<long>(),
+                                                  It.IsAny<Label>()));
+        }
+
         public static void Setup_DoCreateWork_Returns_True(this Mock<ILabelUnitOfWork> unitOfWork)
         {
             unitOfWork.Setup(x => x.DoCreateWork(It.IsAny<long>(), 

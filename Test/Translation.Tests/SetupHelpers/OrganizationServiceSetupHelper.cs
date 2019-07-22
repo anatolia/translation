@@ -18,6 +18,115 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class OrganizationServiceSetupHelper
     {
+        public static void Setup_RestoreUser_Returns_UserRestoreResponse_Success(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.RestoreUser(It.IsAny<UserRestoreRequest>()))
+                .Returns(Task.FromResult(new UserRestoreResponse { Status = ResponseStatus.Success }));
+        }
+
+        public static void Setup_RestoreUser_Returns_UserRestoreResponse_Failed(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.RestoreUser(It.IsAny<UserRestoreRequest>()))
+                .Returns(Task.FromResult(new UserRestoreResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Setup_RestoreUser_Returns_UserRestoreResponse_Invalid(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.RestoreUser(It.IsAny<UserRestoreRequest>()))
+                .Returns(Task.FromResult(new UserRestoreResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Verify_RestoreUser(this Mock<IOrganizationService> service)
+        {
+            service.Verify(x => x.RestoreUser(It.IsAny<UserRestoreRequest>()));
+        }
+
+        public static void Setup_GetUserRevisions_Returns_UserRevisionReadListResponse_Success(this Mock<IOrganizationService> service)
+        {
+            var items = new List<RevisionDto<UserDto>>();
+            items.Add(new RevisionDto<UserDto>() { RevisionedByUid = UidOne, Revision = One, Item = new UserDto() { Uid = UidOne } });
+
+            service.Setup(x => x.GetUserRevisions(It.IsAny<UserRevisionReadListRequest>()))
+                   .Returns(Task.FromResult(new UserRevisionReadListResponse() { Status = ResponseStatus.Success, Items = items }));
+        }
+
+        public static void Setup_GetUserRevisions_Returns_UserRevisionReadListResponse_Failed(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.GetUserRevisions(It.IsAny<UserRevisionReadListRequest>()))
+                .Returns(Task.FromResult(new UserRevisionReadListResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Setup_GetUserRevisions_Returns_UserRevisionReadListResponse_Invalid(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.GetUserRevisions(It.IsAny<UserRevisionReadListRequest>()))
+                .Returns(Task.FromResult(new UserRevisionReadListResponse() { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Verify_GetUserRevisions(this Mock<IOrganizationService> service)
+        {
+            service.Verify(x => x.GetUserRevisions(It.IsAny<UserRevisionReadListRequest>()));
+        }
+
+        public static void Setup_GetOrganizationRevisions_Returns_OrganizationRevisionReadListResponse_Success(this Mock<IOrganizationService> service)
+        {
+            var items = new List<RevisionDto<OrganizationDto>>();
+            items.Add(new RevisionDto<OrganizationDto>() { RevisionedByUid = UidOne, Revision = One, Item = new OrganizationDto() { Uid = UidOne } });
+
+            service.Setup(x => x.GetOrganizationRevisions(It.IsAny<OrganizationRevisionReadListRequest>()))
+                   .Returns(Task.FromResult(new OrganizationRevisionReadListResponse() { Status = ResponseStatus.Success, Items = items }));
+        }
+
+        public static void Setup_GetOrganizationRevisions_Returns_OrganizationRevisionReadListResponse_Failed(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.GetOrganizationRevisions(It.IsAny<OrganizationRevisionReadListRequest>()))
+                .Returns(Task.FromResult(new OrganizationRevisionReadListResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Setup_GetOrganizationRevisions_Returns_OrganizationRevisionReadListResponse_Invalid(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.GetOrganizationRevisions(It.IsAny<OrganizationRevisionReadListRequest>()))
+                .Returns(Task.FromResult(new OrganizationRevisionReadListResponse() { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Verify_GetOrganizationRevisions(this Mock<IOrganizationService> service)
+        {
+            service.Verify(x => x.GetOrganizationRevisions(It.IsAny<OrganizationRevisionReadListRequest>()));
+        }
+
+        public static void Setup_RestoreOrganization_Returns_OrganizationRestoreResponse_Success(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.RestoreOrganization(It.IsAny<OrganizationRestoreRequest>()))
+                   .Returns(Task.FromResult(new OrganizationRestoreResponse { Status = ResponseStatus.Success }));
+        }
+
+        public static void Setup_RestoreOrganization_Returns_OrganizationRestoreResponse_Invalid(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.RestoreOrganization(It.IsAny<OrganizationRestoreRequest>()))
+                .Returns(Task.FromResult(new OrganizationRestoreResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Setup_RestoreOrganization_Returns_OrganizationRestoreResponse_Failed(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.RestoreOrganization(It.IsAny<OrganizationRestoreRequest>()))
+                .Returns(Task.FromResult(new OrganizationRestoreResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+        }
+
+        public static void Verify_RestoreOrganization(this Mock<IOrganizationService> service)
+        {
+            service.Verify(x => x.RestoreOrganization(It.IsAny<OrganizationRestoreRequest>()));
+        }
+
+        public static void Setup_GetOrganizations_Returns_OrganizationReadListResponse_Success(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.GetOrganizations(It.IsAny<OrganizationReadListRequest>()))
+                   .Returns(Task.FromResult(new OrganizationReadListResponse { Status = ResponseStatus.Success }));
+        }
+
+        public static void Verify_GetOrganizations(this Mock<IOrganizationService> service)
+        {
+            service.Verify(x => x.GetOrganizations(It.IsAny<OrganizationReadListRequest>()));
+        }
+
         public static void Setup_GetUsers_Returns_UserReadListResponse_Success(this Mock<IOrganizationService> service)
         {
             var items = new List<UserDto>();

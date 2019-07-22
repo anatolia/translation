@@ -15,6 +15,7 @@ namespace Translation.Tests.TestHelpers
         public const long OrganizationOneProjectOneId = 1167161649L;
         public static Guid OrganizationOneProjectOneUid => new Guid("7f062647-4c7d-4ba5-b380-55869c74a944");
         public const string OrganizationOneProjectOneName = "Organization One Project One";
+        public const string OrganizationOneProjectOneSlug = "organization_one_project_one";
 
         public const long OrganizationOneUserOneId = 2165161649L;
         public static Guid OrganizationOneUserOneUid => new Guid("5f235216-1da8-471c-ad50-7cb6c424f996");
