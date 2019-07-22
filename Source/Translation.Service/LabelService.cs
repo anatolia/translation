@@ -952,9 +952,9 @@ namespace Translation.Service
             return response;
         }
 
-        public async Task<LabelTranslationReadListResponse> GetTranslation(LabelTranslationReadRequest request)
+        public async Task<LabelTranslationReadResponse> GetTranslation(LabelTranslationReadRequest request)
         {
-            var response = new LabelTranslationReadListResponse();
+            var response = new LabelTranslationReadResponse();
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
@@ -1057,7 +1057,7 @@ namespace Translation.Service
             var labelTranslation = await _labelTranslationRepository.Select(x => x.Uid == request.LabelTranslationUid);
             if (labelTranslation.IsNotExist())
             {
-                response.SetInvalidBecauseNotActive("label_translation");
+                response.SetInvalidBecauseNotFound("label_translation");
                 return response;
             }
 
@@ -1140,7 +1140,7 @@ namespace Translation.Service
             var labelTranslation = await _labelTranslationRepository.Select(x => x.Uid == request.LabelTranslationUid);
             if (labelTranslation.IsNotExist())
             {
-                response.SetInvalidBecauseNotActive("label_translation");
+                response.SetInvalidBecauseNotFound("label_translation");
                 return response;
             }
 
@@ -1187,7 +1187,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotActive("organization");
                 return response;
             }
 
@@ -1201,7 +1201,7 @@ namespace Translation.Service
             var revisions = await _labelTranslationRepository.SelectRevisions(labelTranslation.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalidBecauseNotFound("label_translation");
+                response.SetInvalidBecauseRevisionNotFound("label_translation");
                 return response;
             }
 

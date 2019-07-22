@@ -165,6 +165,12 @@ namespace Translation.Tests.SetupHelpers
                       .ReturnsAsync(GetLanguageOne());
         }
 
+        public static void Setup_SelectById_Returns_LanguageNotExist(this Mock<ILanguageRepository> repository)
+        {
+            repository.Setup(x => x.SelectById(It.IsAny<long>()))
+                      .ReturnsAsync(GetLanguageOneNotExist());
+        }
+
         public static void Verify_SelectById(this Mock<ILanguageRepository> repository)
         {
             repository.Verify(x => x.SelectById(It.IsAny<long>()));

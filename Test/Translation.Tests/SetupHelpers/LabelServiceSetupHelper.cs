@@ -201,20 +201,23 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_GetTranslation_Returns_LabelTranslationReadResponse_Success(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetTranslation(It.IsAny<LabelTranslationReadRequest>()))
-                   .Returns(Task.FromResult(new LabelTranslationReadListResponse() { Status = ResponseStatus.Success }));
+                .ReturnsAsync(new LabelTranslationReadResponse() {Status = ResponseStatus.Success});
+
         }
 
         public static void Setup_GetTranslation_Returns_LabelTranslationReadResponse_Failed(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetTranslation(It.IsAny<LabelTranslationReadRequest>()))
-                .Returns(Task.FromResult(new LabelTranslationReadListResponse() { Status = ResponseStatus.Failed }));
+                .ReturnsAsync(new LabelTranslationReadResponse() { Status = ResponseStatus.Failed });
+
         }
 
         public static void Setup_GetTranslation_Returns_LabelTranslationReadResponse_Invalid(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetTranslation(It.IsAny<LabelTranslationReadRequest>()))
-                .Returns(Task.FromResult(new LabelTranslationReadListResponse() { Status = ResponseStatus.Invalid }));
+                .ReturnsAsync(new LabelTranslationReadResponse() { Status = ResponseStatus.Invalid });
         }
+
         public static void Setup_GetLabelsWithTranslations_Returns_AllLabelReadListResponse_Failed(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetLabelsWithTranslations(It.IsAny<AllLabelReadListRequest>()))
@@ -325,12 +328,6 @@ namespace Translation.Tests.SetupHelpers
                    .Returns(Task.FromResult(new LabelChangeActivationResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
         }
 
-        public static void Setup_GetTranslation_Returns_LabelTranslationReadListResponse_Failed(this Mock<ILabelService> service)
-        {
-            service.Setup(x => x.GetTranslation(It.IsAny<LabelTranslationReadRequest>()))
-                   .Returns(Task.FromResult(new LabelTranslationReadListResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
-        }
-
         public static void Setup_GetLabelsWithTranslations_Returns_AllLabelReadListResponse_Invalid(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetLabelsWithTranslations(It.IsAny<AllLabelReadListRequest>()))
@@ -413,12 +410,6 @@ namespace Translation.Tests.SetupHelpers
         {
             service.Setup(x => x.ChangeActivation(It.IsAny<LabelChangeActivationRequest>()))
                    .Returns(Task.FromResult(new LabelChangeActivationResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
-        }
-
-        public static void Setup_GetTranslation_Returns_LabelTranslationReadListResponse_Invalid(this Mock<ILabelService> service)
-        {
-            service.Setup(x => x.GetTranslation(It.IsAny<LabelTranslationReadRequest>()))
-                   .Returns(Task.FromResult(new LabelTranslationReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Verify_ChangeActivationForLabel(this Mock<ILabelService> service)

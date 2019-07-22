@@ -236,7 +236,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound("organization");
+                response.SetInvalidBecauseNotActive("organization");
                 return response;
             }
 
