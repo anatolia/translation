@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 using Shouldly;
 
@@ -35,5 +36,6 @@ namespace Translation.Tests.Common.DataTransferObjects
             AssertBooleanProperty(properties, "IsSuperProject", dto.IsSuperProject);
             AssertStringProperty(properties, "Slug", dto.Slug);
         }
+
     }
 }

@@ -111,7 +111,7 @@ namespace Translation.Tests.Client.Controllers
             MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Success();
 
             // act
-            var result = SystemUnderTest.Create(OrganizationOneUid);
+            var result = SystemUnderTest.Create(EmptyUid);
 
             // assert
             AssertViewWithModel<IntegrationCreateModel>(result);
@@ -222,10 +222,9 @@ namespace Translation.Tests.Client.Controllers
         public async Task Detail_GET_InvalidParameter()
         {
             // arrange
-            MockIntegrationService.Setup_GetIntegration_Returns_IntegrationReadResponse_Invalid();
 
             // act
-            var result = await SystemUnderTest.Detail(OrganizationOneIntegrationOneUid);
+            var result = await SystemUnderTest.Detail(EmptyUid);
 
             // assert
             AssertViewAccessDenied(result);
@@ -395,10 +394,10 @@ namespace Translation.Tests.Client.Controllers
             // arrange
 
             // act
-            var result = await SystemUnderTest.Delete(EmptyUid);
+            var result = (JsonResult)await SystemUnderTest.Delete(EmptyUid);
 
             // assert
-            AssertView<ForbidResult>(result);
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
         }
 
         [Test]
@@ -419,14 +418,12 @@ namespace Translation.Tests.Client.Controllers
         public async Task Revisions_GET_InvalidParameter()
         {
             // arrange
-            MockIntegrationService.Setup_GetIntegration_Returns_IntegrationReadResponse_Success();
 
             // act
             var result = await SystemUnderTest.Revisions(EmptyUid);
 
             // assert
             AssertViewRedirectToHome(result);
-            MockIntegrationService.Verify_GetIntegration();
         }
 
         [Test]
@@ -444,13 +441,13 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public void RevisionsData_GET_FailedResponse()
+        public async Task RevisionsData_GET_FailedResponse()
         {
             // arrange
             MockIntegrationService.Setup_GetIntegrationRevisions_Returns_IntegrationRevisionReadListResponse_Failed();
 
             // act
-            var result = SystemUnderTest.RevisionsData(OrganizationOneIntegrationOneUid);
+            var result = await SystemUnderTest.RevisionsData(OrganizationOneIntegrationOneUid);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -458,13 +455,13 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public void RevisionsData_GET_InvalidResponse()
+        public async Task RevisionsData_GET_InvalidResponse()
         {
             // arrange
             MockIntegrationService.Setup_GetIntegrationRevisions_Returns_IntegrationRevisionReadListResponse_Invalid();
 
             // act
-            var result = SystemUnderTest.RevisionsData(OrganizationOneIntegrationOneUid);
+            var result = await SystemUnderTest.RevisionsData(OrganizationOneIntegrationOneUid);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -472,12 +469,572 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public void RevisionsData_GET_InvalidParameter()
+        public async Task RevisionsData_GET_InvalidParameter()
         {
             // arrange
 
             // act
-            var result = SystemUnderTest.RevisionsData(EmptyUid);
+            var result = await SystemUnderTest.RevisionsData(EmptyUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+        }
+
+        [Test]
+        public async Task Restore_POST()
+        {
+            // arrange
+            MockIntegrationService.Setup_RestoreIntegration_Returns_IntegrationRestoreResponse_Success();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(OrganizationOneIntegrationOneUid, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(true);
+            MockIntegrationService.Verify_RestoreIntegration();
+        }
+
+        [Test]
+        public async Task Restore_POST_FailedResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_RestoreIntegration_Returns_IntegrationRestoreResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.Restore(OrganizationOneIntegrationOneUid, One);
+
+            // assert
+            var commonResult = ((CommonResult)((JsonResult)result).Value);
+            commonResult.IsOk.ShouldBeFalse();
+            commonResult.Messages.Any(x => x == StringOne);
+            MockIntegrationService.Verify_RestoreIntegration();
+        }
+
+        [Test]
+        public async Task Restore_POST_InvalidResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_RestoreIntegration_Returns_IntegrationRestoreResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.Restore(OrganizationOneIntegrationOneUid, One);
+
+            // assert
+            var commonResult = ((CommonResult)((JsonResult)result).Value);
+            commonResult.IsOk.ShouldBeFalse();
+            commonResult.Messages.Any(x => x == StringOne);
+            MockIntegrationService.Verify_RestoreIntegration();
+        }
+
+        [Test]
+        public async Task Restore_POST_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(EmptyUid, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
+        }
+
+        [Test]
+        public void ClientListData_GET()
+        {
+            // arrange
+            MockIntegrationService.Setup_GetIntegrationClients_Returns_IntegrationClientReadListResponse_Success();
+
+            // act
+            var result = SystemUnderTest.ClientListData(OrganizationOneIntegrationOneUid, One, One);
+
+            // assert
+            AssertViewAndHeaders(result, new[] { "client_id", "client_secret", "is_active", "" });
+            MockIntegrationService.Verify_GetIntegrationClients();
+        }
+
+        [Test]
+        public async Task ClientListData_GET_FailedResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_GetIntegrationClients_Returns_IntegrationClientReadListResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.ClientListData(OrganizationOneIntegrationOneUid, One, One);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockIntegrationService.Verify_GetIntegrationClients();
+        }
+
+        [Test]
+        public async Task ClientListData_GET_InvalidResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_GetIntegrationClients_Returns_IntegrationClientReadListResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.ClientListData(OrganizationOneIntegrationOneUid, One, One);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockIntegrationService.Verify_GetIntegrationClients();
+        }
+
+        [Test]
+        public async Task ClientListData_GET_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.ClientListData(EmptyUid, One, One);
+
+            // assert
+            AssertView<ForbidResult>(result);
+        }
+
+        [Test]
+        public async Task ClientCreate_POST()
+        {
+            // arrange
+            MockIntegrationService.Setup_CreateIntegrationClient_Returns_IntegrationClientCreateResponse_Success();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.ClientCreate(OrganizationOneIntegrationOneUid);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(true);
+            MockIntegrationService.Verify_CreateIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientCreate_POST_FailedResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_CreateIntegrationClient_Returns_IntegrationClientCreateResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.ClientCreate(OrganizationOneIntegrationOneUid);
+
+            // assert
+            var commonResult = ((CommonResult)((JsonResult)result).Value);
+            commonResult.IsOk.ShouldBeFalse();
+            commonResult.Messages.Any(x => x == StringOne);
+            MockIntegrationService.Verify_CreateIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientCreate_POST_InvalidResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_CreateIntegrationClient_Returns_IntegrationClientCreateResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.ClientCreate(OrganizationOneIntegrationOneUid);
+
+            // assert
+            var commonResult = ((CommonResult)((JsonResult)result).Value);
+            commonResult.IsOk.ShouldBeFalse();
+            commonResult.Messages.Any(x => x == StringOne);
+            MockIntegrationService.Verify_CreateIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientCreate_POST_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.ClientCreate(EmptyUid);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
+        }
+
+        [Test]
+        public async Task ClientDelete_POST()
+        {
+            // arrange
+            MockIntegrationService.Setup_DeleteIntegrationClient_Returns_IntegrationClientDeleteResponse_Success();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.ClientDelete(OrganizationOneIntegrationOneUid);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(true);
+            MockIntegrationService.Verify_DeleteIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientDelete_POST_FailedResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_DeleteIntegrationClient_Returns_IntegrationClientDeleteResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.ClientDelete(OrganizationOneIntegrationOneUid);
+
+            // assert
+            var commonResult = ((CommonResult)((JsonResult)result).Value);
+            commonResult.IsOk.ShouldBeFalse();
+            commonResult.Messages.Any(x => x == StringOne);
+            MockIntegrationService.Verify_DeleteIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientDelete_POST_InvalidResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_DeleteIntegrationClient_Returns_IntegrationClientDeleteResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.ClientDelete(OrganizationOneIntegrationOneUid);
+
+            // assert
+            var commonResult = ((CommonResult)((JsonResult)result).Value);
+            commonResult.IsOk.ShouldBeFalse();
+            commonResult.Messages.Any(x => x == StringOne);
+            MockIntegrationService.Verify_DeleteIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientDelete_POST_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.ClientDelete(EmptyUid);
+
+            // assert
+            AssertViewAccessDenied(result);
+        }
+
+        [Test]
+        public async Task ClientChangeActivation_POST()
+        {
+            // arrange
+            MockIntegrationService.Setup_ChangeActivationForIntegrationClient_Returns_IntegrationClientChangeActivationResponse_Success();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.ClientChangeActivation(OrganizationOneIntegrationOneUid);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(true);
+            MockIntegrationService.Verify_ChangeActivationForIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientChangeActivation_POST_FailedResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_ChangeActivationForIntegrationClient_Returns_IntegrationClientChangeActivationResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.ClientChangeActivation(OrganizationOneIntegrationOneUid);
+
+            // assert
+            var commonResult = ((CommonResult)((JsonResult)result).Value);
+            commonResult.IsOk.ShouldBeFalse();
+            commonResult.Messages.Any(x => x == StringOne);
+            MockIntegrationService.Verify_ChangeActivationForIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientChangeActivation_POST_InvalidResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_ChangeActivationForIntegrationClient_Returns_IntegrationClientChangeActivationResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.ClientChangeActivation(OrganizationOneIntegrationOneUid);
+
+            // assert
+            var commonResult = ((CommonResult)((JsonResult)result).Value);
+            commonResult.IsOk.ShouldBeFalse();
+            commonResult.Messages.Any(x => x == StringOne);
+            MockIntegrationService.Verify_ChangeActivationForIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientChangeActivation_POST_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.ClientChangeActivation(EmptyUid);
+
+            // assert
+            AssertViewAccessDenied(result);
+        }
+
+        [Test]
+        public async Task ClientRefresh_POST()
+        {
+            // arrange
+            MockIntegrationService.Setup_RefreshIntegrationClient_Returns_IntegrationClientRefreshResponse_Success();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.ClientRefresh(OrganizationOneIntegrationOneUid);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(true);
+            MockIntegrationService.Verify_RefreshIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientRefresh_POST_FailedResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_RefreshIntegrationClient_Returns_IntegrationClientRefreshResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.ClientRefresh(OrganizationOneIntegrationOneUid);
+
+            // assert
+            var commonResult = ((CommonResult)((JsonResult)result).Value);
+            commonResult.IsOk.ShouldBeFalse();
+            commonResult.Messages.Any(x => x == StringOne);
+            MockIntegrationService.Verify_RefreshIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientRefresh_POST_InvalidResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_RefreshIntegrationClient_Returns_IntegrationClientRefreshResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.ClientRefresh(OrganizationOneIntegrationOneUid);
+
+            // assert
+            var commonResult = ((CommonResult)((JsonResult)result).Value);
+            commonResult.IsOk.ShouldBeFalse();
+            commonResult.Messages.Any(x => x == StringOne);
+            MockIntegrationService.Verify_RefreshIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientRefresh_POST_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.ClientRefresh(EmptyUid);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
+        }
+
+        [Test]
+        public async Task ClientActiveTokens_GET()
+        {
+            // arrange
+            MockIntegrationService.Setup_GetIntegrationClient_Returns_IntegrationClientReadResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.ClientActiveTokens(OrganizationOneIntegrationOneUid);
+
+            // assert
+            AssertViewWithModel<IntegrationClientActiveTokensModel>(result);
+            MockIntegrationService.Verify_GetIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientActiveTokens_GET_FailedResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_GetIntegrationClient_Returns_IntegrationClientReadResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.ClientActiveTokens(OrganizationOneIntegrationOneUid);
+
+            // assert
+            AssertViewAccessDenied(result);
+            MockIntegrationService.Verify_GetIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientActiveTokens_GET_InvalidResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_GetIntegrationClient_Returns_IntegrationClientReadResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.ClientActiveTokens(OrganizationOneIntegrationOneUid);
+
+            // assert
+            AssertViewAccessDenied(result);
+            MockIntegrationService.Verify_GetIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientActiveTokens_GET_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.ClientActiveTokens(EmptyUid);
+
+            // assert
+            AssertViewAccessDenied(result);
+        }
+
+        [Test]
+        public void ClientActiveTokensData_GET()
+        {
+            // arrange
+            MockIntegrationService.Setup_GetActiveTokensOfIntegrationClient_Returns_IntegrationClientActiveTokenReadListResponse_Success();
+
+            // act
+            var result = SystemUnderTest.ClientActiveTokensData(OrganizationOneIntegrationOneUid, One, Two);
+
+            // assert
+            AssertViewAndHeaders(result, new[] { "access_token", "ip", "created_at", "expires_at", "" });
+            MockIntegrationService.Verify_GetActiveTokensOfIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientActiveTokensData_GET_FailedResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_GetActiveTokensOfIntegrationClient_Returns_IntegrationClientActiveTokenReadListResponse_Failed();
+
+            // act
+            var result =await SystemUnderTest.ClientActiveTokensData(OrganizationOneIntegrationOneUid, One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockIntegrationService.Verify_GetActiveTokensOfIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientActiveTokensData_GET_InvalidResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_GetActiveTokensOfIntegrationClient_Returns_IntegrationClientActiveTokenReadListResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.ClientActiveTokensData(OrganizationOneIntegrationOneUid, One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockIntegrationService.Verify_GetActiveTokensOfIntegrationClient();
+        }
+
+        [Test]
+        public async Task ClientActiveTokensData_GET_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.ClientActiveTokensData(EmptyUid, One, Two);
+
+            // assert
+            AssertView<ForbidResult>(result);
+        }
+
+        [Test]
+        public async Task ActiveTokens_GET()
+        {
+            // arrange 
+            MockIntegrationService.Setup_GetIntegration_Returns_IntegrationReadResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.ActiveTokens(OrganizationOneIntegrationOneUid);
+
+            // assert
+            AssertViewWithModel<IntegrationActiveTokensModel>(result);
+            MockIntegrationService.Verify_GetIntegration();
+        }
+
+        [Test]
+        public async Task ActiveTokens_GET_FailedResponse()
+        {
+            // arrange 
+            MockIntegrationService.Setup_GetIntegration_Returns_IntegrationReadResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.ActiveTokens(OrganizationOneIntegrationOneUid);
+
+            // assert
+            AssertViewAccessDenied(result);
+            MockIntegrationService.Verify_GetIntegration();
+        }
+
+        [Test]
+        public async Task ActiveTokens_GET_InvalidResponse()
+        {
+            // arrange 
+            MockIntegrationService.Setup_GetIntegration_Returns_IntegrationReadResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.ActiveTokens(OrganizationOneIntegrationOneUid);
+
+            // assert
+            AssertViewAccessDenied(result);
+            MockIntegrationService.Verify_GetIntegration();
+        }
+
+        [Test]
+        public async Task ActiveTokens_GET_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.ActiveTokens(EmptyUid);
+
+            // assert
+            AssertViewAccessDenied(result);
+        }
+
+        [Test]
+        public void ActiveTokensData_GET()
+        {
+            // arrange
+            MockIntegrationService.Setup_GetActiveTokensOfIntegration_Returns_IntegrationActiveTokenReadListResponse_Success();
+
+            // act
+            var result = SystemUnderTest.ActiveTokensData(OrganizationOneIntegrationOneUid, One, Two);
+
+            // assert
+            AssertViewAndHeaders(result, new[] { "integration_client_uid", "access_token", "ip", "created_at", "expires_at", "" });
+            MockIntegrationService.Verify_GetActiveTokensOfIntegration();
+        }
+
+        [Test]
+        public async Task ActiveTokensData_GET_FailedResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_GetActiveTokensOfIntegration_Returns_IntegrationActiveTokenReadListResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.ActiveTokensData(OrganizationOneIntegrationOneUid, One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockIntegrationService.Verify_GetActiveTokensOfIntegrationClient();
+        }
+
+        [Test]
+        public async Task ActiveTokensData_GET_InvalidResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_GetActiveTokensOfIntegration_Returns_IntegrationActiveTokenReadListResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.ActiveTokensData(OrganizationOneIntegrationOneUid, One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockIntegrationService.Verify_GetActiveTokensOfIntegrationClient();
+        }
+
+        [Test]
+        public async Task ActiveTokensData_GET_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.ActiveTokensData(EmptyUid,One,Two);
 
             // assert
             AssertView<ForbidResult>(result);
