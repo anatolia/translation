@@ -76,7 +76,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_RestoreRevision_Returns_True(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
-                .ReturnsAsync(true);
+                      .ReturnsAsync(true);
         }
 
         public static void Setup_RestoreRevision_Returns_False(this Mock<IIntegrationRepository> repository)

@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
-using Moq;
-using Translation.Client.Web.Models.Integration;
+﻿using Translation.Client.Web.Models.Integration;
 using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.Language;
 using Translation.Client.Web.Models.Organization;
@@ -9,6 +6,7 @@ using Translation.Client.Web.Models.Project;
 using Translation.Client.Web.Models.User;
 using Translation.Common.Models.Shared;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Tests.TestHelpers
 {
@@ -98,7 +96,7 @@ namespace Translation.Tests.TestHelpers
             model.OriginalName = "Language One Original Name";
             model.IsoCode2 = IsoCode2One;
             model.IsoCode3 = IsoCode3One;
-            // todo: model.Icon =  
+            model.Icon = GetIcon();
 
             return model;
         }
@@ -110,6 +108,7 @@ namespace Translation.Tests.TestHelpers
             model.OriginalName = "Language One Original Name";
             model.IsoCode2 = IsoCode2One;
             model.IsoCode3 = IsoCode3One;
+            model.Icon = GetIcon();
 
             return model;
         }
@@ -272,7 +271,7 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelUploadFromCSVModel GetLabelUploadFromCSVModel()
         {
-            var model=new LabelUploadFromCSVModel();
+            var model = new LabelUploadFromCSVModel();
 
             model.ProjectName = StringOne;
             model.OrganizationUid = UidOne;

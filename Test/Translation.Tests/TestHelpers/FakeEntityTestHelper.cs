@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
+using Moq;
 using StandardRepository.Models.Entities;
 
+using Translation.Common.Helpers;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
 using Translation.Common.Models.Shared;
@@ -542,7 +545,69 @@ namespace Translation.Tests.TestHelpers
             user.IsActive = BooleanTrue;
 
             user.ObfuscationSalt = StringSixtyFourOne;
-            user.PasswordHash = StringSixtyFourTwo;
+            user.PasswordHash = PasswordHashOne;
+
+            return user;
+        }
+
+        public static User GetOrganizationOneUserOneInvitedAtOneDayBefore()
+        {
+            var user = GetOrganizationOneUserOne();
+            user.InvitedAt = DateTimeOneDayBefore;
+
+            return user;
+        }
+
+        public static User GetOrganizationOneUserOneInvitedAtOneWeekBefore()
+        {
+            var user = GetOrganizationOneUserOne();
+            user.InvitedAt = DateTimeOneWeekBefore;
+
+            return user;
+        }
+
+        public static User GetOrganizationOneUserOneForSuccessLogOn()
+        {
+            var user = GetOrganizationOneUserOne();
+            user.LoginTryCount = Three;
+            user.LastLoginTryAt = DateTimeTwoHoursBefore;
+            user.Email = EmailOne;
+            user.ObfuscationSalt = StringSixtyFourOne;
+            user.PasswordHash = PasswordHashOne;
+
+            return user;
+        }
+
+        public static User GetOrganizationOneUserOneForSuccessChangePassword()
+        {
+            var user = GetOrganizationOneUserOne();
+            user.Email = EmailOne;
+            user.ObfuscationSalt = StringSixtyFourOne;
+            user.PasswordHash = PasswordHashOne;
+
+            return user;
+        }
+
+        public static User GetOrganizationOneUserOnePasswordResetRequestedAtTwoDaysBefore()
+        {
+            var user = GetOrganizationOneUserOne();
+            user.PasswordResetRequestedAt = DateTimeTwoDaysBefore;
+
+            return user;
+        }
+
+        public static User GetOrganizationOneUserOnePasswordResetRequestedAtFiveMinutesBefore()
+        {
+            var user = GetOrganizationOneUserOne();
+            user.PasswordResetRequestedAt = DateTimeFiveMinutesBefore;
+
+            return user;
+        }
+
+        public static User GetOrganizationOneUserOnePasswordResetRequestedAtOneMinuteBefore()
+        {
+            var user = GetOrganizationOneUserOne();
+            user.PasswordResetRequestedAt = DateTimeOneMinuteBefore;
 
             return user;
         }
@@ -589,6 +654,14 @@ namespace Translation.Tests.TestHelpers
         public static User GetOrganizationOneAdminUserOne()
         {
             var user = GetOrganizationOneUserOne();
+            user.IsAdmin = BooleanTrue;
+
+            return user;
+        }
+
+        public static User GetOrganizationTwoAdminUserOne()
+        {
+            var user = GetOrganizationTwoUserOne();
             user.IsAdmin = BooleanTrue;
 
             return user;
@@ -915,7 +988,7 @@ namespace Translation.Tests.TestHelpers
             return revision;
         }
 
-        public static List<EntityRevision<Organization>> GetOrganizationOneRevisions()
+        public static List<EntityRevision<Organization>> GetOrganizationOneRevisionsRevisionOneInIt()
         {
             var list = new List<EntityRevision<Organization>>();
             var revision = new EntityRevision<Organization>();
@@ -923,6 +996,34 @@ namespace Translation.Tests.TestHelpers
             revision.Revision = One;
             revision.RevisionedAt = DateTimeOne;
             revision.Entity = GetOrganizationOne();
+
+            list.Add(revision);
+
+            return list;
+        }
+
+        public static List<EntityRevision<Organization>> GetOrganizationOneRevisionsRevisionTwoInIt()
+        {
+            var list = new List<EntityRevision<Organization>>();
+            var revision = new EntityRevision<Organization>();
+            revision.Id = LongOne;
+            revision.Revision = Two;
+            revision.RevisionedAt = DateTimeOne;
+            revision.Entity = GetOrganizationOne();
+
+            list.Add(revision);
+
+            return list;
+        }
+
+        public static List<EntityRevision<User>> GetOrganizationOneUserOneRevisions()
+        {
+            var list = new List<EntityRevision<User>>();
+            var revision = new EntityRevision<User>();
+            revision.Id = LongOne;
+            revision.Revision = Two;
+            revision.RevisionedAt = DateTimeOne;
+            revision.Entity = GetOrganizationOneUserOne();
 
             list.Add(revision);
 
@@ -1081,6 +1182,15 @@ namespace Translation.Tests.TestHelpers
             var user = GetUser();
 
             return (uowResult, organization, user);
+        }
+
+        public static IFormFile GetIcon()
+        {
+            var icon = new Mock<IFormFile>();
+            icon.Setup(x => x.Length).Returns(100);
+            icon.Setup(x => x.ContentType).Returns("image/png");
+
+            return icon.Object;
         }
     }
 }
