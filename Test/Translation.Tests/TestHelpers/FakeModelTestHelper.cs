@@ -1,14 +1,18 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
+
 using Moq;
+
 using Translation.Client.Web.Models.Integration;
 using Translation.Client.Web.Models.Label;
+using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Client.Web.Models.Language;
 using Translation.Client.Web.Models.Organization;
 using Translation.Client.Web.Models.Project;
 using Translation.Client.Web.Models.User;
 using Translation.Common.Models.Shared;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Tests.TestHelpers
 {
@@ -144,7 +148,6 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
-
         public static ResetPasswordModel GetOrganizationOneUserOneResetPasswordModel()
         {
             var model = new ResetPasswordModel();
@@ -270,13 +273,118 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static CreateBulkLabelModel GetCreateBulkLabelModel()
+        {
+            var model = new CreateBulkLabelModel();
+
+            model.OrganizationUid = OrganizationOneUid;
+            model.ProjectUid = OrganizationOneProjectOneUid;
+            model.ProjectName = StringOne;
+
+            return model;
+        }
+
+        public static CreateBulkLabelModel GetCreateBulkLabelModelThreeValue()
+        {
+            var model = new CreateBulkLabelModel();
+
+            model.OrganizationUid = OrganizationOneUid;
+            model.ProjectUid = OrganizationOneProjectOneUid;
+            model.ProjectName = StringOne;
+            model.BulkLabelData = "label_key,language_char_code_2,translation\n" +
+                                  "label,tr,Türkçesi";
+
+            return model;
+        }
+
+        public static CreateBulkLabelModel GetCreateBulkLabelModelNotThreeValue()
+        {
+            var model = new CreateBulkLabelModel();
+
+            model.OrganizationUid = OrganizationOneUid;
+            model.ProjectUid = OrganizationOneProjectOneUid;
+            model.ProjectName = StringOne;
+            model.BulkLabelData = "label_key,language_char_code_2,translation\n" +
+                                  "label,tr";
+
+            return model;
+        }
+
         public static LabelUploadFromCSVModel GetLabelUploadFromCSVModel()
         {
-            var model=new LabelUploadFromCSVModel();
+            var model = new LabelUploadFromCSVModel();
 
             model.ProjectName = StringOne;
             model.OrganizationUid = UidOne;
             model.ProjectUid = UidOne;
+            return model;
+        }
+
+        public static LabelUploadFromCSVModel GetLabelUploadFromCSVModelThreeValue()
+        {
+            var model = GetLabelUploadFromCSVModel();
+            model.CSVFile = GetUploadLabelCsvTemplateFileThreeValue();
+
+            return model;
+        }
+
+        public static LabelUploadFromCSVModel GetLabelUploadFromCSVModelNotThreeValue()
+        {
+            var model = GetLabelUploadFromCSVModel();
+            model.CSVFile = GetUploadLabelCsvTemplateFileNotThreeValue();
+            return model;
+        }
+
+        public static LabelTranslationCreateModel GetLabelTranslationCreateModel()
+        {
+            var model = new LabelTranslationCreateModel();
+
+            model.OrganizationUid = OrganizationOneUid;
+            model.ProjectUid = OrganizationOneProjectOneUid;
+            model.ProjectName = StringOne;
+            model.LabelUid = UidOne;
+            model.LabelKey = StringOne;
+            model.LabelUid = UidOne;
+            model.LabelTranslation = StringTwo;
+            model.LanguageUid = UidOne;
+
+            return model;
+        }
+
+        public static LabelTranslationEditModel GetLabelTranslationEditModel()
+        {
+            var model = new LabelTranslationEditModel();
+
+            model.OrganizationUid = OrganizationOneUid;
+            model.LabelTranslationUid = UidOne;
+            model.Translation = UidStringOne;
+
+            return model;
+        }
+
+        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModel()
+        {
+            var model = new UploadLabelTranslationFromCSVFileModel();
+
+            model.OrganizationUid = UidOne;
+            model.LabelUid = UidOne;
+            model.LabelKey = StringOne;
+
+            return model;
+        }
+
+        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModelTwoLength()
+        {
+            var model = GetUploadLabelTranslationFromCSVFileModel();
+            model.CSVFile = GetUploadLabelCsvTemplateFileTwoLength();
+
+            return model;
+        }
+
+        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModelNotTwoLength()
+        {
+            var model = GetUploadLabelTranslationFromCSVFileModel();
+            model.CSVFile = GetUploadLabelCsvTemplateFileNotTwoLength();
 
             return model;
         }

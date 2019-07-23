@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,36 +33,36 @@ namespace Translation.Tests.Client.Controllers
             SetControllerContext(SystemUnderTest);
         }
 
-        [TestCase(CreateAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(CreateAction, new[] { typeof(LabelCreateModel) }, typeof(HttpPostAttribute))]
-        [TestCase(DetailAction, new[] { typeof(string), typeof(string) }, typeof(HttpGetAttribute))]
-        [TestCase(EditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(EditAction, new[] { typeof(LabelEditModel) }, typeof(HttpPostAttribute))]
-        [TestCase(CloneAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(CloneAction, new[] { typeof(LabelCloneModel) }, typeof(HttpPostAttribute))]
-        [TestCase(SearchListAction, new[] { typeof(string) }, typeof(HttpGetAttribute))]
-        [TestCase(SearchDataAction, new[] { typeof(string) }, typeof(HttpGetAttribute))]
-        [TestCase(SearchListDataAction, new[] { typeof(string), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute))]
-        [TestCase(ChangeActivationAction, new[] { typeof(Guid), typeof(Guid) }, typeof(HttpPostAttribute))]
-        [TestCase(UploadLabelFromCSVFileAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(UploadLabelFromCSVFileAction, new[] { typeof(LabelUploadFromCSVModel) }, typeof(HttpPostAttribute))]
-        [TestCase(CreateBulkLabelAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(CreateBulkLabelAction, new[] { typeof(CreateBulkLabelModel) }, typeof(HttpPostAttribute))]
-        [TestCase(LabelTranslationCreateAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(LabelTranslationCreateAction, new[] { typeof(LabelTranslationCreateModel) }, typeof(HttpPostAttribute))]
-        [TestCase(LabelTranslationDetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(LabelTranslationEditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(LabelTranslationEditAction, new[] { typeof(LabelTranslationEditModel) }, typeof(HttpPostAttribute))]
-        [TestCase(LabelTranslationListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(UploadLabelTranslationFromCSVFileAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(UploadLabelTranslationFromCSVFileAction, new[] { typeof(UploadLabelTranslationFromCSVFileModel) }, typeof(HttpPostAttribute))]
-        [TestCase(DownloadTranslationsAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute))]
-        [TestCase(RestoreLabelTranslationAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute))]
-        [TestCase(LabelTranslationRevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(LabelTranslationRevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
+        [TestCase(CreateAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(CreateAction, new[] { typeof(LabelCreateModel) }, typeof(HttpPostAttribute)),
+         TestCase(DetailAction, new[] { typeof(string), typeof(string) }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new[] { typeof(LabelEditModel) }, typeof(HttpPostAttribute)),
+         TestCase(CloneAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(CloneAction, new[] { typeof(LabelCloneModel) }, typeof(HttpPostAttribute)),
+         TestCase(SearchListAction, new[] { typeof(string) }, typeof(HttpGetAttribute)),
+         TestCase(SearchDataAction, new[] { typeof(string) }, typeof(HttpGetAttribute)),
+         TestCase(SearchListDataAction, new[] { typeof(string), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute)),
+         TestCase(ChangeActivationAction, new[] { typeof(Guid), typeof(Guid) }, typeof(HttpPostAttribute)),
+         TestCase(UploadLabelFromCSVFileAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(UploadLabelFromCSVFileAction, new[] { typeof(LabelUploadFromCSVModel) }, typeof(HttpPostAttribute)),
+         TestCase(CreateBulkLabelAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(CreateBulkLabelAction, new[] { typeof(CreateBulkLabelModel) }, typeof(HttpPostAttribute)),
+         TestCase(LabelTranslationCreateAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(LabelTranslationCreateAction, new[] { typeof(LabelTranslationCreateModel) }, typeof(HttpPostAttribute)),
+         TestCase(LabelTranslationDetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(LabelTranslationEditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(LabelTranslationEditAction, new[] { typeof(LabelTranslationEditModel) }, typeof(HttpPostAttribute)),
+         TestCase(LabelTranslationListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(UploadLabelTranslationFromCSVFileAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(UploadLabelTranslationFromCSVFileAction, new[] { typeof(UploadLabelTranslationFromCSVFileModel) }, typeof(HttpPostAttribute)),
+         TestCase(DownloadTranslationsAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
+         TestCase(RestoreLabelTranslationAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute)),
+         TestCase(LabelTranslationRevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(LabelTranslationRevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
         public void Methods_Has_Http_Verb_Attributes(string actionMethod, Type[] parameters, Type httpVerbAttribute)
         {
             var type = SystemUnderTest.GetType();
@@ -775,7 +776,37 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task Revisions_GET_InvalidParameter()
+        public async Task Revisions_GET_FailedResponse()
+        {
+            // arrange
+            MockLabelService.Setup_GetLabel_Returns_LabelReadResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.Revisions(UidOne);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockLabelService.Verify_GetLabel();
+
+        }
+
+        [Test]
+        public async Task Revisions_GET_InvalidResponse()
+        {
+            // arrange
+            MockLabelService.Setup_GetLabel_Returns_LabelReadResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.Revisions(UidOne);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockLabelService.Verify_GetLabel();
+
+        }
+
+        [Test]
+        public async Task Revisions_GET_InvalidParameter_AssertViewRedirectToHome()
         {
             // arrange
 
@@ -1006,29 +1037,28 @@ namespace Translation.Tests.Client.Controllers
             AssertViewAccessDenied(result);
         }
 
-        [Ignore("it needs refactoring of GetLabelUploadFromCSVModel")]
         [Test]
         public async Task UploadLabelFromCSVFile_POST()
         {
             // arrange
             MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Success();
-            var model = GetLabelUploadFromCSVModel();
+            var model = GetLabelUploadFromCSVModelThreeValue();
 
             // act
             var result = await SystemUnderTest.UploadLabelFromCSVFile(model);
 
             // assert
-            AssertViewWithModel<LabelUploadFromCSVModel>(result);
+
+            AssertViewWithModelAndMessage<LabelUploadFromCSVDoneModel>("UploadLabelFromCSVFileDone", result);
             MockLabelService.Verify_CreateLabelFromList();
         }
 
-        [Ignore("it needs refactoring of GetLabelUploadFromCSVModel")]
         [Test]
         public async Task UploadLabelFromCSVFile_POST_FailedResponse()
         {
             // arrange 
             MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Failed();
-            var model = GetLabelUploadFromCSVModel();
+            var model = GetLabelUploadFromCSVModelThreeValue();
 
             // act
             var result = await SystemUnderTest.UploadLabelFromCSVFile(model);
@@ -1038,13 +1068,12 @@ namespace Translation.Tests.Client.Controllers
             MockLabelService.Verify_CreateLabelFromList();
         }
 
-        [Ignore("it needs refactoring of GetLabelUploadFromCSVModel")]
         [Test]
         public async Task UploadLabelFromCSVFile_POST_InvalidResponse()
         {
             // arrange 
             MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Invalid();
-            var model = GetLabelUploadFromCSVModel();
+            var model = GetLabelUploadFromCSVModelThreeValue();
 
             // act
             var result = await SystemUnderTest.UploadLabelFromCSVFile(model);
@@ -1052,6 +1081,19 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertErrorMessagesForInvalidOrFailedResponse<LabelUploadFromCSVModel>(result);
             MockLabelService.Verify_CreateLabelFromList();
+        }
+
+        [Test]
+        public async Task UploadLabelFromCSVFile_POST_FailedNotThreeValue()
+        {
+            // arrange 
+            var model = GetLabelUploadFromCSVModelNotThreeValue();
+
+            // act
+            var result = await SystemUnderTest.UploadLabelFromCSVFile(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<LabelUploadFromCSVModel>("file_has_more_columns_than_expected", result);
         }
 
         [Test]
@@ -1176,6 +1218,137 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public async Task LabelTranslationCreate_POST()
+        {
+            // arrange
+            MockLabelService.Setup_CreateTranslation_Returns_LabelTranslationCreateResponse_Success();
+            var model = GetLabelTranslationCreateModel();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationCreate(model);
+
+            // assert
+
+            ((RedirectResult)result).Url.ShouldBe($"/Label/Detail/{EmptyUid}");
+            MockLabelService.Verify_CreateTranslation();
+        }
+
+        [Test]
+        public async Task LabelTranslationCreate_POST_FailedResponse()
+        {
+            // arrange 
+            MockLabelService.Setup_CreateTranslation_Returns_LabelTranslationCreateResponse_Failed();
+            var model = GetLabelTranslationCreateModel();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationCreate(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<LabelTranslationCreateModel>(result);
+            MockLabelService.Verify_CreateTranslation();
+        }
+
+        [Test]
+        public async Task LabelTranslationCreate_POST_InvalidResponse()
+        {
+            // arrange 
+            MockLabelService.Setup_CreateTranslation_Returns_LabelTranslationCreateResponse_Invalid();
+            var model = GetLabelTranslationCreateModel();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationCreate(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<LabelTranslationCreateModel>(result);
+            MockLabelService.Verify_CreateTranslation();
+        }
+
+        [Test]
+        public async Task LabelTranslationCreate_POST_InvalidParameter()
+        {
+            // arrange
+            var model = new LabelTranslationCreateModel();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationCreate(model);
+
+            // assert
+            AssertInputErrorMessagesOfView(result, model);
+        }
+
+        [Test]
+        public async Task CreateBulkLabel_POST()
+        {
+            // arrange
+            MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Success();
+            var model = GetCreateBulkLabelModelThreeValue();
+
+            // act
+            var result = await SystemUnderTest.CreateBulkLabel(model);
+
+            // assert
+
+            AssertViewWithModelAndMessage<CreateBulkLabelDoneModel>("CreateBulkLabelDone", result);
+            MockLabelService.Verify_CreateLabelFromList();
+        }
+
+        [Test]
+        public async Task CreateBulkLabel_POST_FailedResponse()
+        {
+            // arrange 
+            MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Failed();
+            var model = GetCreateBulkLabelModelThreeValue();
+
+            // act
+            var result = await SystemUnderTest.CreateBulkLabel(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<CreateBulkLabelModel>(result);
+            MockLabelService.Verify_CreateLabelFromList();
+        }
+
+        [Test]
+        public async Task CreateBulkLabel_POST_InvalidResponse()
+        {
+            // arrange 
+            MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Invalid();
+            var model = GetCreateBulkLabelModelThreeValue();
+
+            // act
+            var result = await SystemUnderTest.CreateBulkLabel(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<CreateBulkLabelModel>(result);
+            MockLabelService.Verify_CreateLabelFromList();
+        }
+
+        [Test]
+        public async Task CreateBulkLabel_POST_FailedNotThreeValue()
+        {
+            // arrange 
+            var model = GetCreateBulkLabelModelNotThreeValue();
+
+            // act
+            var result = await SystemUnderTest.CreateBulkLabel(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<CreateBulkLabelModel>("file_has_more_columns_than_expected", result);
+        }
+
+        [Test]
+        public async Task CreateBulkLabel_POST_InvalidParameter()
+        {
+            // arrange
+            var model = new CreateBulkLabelModel();
+
+            // act
+            var result = await SystemUnderTest.CreateBulkLabel(model);
+
+            // assert
+            AssertInputErrorMessagesOfView(result, model);
+        }
+
+        [Test]
         public async Task LabelTranslationDetail_GET()
         {
             // arrange
@@ -1282,6 +1455,479 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertViewAccessDenied(result);
         }
+
+        [Test]
+        public async Task LabelTranslationEdit_POST()
+        {
+            // arrange
+            MockLabelService.Setup_EditTranslation_Returns_LabelTranslationEditResponse_Success();
+            var model = GetLabelTranslationEditModel();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationEdit(model);
+
+            // assert
+
+            ((RedirectResult)result).Url.ShouldBe($"/Label/Detail/{EmptyUid}");
+            MockLabelService.Verify_EditTranslation();
+        }
+
+        [Test]
+        public async Task LabelTranslationEdit_POST_FailedResponse()
+        {
+            // arrange 
+            MockLabelService.Setup_EditTranslation_Returns_LabelTranslationEditResponse_Failed();
+            var model = GetLabelTranslationEditModel();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationEdit(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<LabelTranslationEditModel>(result);
+            MockLabelService.Verify_EditTranslation();
+        }
+
+        [Test]
+        public async Task LabelTranslationEdit_POST_InvalidResponse()
+        {
+            // arrange 
+            MockLabelService.Setup_EditTranslation_Returns_LabelTranslationEditResponse_Invalid();
+            var model = GetLabelTranslationEditModel();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationEdit(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<LabelTranslationEditModel>(result);
+            MockLabelService.Verify_EditTranslation();
+        }
+
+        [Test]
+        public async Task LabelTranslationEdit_POST_InvalidParameter()
+        {
+            // arrange
+            var model = new LabelTranslationEditModel();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationEdit(model);
+
+            // assert
+            AssertInputErrorMessagesOfView(result, model);
+        }
+
+        [Test]
+        public async Task LabelTranslationListData_GET()
+        {
+            // arrange
+            MockLabelService.Setup_GetTranslations_Returns_LabelTranslationReadListResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationListData(UidOne, One, Two);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockLabelService.Verify_GetTranslations();
+        }
+
+        [Test]
+        public async Task LabelTranslationListData_GET_FailedResponse()
+        {
+            // arrange
+            MockLabelService.Setup_GetTranslations_Returns_LabelTranslationReadListResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationListData(UidOne, One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockLabelService.Verify_GetTranslations();
+        }
+
+        [Test]
+        public async Task LabelTranslationListData_GET_InvalidResponse()
+        {
+            // arrange
+            MockLabelService.Setup_GetTranslations_Returns_LabelTranslationReadListResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationListData(UidOne, One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockLabelService.Verify_GetTranslations();
+        }
+
+        [Test]
+        public async Task LabelTranslationListData_GET_InvalidParameter_Forbid()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationListData(EmptyUid, One, Two);
+
+            // assert
+            AssertView<ForbidResult>(result);
+        }
+
+        [Test]
+        public async Task UploadLabelTranslationFromCSVFile_GET()
+        {
+            // arrange
+            MockLabelService.Setup_GetLabel_Returns_LabelReadResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(UidOne);
+
+            // assert
+            AssertViewWithModel<UploadLabelTranslationFromCSVFileModel>(result);
+            MockLabelService.Verify_GetLabel();
+        }
+
+        [Test]
+        public async Task UploadLabelTranslationFromCSVFile_GET_FailedResponse()
+        {
+            // arrange
+            MockLabelService.Setup_GetLabel_Returns_LabelReadResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(UidOne);
+
+            // assert
+            AssertViewAccessDenied(result);
+            MockLabelService.Verify_GetLabel();
+        }
+
+        [Test]
+        public async Task UploadLabelTranslationFromCSVFile_GET_InvalidResponse()
+        {
+            // arrange
+            MockLabelService.Setup_GetLabel_Returns_LabelReadResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(UidOne);
+
+            // assert
+            AssertViewAccessDenied(result);
+            MockLabelService.Verify_GetLabel();
+        }
+
+        [Test]
+        public async Task UploadLabelTranslationFromCSVFile_GET_InvalidParameter_RedirectToAccessDenied()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(EmptyUid);
+
+            // assert
+            AssertViewAccessDenied(result);
+        }
+
+        [Test]
+        public async Task UploadLabelTranslationFromCSVFile_POST()
+        {
+            // arrange
+            MockLabelService.Setup_CreateTranslationFromList_Returns_LabelTranslationCreateListResponse_Success();
+            var model = GetUploadLabelTranslationFromCSVFileModelTwoLength();
+
+            // act
+            var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);
+
+            // assert
+
+            AssertViewWithModelAndMessage<TranslationUploadFromCSVDoneModel>("UploadLabelTranslationFromCSVFileDone", result);
+            MockLabelService.Verify_CreateTranslationFromList();
+        }
+
+        [Test]
+        public async Task UploadLabelTranslationFromCSVFile_POST_FailedResponse()
+        {
+            // arrange 
+            MockLabelService.Setup_CreateTranslationFromList_Returns_LabelTranslationCreateListResponse_Failed();
+            var model = GetUploadLabelTranslationFromCSVFileModelTwoLength();
+
+            // act
+            var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<UploadLabelTranslationFromCSVFileModel>(result);
+            MockLabelService.Verify_CreateTranslationFromList();
+        }
+
+        [Test]
+        public async Task UploadLabelTranslationFromCSVFile_POST_InvalidResponse()
+        {
+            // arrange 
+            MockLabelService.Setup_CreateTranslationFromList_Returns_LabelTranslationCreateListResponse_Invalid();
+            var model = GetUploadLabelTranslationFromCSVFileModelTwoLength();
+
+            // act
+            var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<UploadLabelTranslationFromCSVFileModel>(result);
+            MockLabelService.Verify_CreateTranslationFromList();
+        }
+
+        [Test]
+        public async Task UploadLabelTranslationFromCSVFile_POST_FailedNotThreeValue()
+        {
+            // arrange 
+            var model = GetUploadLabelTranslationFromCSVFileModelNotTwoLength();
+
+            // act
+            var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<UploadLabelTranslationFromCSVFileModel>("file_has_more_columns_than_expected", result);
+        }
+
+        [Test]
+        public async Task UploadLabelTranslationFromCSVFile_POST_InvalidParameter()
+        {
+            // arrange
+            var model = new UploadLabelTranslationFromCSVFileModel();
+
+            // act
+            var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);
+
+            // assert
+            AssertInputErrorMessagesOfView(result, model);
+        }
+
+        [Test]
+        public async Task DownloadTranslations_POST()
+        {
+            // arrange
+            MockLabelService.Setup_GetTranslations_Returns_LabelTranslationReadListResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.DownloadTranslations(UidOne);
+
+            // assert
+            AssertView<FileResult>(result);
+            MockLabelService.Verify_GetTranslations();
+        }
+
+        [Test]
+        public async Task DownloadTranslations_POST_FailedResponse()
+        {
+            // arrange 
+            MockLabelService.Setup_GetTranslations_Returns_LabelTranslationReadListResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.DownloadTranslations(UidOne);
+
+            // assert
+            AssertView<NoContentResult>(result);
+            MockLabelService.Verify_GetTranslations();
+        }
+
+        [Test]
+        public async Task DownloadTranslations_POST_InvalidResponse()
+        {
+            // arrange 
+            MockLabelService.Setup_GetTranslations_Returns_LabelTranslationReadListResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.DownloadTranslations(UidOne);
+
+            // assert
+            AssertView<NoContentResult>(result);
+            MockLabelService.Verify_GetTranslations();
+        }
+
+        [Test]
+        public async Task DownloadTranslations_POST_InvalidParameter_NoContent()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.DownloadTranslations(EmptyUid);
+
+            // assert
+            AssertView<NoContentResult>(result);
+
+        }
+
+        [Test]
+        public async Task RestoreLabelTranslation_POST()
+        {
+            // arrange
+            MockLabelService.Setup_RestoreLabelTranslation_Returns_LabelTranslationRestoreResponse_Success();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.RestoreLabelTranslation(UidOne, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(true);
+            MockLabelService.Verify_RestoreLabelTranslation();
+        }
+
+        [Test]
+        public async Task RestoreLabelTranslation_POST_FailedResponse()
+        {
+            // arrange 
+            MockLabelService.Setup_GetTranslations_Returns_LabelTranslationReadListResponse_Failed();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.RestoreLabelTranslation(UidOne, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(true);
+            MockLabelService.Verify_RestoreLabelTranslation();
+        }
+
+        [Test]
+        public async Task RestoreLabelTranslation_POST_InvalidResponse()
+        {
+            // arrange 
+            MockLabelService.Setup_GetTranslations_Returns_LabelTranslationReadListResponse_Invalid();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.RestoreLabelTranslation(UidOne, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(true);
+            MockLabelService.Verify_RestoreLabelTranslation();
+        }
+
+        [Test]
+        public async Task RestoreLabelTranslation_POST_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.RestoreLabelTranslation(EmptyUid, One);
+
+            // assert
+            AssertView<JsonResult>(result);
+
+        }
+
+        [Test]
+        public async Task RestoreLabelTranslation_POST_InvalidParameter_RevisionZero()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.RestoreLabelTranslation(UidOne, 0);
+
+            // assert
+            AssertView<JsonResult>(result);
+
+        }
+
+        [Test]
+        public async Task LabelTranslationRevisions_GET()
+        {
+            // arrange
+            MockLabelService.Setup_GetTranslation_Returns_LabelTranslationReadResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationRevisions(UidOne);
+
+            // assert
+            AssertViewWithModel<LabelTranslationRevisionReadListModel>(result);
+            MockLabelService.Verify_GetTranslation();
+        }
+
+        [Test]
+        public async Task LabelTranslationRevisions_GET_FailedResponse()
+        {
+            // arrange
+            MockLabelService.Setup_GetTranslation_Returns_LabelTranslationReadResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationRevisions(UidOne);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockLabelService.Verify_GetTranslation();
+
+        }
+
+        [Test]
+        public async Task LabelTranslationRevisions_GET_InvalidResponse()
+        {
+            // arrange
+            MockLabelService.Setup_GetTranslation_Returns_LabelTranslationReadResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationRevisions(UidOne);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockLabelService.Verify_GetTranslation();
+
+        }
+
+        [Test]
+        public async Task LabelTranslationRevisions_GET_InvalidParameter_AssertViewRedirectToHome()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationRevisions(EmptyUid);
+
+            // assert
+            AssertViewRedirectToHome(result);
+        }
+
+        [Test]
+        public void LabelTranslationRevisionsData_GET()
+        {
+            // arrange
+            MockLabelService.Setup_GetLabelTranslationRevisions_Returns_LabelTranslationRevisionReadListResponse_Success();
+
+            // act
+            var result = SystemUnderTest.LabelTranslationRevisionsData(UidOne);
+
+            // assert
+            AssertViewAndHeaders(result, new[] { "revision", "revisioned_by", "revisioned_at", "label_translation_name", "created_at", "" });
+            MockLabelService.Verify_GetLabelTranslationRevisions();
+        }
+
+        [Test]
+        public async Task LabelTranslationRevisionsData_GET_FailedResponse()
+        {
+            // arrange
+            MockLabelService.Setup_GetLabelTranslationRevisions_Returns_LabelTranslationRevisionReadListResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationRevisionsData(UidOne);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockLabelService.Verify_GetLabelTranslationRevisions();
+        }
+
+        [Test]
+        public async Task LabelTranslationRevisionsData_GET_InvalidResponse()
+        {
+            // arrange
+            MockLabelService.Setup_GetLabelTranslationRevisions_Returns_LabelTranslationRevisionReadListResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationRevisionsData(UidOne);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockLabelService.Verify_GetLabelTranslationRevisions();
+        }
+
+        [Test]
+        public async Task LabelTranslationRevisionsData_GET_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationRevisionsData(EmptyUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+        }
+
 
     }
 }

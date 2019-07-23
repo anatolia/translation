@@ -61,6 +61,15 @@ namespace Translation.Tests.TestHelpers
             messages.Any(x => x == StringOne).ShouldBeTrue();
         }
 
+        public static void AssertErrorMessagesForInvalidOrFailedResponse<T>(string errorMessage,IActionResult result) where T : BaseModel
+        {
+            AssertViewWithModel<T>(result);
+
+            var messages = ((T)((ViewResult)result).Model).ErrorMessages;
+            messages.Any(x => x == errorMessage).ShouldBeTrue();
+        }
+
+
         public static void AssertViewWithModel<T>(IActionResult result)
         {
             result.ShouldNotBeNull();
@@ -68,6 +77,16 @@ namespace Translation.Tests.TestHelpers
             viewResult.ViewName.ShouldBeNull();
             viewResult.Model.ShouldNotBeNull();
             viewResult.Model.ShouldBeAssignableTo<T>();
+        }
+
+        public static void AssertViewWithModelAndMessage<T>(string viewName,IActionResult result)
+        {
+            result.ShouldNotBeNull();
+            var viewResult = ((ViewResult)result);
+            viewResult.ViewName.ShouldNotBeNull();
+            viewResult.Model.ShouldNotBeNull();
+            viewResult.Model.ShouldBeAssignableTo<T>();
+            viewResult.ViewName.ShouldBe(viewName);
         }
 
         public static void AssertView<T>(ViewResult result)
