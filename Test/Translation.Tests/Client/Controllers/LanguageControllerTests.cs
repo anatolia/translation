@@ -67,10 +67,9 @@ namespace Translation.Tests.Client.Controllers
         public async Task Create_POST()
         {
             // arrange
-            MockHostingEnvironment.Setup(x => x.WebRootPath).Returns("");
+            MockHostingEnvironment.Setup(x => x.WebRootPath).Returns(@"C:\WorkHasan\translation\");
             MockLanguageService.Setup_CreateLanguage_Returns_LanguageCreateResponse_Success();
             var model = GetLanguageOneCreateModel();
-            // todo: model Icon 
 
             // act
             var result = await SystemUnderTest.Create(model);

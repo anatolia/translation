@@ -108,6 +108,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static JournalCreateRequest GetJournalCreateRequest(Journal journal,CurrentUser currentUser )
+        {
+            var request = new JournalCreateRequest(CurrentUserId, StringOne);
+
+            return request;
+        }
+
         public static IntegrationClientChangeActivationRequest GetIntegrationClientChangeActivationRequest()
         {
             var request = new IntegrationClientChangeActivationRequest(CurrentUserId, OrganizationOneIntegrationOneIntegrationClientOneUid);
@@ -174,6 +181,30 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static IntegrationCreateRequest GetIntegrationCreateRequest(Integration integration)
+        {
+            var request = new IntegrationCreateRequest(CurrentUserId, OrganizationOneUid, StringOne,
+                StringOne);
+
+            return request;
+        }
+
+        public static IntegrationCreateRequest GetIntegrationCreateRequest(Integration integration, Organization organization)
+        {
+            var request = new IntegrationCreateRequest(CurrentUserId, OrganizationOneUid, StringOne,
+                StringOne);
+
+            return request;
+        }
+
+        public static IntegrationCreateRequest GetIntegrationCreateRequest(Integration integration, CurrentOrganization currentOrganization)
+        {
+            var request = new IntegrationCreateRequest(CurrentUserId, OrganizationOneUid, StringOne,
+                StringOne);
+
+            return request;
+        }
+
         public static IntegrationReadListRequest GetIntegrationReadListRequest()
         {
             var request = new IntegrationReadListRequest(CurrentUserId, OrganizationOneUid);
@@ -231,6 +262,14 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new IntegrationEditRequest(CurrentUserId, OrganizationOneIntegrationOneUid, StringOne,
                                                     StringOne);
+
+            return request;
+        }
+
+        public static IntegrationEditRequest GetIntegrationEditRequest(Integration integration)
+        {
+            var request = new IntegrationEditRequest(CurrentUserId, OrganizationOneIntegrationOneUid, StringOne,
+                StringOne);
 
             return request;
         }

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Moq;
 using StandardRepository.Models.Entities;
 
@@ -1085,13 +1087,12 @@ namespace Translation.Tests.TestHelpers
             return (uowResult, organization, user);
         }
 
-
         public static IFormFile GetUploadLabelCsvTemplateFileThreeValue()
         {
             //Arrange
             var fileMock = new Mock<IFormFile>();
             //Setup mock file using a memory stream
-            var content = "label_key,language_char_code_2,translation\n"+
+            var content = "label_key,language_char_code_2,translation\n" +
                           "label,tr,Turkish";
             var fileName = "test.csv";
             var ms = new MemoryStream();
@@ -1099,9 +1100,9 @@ namespace Translation.Tests.TestHelpers
             writer.Write(content);
             writer.Flush();
             ms.Position = 0;
-            fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
-            fileMock.Setup(_ => _.FileName).Returns(fileName);
-            fileMock.Setup(_ => _.Length).Returns(ms.Length);
+            fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
+            fileMock.Setup(x => x.FileName).Returns(fileName);
+            fileMock.Setup(x => x.Length).Returns(ms.Length);
 
             return fileMock.Object;
         }
@@ -1119,9 +1120,9 @@ namespace Translation.Tests.TestHelpers
             writer.Write(content);
             writer.Flush();
             ms.Position = 0;
-            fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
-            fileMock.Setup(_ => _.FileName).Returns(fileName);
-            fileMock.Setup(_ => _.Length).Returns(ms.Length);
+            fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
+            fileMock.Setup(x => x.FileName).Returns(fileName);
+            fileMock.Setup(x => x.Length).Returns(ms.Length);
 
             return fileMock.Object;
         }
@@ -1139,9 +1140,9 @@ namespace Translation.Tests.TestHelpers
             writer.Write(content);
             writer.Flush();
             ms.Position = 0;
-            fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
-            fileMock.Setup(_ => _.FileName).Returns(fileName);
-            fileMock.Setup(_ => _.Length).Returns(ms.Length);
+            fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
+            fileMock.Setup(x => x.FileName).Returns(fileName);
+            fileMock.Setup(x => x.Length).Returns(ms.Length);
 
             return fileMock.Object;
         }
@@ -1159,10 +1160,33 @@ namespace Translation.Tests.TestHelpers
             writer.Write(content);
             writer.Flush();
             ms.Position = 0;
-            fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
-            fileMock.Setup(_ => _.FileName).Returns(fileName);
-            fileMock.Setup(_ => _.Length).Returns(ms.Length);
+            fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
+            fileMock.Setup(x => x.FileName).Returns(fileName);
+            fileMock.Setup(x => x.Length).Returns(ms.Length);
 
+            return fileMock.Object;
+        }
+
+        public static IFormFile GetLanguageOneCreateIcon()
+        {
+            //Arrange
+            var fileMock = new Mock<IFormFile>();
+            //Setup mock file using a memory stream
+
+            var fileName = "test.png";
+            var sourceImg = Encoding.UTF8.GetBytes("dummy image");
+            var ms = new MemoryStream();
+            var writer = new StreamWriter(ms);
+            writer.Write(sourceImg);
+            writer.Flush();
+            ms.Position = 0;
+            fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
+            fileMock.Setup(x => x.Length).Returns(ms.Length);
+            fileMock.Setup(x => x.FileName).Returns(fileName);
+            fileMock.Setup(x => x.ContentType).Returns("image/png");
+
+            //var fileMock = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("dummy image")), 0, 0, "Data", "image.png");
+            //fileMock.ContentType = "image/png";
             return fileMock.Object;
         }
 

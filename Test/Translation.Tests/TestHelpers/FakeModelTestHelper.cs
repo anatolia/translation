@@ -102,9 +102,9 @@ namespace Translation.Tests.TestHelpers
             model.OriginalName = "Language One Original Name";
             model.IsoCode2 = IsoCode2One;
             model.IsoCode3 = IsoCode3One;
-            // todo: model.Icon =  
+            model.Icon = GetLanguageOneCreateIcon();
 
-            return model;
+           return model;
         }
 
         public static LanguageEditModel GetLanguageOneEditModel()

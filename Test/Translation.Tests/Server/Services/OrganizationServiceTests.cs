@@ -268,7 +268,9 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetOrganizationEditRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
-            MockOrganizationRepository.Setup_Any_Returns_True();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+           
+           
 
             // act
             var result = await SystemUnderTest.EditOrganization(request);

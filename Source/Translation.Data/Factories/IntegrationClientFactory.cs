@@ -46,10 +46,12 @@ namespace Translation.Data.Factories
             return dto;
         }
 
-        public void UpdateEntityForRefresh(IntegrationClient entity)
+        public IntegrationClient UpdateEntityForRefresh(IntegrationClient entity)
         {
             entity.ClientId = Guid.NewGuid();
             entity.ClientSecret = Guid.NewGuid();
+
+            return entity;
         }
     }
 }
