@@ -998,7 +998,6 @@ namespace Translation.Service
             return response;
         }
 
-
         public async Task<UserRestoreResponse> RestoreUser(UserRestoreRequest request)
         {
             var response = new UserRestoreResponse();
