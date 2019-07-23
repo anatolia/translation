@@ -77,8 +77,13 @@ namespace Translation.Tests.TestHelpers
 
         public static DateTime DateTimeOne => new DateTime(2019, 01, 01, 09, 00, 00);
         public static DateTime DateTimeTwo => new DateTime(2019, 01, 02, 18, 00, 00);
-        public static DateTime DateTimeOneDayBefore => DateTime.Now.AddDays(-1);
-        public static DateTime DateTimeOneWeekBefore => DateTime.Now.AddDays(-7);
+        public static DateTime DateTimeOneMinuteBefore => DateTime.UtcNow.AddMinutes(-1);
+        public static DateTime DateTimeFiveMinutesBefore => DateTime.UtcNow.AddMinutes(-5);
+        public static DateTime DateTimeOneHourBefore => DateTime.UtcNow.AddHours(-1);
+        public static DateTime DateTimeTwoHoursBefore => DateTime.UtcNow.AddHours(-2);
+        public static DateTime DateTimeOneDayBefore => DateTime.UtcNow.AddDays(-1);
+        public static DateTime DateTimeTwoDaysBefore => DateTime.UtcNow.AddDays(-2);
+        public static DateTime DateTimeOneWeekBefore => DateTime.UtcNow.AddDays(-7);
 
         public const string StringEmpty = "";
         public const string StringOne = "String One";
@@ -86,6 +91,9 @@ namespace Translation.Tests.TestHelpers
 
         public const string StringSixtyFourOne = "bXk=";
         public const string StringSixtyFourTwo = "bXkx";
+
+        public static string PasswordHashOne => new CryptoHelper().Hash(PasswordOne, StringSixtyFourOne);
+        public static string PasswordHashTwo => new CryptoHelper().Hash(PasswordTwo, StringSixtyFourTwo);
 
         public const int MinusOne = -1;
         public const int MinusTwo = -2;
@@ -120,9 +128,9 @@ namespace Translation.Tests.TestHelpers
         public const string DateFormatThree = "2019-01-18";
 
         public const string InvalidPassword = "invalid-password";
-        public const string PasswordOne = "Test+-2018*";
-        public const string PasswordTwo = "Test+-2018*+";
-        public const string PasswordThree = "Test+-2018**";
+        public const string PasswordOne = "PasswordOne+-2019*";
+        public const string PasswordTwo = "PasswordTwo+-2019*+";
+        public const string PasswordThree = "PasswordThree+-2019**";
 
         public const string EmptyUidString = "00000000-0000-0000-0000-000000000000";
         public const string UidStringOne = "ee4c5b8a-3498-4a7d-a9c8-74e86075853c";

@@ -1,3 +1,4 @@
+
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 
@@ -114,6 +115,7 @@ namespace Translation.Tests.TestHelpers
             model.OriginalName = "Language One Original Name";
             model.IsoCode2 = IsoCode2One;
             model.IsoCode3 = IsoCode3One;
+            model.Icon = GetLanguageOneCreateIcon();
 
             return model;
         }

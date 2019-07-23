@@ -13,6 +13,17 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class UserRepositorySetupHelper
     {
+        public static void Setup_SelectRevisions_Returns_OrganizationOneUserOneRevisions(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
+                      .ReturnsAsync(GetOrganizationOneUserOneRevisions());
+        }
+
+        public static void Verify_SelectRevisions(this Mock<IUserRepository> repository)
+        {
+            repository.Verify(x => x.SelectRevisions(It.IsAny<long>()));
+        }
+
         public static void Setup_SelectAfter_Returns_Users(this Mock<IUserRepository> repository)
         {
             repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<User, bool>>>(),
@@ -66,7 +77,6 @@ namespace Translation.Tests.SetupHelpers
                       .ReturnsAsync(GetOrganizationOneSuperAdminUserOneInvitedAtOneDayBefore());
         }
 
-
         public static void Setup_Select_Returns_OrganizationOneSuperAdminUserInvitedAtOneWeekBefore(this Mock<IUserRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false))
@@ -97,6 +107,12 @@ namespace Translation.Tests.SetupHelpers
                       .ReturnsAsync(GetOrganizationOneAdminUserOne());
         }
 
+        public static void Setup_SelectById_Returns_OrganizationTwoAdminUserOne(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.SelectById(It.IsAny<long>()))
+                      .ReturnsAsync(GetOrganizationTwoAdminUserOne());
+        }
+
         public static void Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne(this Mock<IUserRepository> repository)
         {
             repository.Setup(x => x.SelectById(It.IsAny<long>()))
@@ -107,6 +123,48 @@ namespace Translation.Tests.SetupHelpers
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false))
                       .ReturnsAsync(GetOrganizationOneUserOne());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneUserOneInvitedAtOneWeekBefore(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false))
+                .ReturnsAsync(GetOrganizationOneUserOneInvitedAtOneWeekBefore());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneUserOneInvitedAtOneDayBefore(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneUserOneInvitedAtOneDayBefore());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneUserOneNotActive(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneUserOneNotActive());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneUserOneForSuccessLogOn(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneUserOneForSuccessLogOn());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneUserOnePasswordResetRequestedAtOneMinuteBefore(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneUserOnePasswordResetRequestedAtOneMinuteBefore());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneUserOnePasswordResetRequestedAtFiveMinutesBefore(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneUserOnePasswordResetRequestedAtFiveMinutesBefore());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneUserOnePasswordResetRequestedAtTwoDaysBefore(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneUserOnePasswordResetRequestedAtTwoDaysBefore());
         }
 
         public static void Setup_Select_Returns_OrganizationOneUserOneNotExist(this Mock<IUserRepository> repository)
@@ -132,10 +190,10 @@ namespace Translation.Tests.SetupHelpers
         public static void Verify_SelectAfter(this Mock<IUserRepository> repository)
         {
             repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<User, bool>>>(),
-                It.IsAny<Guid>(),
-                It.IsAny<int>(),
-                It.IsAny<Expression<Func<User, object>>>(),
-                It.IsAny<bool>(), false));
+                                                 It.IsAny<Guid>(),
+                                                 It.IsAny<int>(),
+                                                 It.IsAny<Expression<Func<User, object>>>(),
+                                                 It.IsAny<bool>(), false));
         }
 
         public static void Setup_Select_Returns_OrganizationTwoUserOne(this Mock<IUserRepository> repository)

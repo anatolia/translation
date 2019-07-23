@@ -13,10 +13,33 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class OrganizationRepositorySetupHelper
     {
-        public static void Setup_SelectRevisions_Returns_OrganizationOneRevisions(this Mock<IOrganizationRepository> repository)
+        public static void Setup_RestoreRevision_Returns_True(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
+                      .ReturnsAsync(BooleanTrue);
+        }
+
+        public static void Setup_RestoreRevision_Returns_False(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
+                      .ReturnsAsync(BooleanFalse);
+        }
+
+        public static void Verify_RestoreRevision(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Verify(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()));
+        }
+
+        public static void Setup_SelectRevisions_Returns_OrganizationOneRevisionsRevisionOneInIt(this Mock<IOrganizationRepository> repository)
         {
             repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
-                      .ReturnsAsync(GetOrganizationOneRevisions());
+                      .ReturnsAsync(GetOrganizationOneRevisionsRevisionOneInIt());
+        }
+
+        public static void Setup_SelectRevisions_Returns_OrganizationOneRevisionsRevisionTwoInIt(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
+                      .ReturnsAsync(GetOrganizationOneRevisionsRevisionTwoInIt());
         }
 
         public static void Verify_SelectRevisions(this Mock<IOrganizationRepository> repository)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using Translation.Common.Models.Requests.Admin;
@@ -1025,6 +1026,38 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectAfter()
+        {
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, UidOne);
+            request.PagingInfo = GetPagingInfoForSelectAfter();
+
+            return request;
+        }
+
+        public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectMany()
+        {
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, UidOne);
+            request.PagingInfo = GetPagingInfoForSelectMany();
+
+            return request;
+        }
+
+        public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectAfter(Guid organizationUid)
+        {
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, organizationUid);
+            request.PagingInfo = GetPagingInfoForSelectAfter();
+
+            return request;
+        }
+
+        public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectMany(Guid organizationUid)
+        {
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, organizationUid);
+            request.PagingInfo = GetPagingInfoForSelectMany();
+
+            return request;
+        }
+
         public static ValidateEmailRequest GetValidateEmailRequest()
         {
             var request = new ValidateEmailRequest(UidOne, EmailOne);
@@ -1046,9 +1079,30 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
-        public static UserLoginLogReadListRequest GetUserLoginLogReadListRequest()
+        public static PasswordResetValidateRequest GetPasswordResetValidateRequest()
         {
-            var request = new UserLoginLogReadListRequest(CurrentUserId, UidOne);
+            var request = new PasswordResetValidateRequest(UidOne, EmailOne);
+
+            return request;
+        }
+
+        public static PasswordResetRequest GetPasswordResetRequest()
+        {
+            var request = new PasswordResetRequest(UidOne, EmailOne, PasswordOne);
+
+            return request;
+        }
+
+        public static PasswordChangeRequest GetPasswordChangeRequest()
+        {
+            var request = new PasswordChangeRequest(CurrentUserId, PasswordOne, PasswordTwo);
+
+            return request;
+        }
+
+        public static PasswordChangeRequest GetPasswordChangeRequest(string oldPassword, string newPassword)
+        {
+            var request = new PasswordChangeRequest(CurrentUserId, oldPassword, newPassword);
 
             return request;
         }
@@ -1074,6 +1128,46 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static UserEditRequest GetUserEditRequest()
+        {
+            var request = new UserEditRequest(CurrentUserId, UidOne, StringOne, StringOne, UidOne);
+
+            return request;
+        }
+
+        public static UserDeleteRequest GetUserDeleteRequest()
+        {
+            var request = new UserDeleteRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static UserInviteRequest GetUserInviteRequest()
+        {
+            var request = new UserInviteRequest(CurrentUserId, UidOne, EmailOne, StringOne, StringOne);
+
+            return request;
+        }
+
+        public static UserInviteValidateRequest GetUserInviteValidateRequest(){
+            var request = new UserInviteValidateRequest(UidOne, EmailOne);
+
+            return request;
+        }
+
+        public static UserAcceptInviteRequest GetUserAcceptInviteRequest(){
+            var request = new UserAcceptInviteRequest(UidOne, EmailOne, StringOne, StringOne, PasswordOne);
+
+            return request;
+        }
+
+        public static UserReadRequest GetUserReadRequest()
+        {
+            var request = new UserReadRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
         public static UserReadListRequest GetUserReadListRequest()
         {
             var request = new UserReadListRequest(CurrentUserId, UidOne);
@@ -1084,6 +1178,13 @@ namespace Translation.Tests.TestHelpers
         public static UserRevisionReadListRequest GetUserRevisionReadListRequest()
         {
             var request = new UserRevisionReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static UserLoginLogReadListRequest GetUserLoginLogReadListRequest()
+        {
+            var request = new UserLoginLogReadListRequest(CurrentUserId, UidOne);
 
             return request;
         }

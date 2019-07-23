@@ -274,7 +274,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotActive("organization");
                 return response;
             }
 
@@ -307,17 +307,17 @@ namespace Translation.Service
         {
             var response = new OrganizationPendingTranslationReadListResponse();
 
-            var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
-            if (organization.IsNotExist())
-            {
-                response.SetInvalidBecauseNotFound("organization");
-                return response;
-            }
-
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (request.OrganizationUid != currentUser.OrganizationUid)
             {
                 response.SetInvalid();
+                return response;
+            }
+
+            var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
+            if (organization.IsNotExist())
+            {
+                response.SetInvalidBecauseNotFound("organization");
                 return response;
             }
 
@@ -454,7 +454,7 @@ namespace Translation.Service
             }
 
             if (user.PasswordResetRequestedAt.HasValue
-                && user.PasswordResetRequestedAt.Value.AddMinutes(2) < DateTime.UtcNow)
+                && user.PasswordResetRequestedAt.Value.AddMinutes(2) > DateTime.UtcNow)
             {
                 response.ErrorMessages.Add("already_requested_password_reset_in_last_two_minutes");
                 response.Status = ResponseStatus.Invalid;
@@ -739,7 +739,7 @@ namespace Translation.Service
                 return response;
             }
 
-            response.Status = ResponseStatus.Failed;
+            response.SetFailed();
             return response;
         }
 
@@ -797,7 +797,7 @@ namespace Translation.Service
                 }
             }
 
-            response.Status = ResponseStatus.Failed;
+            response.SetFailed();
             return response;
         }
 
@@ -997,7 +997,6 @@ namespace Translation.Service
             response.Status = ResponseStatus.Success;
             return response;
         }
-
 
         public async Task<UserRestoreResponse> RestoreUser(UserRestoreRequest request)
         {

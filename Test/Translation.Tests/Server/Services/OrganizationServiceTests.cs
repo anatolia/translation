@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 
+using Moq;
 using NUnit.Framework;
 
 using Translation.Common.Contracts;
@@ -161,7 +162,7 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetOrganizationRevisionReadListRequest();
             MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
-            MockOrganizationRepository.Setup_SelectRevisions_Returns_OrganizationOneRevisions();
+            MockOrganizationRepository.Setup_SelectRevisions_Returns_OrganizationOneRevisionsRevisionOneInIt();
 
             // act
             var result = await SystemUnderTest.GetOrganizationRevisions(request);
@@ -301,6 +302,837 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
             MockOrganizationRepository.Verify_Select();
+            MockOrganizationRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task OrganizationService_RestoreOrganization_Success()
+        {
+            // arrange
+            var request = GetOrganizationRestoreRequest();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
+            MockOrganizationRepository.Setup_SelectRevisions_Returns_OrganizationOneRevisionsRevisionOneInIt();
+            MockOrganizationRepository.Setup_RestoreRevision_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.RestoreOrganization(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<OrganizationRestoreResponse>(result);
+            MockOrganizationRepository.Verify_Any();
+            MockOrganizationRepository.Verify_Select();
+            MockOrganizationRepository.Verify_SelectRevisions();
+            MockOrganizationRepository.Verify_RestoreRevision();
+        }
+
+        [Test]
+        public async Task OrganizationService_RestoreOrganization_Invalid_OrganizationNotActive()
+        {
+            // arrange
+            var request = GetOrganizationRestoreRequest();
+            MockOrganizationRepository.Setup_Any_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.RestoreOrganization(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
+            AssertReturnType<OrganizationRestoreResponse>(result);
+            MockOrganizationRepository.Verify_Any();
+        }
+
+        [Test]
+        public async Task OrganizationService_RestoreOrganization_Invalid_OrganizationNotFound()
+        {
+            // arrange
+            var request = GetOrganizationRestoreRequest();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockOrganizationRepository.Setup_Select_Returns_OrganizationOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.RestoreOrganization(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertReturnType<OrganizationRestoreResponse>(result);
+            MockOrganizationRepository.Verify_Any();
+            MockOrganizationRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_RestoreOrganization_Invalid_OrganizationRevisionNotFound()
+        {
+            // arrange
+            var request = GetOrganizationRestoreRequest();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
+            MockOrganizationRepository.Setup_SelectRevisions_Returns_OrganizationOneRevisionsRevisionTwoInIt();
+
+            // act
+            var result = await SystemUnderTest.RestoreOrganization(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationRevisionNotFound);
+            AssertReturnType<OrganizationRestoreResponse>(result);
+            MockOrganizationRepository.Verify_Any();
+            MockOrganizationRepository.Verify_Select();
+            MockOrganizationRepository.Verify_SelectRevisions();
+        }
+
+        [Test]
+        public async Task OrganizationService_RestoreOrganization_Failed()
+        {
+            // arrange
+            var request = GetOrganizationRestoreRequest();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
+            MockOrganizationRepository.Setup_SelectRevisions_Returns_OrganizationOneRevisionsRevisionOneInIt();
+            MockOrganizationRepository.Setup_RestoreRevision_Returns_False();
+
+            // act
+            var result = await SystemUnderTest.RestoreOrganization(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<OrganizationRestoreResponse>(result);
+            MockOrganizationRepository.Verify_Any();
+            MockOrganizationRepository.Verify_Select();
+            MockOrganizationRepository.Verify_SelectRevisions();
+            MockOrganizationRepository.Verify_RestoreRevision();
+        }
+
+        [Test]
+        public async Task OrganizationService_GetPendingTranslations_Success_SelectAfter()
+        {
+            // arrange
+            var request = GetOrganizationPendingTranslationReadListRequestForSelectAfter(OrganizationOneUid);
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+            MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
+
+            // act
+            var result = await SystemUnderTest.GetPendingTranslations(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<OrganizationPendingTranslationReadListResponse>(result);
+            AssertPagingInfoForSelectAfter(result.PagingInfo, Ten);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_GetPendingTranslations_Success_SelectMany()
+        {
+            // arrange
+            var request = GetOrganizationPendingTranslationReadListRequestForSelectMany(OrganizationOneUid);
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+            MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
+
+            // act
+            var result = await SystemUnderTest.GetPendingTranslations(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<OrganizationPendingTranslationReadListResponse>(result);
+            AssertPagingInfoForSelectMany(result.PagingInfo, Ten);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_GetPendingTranslations_Invalid_OrganizationNotMatch()
+        {
+            // arrange
+            var request = GetOrganizationPendingTranslationReadListRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationTwoUserOne();
+            MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
+
+            // act
+            var result = await SystemUnderTest.GetPendingTranslations(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertReturnType<OrganizationPendingTranslationReadListResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_ValidateEmail_Success()
+        {
+            // arrange
+            var request = GetValidateEmailRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_Update_Success();
+
+            // act
+            var result = await SystemUnderTest.ValidateEmail(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<ValidateEmailResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task OrganizationService_ValidateEmail_Failed()
+        {
+            // arrange
+            var request = GetValidateEmailRequest();
+            MockUserRepository.Reset();
+
+            // act
+            var result = await SystemUnderTest.ValidateEmail(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<ValidateEmailResponse>(result);
+        }
+
+        [Test]
+        public async Task OrganizationService_LogOn_Success()
+        {
+            // arrange
+            var request = GetLogOnRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneForSuccessLogOn();
+            MockLogOnUnitOfWork.Setup_DoWork_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.LogOn(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<LogOnResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockLogOnUnitOfWork.Verify_DoWork();
+        }
+
+        [Test]
+        public async Task OrganizationService_LogOn_Invalid_UserNotFound()
+        {
+            // arrange
+            var request = GetLogOnRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
+            MockLogOnUnitOfWork.Setup_DoWork_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.LogOn(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertReturnType<LogOnResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockLogOnUnitOfWork.Verify_DoWork();
+        }
+
+        [Test]
+        public async Task OrganizationService_LogOn_Invalid_UserNotActive()
+        {
+            // arrange
+            var request = GetLogOnRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotActive();
+            MockLogOnUnitOfWork.Setup_DoWork_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.LogOn(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotActive);
+            AssertReturnType<LogOnResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockLogOnUnitOfWork.Verify_DoWork();
+        }
+
+        [Test]
+        public async Task OrganizationService_LogOn_Failed()
+        {
+            // arrange
+            var request = GetLogOnRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneForSuccessLogOn();
+            MockLogOnUnitOfWork.Setup_DoWork_Returns_False();
+
+            // act
+            var result = await SystemUnderTest.LogOn(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<LogOnResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockLogOnUnitOfWork.Verify_DoWork();
+        }
+
+        [Test]
+        public async Task OrganizationService_DemandPasswordReset_Success()
+        {
+            // arrange
+            var request = GetDemandPasswordResetRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOnePasswordResetRequestedAtFiveMinutesBefore();
+            MockUserRepository.Setup_Update_Success();
+
+            // act
+            var result = await SystemUnderTest.DemandPasswordReset(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<DemandPasswordResetResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task OrganizationService_DemandPasswordReset_Invalid_UserNotFound()
+        {
+            // arrange
+            var request = GetDemandPasswordResetRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.DemandPasswordReset(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertReturnType<DemandPasswordResetResponse>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_DemandPasswordReset_InvalidAlreadyRequested()
+        {
+            // arrange
+            var request = GetDemandPasswordResetRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOnePasswordResetRequestedAtOneMinuteBefore();
+
+            // act
+            var result = await SystemUnderTest.DemandPasswordReset(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, "already_requested_password_reset_in_last_two_minutes");
+            AssertReturnType<DemandPasswordResetResponse>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_DemandPasswordReset_Failed()
+        {
+            // arrange
+            var request = GetDemandPasswordResetRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOnePasswordResetRequestedAtFiveMinutesBefore();
+            MockUserRepository.Setup_Update_Failed();
+
+            // act
+            var result = await SystemUnderTest.DemandPasswordReset(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<DemandPasswordResetResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task OrganizationService_ValidatePasswordReset_Success()
+        {
+            // arrange
+            var request = GetPasswordResetValidateRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOnePasswordResetRequestedAtFiveMinutesBefore();
+
+            // act
+            var result = await SystemUnderTest.ValidatePasswordReset(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<PasswordResetValidateResponse>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_ValidatePasswordReset_Failed_UserNotExist()
+        {
+            // arrange
+            var request = GetPasswordResetValidateRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.ValidatePasswordReset(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<PasswordResetValidateResponse>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_ValidatePasswordReset_Failed_PasswordResetRequestedAtTwoDaysBefore()
+        {
+            // arrange
+            var request = GetPasswordResetValidateRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOnePasswordResetRequestedAtTwoDaysBefore();
+
+            // act
+            var result = await SystemUnderTest.ValidatePasswordReset(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<PasswordResetValidateResponse>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_PasswordReset_Success()
+        {
+            // arrange
+            var request = GetPasswordResetRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOnePasswordResetRequestedAtFiveMinutesBefore();
+            MockUserRepository.Setup_Update_Success();
+
+            // act
+            var result = await SystemUnderTest.PasswordReset(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<PasswordResetResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task OrganizationService_PasswordReset_Failed_UserNotExist()
+        {
+            // arrange
+            var request = GetPasswordResetRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
+            MockUserRepository.Setup_Update_Success();
+
+            // act
+            var result = await SystemUnderTest.PasswordReset(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<PasswordResetResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task OrganizationService_PasswordReset_Failed_PasswordResetRequestedAtTwoDaysBefore()
+        {
+            // arrange
+            var request = GetPasswordResetRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOnePasswordResetRequestedAtTwoDaysBefore();
+            MockUserRepository.Setup_Update_Success();
+
+            // act
+            var result = await SystemUnderTest.PasswordReset(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<PasswordResetResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task OrganizationService_ChangePassword_Success()
+        {
+            // arrange
+            var request = GetPasswordChangeRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_Update_Success();
+            MockUserRepository.Setup_SelectRevisions_Returns_OrganizationOneUserOneRevisions();
+
+            // act
+            var result = await SystemUnderTest.ChangePassword(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<PasswordChangeResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_Update();
+            MockUserRepository.Verify_SelectRevisions();
+        }
+
+        [Test]
+        public async Task OrganizationService_ChangePassword_Invalid_UserNotFound()
+        {
+            // arrange
+            var request = GetPasswordChangeRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.ChangePassword(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertReturnType<PasswordChangeResponse>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_ChangePassword_Invalid_UserNotActive()
+        {
+            // arrange
+            var request = GetPasswordChangeRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotActive();
+
+            // act
+            var result = await SystemUnderTest.ChangePassword(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotActive);
+            AssertReturnType<PasswordChangeResponse>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_ChangePassword_Failed_OldPasswordIsNotRight()
+        {
+            // arrange
+            var request = GetPasswordChangeRequest(PasswordTwo, PasswordOne);
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+
+            // act
+            var result = await SystemUnderTest.ChangePassword(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, "old_password_is_not_right");
+            AssertReturnType<PasswordChangeResponse>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_ChangePassword_Failed_ChooseOtherPasswordDifferentThanLastTwo()
+        {
+            // arrange
+            var request = GetPasswordChangeRequest(PasswordOne, PasswordOne);
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_SelectRevisions_Returns_OrganizationOneUserOneRevisions();
+
+            // act
+            var result = await SystemUnderTest.ChangePassword(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, "choose_other_password_different_then_last_2");
+            AssertReturnType<PasswordChangeResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_SelectRevisions();
+        }
+
+        [Test]
+        public async Task OrganizationService_ChangeActivationForUser_Success()
+        {
+            // arrange
+            var request = GetUserChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockUserRepository.Setup_Update_Success();
+
+            // act
+            var result = await SystemUnderTest.ChangeActivationForUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<UserChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockUserRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task OrganizationService_ChangeActivationForUser_Invalid_CurrentUserNotAdmin()
+        {
+            // arrange
+            var request = GetUserChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+
+            // act
+            var result = await SystemUnderTest.ChangeActivationForUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertReturnType<UserChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task OrganizationService_ChangeActivationForUser_Invalid_OrganizationNotFound()
+        {
+            // arrange
+            var request = GetUserChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.ChangeActivationForUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertReturnType<UserChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+        }
+
+        [Test]
+        public async Task OrganizationService_ChangeActivationForUser_Invalid_OrganizationNotMatch()
+        {
+            // arrange
+            var request = GetUserChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationTwoAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockUserRepository.Setup_Update_Success();
+
+            // act
+            var result = await SystemUnderTest.ChangeActivationForUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertReturnType<UserChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockUserRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task OrganizationService_ChangeActivationForUser_Failed()
+        {
+            // arrange
+            var request = GetUserChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockUserRepository.Setup_Update_Failed();
+
+            // act
+            var result = await SystemUnderTest.ChangeActivationForUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<UserChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockUserRepository.Verify_Update();
+        }
+
+        // todo: EditUser tests
+
+        // todo: DeleteUser tests
+
+        [Test]
+        public async Task OrganizationService_InviteUser_Success()
+        {
+            // arrange
+            var request = GetUserInviteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
+            MockUserRepository.Setup_Insert_Success();
+
+            // act
+            var result = await SystemUnderTest.InviteUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<UserInviteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_Insert();
+        }
+
+        [Test]
+        public async Task OrganizationService_InviteUser_Invalid_CurrentUserNotAdmin()
+        {
+            // arrange
+            var request = GetUserInviteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+
+            // act
+            var result = await SystemUnderTest.InviteUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertReturnType<UserInviteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task OrganizationService_InviteUser_Invalid_OrganizationNotFound()
+        {
+            // arrange
+            var request = GetUserInviteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.InviteUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertReturnType<UserInviteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+        }
+
+        [Test]
+        public async Task OrganizationService_InviteUser_Invalid_EmailAlreadyInvited()
+        {
+            // arrange
+            var request = GetUserInviteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+
+            // act
+            var result = await SystemUnderTest.InviteUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, "email_already_invited");
+            AssertReturnType<UserInviteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_InviteUser_Failed()
+        {
+            // arrange
+            var request = GetUserInviteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
+            MockUserRepository.Setup_Insert_Failed();
+
+            // act
+            var result = await SystemUnderTest.InviteUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<UserInviteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_Insert();
+        }
+
+        [Test]
+        public async Task OrganizationService_ValidateUserInvitation_Success()
+        {
+            // arrange
+            var request = GetUserInviteValidateRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneInvitedAtOneDayBefore();
+
+            // act
+            var result = await SystemUnderTest.ValidateUserInvitation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<UserInviteValidateResponse>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_ValidateUserInvitation_Failed_UserNotExist()
+        {
+            // arrange
+            var request = GetUserInviteValidateRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.ValidateUserInvitation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<UserInviteValidateResponse>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_ValidateUserInvitation_Failed_UserInvitedAtOneWeekBefore()
+        {
+            // arrange
+            var request = GetUserInviteValidateRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneInvitedAtOneWeekBefore();
+
+            // act
+            var result = await SystemUnderTest.ValidateUserInvitation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<UserInviteValidateResponse>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_AcceptInvitation_Success()
+        {
+            // arrange
+            var request = GetUserAcceptInviteRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneInvitedAtOneDayBefore();
+            MockUserRepository.Setup_Update_Success();
+            MockOrganizationRepository.Setup_Update_Success();
+
+            // act
+            var result = await SystemUnderTest.AcceptInvitation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<UserAcceptInviteResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_Update();
+            MockOrganizationRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task OrganizationService_AcceptInvitation_Failed_UserNotExist()
+        {
+            // arrange
+            var request = GetUserAcceptInviteRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.AcceptInvitation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<UserAcceptInviteResponse>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_AcceptInvitation_Failed_UserInvitedAtOneWeekBefore()
+        {
+            // arrange
+            var request = GetUserAcceptInviteRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneInvitedAtOneWeekBefore();
+
+            // act
+            var result = await SystemUnderTest.AcceptInvitation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<UserAcceptInviteResponse>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_AcceptInvitation_Failed()
+        {
+            // arrange
+            var request = GetUserAcceptInviteRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneInvitedAtOneDayBefore();
+            MockUserRepository.Setup_Update_Success();
+            MockOrganizationRepository.Setup_Update_Failed();
+
+            // act
+            var result = await SystemUnderTest.AcceptInvitation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<UserAcceptInviteResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_Update();
             MockOrganizationRepository.Verify_Update();
         }
     }
