@@ -9,7 +9,6 @@
     <Folder Include="Client\Models\ViewModels\Journal\" />
     <Folder Include="Client\Models\ViewModels\Label\" />
     <Folder Include="Client\Models\ViewModels\Language\" />
-    <Folder Include="Client\Models\ViewModels\Project\" />
     <Folder Include="Client\Models\ViewModels\Organization\" />
     <Folder Include="Common\Requests\Admin\" />
     <Folder Include="Common\Requests\Label\" />

@@ -1,5 +1,6 @@
 
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 
 using Moq;
@@ -31,7 +32,6 @@ namespace Translation.Tests.TestHelpers
 
             return pagingInfo;
         }
-
 
         public static PagingInfo GetFakePagingInfoForSelectMany()
         {
@@ -90,6 +90,18 @@ namespace Translation.Tests.TestHelpers
             model.CloningProjectUid = OrganizationOneProjectOneUid;
             model.LabelCount = One;
             model.LabelTranslationCount = Two;
+            model.Url = HttpsUrl;
+            model.Slug = StringOne;
+
+            return model;
+        }
+
+        public static ProjectDetailModel GetOrganizationOneProjectOneDetailModel()
+        {
+            var model = new ProjectDetailModel();
+            model.OrganizationUid = OrganizationOneUid;
+            model.Name = OrganizationOneProjectOneName;
+            model.LabelCount = One;
             model.Url = HttpsUrl;
             model.Slug = StringOne;
 
@@ -390,5 +402,83 @@ namespace Translation.Tests.TestHelpers
 
             return model;
         }
+
+        public static ProjectCloneModel GetProjectCloneModel(Guid organizationUid, Guid cloningProjectUid, string name,
+                                                             string slug, string url, string description = StringOne)
+        {
+            var model = new ProjectCloneModel();
+            model.OrganizationUid = organizationUid;
+            model.CloningProjectUid = cloningProjectUid;
+            model.Name = name;
+            model.Slug = slug;
+            model.Url = url;
+            model.Description = description;
+
+            return model;
+        }
+
+        public static ProjectCreateModel GetProjectCreateModel(Guid organizationUid, string name, string slug,
+                                                               string url, string description = StringOne)
+        {
+            var model = new ProjectCreateModel();
+            model.OrganizationUid = organizationUid;
+            model.Name = name;
+            model.Slug = slug;
+            model.Url = url;
+            model.Description = description;
+
+            return model;
+        }
+
+        public static ProjectDetailModel GetProjectDetailModel(Guid organizationUid, string organizationName, Guid projectUid,
+                                                               string name, string slug, string url, 
+                                                               int labelCount, string description = StringOne)
+        {
+            var model = new ProjectDetailModel();
+            model.OrganizationUid = organizationUid;
+            model.OrganizationName = organizationName;
+            model.ProjectUid = projectUid;
+            model.Name = name;
+            model.Slug = slug;
+            model.Url = url;
+            model.Description = description;
+            model.LabelCount = labelCount;
+            model.IsActive = true;
+
+            return model;
+        }
+
+        public static ProjectEditModel GetProjectEditModel(Guid organizationUid, Guid projectUid, string name,
+                                                           string slug, string url, string description = StringOne)
+        {
+            var model = new ProjectEditModel();
+            model.OrganizationUid = organizationUid;
+            model.ProjectUid = projectUid;
+            model.Name = name;
+            model.Slug = slug;
+            model.Url = url;
+            model.Description = description;
+
+            return model;
+        }
+
+        public static ProjectPendingTranslationReadListModel GetProjectPendingTranslationReadListModel(Guid projectUid, string projectName)
+        {
+            var model = new ProjectPendingTranslationReadListModel();
+            model.ProjectUid = projectUid;
+            model.ProjectName = projectName;
+
+            return model;
+        }
+
+        public static ProjectRevisionReadListModel GetProjectRevisionReadListModel(Guid projectUid, string projectName)
+        {
+            var model = new ProjectRevisionReadListModel();
+            model.ProjectUid = projectUid;
+            model.ProjectName = projectName;
+
+            return model;
+        }
+
     }
 }

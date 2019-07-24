@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -230,6 +231,61 @@ namespace Translation.Tests.TestHelpers
             pagingInfo.LastUid.ShouldBe(info.LastUid);
             pagingInfo.IsAscending.ShouldBe(info.IsAscending);
             pagingInfo.TotalItemCount.ShouldBe(totalItemCountOfPagingInfo);
+        }
+
+
+        public static void AssertHiddenInputModel(HiddenInputModel input, string name)
+        {
+            input.ShouldNotBeNull();
+            input.Name.ShouldBe(name);
+        }
+
+        public static void AssertInputModel(InputModel input, string name, string labelKey)
+        {
+            input.ShouldNotBeNull();
+            input.Name.ShouldBe(name);
+            input.LabelKey.ShouldBe(labelKey);
+        }
+
+        public static void AssertInputModel(InputModel input, string name, string labelKey, bool isRequired)
+        {
+            input.ShouldNotBeNull();
+            input.Name.ShouldBe(name);
+            input.LabelKey.ShouldBe(labelKey);
+            input.IsRequired.ShouldBe(isRequired);
+        }
+
+        public static void AssertCheckboxInputModel(CheckboxInputModel input, string name, string labelKey)
+        {
+            input.ShouldNotBeNull();
+            input.Name.ShouldBe(name);
+            input.LabelKey.ShouldBe(labelKey);
+        }
+
+        public static void AssertCheckboxInputModel(CheckboxInputModel input, string name, string labelKey, bool isRequired, bool isReadOnly)
+        {
+            input.ShouldNotBeNull();
+            input.Name.ShouldBe(name);
+            input.LabelKey.ShouldBe(labelKey);
+            input.IsRequired.ShouldBe(isRequired);
+            input.IsReadOnly.ShouldBe(isReadOnly);
+        }
+
+        public static void AssertMessages(List<string> modelErrorMessages, string[] errorMessages)
+        {
+            modelErrorMessages.ShouldNotBeNull();
+
+            if (errorMessages == null)
+            {
+                modelErrorMessages.Count.ShouldBe(0);
+            }
+            else
+            {
+                for (int i = 0; i < modelErrorMessages.Count; i++)
+                {
+                    modelErrorMessages.Contains(errorMessages[i]).ShouldBeTrue();
+                }
+            }
         }
     }
 }

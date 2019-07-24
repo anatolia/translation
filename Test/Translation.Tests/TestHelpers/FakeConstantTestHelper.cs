@@ -97,7 +97,11 @@ namespace Translation.Tests.TestHelpers
         public static DateTime DateTimeTwoDaysBefore => DateTime.UtcNow.AddDays(-2);
         public static DateTime DateTimeOneWeekBefore => DateTime.UtcNow.AddDays(-7);
 
-        public const string StringEmpty = "";
+        public const string EmptySlug = "";
+        public const string SlugOne = "slug_one";
+        public const string SlugTwo = "slug_two";
+
+        public const string EmptyString = "";
         public const string StringOne = "String One";
         public const string StringTwo = "String Two";
         public const string StringThree = "String Three";
@@ -162,6 +166,7 @@ namespace Translation.Tests.TestHelpers
         public const string EmailTwo = "test_1@test_1.com";
         public const string EmailThree = "test_2@test_2.com";
 
+        public const string InvalidUrl = "";
         public const string HttpUrl = "http://turkiye.gov.tr";
         public const string HttpWwwUrl = "http://www.turkiye.gov.tr";
         public const string ShortHttpUrl = "http://aka.ms";
