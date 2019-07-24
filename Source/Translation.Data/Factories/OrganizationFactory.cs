@@ -56,20 +56,5 @@ namespace Translation.Data.Factories
             return currentOrganization;
         }
 
-        public Organization MapCurrentOrganization(CurrentOrganization currentOrganization)
-        {
-            var organizationEntity = new Organization();
-            organizationEntity.Id = currentOrganization.Id;
-            organizationEntity.Uid = currentOrganization.Uid;
-            organizationEntity.Name = currentOrganization.Name;
-
-            return organizationEntity;
-        }
-
-        public Organization UpdateEntityForChangeActivation(Organization entity)
-        {
-            entity.IsActive = !entity.IsActive;
-            return entity;
-        }
     }
 }
