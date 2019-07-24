@@ -1128,6 +1128,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static UserRestoreRequest GetUserRestoreRequest(Guid userUid, int revision)
+        {
+            var request = new UserRestoreRequest(CurrentUserId, userUid, revision);
+
+            return request;
+        }
+
         public static UserEditRequest GetUserEditRequest()
         {
             var request = new UserEditRequest(CurrentUserId, UidOne, StringOne, StringOne, UidOne);
@@ -1185,6 +1192,22 @@ namespace Translation.Tests.TestHelpers
         public static UserLoginLogReadListRequest GetUserLoginLogReadListRequest()
         {
             var request = new UserLoginLogReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static UserLoginLogReadListRequest GetUserLoginLogReadListRequestForSelectAfter()
+        {
+            var request = new UserLoginLogReadListRequest(CurrentUserId, UidOne);
+            request.PagingInfo = GetPagingInfoForSelectAfter();
+
+            return request;
+        }
+
+        public static UserLoginLogReadListRequest GetUserLoginLogReadListRequestForSelectMany()
+        {
+            var request = new UserLoginLogReadListRequest(CurrentUserId, UidOne);
+            request.PagingInfo = GetPagingInfoForSelectMany();
 
             return request;
         }

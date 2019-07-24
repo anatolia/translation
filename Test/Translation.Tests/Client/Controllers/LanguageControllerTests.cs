@@ -29,17 +29,17 @@ namespace Translation.Tests.Client.Controllers
             SetControllerContext(SystemUnderTest);
         }
 
-        [TestCase(CreateAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(CreateAction, new Type[] { typeof(LanguageCreateModel) }, typeof(HttpPostAttribute))]
-        [TestCase(DetailAction, new Type[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(EditAction, new Type[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(EditAction, new Type[] { typeof(LanguageEditModel) }, typeof(HttpPostAttribute))]
-        [TestCase(ListAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(ListDataAction, new Type[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(SelectDataAction, new Type[] { typeof(Guid), typeof(int), typeof(string) }, typeof(HttpGetAttribute))]
-        [TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute))]
+        [TestCase(CreateAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(CreateAction, new Type[] { typeof(LanguageCreateModel) }, typeof(HttpPostAttribute)),
+         TestCase(DetailAction, new Type[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new Type[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new Type[] { typeof(LanguageEditModel) }, typeof(HttpPostAttribute)),
+         TestCase(ListAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(ListDataAction, new Type[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(SelectDataAction, new Type[] { typeof(Guid), typeof(int), typeof(string) }, typeof(HttpGetAttribute)),
+         TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute))]
         public void Methods_Has_Http_Verb_Attributes(string actionMethod, Type[] parameters, Type httpVerbAttribute)
         {
             var type = SystemUnderTest.GetType();

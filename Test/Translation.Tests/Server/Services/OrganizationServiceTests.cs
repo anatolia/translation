@@ -1,12 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using Moq;
 using NUnit.Framework;
-
+using Shouldly;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
+using Translation.Common.Models.Requests.User.LoginLog;
 using Translation.Common.Models.Responses.Organization;
 using Translation.Common.Models.Responses.User;
+using Translation.Common.Models.Responses.User.LoginLog;
+using Translation.Common.Models.Shared;
 using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
@@ -163,6 +167,7 @@ namespace Translation.Tests.Server.Services
             var request = GetOrganizationRevisionReadListRequest();
             MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
             MockOrganizationRepository.Setup_SelectRevisions_Returns_OrganizationOneRevisionsRevisionOneInIt();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
 
             // act
             var result = await SystemUnderTest.GetOrganizationRevisions(request);
@@ -172,6 +177,7 @@ namespace Translation.Tests.Server.Services
             AssertReturnType<OrganizationRevisionReadListResponse>(result);
             MockOrganizationRepository.Verify_Select();
             MockOrganizationRepository.Verify_SelectRevisions();
+            MockUserRepository.Verify_SelectById();
         }
 
         [Test]
@@ -270,8 +276,8 @@ namespace Translation.Tests.Server.Services
             var request = GetOrganizationEditRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
-           
-           
+
+
 
             // act
             var result = await SystemUnderTest.EditOrganization(request);
@@ -1134,6 +1140,215 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Verify_Select();
             MockUserRepository.Verify_Update();
             MockOrganizationRepository.Verify_Update();
+        }
+
+        // todo: GetUser tests
+        // todo: GetUsers tests
+
+        [Test]
+        public async Task OrganizationService_GetUserRevisions_Success()
+        {
+            // arrange
+            var request = GetUserRevisionReadListRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_SelectRevisions_Returns_OrganizationOneUserOneRevisions();
+
+            // act
+            var result = await SystemUnderTest.GetUserRevisions(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<UserRevisionReadListResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_SelectRevisions();
+        }
+
+        [Test]
+        public async Task OrganizationService_GetUserRevisions_Invalid_UserNotFound()
+        {
+            // arrange
+            var request = GetUserRevisionReadListRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.GetUserRevisions(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertReturnType<UserRevisionReadListResponse>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        // todo: GetUserLoginLogs tests
+        // todo: GetUserLoginLogsOfOrganization tests
+
+        [Test]
+        public async Task OrganizationService_RestoreUser_Success()
+        {
+            // arrange
+            var request = GetUserRestoreRequest(OrganizationOneUserOneUid, One);
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_SelectRevisions_Returns_OrganizationOneUserOneRevisions();
+            MockUserRepository.Setup_RestoreRevision_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.RestoreUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<UserRestoreResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_SelectRevisions();
+            MockUserRepository.Verify_RestoreRevision();
+        }
+
+        [Test]
+        public async Task OrganizationService_RestoreUser_Invalid_OrganizationNotActive()
+        {
+            // arrange
+            var request = GetUserRestoreRequest(OrganizationOneUserOneUid, One);
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.RestoreUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
+            AssertReturnType<UserRestoreResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+        }
+
+        [Test]
+        public async Task OrganizationService_RestoreUser_Invalid_UserNotFound()
+        {
+            // arrange
+            var request = GetUserRestoreRequest(OrganizationOneUserOneUid, One);
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.RestoreUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertReturnType<UserRestoreResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_RestoreUser_Invalid_UserRevisionNotFound()
+        {
+            // arrange
+            var request = GetUserRestoreRequest(OrganizationOneUserOneUid, One);
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_SelectRevisions_Returns_OrganizationOneUserOneRevisionsRevisionTwoInIt();
+
+            // act
+            var result = await SystemUnderTest.RestoreUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserRevisionNotFound);
+            AssertReturnType<UserRestoreResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_SelectRevisions();
+        }
+
+        [Test]
+        public async Task OrganizationService_RestoreUser_Failed()
+        {
+            // arrange
+            var request = GetUserRestoreRequest(OrganizationOneUserOneUid, One);
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_SelectRevisions_Returns_OrganizationOneUserOneRevisions();
+            MockUserRepository.Setup_RestoreRevision_Returns_False();
+
+            // act
+            var result = await SystemUnderTest.RestoreUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<UserRestoreResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_SelectRevisions();
+            MockUserRepository.Verify_RestoreRevision();
+        }
+
+        [Test]
+        public void OrganizationService_GetCurrentUser_Success()
+        {
+            // arrange
+            var request = GetCurrentUserRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+
+            // act
+            var result = SystemUnderTest.GetCurrentUser(request);
+
+            // assert
+            result.ShouldNotBeNull();
+            AssertReturnType<CurrentUser>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public void OrganizationService_GetCurrentUser_Failed_CurrentUserNotMapped()
+        {
+            // arrange
+            var request = GetCurrentUserRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
+
+            // act
+            void Result() => SystemUnderTest.GetCurrentUser(request);
+
+            // assert
+            Assert.Throws<ApplicationException>(Result).Message.ShouldBe("Current user not mapped!");
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_LoadOrganizationsToCache()
+        {
+            // arrange
+            MockOrganizationRepository.Setup_SelectAll_Returns_Organizations();
+
+            // act
+            var result = await SystemUnderTest.LoadOrganizationsToCache();
+
+            // assert
+            result.ShouldNotBeNull();
+            result.ShouldBeTrue();
+            MockOrganizationRepository.Verify_SelectAll();
+        }
+
+        [Test]
+        public async Task OrganizationService_LoadUsersToCache()
+        {
+            // arrange
+            MockUserRepository.Setup_SelectAll_Returns_Users();
+
+            // act
+            var result = await SystemUnderTest.LoadUsersToCache();
+
+            // assert
+            result.ShouldNotBeNull();
+            result.ShouldBeTrue();
+            MockUserRepository.Verify_SelectAll();
         }
     }
 }

@@ -29,35 +29,35 @@ namespace Translation.Tests.Client.Controllers
             SetControllerContext(SystemUnderTest);
         }
 
-        [TestCase(SignUpAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(SignUpAction, new[] { typeof(SignUpModel) }, typeof(HttpPostAttribute))]
-        [TestCase(ValidateEmailDoneAction, new[] { typeof(string), typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(LogOnAction, new Type[] { typeof(string) }, typeof(HttpGetAttribute))]
-        [TestCase(LogOnAction, new[] { typeof(LogOnModel) }, typeof(HttpPostAttribute))]
-        [TestCase(DemandPasswordResetAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(DemandPasswordResetDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(ResetPasswordAction, new[] { typeof(string), typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(ResetPasswordAction, new[] { typeof(ResetPasswordModel) }, typeof(HttpPostAttribute))]
-        [TestCase(ResetPasswordDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(DetailAction, new [] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(ChangePasswordAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(ChangePasswordAction, new [] { typeof(ChangePasswordModel) }, typeof(HttpPostAttribute))]
-        [TestCase(ChangePasswordDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(EditAction, new [] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(EditAction, new [] { typeof(UserEditModel) }, typeof(HttpPostAttribute))]
-        [TestCase(InviteAction, new [] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(InviteAction, new [] { typeof(InviteModel) }, typeof(HttpPostAttribute))]
-        [TestCase(InviteDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(AcceptInviteAction, new[] { typeof(string), typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(AcceptInviteAction, new[] { typeof(InviteAcceptModel) }, typeof(HttpPostAttribute))]
-        [TestCase(AcceptInviteDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(ChangeActivationAction, new [] { typeof(Guid) }, typeof(HttpPostAttribute))]
-        [TestCase(LogOffAction, new Type[] { }, typeof(HttpPostAttribute))]
-        [TestCase(JournalListAction, new[] { typeof(Guid)}, typeof(HttpGetAttribute))]
-        [TestCase(JournalListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute))]
+        [TestCase(SignUpAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(SignUpAction, new[] { typeof(SignUpModel) }, typeof(HttpPostAttribute)),
+         TestCase(ValidateEmailDoneAction, new[] { typeof(string), typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(LogOnAction, new Type[] { typeof(string) }, typeof(HttpGetAttribute)),
+         TestCase(LogOnAction, new[] { typeof(LogOnModel) }, typeof(HttpPostAttribute)),
+         TestCase(DemandPasswordResetAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(DemandPasswordResetDoneAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(ResetPasswordAction, new[] { typeof(string), typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(ResetPasswordAction, new[] { typeof(ResetPasswordModel) }, typeof(HttpPostAttribute)),
+         TestCase(ResetPasswordDoneAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(DetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(ChangePasswordAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(ChangePasswordAction, new[] { typeof(ChangePasswordModel) }, typeof(HttpPostAttribute)),
+         TestCase(ChangePasswordDoneAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new[] { typeof(UserEditModel) }, typeof(HttpPostAttribute)),
+         TestCase(InviteAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(InviteAction, new[] { typeof(InviteModel) }, typeof(HttpPostAttribute)),
+         TestCase(InviteDoneAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(AcceptInviteAction, new[] { typeof(string), typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(AcceptInviteAction, new[] { typeof(InviteAcceptModel) }, typeof(HttpPostAttribute)),
+         TestCase(AcceptInviteDoneAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(ChangeActivationAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
+         TestCase(LogOffAction, new Type[] { }, typeof(HttpPostAttribute)),
+         TestCase(JournalListAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(JournalListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute))]
         public void Methods_Has_Http_Verb_Attributes(string actionMethod, Type[] parameters, Type httpVerbAttribute)
         {
             var type = SystemUnderTest.GetType();
