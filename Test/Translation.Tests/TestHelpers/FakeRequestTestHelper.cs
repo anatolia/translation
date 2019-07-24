@@ -18,6 +18,7 @@ using Translation.Common.Models.Responses.Admin;
 using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
+using Translation.Data.Entities.Parameter;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
 
@@ -81,6 +82,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static TokenCreateRequest GetTokenCreateRequest(IntegrationClient integrationClient)
+        {
+            var request = new TokenCreateRequest(integrationClient.ClientId, integrationClient.ClientId, IPAddress.Any);
+
+            return request;
+        }
+
         public static TokenGetRequest GetTokenGetRequest()
         {
             var request = new TokenGetRequest(CurrentUserId);
@@ -109,9 +117,9 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
-        public static JournalCreateRequest GetJournalCreateRequest(Journal journal,CurrentUser currentUser )
+        public static JournalCreateRequest GetJournalCreateRequest(Journal journal, CurrentUser currentUser)
         {
-            var request = new JournalCreateRequest(CurrentUserId, StringOne);
+            var request = new JournalCreateRequest(CurrentUserId, journal.Message);
 
             return request;
         }
@@ -184,24 +192,24 @@ namespace Translation.Tests.TestHelpers
 
         public static IntegrationCreateRequest GetIntegrationCreateRequest(Integration integration)
         {
-            var request = new IntegrationCreateRequest(CurrentUserId, OrganizationOneUid, StringOne,
-                StringOne);
+            var request = new IntegrationCreateRequest(CurrentUserId, integration.OrganizationUid, integration.Name,
+                integration.Description);
 
             return request;
         }
 
         public static IntegrationCreateRequest GetIntegrationCreateRequest(Integration integration, Organization organization)
         {
-            var request = new IntegrationCreateRequest(CurrentUserId, OrganizationOneUid, StringOne,
-                StringOne);
+            var request = new IntegrationCreateRequest(CurrentUserId, organization.Uid, integration.Name,
+                integration.Description);
 
             return request;
         }
 
         public static IntegrationCreateRequest GetIntegrationCreateRequest(Integration integration, CurrentOrganization currentOrganization)
         {
-            var request = new IntegrationCreateRequest(CurrentUserId, OrganizationOneUid, StringOne,
-                StringOne);
+            var request = new IntegrationCreateRequest(CurrentUserId, currentOrganization.Uid, integration.Name,
+                integration.Description);
 
             return request;
         }
@@ -674,7 +682,15 @@ namespace Translation.Tests.TestHelpers
 
             return request;
         }
-        
+
+        public static LabelCreateRequest GetLabelCreateRequest(Label label, Project project)
+        {
+            var request = new LabelCreateRequest(CurrentUserId, label.OrganizationUid, project.Uid,
+                                                 label.Key, label.Description);
+
+            return request;
+        }
+
         public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequest()
         {
             var request = new LabelCreateWithTokenRequest(UidOne, UidOne, StringOne);
@@ -764,6 +780,14 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelEditRequest GetLabelEditRequest(Label label)
+        {
+            var request = new LabelEditRequest(CurrentUserId, label.OrganizationUid, label.Uid,
+                label.Key, label.Description);
+
+            return request;
+        }
+
         public static LabelChangeActivationRequest GetLabelChangeActivationRequest()
         {
             var request = new LabelChangeActivationRequest(CurrentUserId, UidOne, UidOne);
@@ -782,6 +806,14 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new LabelCloneRequest(CurrentUserId, UidOne, UidOne,
                                                 UidOne, StringOne, StringOne);
+
+            return request;
+        }
+
+        public static LabelCloneRequest GetLabelCloneRequest(Label label)
+        {
+            var request = new LabelCloneRequest(CurrentUserId, label.OrganizationUid, label.OrganizationUid,
+                label.ProjectUid, label.Key, label.Description);
 
             return request;
         }
@@ -868,6 +900,14 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelTranslationEditRequest GetLabelTranslationEditRequest(LabelTranslation labelTranslation)
+        {
+            var request = new LabelTranslationEditRequest(CurrentUserId, labelTranslation.OrganizationUid, labelTranslation.LabelUid,
+                labelTranslation.Translation);
+
+            return request;
+        }
+
         public static LabelTranslationDeleteRequest GetLabelTranslationDeleteRequest()
         {
             var request = new LabelTranslationDeleteRequest(CurrentUserId, UidOne, UidOne);
@@ -937,6 +977,15 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LanguageEditRequest GetLanguageEditRequest(Language language)
+        {
+            var request = new LanguageEditRequest(CurrentUserId, language.Uid, language.Name,
+                language.OriginalName, language.IsoCode2Char, language.IsoCode3Char,
+                language.IconUrl, language.Description);
+
+            return request;
+        }
+
         public static LanguageDeleteRequest GetLanguageDeleteRequest()
         {
             var request = new LanguageDeleteRequest(CurrentUserId, UidOne);
@@ -963,6 +1012,15 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new SignUpRequest(StringOne, StringOne, StringOne,
                                             EmailOne, PasswordOne, GetClientLogInfo());
+
+            return request;
+        }
+
+        public static SignUpRequest GetSignUpRequest(Organization organization)
+        {
+            var user = GetUser();
+            var request = new SignUpRequest(organization.Name, user.FirstName, user.LastName,
+                                            user.Email, PasswordOne, GetClientLogInfo());
 
             return request;
         }
@@ -1008,6 +1066,14 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new OrganizationEditRequest(CurrentUserId, UidOne, StringOne,
                                                       StringOne);
+
+            return request;
+        }
+
+        public static OrganizationEditRequest GetOrganizationEditRequest(Organization organization)
+        {
+            var request = new OrganizationEditRequest(CurrentUserId, organization.Uid, organization.Name,
+                organization.Description);
 
             return request;
         }
@@ -1149,13 +1215,15 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
-        public static UserInviteValidateRequest GetUserInviteValidateRequest(){
+        public static UserInviteValidateRequest GetUserInviteValidateRequest()
+        {
             var request = new UserInviteValidateRequest(UidOne, EmailOne);
 
             return request;
         }
 
-        public static UserAcceptInviteRequest GetUserAcceptInviteRequest(){
+        public static UserAcceptInviteRequest GetUserAcceptInviteRequest()
+        {
             var request = new UserAcceptInviteRequest(UidOne, EmailOne, StringOne, StringOne, PasswordOne);
 
             return request;

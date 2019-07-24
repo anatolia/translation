@@ -517,6 +517,10 @@ namespace Translation.Tests.TestHelpers
             user.Uid = UidOne;
             user.Name = StringOne;
 
+            user.FirstName = StringOne;
+            user.LastName = StringOne;
+            user.PasswordHash = PasswordHashOne;
+
             user.Email = EmailOne;
             user.IsActive = BooleanTrue;
 
@@ -846,7 +850,7 @@ namespace Translation.Tests.TestHelpers
             labelTranslation.Id = LongOne;
             labelTranslation.Uid = UidOne;
             labelTranslation.Name = StringOne;
-
+            labelTranslation.Translation = StringOne;
             labelTranslation.IsActive = BooleanTrue;
 
             return labelTranslation;
@@ -964,7 +968,7 @@ namespace Translation.Tests.TestHelpers
             language.OriginalName = "Language One Original Name";
             language.IsoCode2Char = IsoCode2One;
             language.IsoCode3Char = IsoCode3One;
-
+            language.IconUrl = StringOne;
             return language;
         }
 
