@@ -191,8 +191,6 @@ namespace Translation.Service
         {
             var response = new OrganizationRevisionReadListResponse();
 
-            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-
             var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
             if (organization.IsNotExist())
             {
@@ -866,8 +864,6 @@ namespace Translation.Service
         {
             var response = new UserRevisionReadListResponse();
 
-            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-
             var user = await _userRepository.Select(x => x.Uid == request.UserUid);
             if (user.IsNotExist())
             {
@@ -1005,7 +1001,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotActive("organization");
                 return response;
             }
 
@@ -1019,7 +1015,7 @@ namespace Translation.Service
             var revisions = await _userRepository.SelectRevisions(user.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalidBecauseNotFound("user");
+                response.SetInvalidBecauseRevisionNotFound("user");
                 return response;
             }
 
