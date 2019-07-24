@@ -74,9 +74,21 @@ namespace Translation.Tests.TestHelpers
         public static Guid EmptyUid => Guid.Empty;
         public static Guid UidOne => new Guid("3A2F7BA0-0D4C-4231-B9DF-A15460B60BD2");
         public static Guid UidTwo => new Guid("5bb6cdd7-b5d1-4cf0-98c9-9bc68fa940c3");
+        public static Guid UidThree => new Guid("f5fb877e-6191-4ad0-9d0f-b6f28e182423");
+        public static Guid UidFour => new Guid("8b1229b2-9c01-4d8e-802f-f0deab66e4b0");
+        public static Guid UidFive => new Guid("e253c697-9261-4815-8542-4e1622c2db2b");
+        public static Guid UidSix => new Guid("81e4c578-c604-4e9d-94d6-d641f334c045");
+        public static Guid UidSeven => new Guid("fad11c2c-245c-4916-ad3f-a1524023a206");
+        public static Guid UidEight => new Guid("dce48409-3bd8-4c91-b258-f4025201e7a9");
+        public static Guid UidNine => new Guid("d4fcd9a0-2390-4a0d-be65-7de0356e5b46");
+        public static Guid UidTen => new Guid("ec8fd3bb-693c-4f87-880f-a19fac1de0cf");
 
         public static DateTime DateTimeOne => new DateTime(2019, 01, 01, 09, 00, 00);
         public static DateTime DateTimeTwo => new DateTime(2019, 01, 02, 18, 00, 00);
+        public static DateTime DateTimeThree => new DateTime(2019, 01, 03, 09, 00, 00);
+        public static DateTime DateTimeFour => new DateTime(2019, 01, 04, 09, 00, 00);
+        public static DateTime DateTimeFive => new DateTime(2019, 01, 05, 09, 00, 00);
+        public static DateTime DateTimeSix => new DateTime(2019, 01, 06, 09, 00, 00);
         public static DateTime DateTimeOneMinuteBefore => DateTime.UtcNow.AddMinutes(-1);
         public static DateTime DateTimeFiveMinutesBefore => DateTime.UtcNow.AddMinutes(-5);
         public static DateTime DateTimeOneHourBefore => DateTime.UtcNow.AddHours(-1);
@@ -88,6 +100,14 @@ namespace Translation.Tests.TestHelpers
         public const string StringEmpty = "";
         public const string StringOne = "String One";
         public const string StringTwo = "String Two";
+        public const string StringThree = "String Three";
+        public const string StringFour = "String Four";
+        public const string StringFive = "String Five";
+        public const string StringSix = "String Six";
+        public const string StringSeven = "String Seven";
+        public const string StringEight = "String Eight";
+        public const string StringNine = "String Nine";
+        public const string StringTen = "String Ten";
 
         public const string StringSixtyFourOne = "bXk=";
         public const string StringSixtyFourTwo = "bXkx";

@@ -50,7 +50,7 @@ namespace Translation.Tests.Client.Controllers
          TestCase(OrganizationListAction, new Type[] { }, typeof(HttpGetAttribute)),
          TestCase(OrganizationListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
          TestCase(UserListAction, new Type[] { }, typeof(HttpGetAttribute)),
-         TestCase(ListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(UserListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
          TestCase(UserLoginLogListAction, new Type[] { }, typeof(HttpGetAttribute)),
          TestCase(UserLoginLogListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
          TestCase(JournalListAction, new Type[] { }, typeof(HttpGetAttribute)),
