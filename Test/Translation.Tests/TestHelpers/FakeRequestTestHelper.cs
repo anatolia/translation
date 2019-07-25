@@ -117,6 +117,14 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static JournalCreateRequest GetJournalCreateRequest(long currentUserId, string message)
+        {
+            var request = new JournalCreateRequest(currentUserId, message);
+
+            return request;
+        }
+
+
         public static JournalCreateRequest GetJournalCreateRequest(Journal journal, CurrentUser currentUser)
         {
             var request = new JournalCreateRequest(CurrentUserId, journal.Message);
@@ -298,6 +306,15 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static ProjectCreateRequest GetProjectCreateRequest(long currentUserId, Guid organizationUid, string projectName,
+                                                                   string url, string description, string projectSlug)
+        {
+            var request = new ProjectCreateRequest(currentUserId, organizationUid, projectName,
+            url, description, projectSlug);
+
+            return request;
+        }
+
         public static ProjectCreateRequest GetProjectCreateRequest(Organization organization, Project project)
         {
             var request = new ProjectCreateRequest(CurrentUserId, organization.Uid, project.Name,
@@ -323,6 +340,17 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static ProjectEditRequest GetProjectEditRequest(long currentUserId, Guid organizationUid, Guid projectUid,
+                                                                string projectName, string url, string description,
+                                                                string projectSlug)
+        {
+            var request = new ProjectEditRequest(currentUserId, organizationUid, projectUid,
+                                                 projectName, url, description,
+                                                 projectSlug);
+
+            return request;
+        }
+
         public static ProjectEditRequest GetProjectEditRequest(Project project)
         {
             var request = new ProjectEditRequest(CurrentUserId, project.OrganizationUid, project.Uid,
@@ -342,6 +370,19 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static ProjectCloneRequest GetProjectCloneRequest(long currentUserId, Guid organizationUid, Guid cloningProjectUid,
+                                                                 string name, string url, string description,
+                                                                 int labelCount, int labelTranslationCount, bool isSuperProject,
+                                                                 string slug)
+        {
+            var request = new ProjectCloneRequest(currentUserId, organizationUid, cloningProjectUid,
+                                                  name, url, description,
+                                                  labelCount, labelTranslationCount, isSuperProject,
+                                                  slug);
+
+            return request;
+        }
+
         public static ProjectCloneRequest GetProjectCloneRequest(Project project)
         {
             var request = new ProjectCloneRequest(CurrentUserId, project.OrganizationUid, project.Uid,
@@ -355,6 +396,13 @@ namespace Translation.Tests.TestHelpers
         public static ProjectReadListRequest GetProjectReadListRequest()
         {
             var request = new ProjectReadListRequest(CurrentUserId, OrganizationOneUid);
+
+            return request;
+        }
+
+        public static ProjectReadListRequest GetProjectReadListRequest(long currentUserId, Guid organizationUi)
+        {
+            var request = new ProjectReadListRequest(currentUserId, organizationUi);
 
             return request;
         }
@@ -382,9 +430,23 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static ProjectReadRequest GetProjectReadRequest(long currentUserId, Guid projectUid)
+        {
+            var request = new ProjectReadRequest(currentUserId, projectUid);
+
+            return request;
+        }
+
         public static ProjectReadBySlugRequest GetProjectReadBySlugRequest()
         {
             var request = new ProjectReadBySlugRequest(CurrentUserId, StringOne);
+
+            return request;
+        }
+
+        public static ProjectReadBySlugRequest GetProjectReadBySlugRequest(long currentUserId, string projectSlug)
+        {
+            var request = new ProjectReadBySlugRequest(currentUserId, projectSlug);
 
             return request;
         }
@@ -396,9 +458,23 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static ProjectDeleteRequest GetProjectDeleteRequest(long currentUserId, Guid projectUid)
+        {
+            var request = new ProjectDeleteRequest(currentUserId, projectUid);
+
+            return request;
+        }
+
         public static ProjectChangeActivationRequest GetProjectChangeActivationRequest()
         {
             var request = new ProjectChangeActivationRequest(CurrentUserId, OrganizationOneUid, OrganizationOneProjectOneUid);
+
+            return request;
+        }
+
+        public static ProjectChangeActivationRequest GetProjectChangeActivationRequest(long currentUserId, Guid organizationUid, Guid projectUid)
+        {
+            var request = new ProjectChangeActivationRequest(currentUserId, organizationUid, projectUid);
 
             return request;
         }
@@ -431,9 +507,23 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static OrganizationChangeActivationRequest GetOrganizationChangeActivationRequest(long currentUserId, Guid organizationUid)
+        {
+            var request = new OrganizationChangeActivationRequest(currentUserId, organizationUid);
+
+            return request;
+        }
+
         public static ProjectRestoreRequest GetProjectRestoreRequest()
         {
             var request = new ProjectRestoreRequest(CurrentUserId, OrganizationOneUid, One);
+
+            return request;
+        }
+
+        public static ProjectRestoreRequest GetProjectRestoreRequest(long currentUserId, Guid projectUid, int revision)
+        {
+            var request = new ProjectRestoreRequest(currentUserId, projectUid, revision);
 
             return request;
         }
@@ -445,9 +535,23 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static ProjectRevisionReadListRequest GetProjectRevisionReadListRequest(long currentUserId, Guid projectUid)
+        {
+            var request = new ProjectRevisionReadListRequest(currentUserId, projectUid);
+
+            return request;
+        }
+
         public static ProjectPendingTranslationReadListRequest GetProjectPendingTranslationReadListRequest()
         {
             var request = new ProjectPendingTranslationReadListRequest(CurrentUserId, OrganizationOneProjectOneUid);
+
+            return request;
+        }
+
+        public static ProjectPendingTranslationReadListRequest GetProjectPendingTranslationReadListRequest(long currentUserId, Guid projectUid)
+        {
+            var request = new ProjectPendingTranslationReadListRequest(currentUserId, projectUid);
 
             return request;
         }
@@ -475,6 +579,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequest(long currentUserId, Guid organizationUid)
+        {
+            var request = new OrganizationJournalReadListRequest(currentUserId, organizationUid);
+
+            return request;
+        }
+
         public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequestForSelectAfter()
         {
             var request = GetOrganizationJournalReadListRequest();
@@ -494,6 +605,13 @@ namespace Translation.Tests.TestHelpers
         public static UserJournalReadListRequest GetUserJournalReadListRequest()
         {
             var request = new UserJournalReadListRequest(CurrentUserId, OrganizationOneUserOneUid);
+
+            return request;
+        }
+
+        public static UserJournalReadListRequest GetUserJournalReadListRequest(long currentUserId, Guid userUid)
+        {
+            var request = new UserJournalReadListRequest(currentUserId, userUid);
 
             return request;
         }
@@ -568,9 +686,25 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static AdminInviteRequest GetAdminInviteRequest(long currentUserId, Guid organizationUid, string email,
+            string firstName, string lastName)
+        {
+            var request = new AdminInviteRequest(currentUserId, organizationUid, email,
+                firstName, lastName);
+
+            return request;
+        }
+
         public static AdminInviteValidateRequest GetAdminInviteValidateRequest()
         {
             var request = new AdminInviteValidateRequest(UidOne, EmailOne);
+
+            return request;
+        }
+
+        public static AdminInviteValidateRequest GetAdminInviteValidateRequest(Guid token, string email)
+        {
+            var request = new AdminInviteValidateRequest(token, email);
 
             return request;
         }
@@ -583,9 +717,25 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static AdminAcceptInviteRequest GetAdminAcceptInviteRequest(Guid token, string email, string firstName,
+            string lastName, string password)
+        {
+            var request = new AdminAcceptInviteRequest(token, email, firstName,
+                lastName, password);
+
+            return request;
+        }
+
         public static AllJournalReadListRequest GetAllJournalReadListRequest()
         {
             var request = new AllJournalReadListRequest(CurrentUserId);
+
+            return request;
+        }
+
+        public static AllJournalReadListRequest GetAllJournalReadListRequest(long currentUserId)
+        {
+            var request = new AllJournalReadListRequest(currentUserId);
 
             return request;
         }
