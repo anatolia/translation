@@ -45,12 +45,12 @@ namespace Translation.Client.Web.Models.Label
         {
             if (OrganizationUid.IsEmptyGuid())
             {
-                ErrorMessages.Add("organization_uid_not_valid");
+                ErrorMessages.Add("organization_uid_is_not_valid");
             }
 
             if (ProjectUid.IsEmptyGuid())
             {
-                ErrorMessages.Add("project_uid_not_valid");
+                ErrorMessages.Add("project_uid_is_not_valid");
             }
 
             ProjectName = ProjectName.TrimOrDefault();

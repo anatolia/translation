@@ -15,8 +15,6 @@
 
   <ItemGroup>
     <Folder Include="Client\Models\ViewModels\Integration\" />
-    <Folder Include="Client\Models\ViewModels\Journal\" />
-    <Folder Include="Client\Models\ViewModels\Label\" />
     <Folder Include="Client\Models\ViewModels\Language\" />
     <Folder Include="Client\Models\ViewModels\Organization\" />
     <Folder Include="Common\Responses\Admin\" />

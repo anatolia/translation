@@ -277,8 +277,6 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
 
-
-
             // act
             var result = await SystemUnderTest.EditOrganization(request);
 
