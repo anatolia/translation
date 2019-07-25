@@ -80,50 +80,42 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Detail(string project, string label)
+        public async Task<IActionResult> Detail(Guid id, string project, string label)
         {
-            if (project.IsEmpty())
+            var labelUid = id;
+            if(labelUid.IsNotEmptyGuid())
             {
-                return RedirectToHome();
-            }
+                var labelReadRequest = new LabelReadRequest(CurrentUser.Id, labelUid);
+                var labelReadResponse = await _labelService.GetLabel(labelReadRequest);
 
-            var projectSlug = project;
-            var projectReadBySlugRequest = new ProjectReadBySlugRequest(CurrentUser.Id, projectSlug);
-            var projectReadBySlugResponse = await _projectService.GetProjectBySlug(projectReadBySlugRequest);
-            if (projectReadBySlugResponse.Status.IsNotSuccess)
-            {
-                return RedirectToAccessDenied();
-            }
-
-            var projectName = projectReadBySlugResponse.Item.Name;
-            if (label.IsAnyUid())
-            {
-                Guid.TryParse(label, out var labelUid);
-                if (labelUid.IsEmptyGuid())
-                {
-                    return RedirectToHome();
-                }
-
-                var request = new LabelReadRequest(CurrentUser.Id, labelUid);
-                var response = await _labelService.GetLabel(request);
-                if (response.Status.IsNotSuccess)
+                if (labelReadResponse.Status.IsNotSuccess)
                 {
                     return RedirectToAccessDenied();
                 }
 
-                var model = LabelMapper.MapLabelDetailModel(response.Item);
+                var labelDetailModel = LabelMapper.MapLabelDetailModel(labelReadResponse.Item);
 
-                return View(model);
+                return View(labelDetailModel);
             }
             else
-
             {
-                var labelKey = label;
-                if (labelKey.IsEmpty())
+                if (project.IsEmpty() 
+                    || label.IsEmpty())
                 {
                     return RedirectToHome();
                 }
 
+                var projectSlug = project;
+                var labelKey = label;
+
+                var projectReadBySlugRequest = new ProjectReadBySlugRequest(CurrentUser.Id, projectSlug);
+                var projectReadBySlugResponse = await _projectService.GetProjectBySlug(projectReadBySlugRequest);
+                if (projectReadBySlugResponse.Status.IsNotSuccess)
+                {
+                    return RedirectToAccessDenied();
+                }
+
+                var projectName = projectReadBySlugResponse.Item.Name;
                 var request = new LabelReadByKeyRequest(CurrentUser.Id, labelKey, projectName);
                 var response = await _labelService.GetLabelByKey(request);
 
