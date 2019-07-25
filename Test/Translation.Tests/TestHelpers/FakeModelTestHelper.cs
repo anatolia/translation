@@ -237,6 +237,50 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static IntegrationActiveTokensModel GetIntegrationActiveTokensModel()
+        {
+            var model = new IntegrationActiveTokensModel();
+            model.IntegrationUid = UidOne;
+            model.IntegrationName = StringOne;
+
+            return model;
+        }
+
+        public static IntegrationActiveTokensModel GetIntegrationActiveTokensModel(Guid integrationUid, string integrationName)
+        {
+            var model = new IntegrationActiveTokensModel();
+            model.IntegrationUid = integrationUid;
+            model.IntegrationName = integrationName;
+
+            return model;
+        }
+
+        public static IntegrationClientActiveTokensModel GetIntegrationClientActiveTokensModel(Guid integrationUid, string integrationName)
+        {
+            var model = new IntegrationClientActiveTokensModel();
+            model.IntegrationUid = integrationUid;
+            model.IntegrationName = integrationName;
+
+            return model;
+        }
+
+        public static IntegrationClientTokenRequestLogsModel GetIntegrationClientTokenRequestLogsModel(Guid integrationClientUid)
+        {
+            var model = new IntegrationClientTokenRequestLogsModel();
+            model.IntegrationClientUid = integrationClientUid;
+
+            return model;
+        }
+
+        public static IntegrationRevisionReadListModel GetIntegrationRevisionReadListModel(Guid integrationUid, string integrationName)
+        {
+            var model = new IntegrationRevisionReadListModel();
+            model.IntegrationUid = integrationUid;
+            model.IntegrationName = integrationName;
+
+            return model;
+        }
+
         public static IntegrationCreateModel GetIntegrationCreateModel(Guid organizationUid, string name, string description = StringOne)
         {
             var model = new IntegrationCreateModel();
