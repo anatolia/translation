@@ -75,6 +75,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static IntegrationActiveTokenReadListRequest GetIntegrationActiveTokenReadListRequest(long currentUserId, Guid integrationUid)
+        {
+            var request = new IntegrationActiveTokenReadListRequest(currentUserId, integrationUid);
+
+            return request;
+        }
+
         public static TokenCreateRequest GetTokenCreateRequest()
         {
             var request = new TokenCreateRequest(UidOne, UidOne, IPAddress.Any);
@@ -110,6 +117,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static TokenValidateRequest GetTokenValidateRequest(Guid projectUid, Guid token)
+        {
+            var request = new TokenValidateRequest(projectUid, token);
+
+            return request;
+        }
+
         public static JournalCreateRequest GetJournalCreateRequest()
         {
             var request = new JournalCreateRequest(CurrentUserId, StringOne);
@@ -123,7 +137,6 @@ namespace Translation.Tests.TestHelpers
 
             return request;
         }
-
 
         public static JournalCreateRequest GetJournalCreateRequest(Journal journal, CurrentUser currentUser)
         {
