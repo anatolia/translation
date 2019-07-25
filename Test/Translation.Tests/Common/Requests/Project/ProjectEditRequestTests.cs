@@ -40,14 +40,14 @@ namespace Translation.Tests.Common.Requests.Project
                                               StringOne, HttpUrl, StringTwo,
                                               StringTwo);
                 yield return new TestCaseData(CurrentUserId, UidOne, UidOne,
-                                               StringEmpty, HttpUrl, StringTwo,
+                                               EmptyString, HttpUrl, StringTwo,
                                                StringTwo);
                 yield return new TestCaseData(CurrentUserId, UidOne, UidOne,
                                               StringOne, StringTwo, StringTwo,
                                               StringTwo);
                 yield return new TestCaseData(CurrentUserId, UidOne, UidOne,
                                               StringOne, HttpUrl, StringTwo,
-                                              StringEmpty);
+                                              EmptyString);
             }
         }
 

@@ -33,10 +33,10 @@ namespace Translation.Tests.Common.Requests.Project
             {
                 yield return new TestCaseData(CurrentUserId, EmptyUid, StringOne,
                                               HttpUrl, StringOne, StringOne);
-                yield return new TestCaseData(CurrentUserId, OrganizationOneUid, StringEmpty,
+                yield return new TestCaseData(CurrentUserId, OrganizationOneUid, EmptyString,
                                               HttpUrl, StringOne, StringOne);
                 yield return new TestCaseData(CurrentUserId, OrganizationOneUid, StringOne,
-                                              HttpUrl, StringOne, StringEmpty);
+                                              HttpUrl, StringOne, EmptyString);
                 yield return new TestCaseData(CurrentUserId, OrganizationOneUid, StringOne,
                                                 StringTwo, StringOne, StringOne);
 

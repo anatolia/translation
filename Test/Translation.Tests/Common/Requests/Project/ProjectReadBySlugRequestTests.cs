@@ -26,7 +26,7 @@ namespace Translation.Tests.Common.Requests.Project
         {
             get
             {
-                yield return new TestCaseData(CurrentUserId, StringEmpty);
+                yield return new TestCaseData(CurrentUserId, EmptyString);
             }
         }
 

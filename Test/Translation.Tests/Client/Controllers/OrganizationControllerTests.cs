@@ -367,13 +367,13 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task PendingTranslations_GET()
+        public void PendingTranslations_GET()
         {
             // arrange
             MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Success();
 
             // act
-            var result = await SystemUnderTest.PendingTranslations();
+            var result = SystemUnderTest.PendingTranslations();
 
             // assert
             AssertViewWithModel<OrganizationPendingTranslationReadListModel>(result);

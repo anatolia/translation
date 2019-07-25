@@ -46,7 +46,7 @@ namespace Translation.Tests.Common.Requests.Project
                                                One, Two, BooleanTrue,
                                                StringOne);
                 yield return new TestCaseData(CurrentUserId, OrganizationOneUid, UidOne,
-                                              StringEmpty, HttpUrl, StringOne,
+                                              EmptyString, HttpUrl, StringOne,
                                               One, Two, BooleanTrue,
                                               StringOne);
                 yield return new TestCaseData(CurrentUserId, OrganizationOneUid, UidOne,
@@ -56,7 +56,7 @@ namespace Translation.Tests.Common.Requests.Project
                 yield return new TestCaseData(CurrentUserId, OrganizationOneUid, UidOne,
                                               StringOne, HttpUrl, StringOne,
                                               One, Two, BooleanTrue,
-                                              StringEmpty);
+                                              EmptyString);
             }
         }
 

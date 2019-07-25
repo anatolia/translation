@@ -30,8 +30,8 @@ namespace Translation.Tests.Common.Requests.Admin
             {
                 yield return new TestCaseData(EmptyUid, EmailOne, StringOne, StringTwo, PasswordOne);
                 yield return new TestCaseData(UidOne, StringTwo, StringOne, StringTwo, PasswordOne);
-                yield return new TestCaseData(UidOne, EmailOne, StringEmpty, StringTwo, PasswordOne);
-                yield return new TestCaseData(UidOne, EmailOne, StringOne, StringEmpty, PasswordOne);
+                yield return new TestCaseData(UidOne, EmailOne, EmptyString, StringTwo, PasswordOne);
+                yield return new TestCaseData(UidOne, EmailOne, StringOne, EmptyString, PasswordOne);
                 yield return new TestCaseData(UidOne, EmailOne, StringOne, StringTwo, StringOne);
 
             }

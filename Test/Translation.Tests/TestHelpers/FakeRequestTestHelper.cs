@@ -833,6 +833,15 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelCreateRequest GetLabelCreateRequest(long currentUserId, Guid organizationUid, Guid projectUid,
+            string labelKey, string description)
+        {
+            var request = new LabelCreateRequest(currentUserId, organizationUid, projectUid,
+                labelKey, description);
+
+            return request;
+        }
+
         public static LabelCreateRequest GetLabelCreateRequest(Label label, Project project)
         {
             var request = new LabelCreateRequest(CurrentUserId, label.OrganizationUid, project.Uid,
@@ -856,9 +865,24 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelCreateListRequest GetLabelCreateListRequest(long currentUserId, Guid organizationUid, Guid projectUid,
+                                                                        List<LabelListInfo> labels)
+        {
+            var request = new LabelCreateListRequest(currentUserId, organizationUid, projectUid, labels);
+
+            return request;
+        }
+
         public static LabelReadRequest GetLabelReadRequest()
         {
             var request = new LabelReadRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static LabelReadRequest GetLabelReadRequest(long currentUserId, Guid labelUid)
+        {
+            var request = new LabelReadRequest(currentUserId, labelUid);
 
             return request;
         }
@@ -873,6 +897,13 @@ namespace Translation.Tests.TestHelpers
         public static LabelReadListRequest GetLabelReadListRequest()
         {
             var request = new LabelReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static LabelReadListRequest GetLabelReadListRequest(long currentUserId, Guid projectUid)
+        {
+            var request = new LabelReadListRequest(currentUserId, projectUid);
 
             return request;
         }
@@ -930,6 +961,15 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelEditRequest GetLabelEditRequest(long currentUserId, Guid organizationUid, Guid labelUid,
+            string labelKey, string description)
+        {
+            var request = new LabelEditRequest(currentUserId, organizationUid, labelUid, labelKey,
+                description);
+
+            return request;
+        }
+
         public static LabelEditRequest GetLabelEditRequest(Label label)
         {
             var request = new LabelEditRequest(CurrentUserId, label.OrganizationUid, label.Uid,
@@ -945,6 +985,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelChangeActivationRequest GetLabelChangeActivationRequest(long currentUserId, Guid organizationUid, Guid labelUid)
+        {
+            var request = new LabelChangeActivationRequest(currentUserId, organizationUid, labelUid);
+
+            return request;
+        }
+
         public static LabelDeleteRequest GetLabelDeleteRequest()
         {
             var request = new LabelDeleteRequest(CurrentUserId, UidOne);
@@ -952,10 +999,26 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelDeleteRequest GetLabelDeleteRequest(long currentUserId, Guid labelUid)
+        {
+            var request = new LabelDeleteRequest(currentUserId, labelUid);
+
+            return request;
+        }
+
         public static LabelCloneRequest GetLabelCloneRequest()
         {
             var request = new LabelCloneRequest(CurrentUserId, UidOne, UidOne,
-                                                UidOne, StringOne, StringOne);
+                UidOne, StringOne, StringOne);
+
+            return request;
+        }
+
+        public static LabelCloneRequest GetLabelCloneRequest(long currentUserId, Guid organizationUid, Guid cloningLabelUid, Guid projectUid,
+                                                             string labelKey, string description)
+        {
+            var request = new LabelCloneRequest(currentUserId, organizationUid, cloningLabelUid,
+                projectUid, labelKey, description);
 
             return request;
         }
