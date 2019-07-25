@@ -1135,6 +1135,15 @@ namespace Translation.Tests.TestHelpers
             return labelListInfoList;
         }
 
+        public static List<TranslationListInfo> GetTranslationListInfoList()
+        {
+
+            var labelListInfoList = new List<TranslationListInfo>();
+            labelListInfoList.Add(GetTranslationListInfo());
+
+            return labelListInfoList;
+        }
+
         public static TranslationListInfo GetTranslationListInfo()
         {
             var translationListInfo = new TranslationListInfo();

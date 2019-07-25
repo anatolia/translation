@@ -139,6 +139,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static IntegrationClientChangeActivationRequest GetIntegrationClientChangeActivationRequest(long currentUserId, Guid integrationClientUid)
+        {
+            var request = new IntegrationClientChangeActivationRequest(currentUserId, integrationClientUid);
+
+            return request;
+        }
+
         public static IntegrationClientDeleteRequest GetIntegrationClientDeleteRequest()
         {
             var request = new IntegrationClientDeleteRequest(CurrentUserId, OrganizationOneIntegrationOneIntegrationClientOneUid);
@@ -149,6 +156,13 @@ namespace Translation.Tests.TestHelpers
         public static IntegrationClientRefreshRequest GetIntegrationClientRefreshRequest()
         {
             var request = new IntegrationClientRefreshRequest(CurrentUserId, OrganizationOneIntegrationOneIntegrationClientOneUid);
+
+            return request;
+        }
+
+        public static IntegrationClientReadListRequest GetIntegrationClientReadListRequest(long currentUserId, Guid integrationUid)
+        {
+            var request = new IntegrationClientReadListRequest(currentUserId, integrationUid);
 
             return request;
         }
@@ -168,7 +182,23 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static IntegrationClientReadRequest GetIntegrationClientReadRequest(long currentUserId, Guid integrationClientUid)
+        {
+
+            var request = new IntegrationClientReadRequest(currentUserId, integrationClientUid);
+
+            return request;
+        }
+
         public static IntegrationClientCreateRequest GetIntegrationClientCreateRequest()
+        {
+
+            var request = new IntegrationClientCreateRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static IntegrationClientCreateRequest GetIntegrationClientCreateRequest(long currentUserId, Guid integrationUid)
         {
 
             var request = new IntegrationClientCreateRequest(CurrentUserId, UidOne);
@@ -183,6 +213,20 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static IntegrationRestoreRequest GetIntegrationRestoreRequest(long currentUserId, Guid integrationUid, int revision)
+        {
+            var request = new IntegrationRestoreRequest(currentUserId, integrationUid, revision);
+
+            return request;
+        }
+
+        public static IntegrationChangeActivationRequest GetIntegrationChangeActivationRequest(long currentUserId, Guid integrationUid)
+        {
+            var request = new IntegrationChangeActivationRequest(currentUserId, integrationUid);
+
+            return request;
+        }
+
         public static IntegrationChangeActivationRequest GetIntegrationChangeActivationRequest()
         {
             var request = new IntegrationChangeActivationRequest(CurrentUserId, UidOne);
@@ -190,10 +234,19 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static IntegrationCreateRequest GetIntegrationCreateRequest(long currentUserId, Guid organizationUid, string name,
+            string description)
+        {
+            var request = new IntegrationCreateRequest(currentUserId, organizationUid, name,
+                description);
+
+            return request;
+        }
+
         public static IntegrationCreateRequest GetIntegrationCreateRequest()
         {
             var request = new IntegrationCreateRequest(CurrentUserId, OrganizationOneUid, StringOne,
-                                                      StringOne);
+                StringOne);
 
             return request;
         }
@@ -225,6 +278,20 @@ namespace Translation.Tests.TestHelpers
         public static IntegrationReadListRequest GetIntegrationReadListRequest()
         {
             var request = new IntegrationReadListRequest(CurrentUserId, OrganizationOneUid);
+
+            return request;
+        }
+
+        public static IntegrationReadListRequest GetIntegrationReadListRequest(long currentUserId, Guid organizationUid)
+        {
+            var request = new IntegrationReadListRequest(CurrentUserId, OrganizationOneUid);
+
+            return request;
+        }
+
+        public static IntegrationBaseRequest GetIntegrationBaseRequest(long currentUserId, Guid integrationUid)
+        {
+            var request = new IntegrationBaseRequest(currentUserId, integrationUid);
 
             return request;
         }
@@ -261,9 +328,25 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static IntegrationClientBaseRequest GetIntegrationClientBaseRequest(long currentUserId, Guid integrationClientUid)
+        {
+            var request = new IntegrationClientBaseRequest(currentUserId, integrationClientUid);
+
+            return request;
+        }
+
+
         public static IntegrationRevisionReadListRequest GetIntegrationRevisionReadListRequest()
         {
             var request = new IntegrationRevisionReadListRequest(CurrentUserId, OrganizationOneIntegrationOneUid);
+
+            return request;
+        }
+
+
+        public static IntegrationRevisionReadListRequest GetIntegrationRevisionReadListRequest(long currentUserId, Guid integrationUid)
+        {
+            var request = new IntegrationRevisionReadListRequest(currentUserId, integrationUid);
 
             return request;
         }
@@ -275,10 +358,26 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static IntegrationReadRequest GetIntegrationReadRequest(long currentUserId, Guid integrationUid)
+        {
+            var request = new IntegrationReadRequest(currentUserId, integrationUid);
+
+            return request;
+        }
+
         public static IntegrationEditRequest GetIntegrationEditRequest()
         {
             var request = new IntegrationEditRequest(CurrentUserId, OrganizationOneIntegrationOneUid, StringOne,
                                                     StringOne);
+
+            return request;
+        }
+
+        public static IntegrationEditRequest GetIntegrationEditRequest(long currentUserId, Guid integrationUid, string name,
+            string description)
+        {
+            var request = new IntegrationEditRequest(currentUserId, integrationUid, name,
+                description);
 
             return request;
         }
@@ -294,6 +393,13 @@ namespace Translation.Tests.TestHelpers
         public static IntegrationDeleteRequest GetIntegrationDeleteRequest()
         {
             var request = new IntegrationDeleteRequest(CurrentUserId, OrganizationOneIntegrationOneUid);
+
+            return request;
+        }
+
+        public static IntegrationDeleteRequest GetIntegrationDeleteRequest(long currentUserId, Guid integrationUid)
+        {
+            var request = new IntegrationDeleteRequest(currentUserId, integrationUid);
 
             return request;
         }
@@ -857,6 +963,12 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequest(Guid token, Guid projectUid, string labelKey)
+        {
+            var request = new LabelCreateWithTokenRequest(token, projectUid, labelKey);
+
+            return request;
+        }
         public static LabelCreateListRequest GetLabelCreateListRequest()
         {
             var request = new LabelCreateListRequest(CurrentUserId, UidOne, UidOne,
@@ -890,6 +1002,13 @@ namespace Translation.Tests.TestHelpers
         public static LabelReadByKeyRequest GetLabelReadByKeyRequest()
         {
             var request = new LabelReadByKeyRequest(CurrentUserId, StringOne, StringOne);
+
+            return request;
+        }
+
+        public static LabelReadByKeyRequest GetLabelReadByKeyRequest(long currentUserId, string labelKey, string projectName)
+        {
+            var request = new LabelReadByKeyRequest(currentUserId, labelKey, projectName);
 
             return request;
         }
@@ -931,6 +1050,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelSearchListRequest GetLabelSearchListRequest(long currentUserId, string searchTerm)
+        {
+            var request = new LabelSearchListRequest(currentUserId, searchTerm);
+
+            return request;
+        }
+
         public static LabelSearchListRequest GetLabelSearchListRequestForSelectMany()
         {
             var request = new LabelSearchListRequest(CurrentUserId, StringOne);
@@ -946,9 +1072,30 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelRevisionReadListRequest GetLabelRevisionReadListRequest(long currentUserId, Guid labelUid)
+        {
+            var request = new LabelRevisionReadListRequest(currentUserId, labelUid);
+
+            return request;
+        }
+
         public static AllLabelReadListRequest GetAllLabelReadListRequest()
         {
             var request = new AllLabelReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static AllLabelReadListRequest GetAllLabelReadListRequest(Guid token, Guid projectUid)
+        {
+            var request = new AllLabelReadListRequest(token, projectUid);
+
+            return request;
+        }
+
+        public static AllLabelReadListRequest GetAllLabelReadListRequest(long currentUserId, Guid projectUid)
+        {
+            var request = new AllLabelReadListRequest(currentUserId, projectUid);
 
             return request;
         }
@@ -1038,6 +1185,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelRestoreRequest GetLabelRestoreRequest(long currentUserId, Guid labelUid, int revision)
+        {
+            var request = new LabelRestoreRequest(currentUserId, labelUid, revision);
+
+            return request;
+        }
+
         public static LabelRestoreRequest GetLabelRestoreRequestRevisionOneInIt()
         {
             var request = new LabelRestoreRequest(CurrentUserId, UidOne, One);
@@ -1059,11 +1213,28 @@ namespace Translation.Tests.TestHelpers
 
             return request;
         }
+        public static LabelTranslationCreateRequest GetLabelTranslationCreateRequest(long currentUserId, Guid organizationUid,
+            Guid labelUid, Guid languageUid, string labelTranslation)
+        {
+            var request = new LabelTranslationCreateRequest(currentUserId, organizationUid, labelUid,
+                languageUid, labelTranslation);
+
+            return request;
+        }
 
         public static LabelTranslationCreateListRequest GetLabelTranslationCreateListRequest()
         {
             var request = new LabelTranslationCreateListRequest(CurrentUserId, UidOne, UidOne,
                                                                 new List<TranslationListInfo>() { GetTranslationListInfo() });
+
+            return request;
+        }
+
+        public static LabelTranslationCreateListRequest GetLabelTranslationCreateListRequest(long currentUserId, Guid organizationUid, Guid labelUid,
+            List<TranslationListInfo> labelTranslations)
+        {
+            var request = new LabelTranslationCreateListRequest(currentUserId, organizationUid, labelUid,
+                labelTranslations);
 
             return request;
         }
@@ -1075,9 +1246,23 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelTranslationReadRequest GetLabelTranslationReadRequest(long currentUserId, Guid labelTranslationUid)
+        {
+            var request = new LabelTranslationReadRequest(currentUserId, labelTranslationUid);
+
+            return request;
+        }
+
         public static LabelTranslationReadListRequest GetLabelTranslationReadListRequest()
         {
             var request = new LabelTranslationReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static LabelTranslationReadListRequest GetLabelTranslationReadListRequest(long currentUserId, Guid labelUid)
+        {
+            var request = new LabelTranslationReadListRequest(currentUserId, labelUid);
 
             return request;
         }
@@ -1105,10 +1290,25 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelTranslationRevisionReadListRequest GetLabelTranslationRevisionReadListRequest(long currentUserId, Guid labelTranslationUid)
+        {
+            var request = new LabelTranslationRevisionReadListRequest(currentUserId, UidOne);
+
+            return request;
+        }
         public static LabelTranslationEditRequest GetLabelTranslationEditRequest()
         {
             var request = new LabelTranslationEditRequest(CurrentUserId, UidOne, UidOne,
                                                           StringOne);
+
+            return request;
+        }
+
+        public static LabelTranslationEditRequest GetLabelTranslationEditRequest(long currentUserId, Guid organizationUid, Guid labelTranslationUid,
+            string newTranslation)
+        {
+            var request = new LabelTranslationEditRequest(currentUserId, organizationUid, labelTranslationUid,
+                newTranslation);
 
             return request;
         }
@@ -1128,9 +1328,23 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelTranslationDeleteRequest GetLabelTranslationDeleteRequest(long currentUserId, Guid organizationUid, Guid labelTranslationUid)
+        {
+            var request = new LabelTranslationDeleteRequest(currentUserId, organizationUid, labelTranslationUid);
+
+            return request;
+        }
+
         public static LabelTranslationRestoreRequest GetLabelTranslationRestoreRequest()
         {
             var request = new LabelTranslationRestoreRequest(CurrentUserId, UidOne, One);
+
+            return request;
+        }
+
+        public static LabelTranslationRestoreRequest GetLabelTranslationRestoreRequest(long currentUserId, Guid labelTranslationUid, int revision)
+        {
+            var request = new LabelTranslationRestoreRequest(currentUserId, labelTranslationUid, revision);
 
             return request;
         }

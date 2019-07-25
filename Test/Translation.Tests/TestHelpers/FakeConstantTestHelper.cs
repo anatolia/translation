@@ -141,6 +141,7 @@ namespace Translation.Tests.TestHelpers
         public const double DoubleTwo = 2.04;
         public const double DoubleThree = 3.04;
 
+        public const long LongZero = 0L;
         public const long LongOne = 2147483649L;
         public const long LongTwo = 9107483649L;
 

@@ -3,8 +3,8 @@ using System.Collections;
 using NUnit.Framework;
 
 using Shouldly;
+
 using Translation.Common.Models.Requests.Admin;
-using Translation.Tests.Common.Requests.Project;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
@@ -31,7 +31,7 @@ namespace Translation.Tests.Common.Requests.Admin
             }
         }
 
-        [TestCaseSource(nameof(OrganizationChangeActivationRequestTests.ArgumentTestCases))]
+        [TestCaseSource(nameof(ArgumentTestCases))]
         public void OrganizationChangeActivationRequest_Argument_Validations(long currentUserId, Guid organizationUid)
         {
             Assert.Throws<ArgumentException>(() => { new OrganizationChangeActivationRequest(currentUserId, organizationUid); });

@@ -5,11 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Common\Requests\Integration\**" />
     <Compile Remove="Common\Requests\User\**" />
-    <EmbeddedResource Remove="Common\Requests\Integration\**" />
     <EmbeddedResource Remove="Common\Requests\User\**" />
-    <None Remove="Common\Requests\Integration\**" />
     <None Remove="Common\Requests\User\**" />
   </ItemGroup>
 
