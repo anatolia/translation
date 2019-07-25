@@ -30,23 +30,23 @@ namespace Translation.Tests.Client.Controllers
             SetControllerContext(SystemUnderTest);
         }
 
-        [TestCase(CreateAction, new[] {typeof(Guid)}, typeof(HttpGetAttribute)),
-         TestCase(CreateAction, new[] {typeof(ProjectCreateModel)}, typeof(HttpPostAttribute)),
-         TestCase(DetailAction, new[] {typeof(Guid)}, typeof(HttpGetAttribute)),
-         TestCase(EditAction, new[] {typeof(Guid)}, typeof(HttpGetAttribute)),
-         TestCase(EditAction, new[] {typeof(ProjectEditModel)}, typeof(HttpPostAttribute)),
-         TestCase(DeleteAction, new[] {typeof(Guid)}, typeof(HttpPostAttribute)),
-         TestCase(CloneAction, new[] {typeof(Guid)}, typeof(HttpGetAttribute)),
-         TestCase(CloneAction, new[] {typeof(ProjectCloneModel)}, typeof(HttpPostAttribute)),
+        [TestCase(CreateAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(CreateAction, new[] { typeof(ProjectCreateModel) }, typeof(HttpPostAttribute)),
+         TestCase(DetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new[] { typeof(ProjectEditModel) }, typeof(HttpPostAttribute)),
+         TestCase(DeleteAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
+         TestCase(CloneAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(CloneAction, new[] { typeof(ProjectCloneModel) }, typeof(HttpPostAttribute)),
          TestCase(SelectDataAction, new Type[] { }, typeof(HttpGetAttribute)),
-         TestCase(PendingTranslationsAction, new[] {typeof(Guid)}, typeof(HttpGetAttribute)),
-         TestCase(PendingTranslationsDataAction, new[] {typeof(Guid), typeof(int), typeof(int)}, typeof(HttpGetAttribute)),
-         TestCase(LabelListDataAction, new[] {typeof(Guid), typeof(int), typeof(int)}, typeof(HttpGetAttribute)),
-         TestCase(DownloadLabelsAction, new[] {typeof(Guid)}, typeof(HttpPostAttribute)),
-         TestCase(ChangeActivationAction, new[] {typeof(Guid), typeof(Guid)}, typeof(HttpPostAttribute)),
-         TestCase(RevisionsAction, new[] {typeof(Guid)}, typeof(HttpGetAttribute)),
-         TestCase(RevisionsDataAction, new[] {typeof(Guid)}, typeof(HttpGetAttribute)),
-         TestCase(RestoreAction, new[] {typeof(Guid), typeof(int)}, typeof(HttpPostAttribute))]
+         TestCase(PendingTranslationsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(PendingTranslationsDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(LabelListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(DownloadLabelsAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
+         TestCase(ChangeActivationAction, new[] { typeof(Guid), typeof(Guid) }, typeof(HttpPostAttribute)),
+         TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute))]
         public void Methods_Has_Http_Verb_Attributes(string actionMethod, Type[] parameters, Type httpVerbAttribute)
         {
             var type = SystemUnderTest.GetType();
@@ -108,14 +108,14 @@ namespace Translation.Tests.Client.Controllers
         public void Create_GET_InvalidParameterIf()
         {
             // arrange
-          
+
 
             // act
             var result = SystemUnderTest.Create(EmptyUid);
 
             // assert
 
-           
+
         }
 
         [Test]
@@ -320,7 +320,7 @@ namespace Translation.Tests.Client.Controllers
             // arrange 
             MockProjectService.Setup_EditProject_Returns_ProjectEditResponse_Invalid();
             var model = GetOrganizationOneProjectOneEditModel();
-            
+
             // act
             var result = await SystemUnderTest.Edit(model);
 
@@ -666,7 +666,7 @@ namespace Translation.Tests.Client.Controllers
             var result = SystemUnderTest.LabelListData(OrganizationOneProjectOneUid, One, Two);
 
             // assert
-            AssertViewAndHeaders(result, new []{ "label_key", "label_translation_count", "description", "is_active" });
+            AssertViewAndHeaders(result, new[] { "label_key", "label_translation_count", "description", "is_active" });
             MockLabelService.Verify_GetLabels();
             MockProjectService.Verify_GetProject();
         }

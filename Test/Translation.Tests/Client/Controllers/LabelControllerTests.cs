@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,10 +13,8 @@ using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
-using static Translation.Tests.TestHelpers.AssertModelTestHelper;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 using Translation.Client.Web.Models.Base;
-using Translation.Common.Helpers;
 
 namespace Translation.Tests.Client.Controllers
 {
@@ -325,7 +322,7 @@ namespace Translation.Tests.Client.Controllers
             // arrange
 
             // act
-            var result = await SystemUnderTest.Detail(StringEmpty, StringTwo);
+            var result = await SystemUnderTest.Detail(EmptyString, StringTwo);
 
             // assert
             AssertViewRedirectToHome(result);
@@ -338,7 +335,7 @@ namespace Translation.Tests.Client.Controllers
             MockProjectService.Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Success();
 
             // act
-            var result = await SystemUnderTest.Detail(StringOne, StringEmpty);
+            var result = await SystemUnderTest.Detail(StringOne, EmptyString);
 
             // assert
             AssertViewRedirectToHome(result);
@@ -701,7 +698,7 @@ namespace Translation.Tests.Client.Controllers
             // arrange
 
             // act
-            var result = await SystemUnderTest.SearchData(StringEmpty);
+            var result = await SystemUnderTest.SearchData(EmptyString);
 
             // assert
             AssertView<JsonResult>(result);
@@ -755,7 +752,7 @@ namespace Translation.Tests.Client.Controllers
             // arrange
 
             // act
-            var result = await SystemUnderTest.SearchListData(StringEmpty, One, Two);
+            var result = await SystemUnderTest.SearchListData(EmptyString, One, Two);
 
             // assert
             AssertView<JsonResult>(result);

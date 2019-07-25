@@ -13,6 +13,23 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class OrganizationRepositorySetupHelper
     {
+        public static void Setup_SelectAll_Returns_Organizations(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Setup(x => x.SelectAll(It.IsAny<Expression<Func<Organization, bool>>>(),
+                                              It.IsAny<Expression<Func<Organization, object>>>(),
+                                              It.IsAny<bool>(),
+                                              It.IsAny<bool>()))
+                      .ReturnsAsync(new List<Organization> { GetOrganization() });
+        }
+
+        public static void Verify_SelectAll(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Verify(x => x.SelectAll(It.IsAny<Expression<Func<Organization, bool>>>(),
+                                               It.IsAny<Expression<Func<Organization, object>>>(),
+                                               It.IsAny<bool>(),
+                                               It.IsAny<bool>()));
+        }
+
         public static void Setup_RestoreRevision_Returns_True(this Mock<IOrganizationRepository> repository)
         {
             repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))

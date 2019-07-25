@@ -13,10 +13,50 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class UserRepositorySetupHelper
     {
+        public static void Setup_SelectAll_Returns_Users(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.SelectAll(It.IsAny<Expression<Func<User, bool>>>(),
+                                              It.IsAny<Expression<Func<User, object>>>(),
+                                              It.IsAny<bool>(),
+                                              It.IsAny<bool>()))
+                     .ReturnsAsync(new List<User> { GetUser() });
+        }
+
+        public static void Verify_SelectAll(this Mock<IUserRepository> repository)
+        {
+            repository.Verify(x => x.SelectAll(It.IsAny<Expression<Func<User, bool>>>(),
+                                               It.IsAny<Expression<Func<User, object>>>(),
+                                               It.IsAny<bool>(),
+                                               It.IsAny<bool>()));
+        }
+
+        public static void Setup_RestoreRevision_Returns_True(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
+                      .ReturnsAsync(BooleanTrue);
+        }
+
+        public static void Setup_RestoreRevision_Returns_False(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
+                      .ReturnsAsync(BooleanFalse);
+        }
+
+        public static void Verify_RestoreRevision(this Mock<IUserRepository> repository)
+        {
+            repository.Verify(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()));
+        }
+
         public static void Setup_SelectRevisions_Returns_OrganizationOneUserOneRevisions(this Mock<IUserRepository> repository)
         {
             repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
                       .ReturnsAsync(GetOrganizationOneUserOneRevisions());
+        }
+
+        public static void Setup_SelectRevisions_Returns_OrganizationOneUserOneRevisionsRevisionTwoInIt(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
+                      .ReturnsAsync(GetOrganizationOneUserOneRevisionsRevisionTwoInIt());
         }
 
         public static void Verify_SelectRevisions(this Mock<IUserRepository> repository)

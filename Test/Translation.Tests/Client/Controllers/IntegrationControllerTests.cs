@@ -30,23 +30,22 @@ namespace Translation.Tests.Client.Controllers
             SetControllerContext(SystemUnderTest);
         }
 
-        [TestCase(CreateAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(CreateAction, new[] { typeof(IntegrationCreateModel) }, typeof(HttpPostAttribute))]
-        [TestCase(DetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(EditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(EditAction, new[] { typeof(IntegrationEditModel) }, typeof(HttpPostAttribute))]
-        [TestCase(DeleteAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute))]
-        [TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute))]
-        [TestCase(ClientListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(ClientCreateAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute))]
-        [TestCase(ClientChangeActivationAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute))]
-        [TestCase(ClientRefreshAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute))]
-        [TestCase(ClientActiveTokensAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(ClientActiveTokensDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(ActiveTokensAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(ActiveTokensDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
+        [TestCase(CreateAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(CreateAction, new[] { typeof(IntegrationCreateModel) }, typeof(HttpPostAttribute)),
+         TestCase(DetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new[] { typeof(IntegrationEditModel) }, typeof(HttpPostAttribute)),
+         TestCase(DeleteAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
+         TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute)),
+         TestCase(ClientListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(ClientCreateAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
+         TestCase(ClientChangeActivationAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
+         TestCase(ClientRefreshAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
+         TestCase(ClientActiveTokensAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(ClientActiveTokensDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)), TestCase(ActiveTokensAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(ActiveTokensDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
         public void Methods_Has_Http_Verb_Attributes(string actionMethod, Type[] parameters, Type httpVerbAttribute)
         {
             var type = SystemUnderTest.GetType();
@@ -108,13 +107,13 @@ namespace Translation.Tests.Client.Controllers
         public void Create_GET_InvalidParameter()
         {
             // arrange
-           
+
 
             // act
             var result = SystemUnderTest.Create(EmptyUid);
 
             // assert
-          
+
         }
 
         [Test]
@@ -898,7 +897,7 @@ namespace Translation.Tests.Client.Controllers
             MockIntegrationService.Setup_GetActiveTokensOfIntegrationClient_Returns_IntegrationClientActiveTokenReadListResponse_Failed();
 
             // act
-            var result =await SystemUnderTest.ClientActiveTokensData(OrganizationOneIntegrationOneUid, One, Two);
+            var result = await SystemUnderTest.ClientActiveTokensData(OrganizationOneIntegrationOneUid, One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -1033,7 +1032,7 @@ namespace Translation.Tests.Client.Controllers
             // arrange
 
             // act
-            var result = await SystemUnderTest.ActiveTokensData(EmptyUid,One,Two);
+            var result = await SystemUnderTest.ActiveTokensData(EmptyUid, One, Two);
 
             // assert
             AssertView<ForbidResult>(result);

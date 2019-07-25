@@ -1026,6 +1026,20 @@ namespace Translation.Tests.TestHelpers
             var list = new List<EntityRevision<User>>();
             var revision = new EntityRevision<User>();
             revision.Id = LongOne;
+            revision.Revision = One;
+            revision.RevisionedAt = DateTimeOne;
+            revision.Entity = GetOrganizationOneUserOne();
+
+            list.Add(revision);
+
+            return list;
+        }
+
+        public static List<EntityRevision<User>> GetOrganizationOneUserOneRevisionsRevisionTwoInIt()
+        {
+            var list = new List<EntityRevision<User>>();
+            var revision = new EntityRevision<User>();
+            revision.Id = LongOne;
             revision.Revision = Two;
             revision.RevisionedAt = DateTimeOne;
             revision.Entity = GetOrganizationOneUserOne();
