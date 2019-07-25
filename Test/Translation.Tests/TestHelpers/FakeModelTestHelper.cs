@@ -4,8 +4,8 @@
 using Microsoft.AspNetCore.Http.Internal;
 
 using Moq;
-
-using Translation.Client.Web.Models.Integration;
+ using Translation.Client.Web.Models.Admin;
+ using Translation.Client.Web.Models.Integration;
 using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Client.Web.Models.Language;
@@ -70,6 +70,36 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static AdminAcceptInviteModel GetAdminAcceptInviteModel()
+        {
+            var model = new AdminAcceptInviteModel();
+            model.OrganizationUid = UidOne;
+            model.Token = UidTwo;
+            model.Email = EmailOne;
+            model.FirstName = StringOne;
+            model.LastName = StringTwo;
+            model.Password = PasswordOne;
+            model.ReEnterPassword = PasswordOne;
+
+            return model;
+        }
+
+        public static AdminAcceptInviteModel GetAdminAcceptInviteModel(Guid organizaitonUid, Guid token, string email,
+                                                                       string firstName, string lastName, string password,
+                                                                       string reEnterPassword)
+        {
+            var model = new AdminAcceptInviteModel();
+            model.OrganizationUid = organizaitonUid;
+            model.Token = token;
+            model.Email = email;
+            model.FirstName = firstName;
+            model.LastName = lastName;
+            model.Password = password;
+            model.ReEnterPassword = reEnterPassword;
+
+            return model;
+        }
+
         public static ProjectEditModel GetOrganizationOneProjectOneEditModel()
         {
             var model = new ProjectEditModel();
@@ -128,6 +158,41 @@ namespace Translation.Tests.TestHelpers
             model.IsoCode2 = IsoCode2One;
             model.IsoCode3 = IsoCode3One;
             model.Icon = GetLanguageOneCreateIcon();
+
+            return model;
+        }
+
+        public static JournalListModel GetJournalListModel()
+        {
+            var model = new JournalListModel();
+
+            return model;
+        }
+
+        public static SendEmailLogListModel GetSendEmailLogListModel()
+        {
+            var model = new SendEmailLogListModel();
+
+            return model;
+        }
+
+        public static TokenRequestLogListModel GetTokenRequestLogListModel()
+        {
+            var model = new TokenRequestLogListModel();
+
+            return model;
+        }
+
+        public static UserLoginLogListModel GetUserLoginLogListModel()
+        {
+            var model = new UserLoginLogListModel();
+
+            return model;
+        }
+
+        public static CreateBulkLabelDoneModel GetCreateBulkLabelDoneModel()
+        {
+            var model = new CreateBulkLabelDoneModel();
 
             return model;
         }
@@ -237,6 +302,78 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static IntegrationActiveTokensModel GetIntegrationActiveTokensModel()
+        {
+            var model = new IntegrationActiveTokensModel();
+            model.IntegrationUid = UidOne;
+            model.IntegrationName = StringOne;
+
+            return model;
+        }
+
+        public static AdminAcceptInviteDoneModel GetAdminAcceptInviteDoneModel()
+        {
+            var model = new AdminAcceptInviteDoneModel();
+
+            return model;
+        }
+
+        public static AdminDashboardBaseModel GetAdminDashboardBaseModel()
+        {
+            var model = new AdminDashboardBaseModel();
+
+            return model;
+        }
+
+        public static AdminInviteDoneModel GetAdminInviteDoneModel()
+        {
+            var model = new AdminInviteDoneModel();
+
+            return model;
+        }
+
+        public static AdminListBaseModel GetAdminListBaseModel()
+        {
+            var model = new AdminListBaseModel();
+
+            return model;
+        }
+
+        public static IntegrationActiveTokensModel GetIntegrationActiveTokensModel(Guid integrationUid, string integrationName)
+        {
+            var model = new IntegrationActiveTokensModel();
+            model.IntegrationUid = integrationUid;
+            model.IntegrationName = integrationName;
+
+            return model;
+        }
+
+        public static IntegrationClientActiveTokensModel GetIntegrationClientActiveTokensModel(Guid integrationUid, string integrationName)
+        {
+            var model = new IntegrationClientActiveTokensModel();
+            model.IntegrationUid = integrationUid;
+            model.IntegrationName = integrationName;
+
+            return model;
+        }
+
+        public static IntegrationClientTokenRequestLogsModel GetIntegrationClientTokenRequestLogsModel(Guid integrationClientUid)
+        {
+            var model = new IntegrationClientTokenRequestLogsModel();
+            model.IntegrationClientUid = integrationClientUid;
+
+            return model;
+        }
+
+        public static IntegrationRevisionReadListModel GetIntegrationRevisionReadListModel(Guid integrationUid, string integrationName)
+        {
+            var model = new IntegrationRevisionReadListModel();
+            model.IntegrationUid = integrationUid;
+            model.IntegrationName = integrationName;
+
+            return model;
+        }
+
         public static IntegrationCreateModel GetIntegrationCreateModel(Guid organizationUid, string name, string description = StringOne)
         {
             var model = new IntegrationCreateModel();
@@ -304,12 +441,85 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static LabelRevisionReadListModel GetLabelRevisionReadListModel()
+        {
+            var model = new LabelRevisionReadListModel();
+
+            return model;
+        }
+
+        public static LabelDetailModel GetLabelDetailModel()
+        {
+            var model = new LabelDetailModel();
+            model.OrganizationUid = UidOne;
+            model.ProjectUid = UidOne;
+            model.Key = StringOne;
+            model.ProjectName = StringOne;
+            model.Description = StringOne;
+
+            return model;
+        }
+
+        public static LabelSearchListModel GetLabelSearchListModel()
+        {
+            var model = new LabelSearchListModel();
+
+            return model;
+        }
+
+        public static LabelUploadFromCSVDoneModel GetLabelUploadFromCSVDoneModel()
+        {
+            var model = new LabelUploadFromCSVDoneModel();
+
+            return model;
+        }
+
+        public static LabelDetailModel GetLabelDetailModel(Guid organizationUid, string organizationName, Guid projectUid,
+                                                           string projectName, string key)
+        {
+            var model = new LabelDetailModel();
+            model.OrganizationUid = organizationUid;
+            model.OrganizationName = organizationName;
+            model.ProjectUid = projectUid;
+            model.ProjectName = projectName;
+            model.Key = key;
+            model.Description = StringOne;
+
+            return model;
+        }
+
+        public static LabelCreateModel GetLabelCreateModel(Guid organizationUid, Guid projectUid, string projectName,
+                                                           string key)
+        {
+            var model = new LabelCreateModel();
+
+            model.OrganizationUid = organizationUid;
+            model.ProjectUid = projectUid;
+            model.ProjectName = projectName;
+            model.Description = StringOne;
+            model.Key = key;
+
+            return model;
+        }
+
         public static LabelEditModel GetLabelEditModel()
         {
             var model = new LabelEditModel();
             model.OrganizationUid = UidOne;
             model.LabelUid = UidOne;
             model.Key = StringOne;
+            model.Description = StringOne;
+
+
+            return model;
+        }
+
+        public static LabelEditModel GetLabelEditModel(Guid organizationUid, Guid labelUid, string key)
+        {
+            var model = new LabelEditModel();
+            model.OrganizationUid = organizationUid;
+            model.LabelUid = labelUid;
+            model.Key = key;
             model.Description = StringOne;
 
 
@@ -331,6 +541,22 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static LabelCloneModel GetLabelCloneModel(Guid organizationUid, Guid cloningLabelUid, string cloningLabelKey,
+                                                         string cloningLabelDescription, Guid projectUid, string key)
+        {
+            var model = new LabelCloneModel();
+
+            model.OrganizationUid = organizationUid;
+            model.ProjectUid = cloningLabelUid;
+            model.Description = StringOne;
+            model.CloningLabelKey = cloningLabelKey;
+            model.CloningLabelDescription = StringOne;
+            model.CloningLabelUid = cloningLabelUid;
+            model.Key = key;
+
+            return model;
+        }
+
         public static CreateBulkLabelModel GetCreateBulkLabelModel()
         {
             var model = new CreateBulkLabelModel();
@@ -338,6 +564,19 @@ namespace Translation.Tests.TestHelpers
             model.OrganizationUid = OrganizationOneUid;
             model.ProjectUid = OrganizationOneProjectOneUid;
             model.ProjectName = StringOne;
+
+            return model;
+        }
+
+        public static CreateBulkLabelModel GetCreateBulkLabelModel(Guid organizationUid, Guid projectUid, string projectName,
+                                                                   string bulkLabelData)
+        {
+            var model = new CreateBulkLabelModel();
+
+            model.OrganizationUid = organizationUid;
+            model.ProjectUid = projectUid;
+            model.ProjectName = projectName;
+            model.BulkLabelData = bulkLabelData;
 
             return model;
         }
@@ -375,6 +614,18 @@ namespace Translation.Tests.TestHelpers
             model.ProjectName = StringOne;
             model.OrganizationUid = UidOne;
             model.ProjectUid = UidOne;
+            return model;
+        }
+
+        public static LabelUploadFromCSVModel GetLabelUploadFromCSVModel(Guid organizationUid, Guid projectUid, string projectName,
+                                                                         IFormFile csvFile)
+        {
+            var model = new LabelUploadFromCSVModel();
+
+            model.OrganizationUid = organizationUid;
+            model.ProjectUid = projectUid;
+            model.ProjectName = projectName;
+            model.CSVFile = csvFile;
             return model;
         }
 

@@ -234,10 +234,11 @@ namespace Translation.Tests.TestHelpers
         }
 
 
-        public static void AssertHiddenInputModel(HiddenInputModel input, string name)
+        public static void AssertHiddenInputModel(HiddenInputModel input, string name, string value = "")
         {
             input.ShouldNotBeNull();
             input.Name.ShouldBe(name);
+            input.Value.ShouldBe(value);
         }
 
         public static void AssertInputModel(InputModel input, string name, string labelKey)
@@ -255,6 +256,23 @@ namespace Translation.Tests.TestHelpers
             input.IsRequired.ShouldBe(isRequired);
         }
 
+        public static void AssertSelectInputModel(SelectInputModel input, string name, string textFieldName, 
+                                                  string labelKey, string dataUrl, string parentId = "", 
+                                                  bool isRequired = true, bool isMultiple = false, bool isAddNewEnabled = false, 
+                                                  string addNewUrl = "")
+        {
+            input.ShouldNotBeNull();
+            input.Name.ShouldBe(name);
+            input.TextFieldName.ShouldBe(textFieldName);
+            input.LabelKey.ShouldBe(labelKey);
+            input.DataUrl.ShouldBe(dataUrl);
+            input.Parent.ShouldBe(parentId);
+            input.IsRequired.ShouldBe(isRequired);
+            input.IsMultiple.ShouldBe(isMultiple);
+            input.IsAddNewEnabled.ShouldBe(isAddNewEnabled);
+            input.AddNewUrl.ShouldBe(addNewUrl);
+        }
+
         public static void AssertCheckboxInputModel(CheckboxInputModel input, string name, string labelKey)
         {
             input.ShouldNotBeNull();
@@ -269,6 +287,15 @@ namespace Translation.Tests.TestHelpers
             input.LabelKey.ShouldBe(labelKey);
             input.IsRequired.ShouldBe(isRequired);
             input.IsReadOnly.ShouldBe(isReadOnly);
+        }
+
+        public static void AssertFileInputModel(FileInputModel input, string name, string labelKey, bool isRequired = false, bool isMultiple = false)
+        {
+            input.ShouldNotBeNull();
+            input.Name.ShouldBe(name);
+            input.LabelKey.ShouldBe(labelKey);
+            input.IsRequired.ShouldBe(isRequired);
+            input.IsMultiple.ShouldBe(isMultiple);
         }
 
         public static void AssertMessages(List<string> modelErrorMessages, string[] errorMessages)

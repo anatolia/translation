@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.InputModels;
 using Translation.Common.Helpers;
@@ -40,24 +41,6 @@ namespace Translation.Client.Web.Models.Label
             OrganizationUidInput.Value = OrganizationUid.ToUidString();
             ProjectUidInput.Value = ProjectUid.ToUidString();
             LabelUidInput.Value = LabelUid.ToUidString();
-        }
-
-        public override void SetInputErrorMessages()
-        {
-            if (OrganizationUid.IsEmptyGuid())
-            {
-                ErrorMessages.Add("organization_uid_not_valid");
-            }
-
-            if (ProjectUid.IsEmptyGuid())
-            {
-                ErrorMessages.Add("project_uid_not_valid");
-            }
-
-            if (LabelUid.IsEmptyGuid())
-            {
-                ErrorMessages.Add("label_uid_not_valid");
-            }
         }
     }
 }

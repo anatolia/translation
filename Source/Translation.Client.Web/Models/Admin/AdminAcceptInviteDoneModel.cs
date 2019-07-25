@@ -7,7 +7,7 @@ namespace Translation.Client.Web.Models.Admin
     {
         public AdminAcceptInviteDoneModel()
         {
-            Title = Localizer.Localize("admin_accept_invite_done_tittle");
+            Title = "admin_accept_invite_done_title";
         }
     }
 }

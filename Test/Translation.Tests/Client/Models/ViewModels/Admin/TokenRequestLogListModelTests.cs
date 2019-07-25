@@ -6,20 +6,20 @@ using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 namespace Translation.Tests.Client.Models.ViewModels.Admin
 {
     [TestFixture]
-    public sealed class AdminAcceptInviteDoneModelTests
+    public sealed class TokenRequestLogListModelTests
     {
-        public AdminAcceptInviteDoneModel SystemUnderTest { get; set; }
+        public TokenRequestLogListModel SystemUnderTest { get; set; }
 
         [SetUp]
         public void run_before_every_test()
         {
-            SystemUnderTest = GetAdminAcceptInviteDoneModel();
+            SystemUnderTest = GetTokenRequestLogListModel();
         }
 
         [Test]
-        public void AdminAcceptInviteDoneModel_Title()
+        public void TokenRequestLogListModel_Title()
         {
-            Assert.AreEqual(SystemUnderTest.Title, "admin_accept_invite_done_title");
+            Assert.AreEqual(SystemUnderTest.Title, "token_request_log_list_title");
         }
     }
 }
