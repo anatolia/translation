@@ -48,10 +48,10 @@ namespace Translation.Client.Web.Models.Project
         }
 
         public override void SetInputErrorMessages()
-        {
+         {
             if (OrganizationUid.IsEmptyGuid())
             {
-                ErrorMessages.Add("organization_uid_not_valid");
+                ErrorMessages.Add("organization_uid_is_not_valid");
             }
 
             if (ProjectUid.IsEmptyGuid())
