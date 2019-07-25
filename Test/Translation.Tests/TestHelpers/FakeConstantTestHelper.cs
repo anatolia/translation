@@ -166,7 +166,7 @@ namespace Translation.Tests.TestHelpers
         public const string EmailTwo = "test_1@test_1.com";
         public const string EmailThree = "test_2@test_2.com";
 
-        public const string InvalidUrl = "";
+        public const string InvalidUrl = "invalid_url";
         public const string HttpUrl = "http://turkiye.gov.tr";
         public const string HttpWwwUrl = "http://www.turkiye.gov.tr";
         public const string ShortHttpUrl = "http://aka.ms";

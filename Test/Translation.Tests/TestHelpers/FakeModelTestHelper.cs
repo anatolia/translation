@@ -237,12 +237,56 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static IntegrationCreateModel GetIntegrationCreateModel(Guid organizationUid, string name, string description = StringOne)
+        {
+            var model = new IntegrationCreateModel();
+            model.OrganizationUid = organizationUid;
+            model.Name = name;
+            model.Description = description;
+            return model;
+        }
+
         public static IntegrationEditModel GetIntegrationEditModel()
         {
             var model = new IntegrationEditModel();
             model.IntegrationUid = UidOne;
             model.Name = StringOne;
             model.Description = StringOne;
+
+            return model;
+        }
+
+        public static IntegrationEditModel GetIntegrationEditModel(Guid integrationUid, string name, string description = StringOne)
+        {
+            var model = new IntegrationEditModel();
+            model.IntegrationUid = integrationUid;
+            model.Name = name;
+            model.Description = description;
+
+            return model;
+        }
+
+        public static IntegrationDetailModel GetIntegrationDetailModel()
+        {
+            var model = new IntegrationDetailModel();
+            model.OrganizationUid = UidOne;
+            model.OrganizationName = StringOne;
+            model.IntegrationUid = UidTwo;
+            model.Name = StringTwo;
+            model.Description = StringThree;
+
+            return model;
+        }
+
+        public static IntegrationDetailModel GetIntegrationDetailModel(Guid organizationUid, string organizationName, Guid integrationUid,
+                                                                       string name, string description = StringOne)
+        {
+            var model = new IntegrationDetailModel();
+            model.OrganizationUid = organizationUid;
+            model.OrganizationName = organizationName;
+            model.IntegrationUid = integrationUid;
+            model.Name = name;
+            model.Description = description;
 
             return model;
         }

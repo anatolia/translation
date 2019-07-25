@@ -32,7 +32,7 @@ namespace Translation.Tests.Client.Controllers
 
         [TestCase(CreateAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(CreateAction, new[] { typeof(LabelCreateModel) }, typeof(HttpPostAttribute)),
-         TestCase(DetailAction, new[] { typeof(string), typeof(string) }, typeof(HttpGetAttribute)),
+         TestCase(DetailAction, new[] { typeof(Guid), typeof(string), typeof(string) }, typeof(HttpGetAttribute)),
          TestCase(EditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(EditAction, new[] { typeof(LabelEditModel) }, typeof(HttpPostAttribute)),
          TestCase(CloneAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
@@ -189,14 +189,14 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task Detail_GET_LabelKey()
+        public async Task Detail_GET_ProjectSlugLabelKey()
         {
             // arrange 
             MockProjectService.Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Success();
             MockLabelService.Setup_GetLabelByKey_Returns_LabelReadByKeyResponse_Success();
 
             // act
-            var result = await SystemUnderTest.Detail(StringOne, StringTwo);
+            var result = await SystemUnderTest.Detail(EmptyUid, StringOne, StringTwo);
 
             // assert
             AssertViewWithModel<LabelDetailModel>(result);
@@ -208,15 +208,13 @@ namespace Translation.Tests.Client.Controllers
         public async Task Detail_GET_LabelUid()
         {
             // arrange
-            MockProjectService.Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Success();
             MockLabelService.Setup_GetLabel_Returns_LabelReadResponse_Success();
 
             // act
-            var result = await SystemUnderTest.Detail(StringOne, UidStringOne);
+            var result = await SystemUnderTest.Detail(UidOne, EmptySlug, EmptyString);
 
             // assert
             AssertViewWithModel<LabelDetailModel>(result);
-            MockProjectService.Verify_GetProjectBySlug();
             MockLabelService.Verify_GetLabel();
         }
 
@@ -228,7 +226,7 @@ namespace Translation.Tests.Client.Controllers
 
 
             // act
-            var result = await SystemUnderTest.Detail(StringOne, StringTwo);
+            var result = await SystemUnderTest.Detail(EmptyUid, SlugOne, StringOne);
 
             // assert
             AssertViewAccessDenied(result);
@@ -244,28 +242,12 @@ namespace Translation.Tests.Client.Controllers
             MockLabelService.Setup_GetLabelByKey_Returns_LabelReadByKeyResponse_Failed();
 
             // act
-            var result = await SystemUnderTest.Detail(StringOne, StringTwo);
+            var result = await SystemUnderTest.Detail(EmptyUid, SlugOne, StringOne);
 
             // assert
             AssertViewAccessDenied(result);
             MockProjectService.Verify_GetProjectBySlug();
             MockLabelService.Verify_GetLabelByKey();
-        }
-
-        [Test]
-        public async Task Detail_GET_FailedLabelReadResponse()
-        {
-            // arrange 
-            MockProjectService.Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Success();
-            MockLabelService.Setup_GetLabel_Returns_LabelReadResponse_Failed();
-
-            // act
-            var result = await SystemUnderTest.Detail(StringOne, UidStringOne);
-
-            // assert
-            AssertViewAccessDenied(result);
-            MockProjectService.Verify_GetProjectBySlug();
-            MockLabelService.Verify_GetLabel();
         }
 
         [Test]
@@ -276,12 +258,11 @@ namespace Translation.Tests.Client.Controllers
 
 
             // act
-            var result = await SystemUnderTest.Detail(StringOne, StringTwo);
+            var result = await SystemUnderTest.Detail(EmptyUid, EmptySlug, StringOne);
 
             // assert
-            AssertViewAccessDenied(result);
+            AssertViewRedirectToHome(result);
             MockProjectService.Verify_GetProjectBySlug();
-
         }
 
         [Test]
@@ -292,10 +273,10 @@ namespace Translation.Tests.Client.Controllers
             MockLabelService.Setup_GetLabelByKey_Returns_LabelReadByKeyResponse_Invalid();
 
             // act
-            var result = await SystemUnderTest.Detail(StringOne, StringTwo);
+            var result = await SystemUnderTest.Detail(EmptyUid, SlugOne, EmptyString);
 
             // assert
-            AssertViewAccessDenied(result);
+            AssertViewRedirectToHome(result);
             MockProjectService.Verify_GetProjectBySlug();
             MockLabelService.Verify_GetLabelByKey();
         }
@@ -308,7 +289,7 @@ namespace Translation.Tests.Client.Controllers
             MockLabelService.Setup_GetLabel_Returns_LabelReadResponse_Invalid();
 
             // act
-            var result = await SystemUnderTest.Detail(StringOne, UidStringOne);
+            var result = await SystemUnderTest.Detail(UidOne, StringOne, UidStringOne);
 
             // assert
             AssertViewAccessDenied(result);
@@ -322,7 +303,7 @@ namespace Translation.Tests.Client.Controllers
             // arrange
 
             // act
-            var result = await SystemUnderTest.Detail(EmptyString, StringTwo);
+            var result = await SystemUnderTest.Detail(EmptyUid, EmptySlug, EmptyString);
 
             // assert
             AssertViewRedirectToHome(result);
@@ -335,10 +316,10 @@ namespace Translation.Tests.Client.Controllers
             MockProjectService.Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Success();
 
             // act
-            var result = await SystemUnderTest.Detail(StringOne, EmptyString);
+            var result = await SystemUnderTest.Detail(UidOne, EmptySlug, EmptyString);
 
             // assert
-            AssertViewRedirectToHome(result);
+            AssertViewAccessDenied(result);
             MockProjectService.Verify_GetProjectBySlug();
         }
 
@@ -349,7 +330,7 @@ namespace Translation.Tests.Client.Controllers
             MockProjectService.Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Success();
 
             // act
-            var result = await SystemUnderTest.Detail(StringOne, EmptyUidString);
+            var result = await SystemUnderTest.Detail(EmptyUid, EmptySlug, EmptyString);
 
             // assert
             AssertViewRedirectToHome(result);
