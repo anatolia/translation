@@ -1606,7 +1606,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLabelService.Setup_CreateTranslationFromList_Returns_LabelTranslationCreateListResponse_Success();
-            var model = GetUploadLabelTranslationFromCSVFileModel(10);
+            var model = GetUploadLabelTranslationFromCSVFileModel(2);
 
             // act
             var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);
@@ -1622,7 +1622,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange 
             MockLabelService.Setup_CreateTranslationFromList_Returns_LabelTranslationCreateListResponse_Failed();
-            var model = GetUploadLabelTranslationFromCSVFileModel(10);
+            var model = GetUploadLabelTranslationFromCSVFileModel(2);
 
             // act
             var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);
@@ -1637,7 +1637,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange 
             MockLabelService.Setup_CreateTranslationFromList_Returns_LabelTranslationCreateListResponse_Invalid();
-            var model = GetUploadLabelTranslationFromCSVFileModel(10);
+            var model = GetUploadLabelTranslationFromCSVFileModel(2);
 
             // act
             var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);
@@ -1651,7 +1651,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task UploadLabelTranslationFromCSVFile_POST_Failed_FileHasMoreColumnsThanExpected()
         {
             // arrange 
-            var model = GetUploadLabelTranslationFromCSVFileModel(5);
+            var model = GetUploadLabelTranslationFromCSVFileModel(3);
 
             // act
             var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);
@@ -1661,7 +1661,7 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task UploadLabelTranslationFromCSVFile_POST_InvalidParameter()
+        public async Task UploadLabelTranslationFromCSVFile_POST_InvalidModel()
         {
             // arrange
             var model = new UploadLabelTranslationFromCSVFileModel();
@@ -1905,7 +1905,5 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertView<NotFoundResult>(result);
         }
-
-
     }
 }

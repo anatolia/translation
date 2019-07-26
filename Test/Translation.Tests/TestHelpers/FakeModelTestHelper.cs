@@ -1,11 +1,11 @@
 
-﻿using System;
- using Microsoft.AspNetCore.Http;
+using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 
 using Moq;
- using Translation.Client.Web.Models.Admin;
- using Translation.Client.Web.Models.Integration;
+using Translation.Client.Web.Models.Admin;
+using Translation.Client.Web.Models.Integration;
 using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Client.Web.Models.Language;
@@ -147,7 +147,7 @@ namespace Translation.Tests.TestHelpers
             model.IsoCode3 = IsoCode3One;
             // todo: model.Icon = GetLanguageOneCreateIcon();
 
-           return model;
+            return model;
         }
 
         public static LanguageEditModel GetLanguageOneEditModel()
@@ -186,6 +186,13 @@ namespace Translation.Tests.TestHelpers
         public static UserLoginLogListModel GetUserLoginLogListModel()
         {
             var model = new UserLoginLogListModel();
+
+            return model;
+        }
+
+        public static OrganizationUserLoginLogListModel GetOrganizationUserLoginLogListModel()
+        {
+            var model = new OrganizationUserLoginLogListModel();
 
             return model;
         }
@@ -259,6 +266,77 @@ namespace Translation.Tests.TestHelpers
 
             return model;
         }
+
+        public static OrganizationDetailModel GetOrganizationDetailModel()
+        {
+            var model = new OrganizationDetailModel();
+            model.OrganizationUid = UidOne;
+            model.Name = StringOne;
+            model.Description = StringOne;
+
+            return model;
+        }
+
+        public static OrganizationEditModel GetOrganizationEditModel()
+        {
+            var model = new OrganizationEditModel();
+            model.OrganizationUid = UidOne;
+            model.Name = StringOne;
+            model.Description = StringOne;
+
+            return model;
+        }
+
+        public static OrganizationJournalListModel GetOrganizationJournalListModel()
+        {
+            var model = new OrganizationJournalListModel();
+            model.OrganizationUid = UidOne;
+
+            return model;
+        }
+
+        public static OrganizationListModel GetOrganizationListModel()
+        {
+            var model = new OrganizationListModel();
+
+            return model;
+        }
+
+        public static OrganizationPendingTranslationReadListModel GetOrganizationPendingTranslationReadListModel()
+        {
+            var model = new OrganizationPendingTranslationReadListModel();
+            model.OrganizationName = StringOne;
+            model.OrganizationUid = UidOne;
+
+            return model;
+        }
+
+        public static OrganizationRevisionReadListModel GetOrganizationRevisionReadListModel()
+        {
+            var model = new OrganizationRevisionReadListModel();
+            model.OrganizationName = StringOne;
+            model.OrganizationUid = UidOne;
+
+            return model;
+        }
+
+        public static OrganizationTokenRequestLogListModel GetOrganizationTokenRequestLogListModel()
+        {
+            var model = new OrganizationTokenRequestLogListModel();
+            model.OrganizationUid = UidOne;
+
+            return model;
+        }
+
+        public static OrganizationEditModel GetOrganizationEditModel(Guid organizationUid, string name)
+        {
+            var model = new OrganizationEditModel();
+            model.OrganizationUid = organizationUid;
+            model.Name = name;
+
+            return model;
+        }
+
 
         public static InviteAcceptModel GetOrganizationOneUserOneInviteAcceptModel()
         {
@@ -647,7 +725,7 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static LabelTranslationCreateModel GetLabelTranslationCreateModel(Guid organizationUid, Guid projectUid, string projectName,
-                                                                                 Guid labelUid, string labelKey, Guid languageUid, 
+                                                                                 Guid labelUid, string labelKey, Guid languageUid,
                                                                                  string LabelTranslation)
         {
             var model = new LabelTranslationCreateModel();
@@ -707,7 +785,7 @@ namespace Translation.Tests.TestHelpers
         public static LabelTranslationListModel GetLabelTranslationListModel()
         {
             var model = new LabelTranslationListModel();
-            
+
             return model;
         }
 
@@ -725,24 +803,24 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
-        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModel(int csvFileLenght)
+        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModel(int csvFileLength)
         {
             var model = new UploadLabelTranslationFromCSVFileModel();
 
             model.OrganizationUid = UidOne;
             model.LabelUid = UidOne;
             model.LabelKey = StringOne;
-            model.CSVFile = GetCsvFile(csvFileLenght);
+            model.CSVFile = GetCsvFile(csvFileLength);
 
             return model;
         }
 
-        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModel(Guid organizaitonUid, Guid labelUid, string labelKey, 
+        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModel(Guid organizationUid, Guid labelUid, string labelKey,
                                                                                                        IFormFile csvFile)
         {
             var model = new UploadLabelTranslationFromCSVFileModel();
 
-            model.OrganizationUid = organizaitonUid;
+            model.OrganizationUid = organizationUid;
             model.LabelUid = labelUid;
             model.LabelKey = labelKey;
             model.CSVFile = csvFile;
@@ -778,7 +856,7 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static ProjectDetailModel GetProjectDetailModel(Guid organizationUid, string organizationName, Guid projectUid,
-                                                               string name, string slug, string url, 
+                                                               string name, string slug, string url,
                                                                int labelCount, string description = StringOne)
         {
             var model = new ProjectDetailModel();

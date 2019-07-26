@@ -1231,7 +1231,7 @@ namespace Translation.Tests.TestHelpers
             memoryStream.Position = 0;
             mockFormFile.Setup(x => x.OpenReadStream()).Returns(memoryStream);
             mockFormFile.Setup(x => x.FileName).Returns("test.csv");
-            mockFormFile.Setup(x => x.Length).Returns(memoryStream.Length);
+            mockFormFile.Setup(x => x.Length).Returns(csvFileLength);
 
             return mockFormFile.Object;
         }
