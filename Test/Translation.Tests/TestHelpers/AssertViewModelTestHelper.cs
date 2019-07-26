@@ -62,7 +62,7 @@ namespace Translation.Tests.TestHelpers
             messages.Any(x => x == StringOne).ShouldBeTrue();
         }
 
-        public static void AssertErrorMessagesForInvalidOrFailedResponse<T>(string errorMessage,IActionResult result) where T : BaseModel
+        public static void AssertErrorMessagesForInvalidOrFailedResponse<T>(string errorMessage, IActionResult result) where T : BaseModel
         {
             AssertViewWithModel<T>(result);
 
@@ -80,7 +80,7 @@ namespace Translation.Tests.TestHelpers
             viewResult.Model.ShouldBeAssignableTo<T>();
         }
 
-        public static void AssertViewWithModelAndMessage<T>(string viewName,IActionResult result)
+        public static void AssertViewWithModelAndMessage<T>(string viewName, IActionResult result)
         {
             result.ShouldNotBeNull();
             var viewResult = ((ViewResult)result);
@@ -256,9 +256,29 @@ namespace Translation.Tests.TestHelpers
             input.IsRequired.ShouldBe(isRequired);
         }
 
-        public static void AssertSelectInputModel(SelectInputModel input, string name, string textFieldName, 
-                                                  string labelKey, string dataUrl, string parentId = "", 
-                                                  bool isRequired = true, bool isMultiple = false, bool isAddNewEnabled = false, 
+        public static void AssertShortInputModel(ShortInputModel input, string name, string labelKey,
+                                                 bool isRequired = false, string value = "")
+        {
+            input.ShouldNotBeNull();
+            input.Name.ShouldBe(name);
+            input.LabelKey.ShouldBe(labelKey);
+            input.IsRequired.ShouldBe(isRequired);
+            input.Value.ShouldBe(value);
+        }
+
+        public static void AssertLongInputModel(LongInputModel input, string name, string labelKey, 
+                                                bool isRequired = false, string value = "")
+        {
+            input.ShouldNotBeNull();
+            input.Name.ShouldBe(name);
+            input.LabelKey.ShouldBe(labelKey);
+            input.IsRequired.ShouldBe(isRequired);
+            input.Value.ShouldBe(value);
+        }
+
+        public static void AssertSelectInputModel(SelectInputModel input, string name, string textFieldName,
+                                                  string labelKey, string dataUrl, string parentId = "",
+                                                  bool isRequired = true, bool isMultiple = false, bool isAddNewEnabled = false,
                                                   string addNewUrl = "")
         {
             input.ShouldNotBeNull();

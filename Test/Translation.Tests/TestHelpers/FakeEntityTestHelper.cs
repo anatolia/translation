@@ -1126,10 +1126,10 @@ namespace Translation.Tests.TestHelpers
 
             return labelListInfo;
         }
-        public static List<LabelListInfo>  GetLabelListInfoList()
+        public static List<LabelListInfo> GetLabelListInfoList()
         {
-           
-            var  labelListInfoList=new List<LabelListInfo>();
+
+            var labelListInfoList = new List<LabelListInfo>();
             labelListInfoList.Add(GetLabelListInfo());
 
             return labelListInfoList;
@@ -1254,6 +1254,23 @@ namespace Translation.Tests.TestHelpers
             content += content + "\n";
 
             return content;
+        }
+
+        public static IFormFile GetIcon()
+        {
+            var mockFormFile = new Mock<IFormFile>();
+            mockFormFile.Setup(x => x.FileName).Returns("test.png");
+            mockFormFile.Setup(x => x.ContentType).Returns("image/png");
+
+            return mockFormFile.Object;
+        }
+        public static IFormFile GetInvalidIcon()
+        {
+            var mockFormFile = new Mock<IFormFile>();
+            mockFormFile.Setup(x => x.FileName).Returns("test.png");
+            mockFormFile.Setup(x => x.ContentType).Returns("");
+
+            return mockFormFile.Object;
         }
     }
 }
