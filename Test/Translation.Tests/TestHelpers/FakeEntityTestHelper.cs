@@ -1239,10 +1239,10 @@ namespace Translation.Tests.TestHelpers
         public static string GenerateCsvContent(int length)
         {
             var content = "";
-            for (int i = 0; i < length; i++)
+            for (int i = 1; i <= length; i++)
             {
                 content += "a";
-                if (i > 0 && i < length)
+                if (i < length)
                 {
                     content += ",";
                 }
@@ -1251,7 +1251,7 @@ namespace Translation.Tests.TestHelpers
                     content += "\n";
                 }
             }
-            content += content + "\n";
+            content += content;
 
             return content;
         }
