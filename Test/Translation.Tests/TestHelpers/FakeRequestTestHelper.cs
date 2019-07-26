@@ -1510,10 +1510,56 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static OrganizationBaseRequest GetOrganizationBaseRequest(long currentUserId, Guid organizationUid)
+        {
+            var request = new OrganizationBaseRequest(currentUserId, organizationUid);
+
+            return request;
+        }
+
+        public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequest(long currentUserId, Guid organizationUid)
+        {
+            var request = new OrganizationPendingTranslationReadListRequest(currentUserId, organizationUid);
+
+            return request;
+        }
+
+        public static SignUpRequest GetSignUpRequest(string organizationName, string firstName, string lastName,
+                                                     string email, string password, ClientLogInfo clientLogInfo,
+                                                     Guid languageUid = default)
+        {
+            var request = new SignUpRequest(organizationName, firstName, lastName, email, password, clientLogInfo, languageUid);
+
+            return request;
+        }
+
+        public static OrganizationEditRequest GetOrganizationEditRequest(long currentUserId, Guid organizationUid, string name,
+                                                                         string description = StringOne)
+        {
+            var request = new OrganizationEditRequest(currentUserId, organizationUid, name,
+                                                      description);
+
+            return request;
+        }
+
         public static OrganizationEditRequest GetOrganizationEditRequest(Organization organization)
         {
             var request = new OrganizationEditRequest(CurrentUserId, organization.Uid, organization.Name,
                 organization.Description);
+
+            return request;
+        }
+
+        public static OrganizationRestoreRequest GetOrganizationRestoreRequest(long currentUserId, Guid organizationUid, int revision)
+        {
+            var request = new OrganizationRestoreRequest(currentUserId, organizationUid, revision);
+
+            return request;
+        }
+
+        public static OrganizationRevisionReadListRequest GetOrganizationRevisionReadListRequest(long currentUserId, Guid organizationUid)
+        {
+            var request = new OrganizationRevisionReadListRequest(currentUserId, organizationUid);
 
             return request;
         }

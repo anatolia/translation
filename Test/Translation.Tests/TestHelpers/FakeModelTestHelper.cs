@@ -775,5 +775,20 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static ClientLogInfo GetClientLogInfo()
+        {
+            var model = new ClientLogInfo();
+            model.UserAgent = StringOne;
+            model.Browser = StringOne;
+            model.BrowserVersion = StringOne;
+            model.City = StringOne;
+            model.Country = StringOne;
+            model.Ip = StringOne;
+            model.Platform = StringOne;
+            model.PlatformVersion = StringOne;
+
+            return model;
+        }
+
     }
 }
