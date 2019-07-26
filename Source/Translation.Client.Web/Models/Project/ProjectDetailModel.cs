@@ -19,23 +19,23 @@ namespace Translation.Client.Web.Models.Project
         public int LabelCount { get; set; }
         public bool IsActive { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; }
-        public HiddenInputModel ProjectUidInput { get; }
+        public HiddenInputModel OrganizationInput { get; }
+        public HiddenInputModel ProjectInput { get; }
         public CheckboxInputModel IsActiveInput { get; set; }
 
         public ProjectDetailModel()
         {
             Title = "project_detail_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
-            ProjectUidInput = new HiddenInputModel("ProjectUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
+            ProjectInput = new HiddenInputModel("ProjectUid");
             IsActiveInput = new CheckboxInputModel("IsActive", "is_active", false, true);
         }
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
-            ProjectUidInput.Value = ProjectUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
+            ProjectInput.Value = ProjectUid.ToUidString();
         }
     }
 }

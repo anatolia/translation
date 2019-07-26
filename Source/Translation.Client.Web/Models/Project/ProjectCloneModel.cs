@@ -21,8 +21,8 @@ namespace Translation.Client.Web.Models.Project
 
         public string Slug { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; }
-        public HiddenInputModel CloningProjectUidInput { get; }
+        public HiddenInputModel OrganizationInput { get; }
+        public HiddenInputModel CloningProjectInput { get; }
 
         public InputModel NameInput { get; }
         public InputModel SlugInput { get; }
@@ -37,8 +37,8 @@ namespace Translation.Client.Web.Models.Project
         {
             Title = "project_clone_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
-            CloningProjectUidInput = new HiddenInputModel("CloningProjectUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
+            CloningProjectInput = new HiddenInputModel("CloningProjectUid");
             NameInput = new InputModel("Name", "name");
             SlugInput = new InputModel("Slug", "slug");
 
@@ -52,8 +52,8 @@ namespace Translation.Client.Web.Models.Project
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
-            CloningProjectUidInput.Value = CloningProjectUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
+            CloningProjectInput.Value = CloningProjectUid.ToUidString();
             NameInput.Value = Name;
             SlugInput.Value = Slug;
 

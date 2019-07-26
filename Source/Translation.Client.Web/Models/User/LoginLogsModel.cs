@@ -9,18 +9,18 @@ namespace Translation.Client.Web.Models.User
     {
         public Guid UserUid { get; set; }
 
-        public HiddenInputModel UserUidInput { get; set; }
+        public HiddenInputModel UserInput { get; set; }
 
         public LoginLogsModel()
         {
             Title = "user_login_logs_title";
 
-            UserUidInput = new HiddenInputModel("UserUid");
+            UserInput = new HiddenInputModel("UserUid");
         }
 
         public override void SetInputModelValues()
         {
-            UserUidInput.Value = UserUid.ToUidString();
+            UserInput.Value = UserUid.ToUidString();
         }
 
         public override void SetInputErrorMessages()

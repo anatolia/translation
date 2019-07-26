@@ -1220,116 +1220,40 @@ namespace Translation.Tests.TestHelpers
             return (uowResult, organization, user);
         }
 
-        public static IFormFile GetUploadLabelCsvTemplateFileThreeValue()
+        public static IFormFile GetCsvFile(int csvFileLength)
         {
-            //Arrange
-            var fileMock = new Mock<IFormFile>();
-            //Setup mock file using a memory stream
-            var content = "label_key,language_char_code_2,translation\n" +
-                          "label,tr,Turkish";
-            var fileName = "test.csv";
-            var ms = new MemoryStream();
-            var writer = new StreamWriter(ms);
-            writer.Write(content);
-            writer.Flush();
-            ms.Position = 0;
-            fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
-            fileMock.Setup(x => x.FileName).Returns(fileName);
-            fileMock.Setup(x => x.Length).Returns(ms.Length);
+            var mockFormFile = new Mock<IFormFile>();
+            var content = GenerateCsvContent(csvFileLength);
+            var memoryStream = new MemoryStream();
+            var streamWriter = new StreamWriter(memoryStream);
+            streamWriter.Write(content);
+            streamWriter.Flush();
+            memoryStream.Position = 0;
+            mockFormFile.Setup(x => x.OpenReadStream()).Returns(memoryStream);
+            mockFormFile.Setup(x => x.FileName).Returns("test.csv");
+            mockFormFile.Setup(x => x.Length).Returns(memoryStream.Length);
 
-            return fileMock.Object;
+            return mockFormFile.Object;
         }
 
-        public static IFormFile GetUploadLabelCsvTemplateFileNotThreeValue()
+        public static string GenerateCsvContent(int length)
         {
-            //Arrange
-            var fileMock = new Mock<IFormFile>();
-            //Setup mock file using a memory stream
-            var content = "label_key,language_char_code_2,translation\n" +
-                          "tr,Turkish";
-            var fileName = "test.csv";
-            var ms = new MemoryStream();
-            var writer = new StreamWriter(ms);
-            writer.Write(content);
-            writer.Flush();
-            ms.Position = 0;
-            fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
-            fileMock.Setup(x => x.FileName).Returns(fileName);
-            fileMock.Setup(x => x.Length).Returns(ms.Length);
+            var content = "";
+            for (int i = 0; i < length; i++)
+            {
+                content += "a";
+                if (i > 0 && i < length)
+                {
+                    content += ",";
+                }
+                else if (i == length)
+                {
+                    content += "\n";
+                }
+            }
+            content += content + "\n";
 
-            return fileMock.Object;
-        }
-
-        public static IFormFile GetUploadLabelCsvTemplateFileTwoLength()
-        {
-            //Arrange
-            var fileMock = new Mock<IFormFile>();
-            //Setup mock file using a memory stream
-            var content = "language_Iso_Code_2,translation\n" +
-                          "tr,Turkish";
-            var fileName = "test.csv";
-            var ms = new MemoryStream();
-            var writer = new StreamWriter(ms);
-            writer.Write(content);
-            writer.Flush();
-            ms.Position = 0;
-            fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
-            fileMock.Setup(x => x.FileName).Returns(fileName);
-            fileMock.Setup(x => x.Length).Returns(ms.Length);
-
-            return fileMock.Object;
-        }
-
-        public static IFormFile GetUploadLabelCsvTemplateFileNotTwoLength()
-        {
-            //Arrange
-            var fileMock = new Mock<IFormFile>();
-            //Setup mock file using a memory stream
-            var content = "language_Iso_Code_2,translation\n" +
-                          "Label,tr,Turkish";
-            var fileName = "test.csv";
-            var ms = new MemoryStream();
-            var writer = new StreamWriter(ms);
-            writer.Write(content);
-            writer.Flush();
-            ms.Position = 0;
-            fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
-            fileMock.Setup(x => x.FileName).Returns(fileName);
-            fileMock.Setup(x => x.Length).Returns(ms.Length);
-
-            return fileMock.Object;
-        }
-
-        public static IFormFile GetLanguageOneCreateIcon()
-        {
-            //Arrange
-            var fileMock = new Mock<IFormFile>();
-            //Setup mock file using a memory stream
-
-            var fileName = "test.png";
-            var sourceImg = Encoding.UTF8.GetBytes("dummy image");
-            var ms = new MemoryStream();
-            var writer = new StreamWriter(ms);
-            writer.Write(sourceImg);
-            writer.Flush();
-            ms.Position = 0;
-            fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
-            fileMock.Setup(x => x.Length).Returns(ms.Length);
-            fileMock.Setup(x => x.FileName).Returns(fileName);
-            fileMock.Setup(x => x.ContentType).Returns("image/png");
-
-            //var fileMock = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("dummy image")), 0, 0, "Data", "image.png");
-            //fileMock.ContentType = "image/png";
-            return fileMock.Object;
-        }
-
-        public static IFormFile GetIcon()
-        {
-            var icon = new Mock<IFormFile>();
-            icon.Setup(x => x.Length).Returns(100);
-            icon.Setup(x => x.ContentType).Returns("image/png");
-
-            return icon.Object;
+            return content;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Translation.Client.Web.Models.Admin
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; set; }
+        public HiddenInputModel OrganizationInput { get; set; }
         public EmailInputModel EmailInput { get; }
         public InputModel FirstNameInput { get; }
         public InputModel LastNameInput { get; }
@@ -22,7 +22,7 @@ namespace Translation.Client.Web.Models.Admin
         {
             Title = "admin_invite_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
             EmailInput = new EmailInputModel("Email", "email", true);
             FirstNameInput = new InputModel("FirstName", "first_name", true);
             LastNameInput = new InputModel("LastName", "last_name", true);
@@ -30,7 +30,7 @@ namespace Translation.Client.Web.Models.Admin
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
             EmailInput.Value = Email;
             FirstNameInput.Value = FirstName;
             LastNameInput.Value = LastName;

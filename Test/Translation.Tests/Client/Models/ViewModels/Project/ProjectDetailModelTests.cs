@@ -26,15 +26,15 @@ namespace Translation.Tests.Client.Models.ViewModels.Project
         }
 
         [Test]
-        public void ProjectCloneModel_OrganizationUidInput()
+        public void ProjectCloneModel_OrganizationInput()
         {
-            AssertHiddenInputModel(SystemUnderTest.OrganizationUidInput, "OrganizationUid");
+            AssertHiddenInputModel(SystemUnderTest.OrganizationInput, "OrganizationUid");
         }
 
         [Test]
-        public void ProjectDetailModel_ProjectUidInput()
+        public void ProjectDetailModel_ProjectInput()
         {
-            AssertHiddenInputModel(SystemUnderTest.ProjectUidInput, "ProjectUid");
+            AssertHiddenInputModel(SystemUnderTest.ProjectInput, "ProjectUid");
         }
 
         [Test]
@@ -52,8 +52,8 @@ namespace Translation.Tests.Client.Models.ViewModels.Project
             SystemUnderTest.SetInputModelValues();
 
             // assert
-            SystemUnderTest.OrganizationUidInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
-            SystemUnderTest.ProjectUidInput.Value.ShouldBe(SystemUnderTest.ProjectUid.ToUidString());
+            SystemUnderTest.OrganizationInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
+            SystemUnderTest.ProjectInput.Value.ShouldBe(SystemUnderTest.ProjectUid.ToUidString());
         }
     }
 }

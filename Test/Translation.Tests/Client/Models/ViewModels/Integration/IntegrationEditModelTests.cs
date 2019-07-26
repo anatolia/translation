@@ -30,9 +30,9 @@ namespace Translation.Tests.Client.Models.ViewModels.Integration
         }
 
         [Test]
-        public void IntegrationEditModel_IntegrationUidInput()
+        public void IntegrationEditModel_IntegrationInput()
         {
-            AssertViewModelTestHelper.AssertHiddenInputModel(SystemUnderTest.IntegrationUidInput, "IntegrationUid");
+            AssertViewModelTestHelper.AssertHiddenInputModel(SystemUnderTest.IntegrationInput, "IntegrationUid");
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace Translation.Tests.Client.Models.ViewModels.Integration
             SystemUnderTest.SetInputModelValues();
 
             // assert
-            SystemUnderTest.IntegrationUidInput.Value.ShouldBe(SystemUnderTest.IntegrationUid.ToUidString());
+            SystemUnderTest.IntegrationInput.Value.ShouldBe(SystemUnderTest.IntegrationUid.ToUidString());
             SystemUnderTest.IntegrationNameInput.Value.ShouldBe(SystemUnderTest.Name);
             SystemUnderTest.DescriptionInput.Value.ShouldBe(SystemUnderTest.Description);
         }

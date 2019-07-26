@@ -30,15 +30,15 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
         }
 
         [Test]
-        public void CreateBulkLabelModel_OrganizationUidInput()
+        public void CreateBulkLabelModel_OrganizationInput()
         {
-            AssertHiddenInputModel(SystemUnderTest.OrganizationUidInput, "OrganizationUid");
+            AssertHiddenInputModel(SystemUnderTest.OrganizationInput, "OrganizationUid");
         }
 
         [Test]
-        public void CreateBulkLabelModel_ProjectUidInput()
+        public void CreateBulkLabelModel_ProjectInput()
         {
-            AssertHiddenInputModel(SystemUnderTest.ProjectUidInput, "ProjectUid");
+            AssertHiddenInputModel(SystemUnderTest.ProjectInput, "ProjectUid");
         }
 
         [Test]
@@ -62,8 +62,8 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
             SystemUnderTest.SetInputModelValues();
 
             // assert
-            SystemUnderTest.OrganizationUidInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
-            SystemUnderTest.ProjectUidInput.Value.ShouldBe(SystemUnderTest.ProjectUid.ToUidString());
+            SystemUnderTest.OrganizationInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
+            SystemUnderTest.ProjectInput.Value.ShouldBe(SystemUnderTest.ProjectUid.ToUidString());
             SystemUnderTest.ProjectNameInput.Value.ShouldBe(SystemUnderTest.ProjectName);
             SystemUnderTest.BulkLabelInput.Value.ShouldBe(SystemUnderTest.BulkLabelData);
         }
