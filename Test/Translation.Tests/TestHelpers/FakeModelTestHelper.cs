@@ -190,6 +190,13 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static OrganizationUserLoginLogListModel GetOrganizationUserLoginLogListModel()
+        {
+            var model = new OrganizationUserLoginLogListModel();
+
+            return model;
+        }
+
         public static CreateBulkLabelDoneModel GetCreateBulkLabelDoneModel()
         {
             var model = new CreateBulkLabelDoneModel();
@@ -301,6 +308,77 @@ namespace Translation.Tests.TestHelpers
 
             return model;
         }
+
+        public static OrganizationDetailModel GetOrganizationDetailModel()
+        {
+            var model = new OrganizationDetailModel();
+            model.OrganizationUid = UidOne;
+            model.Name = StringOne;
+            model.Description = StringOne;
+
+            return model;
+        }
+
+        public static OrganizationEditModel GetOrganizationEditModel()
+        {
+            var model = new OrganizationEditModel();
+            model.OrganizationUid = UidOne;
+            model.Name = StringOne;
+            model.Description = StringOne;
+
+            return model;
+        }
+
+        public static OrganizationJournalListModel GetOrganizationJournalListModel()
+        {
+            var model = new OrganizationJournalListModel();
+            model.OrganizationUid = UidOne;
+
+            return model;
+        }
+
+        public static OrganizationListModel GetOrganizationListModel()
+        {
+            var model = new OrganizationListModel();
+
+            return model;
+        }
+
+        public static OrganizationPendingTranslationReadListModel GetOrganizationPendingTranslationReadListModel()
+        {
+            var model = new OrganizationPendingTranslationReadListModel();
+            model.OrganizationName = StringOne;
+            model.OrganizationUid = UidOne;
+
+            return model;
+        }
+
+        public static OrganizationRevisionReadListModel GetOrganizationRevisionReadListModel()
+        {
+            var model = new OrganizationRevisionReadListModel();
+            model.OrganizationName = StringOne;
+            model.OrganizationUid = UidOne;
+
+            return model;
+        }
+
+        public static OrganizationTokenRequestLogListModel GetOrganizationTokenRequestLogListModel()
+        {
+            var model = new OrganizationTokenRequestLogListModel();
+            model.OrganizationUid = UidOne;
+
+            return model;
+        }
+
+        public static OrganizationEditModel GetOrganizationEditModel(Guid organizationUid, string name)
+        {
+            var model = new OrganizationEditModel();
+            model.OrganizationUid = organizationUid;
+            model.Name = name;
+
+            return model;
+        }
+
 
         public static InviteAcceptModel GetOrganizationOneUserOneInviteAcceptModel()
         {
@@ -767,24 +845,24 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
-        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModel(int csvFileLenght)
+        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModel(int csvFileLength)
         {
             var model = new UploadLabelTranslationFromCSVFileModel();
 
             model.OrganizationUid = UidOne;
             model.LabelUid = UidOne;
             model.LabelKey = StringOne;
-            model.CSVFile = GetCsvFile(csvFileLenght);
+            model.CSVFile = GetCsvFile(csvFileLength);
 
             return model;
         }
 
-        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModel(Guid organizaitonUid, Guid labelUid, string labelKey,
+        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModel(Guid organizationUid, Guid labelUid, string labelKey,
                                                                                                        IFormFile csvFile)
         {
             var model = new UploadLabelTranslationFromCSVFileModel();
 
-            model.OrganizationUid = organizaitonUid;
+            model.OrganizationUid = organizationUid;
             model.LabelUid = labelUid;
             model.LabelKey = labelKey;
             model.CSVFile = csvFile;

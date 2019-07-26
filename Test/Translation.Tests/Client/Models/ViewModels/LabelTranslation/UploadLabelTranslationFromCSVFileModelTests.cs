@@ -102,13 +102,13 @@ namespace Translation.Tests.Client.Models.ViewModels.LabelTranslation
 
         [TestCaseSource(nameof(MessageTestCases))]
         public void LabelTranslationEditModel_InputErrorMessages(string caseName,
-                                                                 Guid organizaitonUid, Guid labelUid, string labelKey,
+                                                                 Guid organizationUid, Guid labelUid, string labelKey,
                                                                  IFormFile csvFile,
                                                                  string[] errorMessages,
                                                                  string[] inputErrorMessages,
                                                                  bool result)
         {
-            var model = GetUploadLabelTranslationFromCSVFileModel(organizaitonUid, labelUid, labelKey, 
+            var model = GetUploadLabelTranslationFromCSVFileModel(organizationUid, labelUid, labelKey, 
                                                                   csvFile);
             model.IsValid().ShouldBe(result);
             model.IsNotValid().ShouldBe(!result);

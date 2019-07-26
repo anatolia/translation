@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.AspNetCore.Http;
 
 using Translation.Client.Web.Models.Base;
@@ -58,8 +59,7 @@ namespace Translation.Client.Web.Models.LabelTranslation
                 ErrorMessages.Add("label_key_not_valid");
             }
 
-            if (CSVFile == null
-                || CSVFile.Length < 10)
+            if (CSVFile == null)
             {
                 CSVFileInput.ErrorMessage.Add("csv_required_error_message");
                 InputErrorMessages.AddRange(CSVFileInput.ErrorMessage);
