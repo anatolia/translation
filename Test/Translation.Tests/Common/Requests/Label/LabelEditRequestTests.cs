@@ -15,22 +15,22 @@ namespace Translation.Tests.Common.Requests.Label
         [Test]
         public void LabelEditRequest_Constructor()
         {
-            var request = GetLabelEditRequest(CurrentUserId, UidOne, UidOne, StringOne, StringOne);
+            var request = GetLabelEditRequest(CurrentUserId, UidOne, UidTwo, StringOne, StringTwo);
 
             request.CurrentUserId.ShouldBe(CurrentUserId);
             request.OrganizationUid.ShouldBe(UidOne);
-            request.LabelUid.ShouldBe(UidOne);
+            request.LabelUid.ShouldBe(UidTwo);
             request.LabelKey.ShouldBe(StringOne);
-            request.Description.ShouldBe(StringOne);
+            request.Description.ShouldBe(StringTwo);
         }
 
         public static IEnumerable ArgumentTestCases
         {
             get
             {
-                yield return new TestCaseData(CurrentUserId, EmptyUid, UidOne, StringOne, StringOne);
-                yield return new TestCaseData(CurrentUserId, UidOne, EmptyUid, StringOne, StringOne);
-                yield return new TestCaseData(CurrentUserId, UidOne, UidOne, EmptyString, StringOne);
+                yield return new TestCaseData(CurrentUserId, EmptyUid, UidTwo, StringOne, StringTwo);
+                yield return new TestCaseData(CurrentUserId, UidOne, EmptyUid, StringOne, StringTwo);
+                yield return new TestCaseData(CurrentUserId, UidOne, UidTwo, EmptyString, StringTwo);
             }
         }
 

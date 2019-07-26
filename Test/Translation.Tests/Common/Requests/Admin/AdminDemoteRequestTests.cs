@@ -12,8 +12,6 @@ namespace Translation.Tests.Common.Requests.Admin
         [Test]
         public void AdminDemoteRequest_Constructor()
         {
-            var request = GetAdminDemoteRequest();
-
         }
 
     }

@@ -3,7 +3,7 @@ using System.Collections;
 
 using NUnit.Framework;
 using Shouldly;
-using Translation.Common.Models.Requests.Integration;
+
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 

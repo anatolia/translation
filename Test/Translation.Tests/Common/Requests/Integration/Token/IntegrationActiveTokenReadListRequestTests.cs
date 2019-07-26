@@ -15,10 +15,10 @@ namespace Translation.Tests.Common.Requests.Integration.Token
         [Test]
         public void IntegrationActiveTokenReadListRequest_Constructor()
         {
-            var result = GetIntegrationActiveTokenReadListRequest(CurrentUserId,UidOne);
+            var request = GetIntegrationActiveTokenReadListRequest(CurrentUserId,UidOne);
 
-            result.CurrentUserId.ShouldBe(CurrentUserId);
-            result.IntegrationUid.ShouldBe(UidOne);
+           request.CurrentUserId.ShouldBe(CurrentUserId);
+           request.IntegrationUid.ShouldBe(UidOne);
         }
         public static IEnumerable ArgumentTestCases
         {

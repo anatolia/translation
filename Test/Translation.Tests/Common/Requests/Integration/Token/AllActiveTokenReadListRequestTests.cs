@@ -8,6 +8,7 @@ namespace Translation.Tests.Common.Requests.Integration.Token
         [Test]
         public void AllActiveTokenReadListRequest_Constructor()
         {
+
         }
     }
 }

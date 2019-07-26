@@ -5,12 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Common\Requests\User\**" />
-    <EmbeddedResource Remove="Common\Requests\User\**" />
-    <None Remove="Common\Requests\User\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Client\Models\ViewModels\Integration\" />
     <Folder Include="Client\Models\ViewModels\Language\" />
     <Folder Include="Client\Models\ViewModels\Organization\" />
