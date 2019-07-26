@@ -1606,7 +1606,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLabelService.Setup_CreateTranslationFromList_Returns_LabelTranslationCreateListResponse_Success();
-            var model = GetUploadLabelTranslationFromCSVFileModel(2);
+            var model = GetUploadLabelTranslationFromCSVFileModel(10);
 
             // act
             var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);
@@ -1622,7 +1622,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange 
             MockLabelService.Setup_CreateTranslationFromList_Returns_LabelTranslationCreateListResponse_Failed();
-            var model = GetUploadLabelTranslationFromCSVFileModel(2);
+            var model = GetUploadLabelTranslationFromCSVFileModel(10);
 
             // act
             var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);
@@ -1637,7 +1637,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange 
             MockLabelService.Setup_CreateTranslationFromList_Returns_LabelTranslationCreateListResponse_Invalid();
-            var model = GetUploadLabelTranslationFromCSVFileModel(2);
+            var model = GetUploadLabelTranslationFromCSVFileModel(10);
 
             // act
             var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);
