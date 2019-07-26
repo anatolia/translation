@@ -28,7 +28,6 @@ namespace Translation.Tests.Common.Requests.Label.LabelTranslation
             {
                 yield return new TestCaseData(CurrentUserId, EmptyUid,UidOne);
                 yield return new TestCaseData(CurrentUserId, OrganizationOneUid,EmptyUid);
-
             }
         }
 

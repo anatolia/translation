@@ -54,12 +54,27 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static OrganizationTokenRequestLogReadListRequest GetOrganizationTokenRequestLogReadListRequest(long currentUserId, Guid organizationUid)
+        {
+            var request = new OrganizationTokenRequestLogReadListRequest(currentUserId, organizationUid);
+
+            return request;
+        }
+
         public static OrganizationActiveTokenReadListRequest GetOrganizationActiveTokenReadListRequest()
         {
             var request = new OrganizationActiveTokenReadListRequest(CurrentUserId, UidOne);
 
             return request;
         }
+
+        public static OrganizationActiveTokenReadListRequest GetOrganizationActiveTokenReadListRequest(long currentUserId, Guid organizationUid)
+        {
+            var request = new OrganizationActiveTokenReadListRequest(currentUserId, organizationUid);
+
+            return request;
+        }
+
 
         public static IntegrationClientActiveTokenReadListRequest GetIntegrationClientActiveTokenReadListRequest()
         {
@@ -89,6 +104,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static TokenCreateRequest GetTokenCreateRequest(Guid clientId, Guid clientSecret, IPAddress ip)
+        {
+            var request = new TokenCreateRequest(clientId, clientSecret, ip);
+
+            return request;
+        }
+
         public static TokenCreateRequest GetTokenCreateRequest(IntegrationClient integrationClient)
         {
             var request = new TokenCreateRequest(integrationClient.ClientId, integrationClient.ClientId, IPAddress.Any);
@@ -106,6 +128,13 @@ namespace Translation.Tests.TestHelpers
         public static TokenRevokeRequest GetTokenRevokeRequest()
         {
             var request = new TokenRevokeRequest(CurrentUserId, UidOne, UidOne);
+
+            return request;
+        }
+
+        public static TokenRevokeRequest GetTokenRevokeRequest(long currentUserId, Guid token, Guid integrationClientUid)
+        {
+            var request = new TokenRevokeRequest(currentUserId, token, integrationClientUid);
 
             return request;
         }
@@ -214,7 +243,16 @@ namespace Translation.Tests.TestHelpers
         public static IntegrationClientCreateRequest GetIntegrationClientCreateRequest(long currentUserId, Guid integrationUid)
         {
 
-            var request = new IntegrationClientCreateRequest(CurrentUserId, UidOne);
+            var request = new IntegrationClientCreateRequest(currentUserId, integrationUid);
+
+            return request;
+        }
+
+        public static IntegrationClientEditRequest GetIntegrationClientEditRequest(long currentUserId, Guid integrationClientUid, string name,
+                                                                                   string description)
+        {
+
+            var request = new IntegrationClientEditRequest(currentUserId, integrationClientUid, name, description);
 
             return request;
         }
@@ -248,7 +286,7 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static IntegrationCreateRequest GetIntegrationCreateRequest(long currentUserId, Guid organizationUid, string name,
-            string description)
+                                                                           string description)
         {
             var request = new IntegrationCreateRequest(currentUserId, organizationUid, name,
                 description);
@@ -387,7 +425,7 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static IntegrationEditRequest GetIntegrationEditRequest(long currentUserId, Guid integrationUid, string name,
-            string description)
+                                                                       string description)
         {
             var request = new IntegrationEditRequest(currentUserId, integrationUid, name,
                 description);
@@ -806,7 +844,7 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static AdminInviteRequest GetAdminInviteRequest(long currentUserId, Guid organizationUid, string email,
-            string firstName, string lastName)
+                                                               string firstName, string lastName)
         {
             var request = new AdminInviteRequest(currentUserId, organizationUid, email,
                 firstName, lastName);
@@ -837,7 +875,7 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static AdminAcceptInviteRequest GetAdminAcceptInviteRequest(Guid token, string email, string firstName,
-            string lastName, string password)
+                                                                           string lastName, string password)
         {
             var request = new AdminAcceptInviteRequest(token, email, firstName,
                 lastName, password);
@@ -953,7 +991,7 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static LabelCreateRequest GetLabelCreateRequest(long currentUserId, Guid organizationUid, Guid projectUid,
-            string labelKey, string description)
+                                                               string labelKey, string description)
         {
             var request = new LabelCreateRequest(currentUserId, organizationUid, projectUid,
                 labelKey, description);
@@ -982,6 +1020,7 @@ namespace Translation.Tests.TestHelpers
 
             return request;
         }
+
         public static LabelCreateListRequest GetLabelCreateListRequest()
         {
             var request = new LabelCreateListRequest(CurrentUserId, UidOne, UidOne,
@@ -1122,7 +1161,7 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static LabelEditRequest GetLabelEditRequest(long currentUserId, Guid organizationUid, Guid labelUid,
-            string labelKey, string description)
+                                                           string labelKey, string description)
         {
             var request = new LabelEditRequest(currentUserId, organizationUid, labelUid, labelKey,
                 description);
@@ -1226,8 +1265,9 @@ namespace Translation.Tests.TestHelpers
 
             return request;
         }
+
         public static LabelTranslationCreateRequest GetLabelTranslationCreateRequest(long currentUserId, Guid organizationUid,
-            Guid labelUid, Guid languageUid, string labelTranslation)
+                                                                                     Guid labelUid, Guid languageUid, string labelTranslation)
         {
             var request = new LabelTranslationCreateRequest(currentUserId, organizationUid, labelUid,
                 languageUid, labelTranslation);
@@ -1244,7 +1284,7 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static LabelTranslationCreateListRequest GetLabelTranslationCreateListRequest(long currentUserId, Guid organizationUid, Guid labelUid,
-            List<TranslationListInfo> labelTranslations)
+                                                                                             List<TranslationListInfo> labelTranslations)
         {
             var request = new LabelTranslationCreateListRequest(currentUserId, organizationUid, labelUid,
                 labelTranslations);
@@ -1309,6 +1349,7 @@ namespace Translation.Tests.TestHelpers
 
             return request;
         }
+
         public static LabelTranslationEditRequest GetLabelTranslationEditRequest()
         {
             var request = new LabelTranslationEditRequest(CurrentUserId, UidOne, UidOne,
@@ -1318,7 +1359,7 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static LabelTranslationEditRequest GetLabelTranslationEditRequest(long currentUserId, Guid organizationUid, Guid labelTranslationUid,
-            string newTranslation)
+                                                                                 string newTranslation)
         {
             var request = new LabelTranslationEditRequest(currentUserId, organizationUid, labelTranslationUid,
                 newTranslation);
@@ -1369,6 +1410,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LanguageReadRequest GetLanguageReadRequest(long currentUserId, Guid languageUid)
+        {
+            var request = new LanguageReadRequest(currentUserId, languageUid);
+
+            return request;
+        }
+
         public static LanguageReadListRequest GetLanguageReadListRequest()
         {
             var request = new LanguageReadListRequest();
@@ -1399,6 +1447,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LanguageRevisionReadListRequest GetLanguageRevisionReadListRequest(long currentUserId, Guid languageUid)
+        {
+            var request = new LanguageRevisionReadListRequest(currentUserId, languageUid);
+
+            return request;
+        }
+
         public static LanguageCreateRequest GetLanguageCreateRequest()
         {
             var request = new LanguageCreateRequest(CurrentUserId, StringOne, StringOne,
@@ -1408,11 +1463,32 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LanguageCreateRequest GetLanguageCreateRequest(long currentUserId, string name, string originalName, string isoCode2,
+                                                                     string isoCode3, string icon, string description)
+        {
+            var request = new LanguageCreateRequest(currentUserId, name, originalName,
+                                                    isoCode2, isoCode3, icon,
+                                                    description);
+
+            return request;
+        }
+
         public static LanguageEditRequest GetLanguageEditRequest()
         {
             var request = new LanguageEditRequest(CurrentUserId, UidOne, StringOne,
                                                   StringOne, IsoCode2One, IsoCode3One,
                                                   StringOne, StringOne);
+
+            return request;
+        }
+
+        public static LanguageEditRequest GetLanguageEditRequest(long currentUserId, Guid languageUid, string name,
+                                                                 string originalName, string isoCode2, string isoCode3,
+                                                                 string icon, string description)
+        {
+            var request = new LanguageEditRequest(currentUserId, languageUid, name,
+                                                  originalName, isoCode2, isoCode3,
+                                                  icon, description);
 
             return request;
         }
@@ -1433,9 +1509,23 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LanguageDeleteRequest GetLanguageDeleteRequest(long currentUserId, Guid languageUid)
+        {
+            var request = new LanguageDeleteRequest(currentUserId, languageUid);
+
+            return request;
+        }
+
         public static LanguageRestoreRequest GetLanguageRestoreRequest()
         {
             var request = new LanguageRestoreRequest(CurrentUserId, UidOne, One);
+
+            return request;
+        }
+
+        public static LanguageRestoreRequest GetLanguageRestoreRequest(long currentUserId, Guid languageUid, int revision)
+        {
+            var request = new LanguageRestoreRequest(currentUserId, languageUid, revision);
 
             return request;
         }
@@ -1617,9 +1707,23 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static ValidateEmailRequest GetValidateEmailRequest(Guid token, string email)
+        {
+            var request = new ValidateEmailRequest(token, email);
+
+            return request;
+        }
+
         public static LogOnRequest GetLogOnRequest()
         {
             var request = new LogOnRequest(EmailOne, PasswordOne, GetClientLogInfo());
+
+            return request;
+        }
+
+        public static LogOnRequest GetLogOnRequest(string email, string password, ClientLogInfo clientLogInfo)
+        {
+            var request = new LogOnRequest(email, password, clientLogInfo);
 
             return request;
         }
@@ -1631,9 +1735,23 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static DemandPasswordResetRequest GetDemandPasswordResetRequest(string email)
+        {
+            var request = new DemandPasswordResetRequest(email);
+
+            return request;
+        }
+
         public static PasswordResetValidateRequest GetPasswordResetValidateRequest()
         {
             var request = new PasswordResetValidateRequest(UidOne, EmailOne);
+
+            return request;
+        }
+
+        public static PasswordResetValidateRequest GetPasswordResetValidateRequest(Guid token, string email)
+        {
+            var request = new PasswordResetValidateRequest(token, email);
 
             return request;
         }
@@ -1645,9 +1763,23 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static PasswordResetRequest GetPasswordResetRequest(Guid token, string email, string password)
+        {
+            var request = new PasswordResetRequest(token, email, password);
+
+            return request;
+        }
+
         public static PasswordChangeRequest GetPasswordChangeRequest()
         {
             var request = new PasswordChangeRequest(CurrentUserId, PasswordOne, PasswordTwo);
+
+            return request;
+        }
+
+        public static PasswordChangeRequest GetPasswordChangeRequest(long currentUserId, string oldPassword, string newPassword)
+        {
+            var request = new PasswordChangeRequest(currentUserId, oldPassword, newPassword);
 
             return request;
         }
@@ -1666,6 +1798,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static OrganizationLoginLogReadListRequest GetOrganizationLoginLogReadListRequest(long currentUserId, Guid organizationUid)
+        {
+            var request = new OrganizationLoginLogReadListRequest(currentUserId, organizationUid);
+
+            return request;
+        }
+
         public static CurrentUserRequest GetCurrentUserRequest()
         {
             var request = new CurrentUserRequest(EmailOne);
@@ -1673,9 +1812,23 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static CurrentUserRequest GetCurrentUserRequest(string email)
+        {
+            var request = new CurrentUserRequest(email);
+
+            return request;
+        }
+
         public static UserRestoreRequest GetUserRestoreRequest()
         {
             var request = new UserRestoreRequest(CurrentUserId, UidOne, One);
+
+            return request;
+        }
+
+        public static UserRestoreRequest GetUserRestoreRequest(long currentUserId, Guid userUid, int revision)
+        {
+            var request = new UserRestoreRequest(currentUserId, userUid, revision);
 
             return request;
         }
@@ -1694,6 +1847,22 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static UserEditRequest GetUserEditRequest(long currentUserId, Guid userUid, string firsName,
+                                                        string lastName, Guid languageUid)
+        {
+            var request = new UserEditRequest(currentUserId, userUid, firsName, lastName, languageUid);
+
+            return request;
+        }
+
+        public static UserBaseRequest GetUserBaseRequest(long currentUserId, Guid userUid)
+        {
+            var request = new UserBaseRequest(currentUserId, userUid);
+
+            return request;
+        }
+
+
         public static UserDeleteRequest GetUserDeleteRequest()
         {
             var request = new UserDeleteRequest(CurrentUserId, UidOne);
@@ -1708,9 +1877,25 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+
+        public static UserInviteRequest GetUserInviteRequest(long currentUserId, Guid organizationUid, string email,
+                                                             string firstName, string lastName)
+        {
+            var request = new UserInviteRequest(currentUserId, organizationUid, email, firstName, lastName);
+
+            return request;
+        }
+
         public static UserInviteValidateRequest GetUserInviteValidateRequest()
         {
             var request = new UserInviteValidateRequest(UidOne, EmailOne);
+
+            return request;
+        }
+
+        public static UserInviteValidateRequest GetUserInviteValidateRequest(Guid token, string email)
+        {
+            var request = new UserInviteValidateRequest(token, email);
 
             return request;
         }
@@ -1722,6 +1907,14 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static UserAcceptInviteRequest GetUserAcceptInviteRequest(Guid token, string email, string firstName,
+                                                                         string lastName, string password)
+        {
+            var request = new UserAcceptInviteRequest(token, email, firstName, lastName, password);
+
+            return request;
+        }
+
         public static UserReadRequest GetUserReadRequest()
         {
             var request = new UserReadRequest(CurrentUserId, UidOne);
@@ -1729,9 +1922,24 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static UserReadRequest GetUserReadRequest(long currentUserId, Guid userUid)
+        {
+            var request = new UserReadRequest(currentUserId, userUid);
+
+            return request;
+        }
+
+
         public static UserReadListRequest GetUserReadListRequest()
         {
             var request = new UserReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static UserReadListRequest GetUserReadListRequest(long currentUserId, Guid organizationUid)
+        {
+            var request = new UserReadListRequest(currentUserId, organizationUid);
 
             return request;
         }
@@ -1743,9 +1951,23 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static UserRevisionReadListRequest GetUserRevisionReadListRequest(long currentUserId, Guid userUid)
+        {
+            var request = new UserRevisionReadListRequest(currentUserId, userUid);
+
+            return request;
+        }
+
         public static UserLoginLogReadListRequest GetUserLoginLogReadListRequest()
         {
             var request = new UserLoginLogReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static UserLoginLogReadListRequest GetUserLoginLogReadListRequest(long currentUserId, Guid userUid)
+        {
+            var request = new UserLoginLogReadListRequest(currentUserId, userUid);
 
             return request;
         }

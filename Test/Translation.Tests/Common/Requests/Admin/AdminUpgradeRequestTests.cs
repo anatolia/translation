@@ -12,7 +12,7 @@ namespace Translation.Tests.Common.Requests.Admin
         [Test]
         public void AdminUpgradeRequest_Constructor()
         {
-            var request = GetAdminUpgradeRequest();
+            
         }
 
     }

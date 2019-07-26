@@ -30,15 +30,15 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
         }
 
         [Test]
-        public void LabelCloneModel_OrganizationUidInput()
+        public void LabelCloneModel_OrganizationInput()
         {
-            AssertHiddenInputModel(SystemUnderTest.OrganizationUidInput, "OrganizationUid");
+            AssertHiddenInputModel(SystemUnderTest.OrganizationInput, "OrganizationUid");
         }
 
         [Test]
-        public void LabelCloneModel_CloningLabelUidInput()
+        public void LabelCloneModel_CloningLabelInput()
         {
-            AssertHiddenInputModel(SystemUnderTest.CloningLabelUidInput, "CloningLabelUid");
+            AssertHiddenInputModel(SystemUnderTest.CloningLabelInput, "CloningLabelUid");
         }
 
         [Test]
@@ -48,9 +48,9 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
         }
 
         [Test]
-        public void LabelCloneModel_ProjectUidInput()
+        public void LabelCloneModel_ProjectInput()
         {
-            AssertSelectInputModel(SystemUnderTest.ProjectUidInput, "ProjectUid", "ProjectName", "project", "/Project/SelectData/");
+            AssertSelectInputModel(SystemUnderTest.ProjectInput, "ProjectUid", "ProjectName", "project", "/Project/SelectData/");
         }
 
         [Test]
@@ -80,10 +80,10 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
             SystemUnderTest.SetInputModelValues();
 
             // assert
-            SystemUnderTest.OrganizationUidInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
-            SystemUnderTest.CloningLabelUidInput.Value.ShouldBe(SystemUnderTest.CloningLabelUid.ToUidString());
+            SystemUnderTest.OrganizationInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
+            SystemUnderTest.CloningLabelInput.Value.ShouldBe(SystemUnderTest.CloningLabelUid.ToUidString());
             SystemUnderTest.CloningLabelKeyInput.Value.ShouldBe(SystemUnderTest.CloningLabelKey);
-            SystemUnderTest.ProjectUidInput.Value.ShouldBe(SystemUnderTest.ProjectUid.ToUidString());
+            SystemUnderTest.ProjectInput.Value.ShouldBe(SystemUnderTest.ProjectUid.ToUidString());
             SystemUnderTest.KeyInput.Value.ShouldBe(SystemUnderTest.CloningLabelKey);
             SystemUnderTest.DescriptionInput.Value.ShouldBe(SystemUnderTest.CloningLabelDescription);
             SystemUnderTest.CloningLabelTranslationCountInput.Value.ShouldBe(SystemUnderTest.CloningLabelTranslationCount.ToString());

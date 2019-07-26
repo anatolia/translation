@@ -11,7 +11,7 @@ namespace Translation.Client.Web.Models.Organization
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; set; }
+        public HiddenInputModel OrganizationInput { get; set; }
         public InputModel NameInput { get; }
         public LongInputModel DescriptionInput { get; }
 
@@ -19,14 +19,14 @@ namespace Translation.Client.Web.Models.Organization
         {
             Title = "organization_edit_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
             NameInput = new InputModel("Name", "name", true);
             DescriptionInput = new LongInputModel("Description", "description");
         }
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
             NameInput.Value = Name;
             DescriptionInput.Value = Description;
         }

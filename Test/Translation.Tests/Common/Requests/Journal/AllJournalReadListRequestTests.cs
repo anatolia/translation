@@ -4,12 +4,10 @@ using System.Collections;
 using NUnit.Framework;
 using Shouldly;
 
-using Translation.Common.Models.Requests.Journal;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
 namespace Translation.Tests.Common.Requests.Journal
-
 {
     [TestFixture]
     public class AllJournalReadListRequestTest
@@ -21,7 +19,6 @@ namespace Translation.Tests.Common.Requests.Journal
 
             request.CurrentUserId.ShouldBe(CurrentUserId);
             request.PagingInfo.IsAscending.ShouldBeFalse();
-
         }
 
     }

@@ -27,8 +27,8 @@ namespace Translation.Tests.Common.Requests.Integration
         {
             get
             {
-                yield return new TestCaseData(CurrentUserId, EmptyUid, StringOne, StringOne);
-                yield return new TestCaseData(CurrentUserId, UidOne, EmptyString, StringOne);
+                yield return new TestCaseData(CurrentUserId, EmptyUid, StringOne, StringTwo);
+                yield return new TestCaseData(CurrentUserId, UidOne, EmptyString, StringTwo);
             }
         }
 

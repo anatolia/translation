@@ -26,7 +26,6 @@ namespace Translation.Tests.Common.Requests.Label
             get
             {
                 yield return new TestCaseData(CurrentUserId,EmptyUid);
-                
             }
         }
 

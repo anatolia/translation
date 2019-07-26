@@ -19,7 +19,6 @@ namespace Translation.Tests.Common.Requests.Label.LabelTranslation
 
             request.CurrentUserId.ShouldBe(CurrentUserId);
             request.LabelTranslationUid.ShouldBe(UidOne);
-
         }
 
         public static IEnumerable ArgumentTestCases
@@ -27,7 +26,6 @@ namespace Translation.Tests.Common.Requests.Label.LabelTranslation
             get
             {
                 yield return new TestCaseData(CurrentUserId, EmptyUid);
-
             }
         }
 

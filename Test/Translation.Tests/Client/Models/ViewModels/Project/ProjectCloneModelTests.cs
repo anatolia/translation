@@ -30,15 +30,15 @@ namespace Translation.Tests.Client.Models.ViewModels.Project
         }
 
         [Test]
-        public void ProjectCloneModel_OrganizationUidInput()
+        public void ProjectCloneModel_OrganizationInput()
         {
-            AssertHiddenInputModel(SystemUnderTest.OrganizationUidInput, "OrganizationUid");
+            AssertHiddenInputModel(SystemUnderTest.OrganizationInput, "OrganizationUid");
         }
 
         [Test]
-        public void ProjectCloneModel_CloningProjectUidInput()
+        public void ProjectCloneModel_CloningProjectInput()
         {
-            AssertHiddenInputModel(SystemUnderTest.CloningProjectUidInput, "CloningProjectUid");
+            AssertHiddenInputModel(SystemUnderTest.CloningProjectInput, "CloningProjectUid");
         }
 
         [Test]
@@ -92,8 +92,8 @@ namespace Translation.Tests.Client.Models.ViewModels.Project
             SystemUnderTest.SetInputModelValues();
 
             // assert
-            SystemUnderTest.OrganizationUidInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
-            SystemUnderTest.CloningProjectUidInput.Value.ShouldBe(SystemUnderTest.CloningProjectUid.ToUidString());
+            SystemUnderTest.OrganizationInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
+            SystemUnderTest.CloningProjectInput.Value.ShouldBe(SystemUnderTest.CloningProjectUid.ToUidString());
             SystemUnderTest.NameInput.Value.ShouldBe(SystemUnderTest.Name);
             SystemUnderTest.SlugInput.Value.ShouldBe(SystemUnderTest.Slug);
             SystemUnderTest.UrlInput.Value.ShouldBe(SystemUnderTest.Url);

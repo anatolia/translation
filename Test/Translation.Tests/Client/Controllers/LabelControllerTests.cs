@@ -1020,7 +1020,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Success();
-            var model = GetLabelUploadFromCSVModelThreeValue();
+            var model = GetLabelUploadFromCSVModel(3);
 
             // act
             var result = await SystemUnderTest.UploadLabelFromCSVFile(model);
@@ -1036,7 +1036,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange 
             MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Failed();
-            var model = GetLabelUploadFromCSVModelThreeValue();
+            var model = GetLabelUploadFromCSVModel(3);
 
             // act
             var result = await SystemUnderTest.UploadLabelFromCSVFile(model);
@@ -1051,7 +1051,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange 
             MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Invalid();
-            var model = GetLabelUploadFromCSVModelThreeValue();
+            var model = GetLabelUploadFromCSVModel(3);
 
             // act
             var result = await SystemUnderTest.UploadLabelFromCSVFile(model);
@@ -1062,10 +1062,10 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task UploadLabelFromCSVFile_POST_FailedNotThreeValue()
+        public async Task UploadLabelFromCSVFile_POST_Failed_FileHasMoreColumnsThanExpected()
         {
             // arrange 
-            var model = GetLabelUploadFromCSVModelNotThreeValue();
+            var model = GetLabelUploadFromCSVModel(5);
 
             // act
             var result = await SystemUnderTest.UploadLabelFromCSVFile(model);
@@ -1259,7 +1259,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Success();
-            var model = GetCreateBulkLabelModelThreeValue();
+            var model = GetCreateBulkLabelModel(3);
 
             // act
             var result = await SystemUnderTest.CreateBulkLabel(model);
@@ -1275,7 +1275,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange 
             MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Failed();
-            var model = GetCreateBulkLabelModelThreeValue();
+            var model = GetCreateBulkLabelModel(3);
 
             // act
             var result = await SystemUnderTest.CreateBulkLabel(model);
@@ -1290,7 +1290,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange 
             MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Invalid();
-            var model = GetCreateBulkLabelModelThreeValue();
+            var model = GetCreateBulkLabelModel(3);
 
             // act
             var result = await SystemUnderTest.CreateBulkLabel(model);
@@ -1301,10 +1301,10 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task CreateBulkLabel_POST_FailedNotThreeValue()
+        public async Task CreateBulkLabel_POST_Failed_FileHasMoreColumnsThanExpected()
         {
             // arrange 
-            var model = GetCreateBulkLabelModelNotThreeValue();
+            var model = GetCreateBulkLabelModel(5);
 
             // act
             var result = await SystemUnderTest.CreateBulkLabel(model);
@@ -1606,7 +1606,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLabelService.Setup_CreateTranslationFromList_Returns_LabelTranslationCreateListResponse_Success();
-            var model = GetUploadLabelTranslationFromCSVFileModelTwoLength();
+            var model = GetUploadLabelTranslationFromCSVFileModel(2);
 
             // act
             var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);
@@ -1622,7 +1622,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange 
             MockLabelService.Setup_CreateTranslationFromList_Returns_LabelTranslationCreateListResponse_Failed();
-            var model = GetUploadLabelTranslationFromCSVFileModelTwoLength();
+            var model = GetUploadLabelTranslationFromCSVFileModel(2);
 
             // act
             var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);
@@ -1637,7 +1637,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange 
             MockLabelService.Setup_CreateTranslationFromList_Returns_LabelTranslationCreateListResponse_Invalid();
-            var model = GetUploadLabelTranslationFromCSVFileModelTwoLength();
+            var model = GetUploadLabelTranslationFromCSVFileModel(2);
 
             // act
             var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);
@@ -1648,10 +1648,10 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task UploadLabelTranslationFromCSVFile_POST_FailedNotThreeValue()
+        public async Task UploadLabelTranslationFromCSVFile_POST_Failed_FileHasMoreColumnsThanExpected()
         {
             // arrange 
-            var model = GetUploadLabelTranslationFromCSVFileModelNotTwoLength();
+            var model = GetUploadLabelTranslationFromCSVFileModel(5);
 
             // act
             var result = await SystemUnderTest.UploadLabelTranslationFromCSVFile(model);

@@ -15,25 +15,25 @@ namespace Translation.Tests.Common.Requests.Label
         [Test]
         public void LabelCloneRequest_Constructor()
         {
-            var request = GetLabelCloneRequest(CurrentUserId, UidOne, UidOne,
-                UidOne, StringOne, StringOne);
+            var request = GetLabelCloneRequest(CurrentUserId, UidOne, UidTwo,
+                UidOne, StringOne, StringTwo);
 
             request.CurrentUserId.ShouldBe(CurrentUserId);
             request.OrganizationUid.ShouldBe(UidOne);
-            request.CloningLabelUid.ShouldBe(UidOne);
+            request.CloningLabelUid.ShouldBe(UidTwo);
             request.ProjectUid.ShouldBe(UidOne);
             request.LabelKey.ShouldBe(StringOne);
-            request.Description.ShouldBe(StringOne);
+            request.Description.ShouldBe(StringTwo);
         }
 
         public static IEnumerable ArgumentTestCases
         {
             get
             {
-                yield return new TestCaseData(CurrentUserId, EmptyUid, UidOne, UidOne, StringOne, StringOne);
-                yield return new TestCaseData(CurrentUserId, UidOne, EmptyUid, UidOne, StringOne, StringOne);
-                yield return new TestCaseData(CurrentUserId, UidOne, UidOne, EmptyUid, StringOne, StringOne);
-                yield return new TestCaseData(CurrentUserId, UidOne, UidOne, UidOne, EmptyString, StringOne);
+                yield return new TestCaseData(CurrentUserId, EmptyUid, UidTwo, UidOne, StringOne, StringTwo);
+                yield return new TestCaseData(CurrentUserId, UidOne, EmptyUid, UidOne, StringOne, StringTwo);
+                yield return new TestCaseData(CurrentUserId, UidOne, UidTwo, EmptyUid, StringOne, StringTwo);
+                yield return new TestCaseData(CurrentUserId, UidOne, UidTwo, UidOne, EmptyString, StringTwo);
             }
         }
 

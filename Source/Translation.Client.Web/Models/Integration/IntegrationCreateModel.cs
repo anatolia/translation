@@ -13,7 +13,7 @@ namespace Translation.Client.Web.Models.Integration
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; }
+        public HiddenInputModel OrganizationInput { get; }
 
         public InputModel NameInput { get; }
         public LongInputModel DescriptionInput { get; }
@@ -22,7 +22,7 @@ namespace Translation.Client.Web.Models.Integration
         {
             Title = "integration_create_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
 
             NameInput = new InputModel("Name", "name", true);
             DescriptionInput = new LongInputModel("Description", "description");
@@ -30,7 +30,7 @@ namespace Translation.Client.Web.Models.Integration
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
 
             NameInput.Value = Name;
             DescriptionInput.Value = Description;

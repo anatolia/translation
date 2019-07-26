@@ -30,9 +30,9 @@ namespace Translation.Tests.Client.Models.ViewModels.Admin
         }
 
         [Test]
-        public void AdminAcceptInviteModel_OrganizationUidInput()
+        public void AdminAcceptInviteModel_OrganizationInput()
         {
-            AssertHiddenInputModel(SystemUnderTest.OrganizationUidInput, "OrganizationUid");
+            AssertHiddenInputModel(SystemUnderTest.OrganizationInput, "OrganizationUid");
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace Translation.Tests.Client.Models.ViewModels.Admin
             SystemUnderTest.SetInputModelValues();
 
             // assert
-            SystemUnderTest.OrganizationUidInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
+            SystemUnderTest.OrganizationInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
             SystemUnderTest.TokenInput.Value.ShouldBe(SystemUnderTest.Token.ToUidString());
             SystemUnderTest.EmailInput.Value.ShouldBe(SystemUnderTest.Email);
             SystemUnderTest.FirstNameInput.Value.ShouldBe(SystemUnderTest.FirstName);

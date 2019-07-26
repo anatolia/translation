@@ -8,7 +8,7 @@ using Translation.Common.Models.Requests.Project;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
-namespace Translation.Tests.Common.Requests.Project
+namespace Translation.Tests.Common.Requests.Admin
 {
     [TestFixture]
     public class AdminInviteValidateRequestTests

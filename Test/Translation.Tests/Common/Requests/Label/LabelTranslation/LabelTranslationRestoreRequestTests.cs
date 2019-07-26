@@ -19,7 +19,6 @@ namespace Translation.Tests.Common.Requests.Label.LabelTranslation
             request.CurrentUserId.ShouldBe(CurrentUserId);
             request.LabelTranslationUid.ShouldBe(UidOne);
             request.Revision.ShouldBe(One);
-
         }
     }
 }

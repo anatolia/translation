@@ -15,11 +15,11 @@ namespace Translation.Tests.Common.Requests.Label.LabelTranslation
         [Test]
         public void LabelTranslationEditRequest_Constructor()
         {
-            var request = GetLabelTranslationEditRequest(CurrentUserId,UidOne,UidOne,StringOne);
+            var request = GetLabelTranslationEditRequest(CurrentUserId,UidOne,UidTwo,StringOne);
 
             request.CurrentUserId.ShouldBe(CurrentUserId);
             request.OrganizationUid.ShouldBe(UidOne);
-            request.LabelTranslationUid.ShouldBe(UidOne);
+            request.LabelTranslationUid.ShouldBe(UidTwo);
             request.NewTranslation.ShouldBe(StringOne);
          
         }
@@ -28,9 +28,9 @@ namespace Translation.Tests.Common.Requests.Label.LabelTranslation
         {
             get
             {
-                yield return new TestCaseData(CurrentUserId, EmptyUid, UidOne, StringOne);
+                yield return new TestCaseData(CurrentUserId, EmptyUid, UidTwo, StringOne);
                 yield return new TestCaseData(CurrentUserId, UidOne, EmptyUid, StringOne);
-                yield return new TestCaseData(CurrentUserId, UidOne, UidOne, EmptyString);
+                yield return new TestCaseData(CurrentUserId, UidOne, UidTwo, EmptyString);
             }
         }
 

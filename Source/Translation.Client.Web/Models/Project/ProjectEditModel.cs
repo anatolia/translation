@@ -15,8 +15,8 @@ namespace Translation.Client.Web.Models.Project
         public string Description { get; set; }
         public string Slug { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; }
-        public HiddenInputModel ProjectUidInput { get; }
+        public HiddenInputModel OrganizationInput { get; }
+        public HiddenInputModel ProjectInput { get; }
 
         public InputModel NameInput { get; }
         public InputModel SlugInput { get; }
@@ -27,8 +27,8 @@ namespace Translation.Client.Web.Models.Project
         {
             Title = "project_edit_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
-            ProjectUidInput = new HiddenInputModel("ProjectUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
+            ProjectInput = new HiddenInputModel("ProjectUid");
 
             NameInput = new InputModel("Name", "name", true);
             SlugInput = new InputModel("Slug", "slug", true);
@@ -38,8 +38,8 @@ namespace Translation.Client.Web.Models.Project
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
-            ProjectUidInput.Value = ProjectUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
+            ProjectInput.Value = ProjectUid.ToUidString();
 
             NameInput.Value = Name;
             SlugInput.Value = Slug;

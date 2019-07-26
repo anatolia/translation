@@ -15,9 +15,9 @@ namespace Translation.Tests.Common.Requests.Integration.Token
         [Test]
         public void TokenValidateRequest_Constructor()
         {
-            var result = GetTokenValidateRequest(OrganizationOneProjectOneUid,UidOne);
-            result.ProjectUid.ShouldBe(OrganizationOneProjectOneUid);
-            result.Token.ShouldBe(UidOne);
+            var request = GetTokenValidateRequest(OrganizationOneProjectOneUid,UidOne);
+            request.ProjectUid.ShouldBe(OrganizationOneProjectOneUid);
+            request.Token.ShouldBe(UidOne);
         }
         public static IEnumerable ArgumentTestCases
         {

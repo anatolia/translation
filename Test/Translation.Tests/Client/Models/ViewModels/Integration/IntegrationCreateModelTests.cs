@@ -30,13 +30,13 @@ namespace Translation.Tests.Client.Models.ViewModels.Integration
         }
 
         [Test]
-        public void IntegrationCreateModel_IntegrationUidInput()
+        public void IntegrationCreateModel_OrganizationInput()
         {
-            AssertViewModelTestHelper.AssertHiddenInputModel(SystemUnderTest.OrganizationUidInput, "OrganizationUid");
+            AssertViewModelTestHelper.AssertHiddenInputModel(SystemUnderTest.OrganizationInput, "OrganizationUid");
         }
 
         [Test]
-        public void IntegrationCreateModel_IntegrationNameInput()
+        public void IntegrationCreateModel_NameInput()
         {
             AssertViewModelTestHelper.AssertInputModel(SystemUnderTest.NameInput, "Name", "name", true);
         }
@@ -56,7 +56,7 @@ namespace Translation.Tests.Client.Models.ViewModels.Integration
             SystemUnderTest.SetInputModelValues();
 
             // assert
-            SystemUnderTest.OrganizationUidInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
+            SystemUnderTest.OrganizationInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
             SystemUnderTest.NameInput.Value.ShouldBe(SystemUnderTest.Name);
             SystemUnderTest.DescriptionInput.Value.ShouldBe(SystemUnderTest.Description);
         }

@@ -14,8 +14,8 @@ namespace Translation.Client.Web.Models.Label
         public string Key { get; set; }
         public string Description { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; }
-        public HiddenInputModel ProjectUidInput { get; }
+        public HiddenInputModel OrganizationInput { get; }
+        public HiddenInputModel ProjectInput { get; }
 
         public InputModel KeyInput { get; }
         public LongInputModel DescriptionInput { get; }
@@ -24,17 +24,17 @@ namespace Translation.Client.Web.Models.Label
         {
             Title = "label_create_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
 
-            ProjectUidInput = new HiddenInputModel("ProjectUid");
+            ProjectInput = new HiddenInputModel("ProjectUid");
             KeyInput = new InputModel("Key", "key", true);
             DescriptionInput = new LongInputModel("Description", "description");
         }
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
-            ProjectUidInput.Value = ProjectUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
+            ProjectInput.Value = ProjectUid.ToUidString();
 
             KeyInput.Value = Key;
             DescriptionInput.Value = Description;

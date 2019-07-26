@@ -4,7 +4,6 @@ using NUnit.Framework;
 
 using Shouldly;
 using Translation.Common.Models.Requests.Admin;
-using Translation.Common.Models.Requests.Project;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 

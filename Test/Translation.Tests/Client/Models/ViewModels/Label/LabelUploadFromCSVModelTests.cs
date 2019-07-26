@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Microsoft.AspNetCore.Http;
 
 using NUnit.Framework;
 using Shouldly;
@@ -21,7 +22,7 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
         [SetUp]
         public void run_before_every_test()
         {
-            SystemUnderTest = GetLabelUploadFromCSVModel();
+            SystemUnderTest = GetLabelUploadFromCSVModel(3);
         }
 
         [Test]
@@ -31,15 +32,15 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
         }
 
         [Test]
-        public void LabelUploadFromCSVModel_OrganizationUidInput()
+        public void LabelUploadFromCSVModel_OrganizationInput()
         {
-            AssertHiddenInputModel(SystemUnderTest.OrganizationUidInput, "OrganizationUid");
+            AssertHiddenInputModel(SystemUnderTest.OrganizationInput, "OrganizationUid");
         }
 
         [Test]
-        public void LabelUploadFromCSVModel_ProjectUidInput()
+        public void LabelUploadFromCSVModel_ProjectInput()
         {
-            AssertHiddenInputModel(SystemUnderTest.ProjectUidInput, "ProjectUid");
+            AssertHiddenInputModel(SystemUnderTest.ProjectInput, "ProjectUid");
         }
 
         [Test]
@@ -63,8 +64,8 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
             SystemUnderTest.SetInputModelValues();
 
             // assert
-            SystemUnderTest.OrganizationUidInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
-            SystemUnderTest.ProjectUidInput.Value.ShouldBe(SystemUnderTest.ProjectUid.ToUidString());
+            SystemUnderTest.OrganizationInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
+            SystemUnderTest.ProjectInput.Value.ShouldBe(SystemUnderTest.ProjectUid.ToUidString());
             SystemUnderTest.ProjectNameInput.Value.ShouldBe(SystemUnderTest.ProjectName);
         }
 
@@ -74,17 +75,28 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
             {
                 yield return new TestCaseData(CaseOne,
                                               UidOne, UidTwo, StringOne,
+                                              GetCsvFile(2),
                                               null,
                                               null,
                                               true);
 
                 yield return new TestCaseData(CaseTwo,
                                               EmptyUid, EmptyUid, EmptyString,
+                                              null,
                                               new[] { "organization_uid_not_valid",
                                                       "project_uid_not_valid",
                                                       "project_name_required" },
                                               new[] { "csv_required_error_message",
                                                       "file_is_not_csv_error_message" },
+                                              false);
+
+                yield return new TestCaseData(CaseThree,
+                                              EmptyUid, EmptyUid, EmptyString,
+                                              GetCsvFile(5),
+                                              new[] { "organization_uid_not_valid",
+                                                      "project_uid_not_valid",
+                                                      "project_name_required" },
+                                              new[] { "csv_required_error_message" },
                                               false);
             }
         }
@@ -92,12 +104,13 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
         [TestCaseSource(nameof(MessageTestCases))]
         public void LabelUploadFromCSVModel_InputErrorMessages(string caseName,
                                                                Guid organizationUid, Guid projectUid, string projectName,
+                                                               IFormFile csvFile,
                                                                string[] errorMessages,
                                                                string[] inputErrorMessages,
                                                                bool result)
         {
             var model = GetLabelUploadFromCSVModel(organizationUid, projectUid, projectName,
-                                                   GetUploadLabelCsvTemplateFileThreeValue());
+                                                   csvFile);
             model.IsValid().ShouldBe(result);
             model.IsNotValid().ShouldBe(!result);
 

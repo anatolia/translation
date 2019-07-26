@@ -14,7 +14,7 @@ namespace Translation.Client.Web.Models.User
         public Guid LanguageUid { get; set; }
         public string LanguageName { get; set; }
 
-        public HiddenInputModel UserUidInput { get; }
+        public HiddenInputModel UserInput { get; }
         public InputModel FirstNameInput { get; }
         public InputModel LastNameInput { get; }
         public SelectInputModel LanguageInput { get; }
@@ -23,7 +23,7 @@ namespace Translation.Client.Web.Models.User
         {
             Title = "user_edit_title";
 
-            UserUidInput = new HiddenInputModel("UserUid");
+            UserInput = new HiddenInputModel("UserUid");
 
             FirstNameInput = new InputModel("FirstName", "first_name", true);
             LastNameInput = new InputModel("LastName", "last_name", true);
@@ -33,7 +33,7 @@ namespace Translation.Client.Web.Models.User
 
         public override void SetInputModelValues()
         {
-            UserUidInput.Value = UserUid.ToUidString();
+            UserInput.Value = UserUid.ToUidString();
 
             FirstNameInput.Value = FirstName;
             LastNameInput.Value = LastName;
