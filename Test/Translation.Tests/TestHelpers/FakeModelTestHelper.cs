@@ -145,7 +145,7 @@ namespace Translation.Tests.TestHelpers
             model.OriginalName = "Language One Original Name";
             model.IsoCode2 = IsoCode2One;
             model.IsoCode3 = IsoCode3One;
-            // todo: model.Icon = GetLanguageOneCreateIcon();
+            model.Icon = GetIcon();
 
            return model;
         }
@@ -157,7 +157,7 @@ namespace Translation.Tests.TestHelpers
             model.OriginalName = "Language One Original Name";
             model.IsoCode2 = IsoCode2One;
             model.IsoCode3 = IsoCode3One;
-            // todo: model.Icon = GetLanguageOneCreateIcon();
+            model.Icon = GetIcon();
 
             return model;
         }

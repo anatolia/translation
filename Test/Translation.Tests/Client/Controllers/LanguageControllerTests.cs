@@ -62,12 +62,10 @@ namespace Translation.Tests.Client.Controllers
             AssertViewWithModel<LanguageCreateModel>(result);
         }
 
-        [Ignore("it needs refactoring of GetLanguageOneCreateModel")]
         [Test]
         public async Task Create_POST()
         {
             // arrange
-            MockHostingEnvironment.Setup(x => x.WebRootPath).Returns(@"C:\WorkHasan\translation\");
             MockLanguageService.Setup_CreateLanguage_Returns_LanguageCreateResponse_Success();
             var model = GetLanguageOneCreateModel();
 
@@ -79,7 +77,6 @@ namespace Translation.Tests.Client.Controllers
             MockLanguageService.Verify_CreateLanguage();
         }
 
-        [Ignore("it needs refactoring of GetLanguageOneCreateModel")]
         [Test]
         public async Task Create_POST_FailedResponse()
         {
@@ -87,7 +84,6 @@ namespace Translation.Tests.Client.Controllers
             MockHostingEnvironment.Setup(x => x.WebRootPath).Returns("");
             MockLanguageService.Setup_CreateLanguage_Returns_LanguageCreateResponse_Failed();
             var model = GetLanguageOneCreateModel();
-            // todo: model Icon 
 
             // act
             var result = await SystemUnderTest.Create(model);
@@ -97,7 +93,6 @@ namespace Translation.Tests.Client.Controllers
             MockLanguageService.Verify_CreateLanguage();
         }
 
-        [Ignore("it needs refactoring of GetLanguageOneCreateModel")]
         [Test]
         public async Task Create_POST_InvalidResponse()
         {
@@ -105,7 +100,6 @@ namespace Translation.Tests.Client.Controllers
             MockHostingEnvironment.Setup(x => x.WebRootPath).Returns("");
             MockLanguageService.Setup_CreateLanguage_Returns_LanguageCreateResponse_Invalid();
             var model = GetLanguageOneCreateModel();
-            // todo: model Icon 
 
             // act
             var result = await SystemUnderTest.Create(model);
@@ -182,7 +176,6 @@ namespace Translation.Tests.Client.Controllers
             AssertViewAccessDenied(result);
         }
 
-        [Ignore("it needs refactoring of GetLanguageOneEditModel")]
         [Test]
         public async Task Edit_POST()
         {
@@ -200,7 +193,6 @@ namespace Translation.Tests.Client.Controllers
             MockLanguageService.Verify_EditLanguage();
         }
 
-        [Ignore("it needs refactoring of GetLanguageOneEditModel")]
         [Test]
         public async Task Edit_POST_FailedResponse()
         {
@@ -217,7 +209,6 @@ namespace Translation.Tests.Client.Controllers
             MockLanguageService.Verify_EditLanguage();
         }
 
-        [Ignore("it needs refactoring of GetLanguageOneEditModel")]
         [Test]
         public async Task Edit_POST_InvalidResponse()
         {

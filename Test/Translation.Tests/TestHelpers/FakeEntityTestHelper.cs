@@ -1255,5 +1255,14 @@ namespace Translation.Tests.TestHelpers
 
             return content;
         }
+
+        public static IFormFile GetIcon()
+        {
+            var mockFormFile = new Mock<IFormFile>();
+            mockFormFile.Setup(x => x.FileName).Returns("test.png");
+            mockFormFile.Setup(x => x.ContentType).Returns("image/png");
+
+            return mockFormFile.Object;
+        }
     }
 }
