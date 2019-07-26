@@ -13,7 +13,7 @@ namespace Translation.Client.Web.Models.User
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; }
+        public HiddenInputModel OrganizationInput { get; }
 
         public EmailInputModel EmailInput { get; }
         public InputModel FirstNameInput { get; }
@@ -23,7 +23,7 @@ namespace Translation.Client.Web.Models.User
         {
             Title = "user_invite_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
 
             EmailInput = new EmailInputModel("Email", "email", true);
             FirstNameInput = new InputModel("FirstName", "first_name", true);
@@ -32,7 +32,7 @@ namespace Translation.Client.Web.Models.User
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
 
             EmailInput.Value = Email;
             FirstNameInput.Value = FirstName;

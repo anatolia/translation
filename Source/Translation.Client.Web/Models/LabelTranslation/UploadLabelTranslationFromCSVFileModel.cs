@@ -15,8 +15,8 @@ namespace Translation.Client.Web.Models.LabelTranslation
 
         public IFormFile CSVFile { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; }
-        public HiddenInputModel LabelUidInput { get; }
+        public HiddenInputModel OrganizationInput { get; }
+        public HiddenInputModel LabelInput { get; }
         public HiddenInputModel LabelKeyInput { get; }
 
         public FileInputModel CSVFileInput { get; }
@@ -25,8 +25,8 @@ namespace Translation.Client.Web.Models.LabelTranslation
         {
             Title = "upload_labels_from_csv_file_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
-            LabelUidInput = new HiddenInputModel("LabelUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
+            LabelInput = new HiddenInputModel("LabelUid");
             LabelKeyInput = new HiddenInputModel("LabelKey");
 
             CSVFileInput = new FileInputModel("CSVFile", "csv_file", true);
@@ -34,9 +34,9 @@ namespace Translation.Client.Web.Models.LabelTranslation
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
 
-            LabelUidInput.Value = LabelUid.ToUidString();
+            LabelInput.Value = LabelUid.ToUidString();
             LabelKeyInput.Value = LabelKey;
         }
 

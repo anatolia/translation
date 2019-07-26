@@ -17,8 +17,8 @@ namespace Translation.Client.Web.Models.LabelTranslation
 
         public string Translation { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; }
-        public HiddenInputModel LabelTranslationUidInput { get; set; }
+        public HiddenInputModel OrganizationInput { get; }
+        public HiddenInputModel LabelTranslationInput { get; set; }
 
         public InputModel TranslationInput { get; set; }
 
@@ -26,16 +26,16 @@ namespace Translation.Client.Web.Models.LabelTranslation
         {
             Title = "label_translation_edit_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
-            LabelTranslationUidInput = new HiddenInputModel("LabelTranslationUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
+            LabelTranslationInput = new HiddenInputModel("LabelTranslationUid");
 
             TranslationInput = new InputModel("Translation", "translation", true);
         }
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
-            LabelTranslationUidInput.Value = LabelTranslationUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
+            LabelTranslationInput.Value = LabelTranslationUid.ToUidString();
 
             TranslationInput.Value = Translation;
         }

@@ -14,18 +14,18 @@ namespace Translation.Client.Web.Models.Label
         public string ProjectName { get; set; }
         public string BulkLabelData { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; }
+        public HiddenInputModel OrganizationInput { get; }
         public HiddenInputModel ProjectNameInput { get; }
 
-        public HiddenInputModel ProjectUidInput { get; }
+        public HiddenInputModel ProjectInput { get; }
         public TextareaInputModel BulkLabelInput { get; }
 
         public CreateBulkLabelModel()
         {
             Title = "create_bulk_label_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
-            ProjectUidInput = new HiddenInputModel("ProjectUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
+            ProjectInput = new HiddenInputModel("ProjectUid");
             ProjectNameInput = new HiddenInputModel("ProjectName");
 
             BulkLabelInput = new TextareaInputModel("BulkLabelData", "bulk_label_data");
@@ -33,9 +33,9 @@ namespace Translation.Client.Web.Models.Label
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
 
-            ProjectUidInput.Value = ProjectUid.ToUidString();
+            ProjectInput.Value = ProjectUid.ToUidString();
             ProjectNameInput.Value = ProjectName;
 
             BulkLabelInput.Value = BulkLabelData;

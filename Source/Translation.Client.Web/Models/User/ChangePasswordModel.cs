@@ -13,7 +13,7 @@ namespace Translation.Client.Web.Models.User
         public string NewPassword { get; set; }
         public string ReEnterNewPassword { get; set; }
 
-        public HiddenInputModel UserUidInput { get; }
+        public HiddenInputModel UserInput { get; }
 
         public PasswordInputModel OldPasswordInput { get; }
         public PasswordInputModel NewPasswordInput { get; }
@@ -23,7 +23,7 @@ namespace Translation.Client.Web.Models.User
         {
             Title = "user_change_password_title";
 
-            UserUidInput = new HiddenInputModel("UserUid");
+            UserInput = new HiddenInputModel("UserUid");
 
             OldPasswordInput = new PasswordInputModel("OldPassword", "old_password", true);
             NewPasswordInput = new PasswordInputModel("NewPassword", "password", true);
@@ -32,7 +32,7 @@ namespace Translation.Client.Web.Models.User
 
         public override void SetInputModelValues()
         {
-            UserUidInput.Value = UserUid.ToUidString();
+            UserInput.Value = UserUid.ToUidString();
 
             OldPasswordInput.Value = OldPassword;
             NewPasswordInput.Value = NewPassword;

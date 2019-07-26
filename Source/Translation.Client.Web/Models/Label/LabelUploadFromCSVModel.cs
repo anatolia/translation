@@ -16,18 +16,18 @@ namespace Translation.Client.Web.Models.Label
         public string ProjectName { get; set; }
         public IFormFile CSVFile { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; }
+        public HiddenInputModel OrganizationInput { get; }
         public HiddenInputModel ProjectNameInput { get; }
 
-        public HiddenInputModel ProjectUidInput { get; }
+        public HiddenInputModel ProjectInput { get; }
         public FileInputModel CSVFileInput { get; }
 
         public LabelUploadFromCSVModel()
         {
             Title = "upload_labels_from_csv_file_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
-            ProjectUidInput = new HiddenInputModel("ProjectUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
+            ProjectInput = new HiddenInputModel("ProjectUid");
             ProjectNameInput = new HiddenInputModel("ProjectName");
 
             CSVFileInput = new FileInputModel("CSVFile", "csv_file", true);
@@ -35,8 +35,8 @@ namespace Translation.Client.Web.Models.Label
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
-            ProjectUidInput.Value = ProjectUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
+            ProjectInput.Value = ProjectUid.ToUidString();
             ProjectNameInput.Value = ProjectName;
         }
 

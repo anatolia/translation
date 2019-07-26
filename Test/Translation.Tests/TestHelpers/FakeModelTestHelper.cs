@@ -145,7 +145,7 @@ namespace Translation.Tests.TestHelpers
             model.OriginalName = "Language One Original Name";
             model.IsoCode2 = IsoCode2One;
             model.IsoCode3 = IsoCode3One;
-            model.Icon = GetLanguageOneCreateIcon();
+            // todo: model.Icon = GetLanguageOneCreateIcon();
 
            return model;
         }
@@ -157,7 +157,7 @@ namespace Translation.Tests.TestHelpers
             model.OriginalName = "Language One Original Name";
             model.IsoCode2 = IsoCode2One;
             model.IsoCode3 = IsoCode3One;
-            model.Icon = GetLanguageOneCreateIcon();
+            // todo: model.Icon = GetLanguageOneCreateIcon();
 
             return model;
         }
@@ -569,6 +569,31 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static CreateBulkLabelModel GetCreateBulkLabelModel(Guid organizationUid, Guid projectUid, string projectName,
+                                                                   int csvContentLength)
+        {
+            var model = new CreateBulkLabelModel();
+
+            model.OrganizationUid = organizationUid;
+            model.ProjectUid = projectUid;
+            model.ProjectName = projectName;
+            model.BulkLabelData = GenerateCsvContent(csvContentLength);
+
+            return model;
+        }
+
+        public static CreateBulkLabelModel GetCreateBulkLabelModel(int csvContentLength)
+        {
+            var model = new CreateBulkLabelModel();
+
+            model.OrganizationUid = UidOne;
+            model.ProjectUid = UidTwo;
+            model.ProjectName = StringOne;
+            model.BulkLabelData = GenerateCsvContent(csvContentLength);
+
+            return model;
+        }
+
+        public static CreateBulkLabelModel GetCreateBulkLabelModel(Guid organizationUid, Guid projectUid, string projectName,
                                                                    string bulkLabelData)
         {
             var model = new CreateBulkLabelModel();
@@ -581,39 +606,15 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
-        public static CreateBulkLabelModel GetCreateBulkLabelModelThreeValue()
-        {
-            var model = new CreateBulkLabelModel();
-
-            model.OrganizationUid = OrganizationOneUid;
-            model.ProjectUid = OrganizationOneProjectOneUid;
-            model.ProjectName = StringOne;
-            model.BulkLabelData = "label_key,language_char_code_2,translation\n" +
-                                  "label,tr,Türkçesi";
-
-            return model;
-        }
-
-        public static CreateBulkLabelModel GetCreateBulkLabelModelNotThreeValue()
-        {
-            var model = new CreateBulkLabelModel();
-
-            model.OrganizationUid = OrganizationOneUid;
-            model.ProjectUid = OrganizationOneProjectOneUid;
-            model.ProjectName = StringOne;
-            model.BulkLabelData = "label_key,language_char_code_2,translation\n" +
-                                  "label,tr";
-
-            return model;
-        }
-
-        public static LabelUploadFromCSVModel GetLabelUploadFromCSVModel()
+        public static LabelUploadFromCSVModel GetLabelUploadFromCSVModel(int csvFileLength)
         {
             var model = new LabelUploadFromCSVModel();
 
             model.ProjectName = StringOne;
             model.OrganizationUid = UidOne;
             model.ProjectUid = UidOne;
+            model.CSVFile = GetCsvFile(csvFileLength);
+
             return model;
         }
 
@@ -626,21 +627,6 @@ namespace Translation.Tests.TestHelpers
             model.ProjectUid = projectUid;
             model.ProjectName = projectName;
             model.CSVFile = csvFile;
-            return model;
-        }
-
-        public static LabelUploadFromCSVModel GetLabelUploadFromCSVModelThreeValue()
-        {
-            var model = GetLabelUploadFromCSVModel();
-            model.CSVFile = GetUploadLabelCsvTemplateFileThreeValue();
-
-            return model;
-        }
-
-        public static LabelUploadFromCSVModel GetLabelUploadFromCSVModelNotThreeValue()
-        {
-            var model = GetLabelUploadFromCSVModel();
-            model.CSVFile = GetUploadLabelCsvTemplateFileNotThreeValue();
             return model;
         }
 
@@ -660,6 +646,38 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static LabelTranslationCreateModel GetLabelTranslationCreateModel(Guid organizationUid, Guid projectUid, string projectName,
+                                                                                 Guid labelUid, string labelKey, Guid languageUid, 
+                                                                                 string LabelTranslation)
+        {
+            var model = new LabelTranslationCreateModel();
+
+            model.OrganizationUid = organizationUid;
+            model.ProjectUid = projectUid;
+            model.ProjectName = projectName;
+            model.LabelUid = labelUid;
+            model.LabelKey = labelKey;
+            model.LabelUid = labelUid;
+            model.LabelTranslation = LabelTranslation;
+            model.LanguageUid = languageUid;
+
+            return model;
+        }
+
+        public static LabelTranslationDetailModel GetLabelTranslationDetailModel()
+        {
+            var model = new LabelTranslationDetailModel();
+
+            model.OrganizationUid = UidOne;
+            model.LabelTranslationUid = UidTwo;
+            model.LabelKey = StringOne;
+            model.LanguageName = StringTwo;
+            model.LanguageIconUrl = HttpsUrl;
+            model.Translation = StringThree;
+
+            return model;
+        }
+
         public static LabelTranslationEditModel GetLabelTranslationEditModel()
         {
             var model = new LabelTranslationEditModel();
@@ -671,29 +689,63 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
-        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModel()
+        public static LabelTranslationEditModel GetLabelTranslationEditModel(Guid organizationUid, Guid labelTranslationUid, string labelKey,
+                                                                             string languageName, string languageIconUrl, string translation)
+        {
+            var model = new LabelTranslationEditModel();
+
+            model.OrganizationUid = organizationUid;
+            model.LabelTranslationUid = labelTranslationUid;
+            model.LabelKey = labelKey;
+            model.LanguageName = languageName;
+            model.LanguageIconUrl = languageIconUrl;
+            model.Translation = translation;
+
+            return model;
+        }
+
+        public static LabelTranslationListModel GetLabelTranslationListModel()
+        {
+            var model = new LabelTranslationListModel();
+            
+            return model;
+        }
+
+        public static LabelTranslationRevisionReadListModel GetLabelTranslationRevisionReadListModel()
+        {
+            var model = new LabelTranslationRevisionReadListModel();
+
+            return model;
+        }
+
+        public static TranslationUploadFromCSVDoneModel GetTranslationUploadFromCSVDoneModel()
+        {
+            var model = new TranslationUploadFromCSVDoneModel();
+
+            return model;
+        }
+
+        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModel(int csvFileLenght)
         {
             var model = new UploadLabelTranslationFromCSVFileModel();
 
             model.OrganizationUid = UidOne;
             model.LabelUid = UidOne;
             model.LabelKey = StringOne;
+            model.CSVFile = GetCsvFile(csvFileLenght);
 
             return model;
         }
 
-        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModelTwoLength()
+        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModel(Guid organizaitonUid, Guid labelUid, string labelKey, 
+                                                                                                       IFormFile csvFile)
         {
-            var model = GetUploadLabelTranslationFromCSVFileModel();
-            model.CSVFile = GetUploadLabelCsvTemplateFileTwoLength();
+            var model = new UploadLabelTranslationFromCSVFileModel();
 
-            return model;
-        }
-
-        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModelNotTwoLength()
-        {
-            var model = GetUploadLabelTranslationFromCSVFileModel();
-            model.CSVFile = GetUploadLabelCsvTemplateFileNotTwoLength();
+            model.OrganizationUid = organizaitonUid;
+            model.LabelUid = labelUid;
+            model.LabelKey = labelKey;
+            model.CSVFile = csvFile;
 
             return model;
         }

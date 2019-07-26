@@ -26,21 +26,21 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
         }
 
         [Test]
-        public void LabelDetailModel_OrganizationUidInput()
+        public void LabelDetailModel_OrganizationInput()
         {
-            AssertHiddenInputModel(SystemUnderTest.OrganizationUidInput, "OrganizationUid");
+            AssertHiddenInputModel(SystemUnderTest.OrganizationInput, "OrganizationUid");
         }
 
         [Test]
-        public void LabelDetailModel_ProjectUidInput()
+        public void LabelDetailModel_ProjectInput()
         {
-            AssertHiddenInputModel(SystemUnderTest.ProjectUidInput, "ProjectUid");
+            AssertHiddenInputModel(SystemUnderTest.ProjectInput, "ProjectUid");
         }
 
         [Test]
-        public void LabelDetailModel_LabelUidInput()
+        public void LabelDetailModel_LabelInput()
         {
-            AssertHiddenInputModel(SystemUnderTest.LabelUidInput, "LabelUid");
+            AssertHiddenInputModel(SystemUnderTest.LabelInput, "LabelUid");
         }
 
         [Test]
@@ -58,9 +58,9 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
             SystemUnderTest.SetInputModelValues();
 
             // assert
-            SystemUnderTest.OrganizationUidInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
-            SystemUnderTest.ProjectUidInput.Value.ShouldBe(SystemUnderTest.ProjectUid.ToUidString());
-            SystemUnderTest.LabelUidInput.Value.ShouldBe(SystemUnderTest.LabelUid.ToUidString());
+            SystemUnderTest.OrganizationInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
+            SystemUnderTest.ProjectInput.Value.ShouldBe(SystemUnderTest.ProjectUid.ToUidString());
+            SystemUnderTest.LabelInput.Value.ShouldBe(SystemUnderTest.LabelUid.ToUidString());
         }
     }
 }

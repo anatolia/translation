@@ -21,26 +21,26 @@ namespace Translation.Client.Web.Models.Label
 
         public int LabelTranslationCount { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; }
-        public HiddenInputModel ProjectUidInput { get; }
-        public HiddenInputModel LabelUidInput { get; }
+        public HiddenInputModel OrganizationInput { get; }
+        public HiddenInputModel ProjectInput { get; }
+        public HiddenInputModel LabelInput { get; }
         public CheckboxInputModel IsActiveInput { get; set; }
 
         public LabelDetailModel()
         {
             Title = "label_detail_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
-            ProjectUidInput = new HiddenInputModel("ProjectUid");
-            LabelUidInput = new HiddenInputModel("LabelUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
+            ProjectInput = new HiddenInputModel("ProjectUid");
+            LabelInput = new HiddenInputModel("LabelUid");
             IsActiveInput = new CheckboxInputModel("IsActive", "is_active", true, true);
         }
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
-            ProjectUidInput.Value = ProjectUid.ToUidString();
-            LabelUidInput.Value = LabelUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
+            ProjectInput.Value = ProjectUid.ToUidString();
+            LabelInput.Value = LabelUid.ToUidString();
         }
     }
 }
