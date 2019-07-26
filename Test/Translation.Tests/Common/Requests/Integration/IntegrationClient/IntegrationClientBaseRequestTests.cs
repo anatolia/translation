@@ -17,6 +17,7 @@ namespace Translation.Tests.Common.Requests.Integration.IntegrationClient
         public void IntegrationClientBaseRequest_Constructor()
         {
             var result = GetIntegrationClientBaseRequest(CurrentUserId,UidOne);
+
             result.CurrentUserId.ShouldBe(CurrentUserId);
             result.IntegrationClientUid.ShouldBe(UidOne);
 

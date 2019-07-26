@@ -19,11 +19,11 @@ namespace Translation.Tests.Common.Requests.Label.LabelTranslation
         public void LabelTranslationCreateListRequest_Constructor()
         {
             var labels = GetTranslationListInfoList();
-            var request = GetLabelTranslationCreateListRequest(CurrentUserId,UidOne,UidOne,labels);
+            var request = GetLabelTranslationCreateListRequest(CurrentUserId,UidOne,UidTwo,labels);
 
             request.CurrentUserId.ShouldBe(CurrentUserId);
             request.OrganizationUid.ShouldBe(UidOne);
-            request.LabelUid.ShouldBe(UidOne);
+            request.LabelUid.ShouldBe(UidTwo);
             request.LabelTranslations.ShouldBe(labels);
         }
 
@@ -31,7 +31,7 @@ namespace Translation.Tests.Common.Requests.Label.LabelTranslation
         {
             get
             {
-                yield return new TestCaseData(CurrentUserId, EmptyUid, UidOne, GetTranslationListInfoList());
+                yield return new TestCaseData(CurrentUserId, EmptyUid, UidTwo, GetTranslationListInfoList());
                 yield return new TestCaseData(CurrentUserId, UidOne, EmptyUid, GetTranslationListInfoList());
             }
         }

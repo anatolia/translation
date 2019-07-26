@@ -16,15 +16,15 @@ namespace Translation.Tests.Common.Requests.Project
         [Test]
         public void ProjectCreateRequest_Constructor()
         {
-            var request = GetProjectCreateRequest(CurrentUserId, OrganizationOneUid, StringOne,
-                                                  HttpUrl, StringOne, StringOne);
+            var request = GetProjectCreateRequest(CurrentUserId, UidOne, StringOne,
+                                                  HttpUrl, StringTwo, StringThree);
 
             request.CurrentUserId.ShouldBe(CurrentUserId);
-            request.OrganizationUid.ShouldBe(OrganizationOneUid);
+            request.OrganizationUid.ShouldBe(UidOne);
             request.ProjectName.ShouldBe(StringOne);
             request.Url.ShouldBe(HttpUrl);
-            request.Description.ShouldBe(StringOne);
-            request.ProjectSlug.ShouldBe(StringOne);
+            request.Description.ShouldBe(StringTwo);
+            request.ProjectSlug.ShouldBe(StringThree);
         }
 
         public static IEnumerable ArgumentTestCases
@@ -39,7 +39,6 @@ namespace Translation.Tests.Common.Requests.Project
                                               HttpUrl, StringOne, EmptyString);
                 yield return new TestCaseData(CurrentUserId, OrganizationOneUid, StringOne,
                                                 StringTwo, StringOne, StringOne);
-
             }
         }
 

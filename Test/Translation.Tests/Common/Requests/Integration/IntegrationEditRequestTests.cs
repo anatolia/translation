@@ -15,19 +15,19 @@ namespace Translation.Tests.Common.Requests.Integration
         [Test]
         public void IntegrationEditRequest_Constructor()
         {
-            var request = GetIntegrationEditRequest(CurrentUserId,UidOne,StringOne,StringOne);
+            var request = GetIntegrationEditRequest(CurrentUserId,UidOne,StringOne,StringTwo);
 
             request.CurrentUserId.ShouldBe(CurrentUserId);
             request.IntegrationUid.ShouldBe(UidOne);
             request.Name.ShouldBe(StringOne);
-            request.Description.ShouldBe(StringOne);
+            request.Description.ShouldBe(StringTwo);
         }
 
         public static IEnumerable ArgumentTestCases
         {
             get
             {
-                yield return new TestCaseData(CurrentUserId, EmptyUid,StringOne,StringOne);
+                yield return new TestCaseData(CurrentUserId, EmptyUid,StringOne, StringTwo);
             }
         }
 

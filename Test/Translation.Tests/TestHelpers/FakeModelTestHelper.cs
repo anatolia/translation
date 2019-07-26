@@ -1,11 +1,11 @@
 
-﻿using System;
- using Microsoft.AspNetCore.Http;
+using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 
 using Moq;
- using Translation.Client.Web.Models.Admin;
- using Translation.Client.Web.Models.Integration;
+using Translation.Client.Web.Models.Admin;
+using Translation.Client.Web.Models.Integration;
 using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Client.Web.Models.Language;
@@ -147,7 +147,7 @@ namespace Translation.Tests.TestHelpers
             model.IsoCode3 = IsoCode3One;
             model.Icon = GetIcon();
 
-           return model;
+            return model;
         }
 
         public static LanguageEditModel GetLanguageOneEditModel()
@@ -197,6 +197,47 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static LanguageCreateModel GetLanguageCreateModel()
+        {
+            var model = new LanguageCreateModel();
+
+            return model;
+        }
+
+        public static LanguageCreateModel GetLanguageCreateModel(string name, string originalName, string isoCode2,
+                                                                 string isoCode3, IFormFile icon)
+        {
+            var model = new LanguageCreateModel();
+            model.Name = name;
+            model.OriginalName = originalName;
+            model.IsoCode2 = isoCode2;
+            model.IsoCode3 = isoCode3;
+            model.Icon = icon;
+
+            return model;
+        }
+
+        public static LanguageDetailModel GetLanguageDetailModel()
+        {
+            var model = new LanguageDetailModel();
+
+            return model;
+        }
+
+        public static LanguageDetailModel GetLanguageDetailModel(Guid LanguageUid, string name, string originalName, 
+                                                                 string isoCode2, string isoCode3, IFormFile icon)
+        {
+            var model = new LanguageDetailModel();
+            model.Name = name;
+            model.OriginalName = originalName;
+            model.IsoCode2 = isoCode2;
+            model.IsoCode3 = isoCode3;
+            model.Icon = icon;
+
+            return model;
+        }
+
+
         public static SignUpModel GetOrganizationOneUserOneSignUpModel()
         {
             var model = new SignUpModel();
@@ -209,6 +250,7 @@ namespace Translation.Tests.TestHelpers
 
             return model;
         }
+
 
         public static LogOnModel GetOrganizationOneUserOneLogOnModel()
         {
@@ -647,7 +689,7 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static LabelTranslationCreateModel GetLabelTranslationCreateModel(Guid organizationUid, Guid projectUid, string projectName,
-                                                                                 Guid labelUid, string labelKey, Guid languageUid, 
+                                                                                 Guid labelUid, string labelKey, Guid languageUid,
                                                                                  string LabelTranslation)
         {
             var model = new LabelTranslationCreateModel();
@@ -707,7 +749,7 @@ namespace Translation.Tests.TestHelpers
         public static LabelTranslationListModel GetLabelTranslationListModel()
         {
             var model = new LabelTranslationListModel();
-            
+
             return model;
         }
 
@@ -737,7 +779,7 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
-        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModel(Guid organizaitonUid, Guid labelUid, string labelKey, 
+        public static UploadLabelTranslationFromCSVFileModel GetUploadLabelTranslationFromCSVFileModel(Guid organizaitonUid, Guid labelUid, string labelKey,
                                                                                                        IFormFile csvFile)
         {
             var model = new UploadLabelTranslationFromCSVFileModel();
@@ -778,7 +820,7 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static ProjectDetailModel GetProjectDetailModel(Guid organizationUid, string organizationName, Guid projectUid,
-                                                               string name, string slug, string url, 
+                                                               string name, string slug, string url,
                                                                int labelCount, string description = StringOne)
         {
             var model = new ProjectDetailModel();
@@ -823,6 +865,21 @@ namespace Translation.Tests.TestHelpers
             var model = new ProjectRevisionReadListModel();
             model.ProjectUid = projectUid;
             model.ProjectName = projectName;
+
+            return model;
+        }
+
+        public static ClientLogInfo GetClientLogInfo()
+        {
+            var model = new ClientLogInfo();
+            model.UserAgent = StringOne;
+            model.Browser = StringOne;
+            model.BrowserVersion = StringOne;
+            model.City = StringOne;
+            model.Country = StringOne;
+            model.Ip = StringOne;
+            model.Platform = StringOne;
+            model.PlatformVersion = StringOne;
 
             return model;
         }

@@ -13,13 +13,13 @@ namespace Translation.Tests.Common.Requests.Label.LabelTranslation
         [Test]
         public void LabelTranslationCreateRequest_Constructor()
         {
-            var request = GetLabelTranslationCreateRequest(CurrentUserId, UidOne, UidOne,
-                UidOne, StringOne);
+            var request = GetLabelTranslationCreateRequest(CurrentUserId, UidOne, UidTwo,
+                                                           UidThree, StringOne);
 
             request.CurrentUserId.ShouldBe(CurrentUserId);
             request.OrganizationUid.ShouldBe(UidOne);
-            request.LabelUid.ShouldBe(UidOne);
-            request.LanguageUid.ShouldBe(UidOne);
+            request.LabelUid.ShouldBe(UidTwo);
+            request.LanguageUid.ShouldBe(UidThree);
             request.LabelTranslation.ShouldBe(StringOne);
         }
 
@@ -27,10 +27,10 @@ namespace Translation.Tests.Common.Requests.Label.LabelTranslation
         {
             get
             {
-                yield return new TestCaseData(CurrentUserId, EmptyUid, UidOne, UidOne, StringOne);
-                yield return new TestCaseData(CurrentUserId, UidOne, UidOne, EmptyUid, StringOne);
-
-
+                yield return new TestCaseData(CurrentUserId, EmptyUid, UidTwo, UidThree, StringOne);
+                yield return new TestCaseData(CurrentUserId, UidOne, EmptyUid, UidThree, StringOne);
+                yield return new TestCaseData(CurrentUserId, UidOne, UidTwo, EmptyUid, StringOne);
+                yield return new TestCaseData(CurrentUserId, UidOne, UidTwo, UidThree, EmptyString);
             }
         }
 

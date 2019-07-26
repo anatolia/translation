@@ -33,7 +33,6 @@ namespace Translation.Tests.Common.Requests.Admin
                 yield return new TestCaseData(UidOne, EmailOne, EmptyString, StringTwo, PasswordOne);
                 yield return new TestCaseData(UidOne, EmailOne, StringOne, EmptyString, PasswordOne);
                 yield return new TestCaseData(UidOne, EmailOne, StringOne, StringTwo, StringOne);
-
             }
         }
 

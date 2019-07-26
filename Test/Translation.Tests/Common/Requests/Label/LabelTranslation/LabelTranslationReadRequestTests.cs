@@ -16,7 +16,7 @@ namespace Translation.Tests.Common.Requests.Label.LabelTranslation
         [Test]
         public void LabelTranslationReadRequest_Constructor()
         {
-            var request = GetLabelTranslationReadRequest();
+            var request = GetLabelTranslationReadRequest(CurrentUserId,UidOne);
 
             request.CurrentUserId.ShouldBe(CurrentUserId);
             request.LabelTranslationUid.ShouldBe(UidOne);

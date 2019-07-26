@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 
-
 using NUnit.Framework;
 using Shouldly;
 
@@ -18,9 +17,9 @@ namespace Translation.Tests.Common.Requests.Label
         [Test]
         public void LabelCreateWithTokenRequest_Constructor()
         {
-            var request = GetLabelCreateWithTokenRequest(UidOne, UidOne, StringOne);
-            request.ProjectUid.ShouldBe(UidOne);
+            var request = GetLabelCreateWithTokenRequest(UidOne, UidTwo, StringOne);
             request.Token.ShouldBe(UidOne);
+            request.ProjectUid.ShouldBe(UidTwo);
             request.LabelKey.ShouldBe(StringOne);
 
         }
