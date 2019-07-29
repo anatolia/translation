@@ -238,6 +238,40 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static LanguageEditModel GetLanguageEditModel()
+        {
+            var model = new LanguageEditModel();
+
+            return model;
+        }
+
+        public static LanguageCreateModel GetLanguageEditModel(string name, string originalName, string isoCode2,
+            string isoCode3, IFormFile icon)
+        {
+            var model = new LanguageCreateModel();
+            model.Name = name;
+            model.OriginalName = originalName;
+            model.IsoCode2 = isoCode2;
+            model.IsoCode3 = isoCode3;
+            model.Icon = icon;
+
+            return model;
+        }
+
+        public static LanguageListModel GetLanguageListModel()
+        {
+            var model = new LanguageListModel();
+
+            return model;
+        }
+
+        public static LanguageRevisionReadListModel GetLanguageRevisionReadListModel()
+        {
+            var model = new LanguageRevisionReadListModel();
+
+            return model;
+        }
+
         public static LanguageDetailModel GetLanguageDetailModel()
         {
             var model = new LanguageDetailModel();
