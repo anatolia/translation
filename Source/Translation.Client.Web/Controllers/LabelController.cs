@@ -83,7 +83,7 @@ namespace Translation.Client.Web.Controllers
         public async Task<IActionResult> Detail(Guid id, string project, string label)
         {
             var labelUid = id;
-            if(labelUid.IsNotEmptyGuid())
+            if (labelUid.IsNotEmptyGuid())
             {
                 var labelReadRequest = new LabelReadRequest(CurrentUser.Id, labelUid);
                 var labelReadResponse = await _labelService.GetLabel(labelReadRequest);
@@ -99,7 +99,7 @@ namespace Translation.Client.Web.Controllers
             }
             else
             {
-                if (project.IsEmpty() 
+                if (project.IsEmpty()
                     || label.IsEmpty())
                 {
                     return RedirectToHome();
@@ -464,7 +464,7 @@ namespace Translation.Client.Web.Controllers
             var labelListInfos = new List<LabelListInfo>();
 
             var lines = new List<string>();
-            using (var reader = new StreamReader(model.CSVFile.OpenReadStream()))
+            using (var reader = new StreamReader(model.CSVFile.OpenReadStream(), Encoding.GetEncoding("ISO-8859-1")))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)
@@ -778,7 +778,7 @@ namespace Translation.Client.Web.Controllers
             var translationListInfos = new List<TranslationListInfo>();
 
             var lines = new List<string>();
-            using (var reader = new StreamReader(model.CSVFile.OpenReadStream()))
+            using (var reader = new StreamReader(model.CSVFile.OpenReadStream(), Encoding.GetEncoding("ISO-8859-1")))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)
