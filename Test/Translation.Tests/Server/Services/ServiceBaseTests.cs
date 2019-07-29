@@ -9,8 +9,9 @@ namespace Translation.Tests.Server.Services
 {
     public class ServiceBaseTests : BaseTests
     {
-        public ServiceBaseTests()
+        protected new void Refresh()
         {
+            base.Refresh();
 
             #region Services
 

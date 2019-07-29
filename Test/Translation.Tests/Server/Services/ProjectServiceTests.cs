@@ -21,6 +21,7 @@ namespace Translation.Tests.Server.Services
         [SetUp]
         public void run_before_every_test()
         {
+            Refresh();
             SystemUnderTest = Container.Resolve<IProjectService>();
         }
 
@@ -366,6 +367,7 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetProjectCloneRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockProjectRepository.Setup_Select_Returns_InvalidProject();
 
             // act
@@ -374,6 +376,7 @@ namespace Translation.Tests.Server.Services
             // assert
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
             AssertReturnType<ProjectCloneResponse>(result);
+            MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
         }
 
