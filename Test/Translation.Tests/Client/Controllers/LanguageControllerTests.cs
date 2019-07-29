@@ -62,28 +62,28 @@ namespace Translation.Tests.Client.Controllers
             AssertViewWithModel<LanguageCreateModel>(result);
         }
 
-        [Ignore("it needs GetLanguageOneCreateModel fix")]
         [Test]
         public async Task Create_POST()
         {
             // arrange
+            MockHostingEnvironment.Setup_WebRootPath_Returns_WebRootPath();
             MockLanguageService.Setup_CreateLanguage_Returns_LanguageCreateResponse_Success();
-            var model = GetLanguageOneCreateModel();
+            var model = GetLanguageOneCreateModelOne();
 
             // act
             var result = await SystemUnderTest.Create(model);
 
             // assert
             ((RedirectResult)result).Url.ShouldBe("/Language/List/");
+            MockHostingEnvironment.Verify_WebRootPath();
             MockLanguageService.Verify_CreateLanguage();
         }
 
-        [Ignore("it needs GetLanguageOneCreateModel fix")]
         [Test]
         public async Task Create_POST_FailedResponse()
         {
             // arrange
-            MockHostingEnvironment.Setup(x => x.WebRootPath).Returns("");
+            MockHostingEnvironment.Setup_WebRootPath_Returns_WebRootPath();
             MockLanguageService.Setup_CreateLanguage_Returns_LanguageCreateResponse_Failed();
             var model = GetLanguageOneCreateModel();
 
@@ -93,14 +93,14 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertErrorMessagesForInvalidOrFailedResponse<LanguageCreateModel>(result);
             MockLanguageService.Verify_CreateLanguage();
+            MockLanguageService.Verify_CreateLanguage();
         }
 
-        [Ignore("it needs GetLanguageOneCreateModel fix")]
         [Test]
         public async Task Create_POST_InvalidResponse()
         {
             // arrange
-            MockHostingEnvironment.Setup(x => x.WebRootPath).Returns("");
+            MockHostingEnvironment.Setup_WebRootPath_Returns_WebRootPath();
             MockLanguageService.Setup_CreateLanguage_Returns_LanguageCreateResponse_Invalid();
             var model = GetLanguageOneCreateModel();
 
@@ -109,6 +109,7 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertErrorMessagesForInvalidOrFailedResponse<LanguageCreateModel>(result);
+            MockHostingEnvironment.Verify_WebRootPath();
             MockLanguageService.Verify_CreateLanguage();
         }
 
@@ -179,55 +180,54 @@ namespace Translation.Tests.Client.Controllers
             AssertViewAccessDenied(result);
         }
 
-        [Ignore("it needs GetLanguageOneEditModel fix")]
         [Test]
         public async Task Edit_POST()
         {
             // arrange
-            MockHostingEnvironment.Setup(x => x.WebRootPath).Returns("");
+            MockHostingEnvironment.Setup_WebRootPath_Returns_WebRootPath();
             MockLanguageService.Setup_EditLanguage_Returns_LanguageEditResponse_Success();
             var model = GetLanguageOneEditModel();
-            // todo: model Icon 
 
             // act
             var result = await SystemUnderTest.Edit(model);
 
             // assert
             ((RedirectResult)result).Url.ShouldBe("/Language/List/");
+            MockHostingEnvironment.Verify_WebRootPath();
             MockLanguageService.Verify_EditLanguage();
         }
 
-        [Ignore("it needs GetLanguageOneEditModel fix")]
         [Test]
         public async Task Edit_POST_FailedResponse()
         {
             // arrange
+            MockHostingEnvironment.Setup_WebRootPath_Returns_WebRootPath();
             MockLanguageService.Setup_EditLanguage_Returns_LanguageEditResponse_Failed();
             var model = GetLanguageOneEditModel();
-            // todo: model Icon 
 
             // act
             var result = await SystemUnderTest.Edit(model);
 
             // assert
             AssertErrorMessagesForInvalidOrFailedResponse<LanguageEditModel>(result);
+            MockHostingEnvironment.Verify_WebRootPath();
             MockLanguageService.Verify_EditLanguage();
         }
 
-        [Ignore("it needs GetLanguageOneEditModel fix")]
         [Test]
         public async Task Edit_POST_InvalidResponse()
         {
             // arrange
+            MockHostingEnvironment.Setup_WebRootPath_Returns_WebRootPath();
             MockLanguageService.Setup_EditLanguage_Returns_LanguageEditResponse_Invalid();
             var model = GetLanguageOneEditModel();
-            // todo: model Icon 
 
             // act
             var result = await SystemUnderTest.Edit(model);
 
             // assert
             AssertErrorMessagesForInvalidOrFailedResponse<LanguageEditModel>(result);
+            MockHostingEnvironment.Verify_WebRootPath();
             MockLanguageService.Verify_EditLanguage();
         }
 
