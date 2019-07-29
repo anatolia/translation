@@ -35,8 +35,8 @@ namespace Translation.Client.Web.Models.Language
 
         public override void SetInputModelValues()
         {
-            NameInput.Value = Name.TrimOrDefault();
-            OriginalNameInput.Value = OriginalName.TrimOrDefault();
+            NameInput.Value = Name;
+            OriginalNameInput.Value = OriginalName;
             IsoCode2Input.Value = IsoCode2;
             IsoCode3Input.Value = IsoCode3;
             DescriptionInput.Value = Description;
