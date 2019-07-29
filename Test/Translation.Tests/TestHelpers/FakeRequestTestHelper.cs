@@ -1798,6 +1798,22 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static OrganizationLoginLogReadListRequest GetOrganizationLoginLogReadListRequestForSelectAfter()
+        {
+            var request = GetOrganizationLoginLogReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectAfter();
+
+            return request;
+        }
+
+        public static OrganizationLoginLogReadListRequest GetOrganizationLoginLogReadListRequestForSelectMany()
+        {
+            var request = GetOrganizationLoginLogReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectMany();
+
+            return request;
+        }
+
         public static OrganizationLoginLogReadListRequest GetOrganizationLoginLogReadListRequest(long currentUserId, Guid organizationUid)
         {
             var request = new OrganizationLoginLogReadListRequest(currentUserId, organizationUid);
@@ -1933,6 +1949,22 @@ namespace Translation.Tests.TestHelpers
         public static UserReadListRequest GetUserReadListRequest()
         {
             var request = new UserReadListRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static UserReadListRequest GetUserReadListRequestForSelectAfter()
+        {
+            var request = GetUserReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectAfter();
+
+            return request;
+        }
+
+        public static UserReadListRequest GetUserReadListRequestForSelectMany()
+        {
+            var request = GetUserReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectMany();
 
             return request;
         }
