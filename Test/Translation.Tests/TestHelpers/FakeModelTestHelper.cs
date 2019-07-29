@@ -150,18 +150,6 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
-        public static LanguageCreateModel GetLanguageOneCreateModelOne()
-        {
-            var model = new LanguageCreateModel();
-            model.Name = "Language One";
-            model.OriginalName = "Language One Original Name";
-            model.IsoCode2 = IsoCode2One;
-            model.IsoCode3 = IsoCode3One;
-            model.Icon = GetIcon();
-
-            return model;
-        }
-
         public static LanguageEditModel GetLanguageOneEditModel()
         {
             var model = new LanguageEditModel();

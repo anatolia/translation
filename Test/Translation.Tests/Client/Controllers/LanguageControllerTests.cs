@@ -68,7 +68,7 @@ namespace Translation.Tests.Client.Controllers
             // arrange
             MockHostingEnvironment.Setup_WebRootPath_Returns_WebRootPath();
             MockLanguageService.Setup_CreateLanguage_Returns_LanguageCreateResponse_Success();
-            var model = GetLanguageOneCreateModelOne();
+            var model = GetLanguageOneCreateModel();
 
             // act
             var result = await SystemUnderTest.Create(model);

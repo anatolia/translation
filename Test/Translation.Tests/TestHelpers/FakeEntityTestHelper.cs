@@ -1295,7 +1295,7 @@ namespace Translation.Tests.TestHelpers
                 }
             }
 
-            var webRootPath = Path.Combine(root, "translation\\Source\\Translation.Client.Web\\wwwroot");
+            var webRootPath = Path.Combine(root, "translation\\Test\\Translation.Tests\\wwwtestroot");
 
             return webRootPath;
         }
