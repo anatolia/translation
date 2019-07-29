@@ -31,8 +31,8 @@ namespace Translation.Data.Factories
             entity.OrganizationUid = label.OrganizationUid;
             entity.OrganizationName = label.OrganizationName;
 
-            entity.ProjectId = label.ProjectId;
             entity.ProjectUid = label.ProjectUid;
+            entity.ProjectId = label.ProjectId;
             entity.ProjectName = label.ProjectName;
 
             entity.Description = request.Description;
@@ -57,7 +57,7 @@ namespace Translation.Data.Factories
         public Label CreateEntityFromRequest(LabelCreateRequest request, Project project)
         {
             var entity = new Label();
-            
+
             entity.Key = request.LabelKey;
             entity.Name = request.LabelKey;
             entity.Description = request.Description;

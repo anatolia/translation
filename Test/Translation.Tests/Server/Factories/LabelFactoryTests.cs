@@ -76,7 +76,7 @@ namespace Translation.Tests.Server.Factories
             result.OrganizationUid.ShouldBe(label.OrganizationUid);
             result.OrganizationName.ShouldBe(label.OrganizationName);
 
-            result.ProjectUid.ShouldBe(label.Uid);
+            result.ProjectUid.ShouldBe(request.ProjectUid);
             result.ProjectId.ShouldBe(label.Id);
             result.ProjectName.ShouldBe(label.Name);
 
