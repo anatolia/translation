@@ -3,7 +3,6 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -26,7 +25,6 @@ namespace Translation.Tests.Client.Controllers
 {
     public class ControllerBaseTests : BaseTests
     {
-        public Mock<IHostingEnvironment> MockHostingEnvironment { get; }
         public Mock<IOrganizationService> MockOrganizationService { get; }
         public Mock<IIntegrationService> MockIntegrationService { get; }
         public Mock<IAdminService> MockAdminService { get; }
@@ -37,7 +35,6 @@ namespace Translation.Tests.Client.Controllers
 
         public ControllerBaseTests()
         {
-            MockHostingEnvironment = new Mock<IHostingEnvironment>();
             MockOrganizationService = new Mock<IOrganizationService>();
             MockIntegrationService = new Mock<IIntegrationService>();
             MockAdminService = new Mock<IAdminService>();
@@ -48,7 +45,6 @@ namespace Translation.Tests.Client.Controllers
 
             SetupCurrentUser();
 
-            Container.Register(Component.For<IHostingEnvironment>().Instance(MockHostingEnvironment.Object).LifestyleTransient());
             Container.Register(Component.For<IOrganizationService>().Instance(MockOrganizationService.Object).LifestyleTransient());
             Container.Register(Component.For<IIntegrationService>().Instance(MockIntegrationService.Object).LifestyleTransient());
             Container.Register(Component.For<ILanguageService>().Instance(MockLanguageService.Object).LifestyleTransient());
