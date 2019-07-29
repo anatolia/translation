@@ -14,60 +14,60 @@ using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
 namespace Translation.Tests.Client.Models.ViewModels.Language
 {
     [TestFixture]
-    public class LanguageCreateModelTests
+    public class LanguageEditModelTests
     {
-        public LanguageCreateModel SystemUnderTest { get; set; }
+        public LanguageEditModel SystemUnderTest { get; set; }
 
         [SetUp]
         public void run_before_every_test()
         {
-            SystemUnderTest = GetLanguageCreateModel();
+            SystemUnderTest = GetLanguageEditModel();
         }
 
         [Test]
-        public void LanguageCreateModel_Title()
+        public void LanguageEditModel_Title()
         {
-            Assert.AreEqual(SystemUnderTest.Title, "language_create_title");
+            Assert.AreEqual(SystemUnderTest.Title, "language_edit_title");
         }
 
         [Test]
-        public void LanguageCreateModel_OrganizationInput()
+        public void LanguageEditModel_OrganizationInput()
         {
             AssertInputModel(SystemUnderTest.NameInput, "Name", "name", true);
         }
 
         [Test]
-        public void LanguageCreateModel_ProjectInput()
+        public void LanguageEditModel_ProjectInput()
         {
             AssertInputModel(SystemUnderTest.OriginalNameInput, "OriginalName", "original_name", true);
         }
 
         [Test]
-        public void LanguageCreateModel_IsoCode2Input()
+        public void LanguageEditModel_IsoCode2Input()
         {
             AssertShortInputModel(SystemUnderTest.IsoCode2Input, "IsoCode2", "iso_code_2_character", true);
         }
 
         [Test]
-        public void LanguageCreateModel_IsoCode3Input()
+        public void LanguageEditModel_IsoCode3Input()
         {
             AssertShortInputModel(SystemUnderTest.IsoCode3Input, "IsoCode3", "iso_code_3_character", true);
         }
 
         [Test]
-        public void LanguageCreateModel_IconInput()
+        public void LanguageEditModel_IconInput()
         {
-            AssertFileInputModel(SystemUnderTest.IconInput, "Icon", "icon", true);
+            AssertFileInputModel(SystemUnderTest.IconInput, "Icon", "icon", false);
         }
 
         [Test]
-        public void LanguageCreateModel_DescriptionInput()
+        public void LanguageEditModel_DescriptionInput()
         {
             AssertLongInputModel(SystemUnderTest.DescriptionInput, "Description", "description");
         }
 
         [Test]
-        public void IntegrationCreateModel_SetInputModelValues()
+        public void IntegrationEditModel_SetInputModelValues()
         {
             // arrange
 
@@ -103,7 +103,7 @@ namespace Translation.Tests.Client.Models.ViewModels.Language
                                                       "icon_required_error_message"
                                               },
                                               false);
-                yield return new TestCaseData(CaseThree, 
+                yield return new TestCaseData(CaseThree,
                                               EmptyString, EmptyString, StringOne,
                                               StringOne, GetInvalidIcon(),
                                               null,
@@ -129,14 +129,14 @@ namespace Translation.Tests.Client.Models.ViewModels.Language
         }
 
         [TestCaseSource(nameof(MessageTestCases))]
-        public void LanguageCreateModel_InputErrorMessages(string caseName,
+        public void LanguageEditModel_InputErrorMessages(string caseName,
                                                            string name, string originalName, string isoCode2,
                                                            string isoCode3, IFormFile icon,
                                                            string[] errorMessages,
                                                            string[] inputErrorMessages,
                                                            bool result)
         {
-            var model = GetLanguageCreateModel(name, originalName, isoCode2, isoCode3, icon);
+            var model = GetLanguageEditModel(name, originalName, isoCode2, isoCode3, icon);
             model.IsValid().ShouldBe(result);
             model.IsNotValid().ShouldBe(!result);
 

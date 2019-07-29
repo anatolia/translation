@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-
+using Microsoft.AspNetCore.Http.Internal;
 using Moq;
 using StandardRepository.Models.Entities;
 
@@ -1272,6 +1274,30 @@ namespace Translation.Tests.TestHelpers
             mockFormFile.Setup(x => x.ContentType).Returns("");
 
             return mockFormFile.Object;
+        }
+
+        public static string GetWebRootPath()
+        {
+            var root = "";
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var dirList = currentDirectory.Split("\\");
+
+            for (int i = 0; i < dirList.Length; i++)
+            {
+                var dir = dirList[i];
+                if (dir != "translation")
+                {
+                    root = Path.Combine(root, dir);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            var webRootPath = Path.Combine(root, "translation\\Test\\Translation.Tests\\wwwtestroot");
+
+            return webRootPath;
         }
     }
 }

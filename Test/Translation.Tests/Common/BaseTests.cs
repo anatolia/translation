@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using Microsoft.AspNetCore.Hosting;
+
+using Moq;
 using Castle.Windsor;
 using Castle.MicroKernel.Registration;
 
@@ -14,6 +16,9 @@ namespace Translation.Tests.Common
     public class BaseTests
     {
         public IWindsorContainer Container { get; set; } = new WindsorContainer();
+
+        public Mock<IHostingEnvironment> MockHostingEnvironment { get; }
+
 
         protected Mock<IIntegrationClientRepository> MockIntegrationClientRepository { get; }
         protected Mock<IIntegrationRepository> MockIntegrationRepository { get; }
@@ -36,6 +41,8 @@ namespace Translation.Tests.Common
 
         protected BaseTests()
         {
+            MockHostingEnvironment = new Mock<IHostingEnvironment>();
+
             #region Repository
 
             MockIntegrationClientRepository = new Mock<IIntegrationClientRepository>();
@@ -70,6 +77,9 @@ namespace Translation.Tests.Common
 
         public void ConfigureIocContainer()
         {
+            
+            Container.Register(Component.For<IHostingEnvironment>().Instance(MockHostingEnvironment.Object).LifestyleTransient());
+
             Container.Register(Component.For<CryptoHelper>());
 
             #region Factory
