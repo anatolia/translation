@@ -108,10 +108,8 @@ namespace Translation.Data.Factories
             entity.OrganizationId = organization.Id;
             entity.OrganizationUid = organization.Uid;
             entity.OrganizationName = organization.Name;
-
             entity.Name = "Default";
             entity.Slug = "default";
-
             entity.IsActive = true;
 
             return entity;

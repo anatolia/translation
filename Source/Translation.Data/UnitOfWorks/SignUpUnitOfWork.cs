@@ -84,7 +84,7 @@ namespace Translation.Data.UnitOfWorks
 
                 project.OrganizationId = organizationId;
                 var projectId = await _projectRepository.Insert(userId, project);
-
+                project.Id = projectId;
                 if (!organization.IsSuperOrganization)
                 {
                     var superProject = await _projectRepository.Select(x => x.IsSuperProject);
@@ -92,7 +92,8 @@ namespace Translation.Data.UnitOfWorks
                     {
                         var labels = await _labelRepository.SelectAll(x => x.ProjectId == superProject.Id);
                         var labelTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == superProject.Id);
-
+                        project.LabelCount = labels.Count;
+                        await _projectRepository.Update(userId, project);
                         for (var i = 0; i < labels.Count; i++)
                         {
                             var label = labels[i];
@@ -122,11 +123,14 @@ namespace Translation.Data.UnitOfWorks
                                 labelTranslation.LabelName = label.Name;
 
                                 await _labelTranslationRepository.Insert(userId, labelTranslation);
+
+                                project.LabelTranslationCount++;
                             }
                         }
+                        await _projectRepository.Update(userId, project);
                     }
                 }
-
+                
                 return (organization,
                         user);
             });
