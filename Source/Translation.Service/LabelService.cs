@@ -741,6 +741,13 @@ namespace Translation.Service
                 return response;
             }
 
+            var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
+            if (project.IsNotExist())
+            {
+                response.SetInvalidBecauseNotFound("project");
+                return response;
+            }
+
             var label = await _labelRepository.Select(x => x.Uid == request.CloningLabelUid);
             if (label.IsNotExist())
             {
@@ -754,14 +761,14 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _labelRepository.Any(x => x.Key == request.LabelKey && x.ProjectId == label.ProjectId))
+            if (await _labelRepository.Any(x => x.Key == request.LabelKey && x.ProjectUid ==request.ProjectUid))
             {
                 response.ErrorMessages.Add("label_key_must_be_unique");
                 response.Status = ResponseStatus.Failed;
                 return response;
             }
 
-            var newLabel = _labelFactory.CreateEntityFromRequest(request, label);
+            var newLabel = _labelFactory.CreateEntityFromRequest(request, label,project);
             var uowResult = await _labelUnitOfWork.DoCloneWork(request.CurrentUserId, label.Id, newLabel);
             if (uowResult)
             {

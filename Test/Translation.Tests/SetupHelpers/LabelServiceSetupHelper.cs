@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Moq;
@@ -12,7 +10,6 @@ using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
 using Translation.Common.Models.Responses.Label;
 using Translation.Common.Models.Responses.Label.LabelTranslation;
-using Translation.Data.Entities.Domain;
 using Translation.Data.Repositories.Contracts;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
@@ -24,91 +21,91 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_GetLabelByKey_Returns_LabelReadByKeyResponse_Success(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetLabelByKey(It.IsAny<LabelReadByKeyRequest>()))
-                .ReturnsAsync(new LabelReadByKeyResponse() { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new LabelReadByKeyResponse() { Status = ResponseStatus.Success });
         }
 
         public static void Setup_GetLabelByKey_Returns_LabelReadByKeyResponse_Failed(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetLabelByKey(It.IsAny<LabelReadByKeyRequest>()))
-                .ReturnsAsync(new LabelReadByKeyResponse() { Status = ResponseStatus.Failed });
+                   .ReturnsAsync(new LabelReadByKeyResponse() { Status = ResponseStatus.Failed });
         }
 
         public static void Setup_GetLabelByKey_Returns_LabelReadByKeyResponse_Invalid(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetLabelByKey(It.IsAny<LabelReadByKeyRequest>()))
-                .ReturnsAsync(new LabelReadByKeyResponse() { Status = ResponseStatus.Invalid });
+                   .ReturnsAsync(new LabelReadByKeyResponse() { Status = ResponseStatus.Invalid });
         }
 
         public static void Setup_ChangeActivationForLabel_Returns_LabelChangeActivationResponse_Success(this Mock<ILabelService> service)
         {
             service.Setup(x => x.ChangeActivation(It.IsAny<LabelChangeActivationRequest>()))
-                .ReturnsAsync(new LabelChangeActivationResponse() { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new LabelChangeActivationResponse() { Status = ResponseStatus.Success });
         }
 
         public static void Setup_ChangeActivationForLabel_Returns_LabelChangeActivationResponse_Failed(this Mock<ILabelService> service)
         {
             service.Setup(x => x.ChangeActivation(It.IsAny<LabelChangeActivationRequest>()))
-                .ReturnsAsync(new LabelChangeActivationResponse() { Status = ResponseStatus.Failed });
+                   .ReturnsAsync(new LabelChangeActivationResponse() { Status = ResponseStatus.Failed });
         }
 
         public static void Setup_ChangeActivationForLabel_Returns_LabelChangeActivationResponse_Invalid(this Mock<ILabelService> service)
         {
             service.Setup(x => x.ChangeActivation(It.IsAny<LabelChangeActivationRequest>()))
-                .ReturnsAsync(new LabelChangeActivationResponse() { Status = ResponseStatus.Invalid });
+                   .ReturnsAsync(new LabelChangeActivationResponse() { Status = ResponseStatus.Invalid });
         }
 
         public static void Setup_RestoreLabel_Returns_LabelRestoreResponse_Success(this Mock<ILabelService> service)
         {
             service.Setup(x => x.RestoreLabel(It.IsAny<LabelRestoreRequest>()))
-                .ReturnsAsync(new LabelRestoreResponse() { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new LabelRestoreResponse() { Status = ResponseStatus.Success });
         }
 
         public static void Setup_RestoreLabel_Returns_LabelRestoreResponse_Failed(this Mock<ILabelService> service)
         {
             service.Setup(x => x.RestoreLabel(It.IsAny<LabelRestoreRequest>()))
-                .ReturnsAsync(new LabelRestoreResponse() { Status = ResponseStatus.Failed });
+                   .ReturnsAsync(new LabelRestoreResponse() { Status = ResponseStatus.Failed });
         }
 
         public static void Setup_RestoreLabel_Returns_LabelRestoreResponse_Invalid(this Mock<ILabelService> service)
         {
             service.Setup(x => x.RestoreLabel(It.IsAny<LabelRestoreRequest>()))
-                .ReturnsAsync(new LabelRestoreResponse() { Status = ResponseStatus.Invalid });
+                   .ReturnsAsync(new LabelRestoreResponse() { Status = ResponseStatus.Invalid });
         }
 
         public static void Setup_GetLabelRevisions_Returns_LabelRevisionReadListResponse_Success(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetLabelRevisions(It.IsAny<LabelRevisionReadListRequest>()))
-                .ReturnsAsync(new LabelRevisionReadListResponse() { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new LabelRevisionReadListResponse() { Status = ResponseStatus.Success });
         }
 
         public static void Setup_GetLabelTranslationRevisions_Returns_LabelTranslationRevisionReadListResponse_Success(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetLabelTranslationRevisions(It.IsAny<LabelTranslationRevisionReadListRequest>()))
-                .ReturnsAsync(new LabelTranslationRevisionReadListResponse() { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new LabelTranslationRevisionReadListResponse() { Status = ResponseStatus.Success });
         }
 
         public static void Setup_GetLabelTranslationRevisions_Returns_LabelTranslationRevisionReadListResponse_Failed(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetLabelTranslationRevisions(It.IsAny<LabelTranslationRevisionReadListRequest>()))
-                .ReturnsAsync(new LabelTranslationRevisionReadListResponse() { Status = ResponseStatus.Failed });
+                   .ReturnsAsync(new LabelTranslationRevisionReadListResponse() { Status = ResponseStatus.Failed });
         }
 
         public static void Setup_GetLabelTranslationRevisions_Returns_LabelTranslationRevisionReadListResponse_Invalid(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetLabelTranslationRevisions(It.IsAny<LabelTranslationRevisionReadListRequest>()))
-                .ReturnsAsync(new LabelTranslationRevisionReadListResponse() { Status = ResponseStatus.Invalid });
+                   .ReturnsAsync(new LabelTranslationRevisionReadListResponse() { Status = ResponseStatus.Invalid });
         }
 
         public static void Setup_GetLabelRevisions_Returns_LabelRevisionReadListResponse_Failed(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetLabelRevisions(It.IsAny<LabelRevisionReadListRequest>()))
-                .ReturnsAsync(new LabelRevisionReadListResponse() { Status = ResponseStatus.Failed });
+                   .ReturnsAsync(new LabelRevisionReadListResponse() { Status = ResponseStatus.Failed });
         }
 
         public static void Setup_GetLabelRevisions_Returns_LabelRevisionReadListResponse_Invalid(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetLabelRevisions(It.IsAny<LabelRevisionReadListRequest>()))
-                .ReturnsAsync(new LabelRevisionReadListResponse() { Status = ResponseStatus.Invalid });
+                   .ReturnsAsync(new LabelRevisionReadListResponse() { Status = ResponseStatus.Invalid });
         }
 
         public static void Setup_RestoreRevision_Returns_True(this Mock<ILabelRepository> repository)
@@ -219,21 +216,21 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_GetTranslation_Returns_LabelTranslationReadResponse_Success(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetTranslation(It.IsAny<LabelTranslationReadRequest>()))
-                .ReturnsAsync(new LabelTranslationReadResponse() { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new LabelTranslationReadResponse() { Status = ResponseStatus.Success });
 
         }
 
         public static void Setup_GetTranslation_Returns_LabelTranslationReadResponse_Failed(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetTranslation(It.IsAny<LabelTranslationReadRequest>()))
-                .ReturnsAsync(new LabelTranslationReadResponse() { Status = ResponseStatus.Failed });
+                   .ReturnsAsync(new LabelTranslationReadResponse() { Status = ResponseStatus.Failed });
 
         }
 
         public static void Setup_GetTranslation_Returns_LabelTranslationReadResponse_Invalid(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetTranslation(It.IsAny<LabelTranslationReadRequest>()))
-                .ReturnsAsync(new LabelTranslationReadResponse() { Status = ResponseStatus.Invalid });
+                   .ReturnsAsync(new LabelTranslationReadResponse() { Status = ResponseStatus.Invalid });
         }
 
         public static void Setup_GetLabelsWithTranslations_Returns_AllLabelReadListResponse_Failed(this Mock<ILabelService> service)
@@ -257,15 +254,13 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_GetLabels_Returns_LabelSearchListResponse_Success(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetLabels(It.IsAny<LabelSearchListRequest>()))
-                .ReturnsAsync(new LabelSearchListResponse() { Status = ResponseStatus.Success });
-
+                   .ReturnsAsync(new LabelSearchListResponse() { Status = ResponseStatus.Success });
         }
 
         public static void Setup_GetLabels_Returns_LabelSearchListResponse_Failed(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetLabels(It.IsAny<LabelSearchListRequest>()))
-                .ReturnsAsync(new LabelSearchListResponse() { Status = ResponseStatus.Failed });
-
+                   .ReturnsAsync(new LabelSearchListResponse() { Status = ResponseStatus.Failed });
         }
 
         public static void Verify_GetLabels_LabelSearchListRequest(this Mock<ILabelService> service)
@@ -276,8 +271,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_GetLabels_Returns_LabelSearchListResponse_Invalid(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetLabels(It.IsAny<LabelSearchListRequest>()))
-                .ReturnsAsync(new LabelSearchListResponse() { Status = ResponseStatus.Invalid });
-
+                   .ReturnsAsync(new LabelSearchListResponse() { Status = ResponseStatus.Invalid });
         }
 
         public static void Setup_CreateLabel_Returns_LabelCreateResponse_Failed(this Mock<ILabelService> service)
@@ -319,19 +313,19 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_RestoreLabelTranslation_Returns_LabelTranslationRestoreResponse_Success(this Mock<ILabelService> service)
         {
             service.Setup(x => x.RestoreLabelTranslation(It.IsAny<LabelTranslationRestoreRequest>()))
-                .ReturnsAsync(new LabelTranslationRestoreResponse() { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new LabelTranslationRestoreResponse() { Status = ResponseStatus.Success });
         }
 
         public static void Setup_RestoreLabelTranslation_Returns_LabelTranslationRestoreResponse_Failed(this Mock<ILabelService> service)
         {
             service.Setup(x => x.RestoreLabelTranslation(It.IsAny<LabelTranslationRestoreRequest>()))
-                .ReturnsAsync(new LabelTranslationRestoreResponse() { Status = ResponseStatus.Failed });
+                   .ReturnsAsync(new LabelTranslationRestoreResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } });
         }
 
         public static void Setup_RestoreLabelTranslation_Returns_LabelTranslationRestoreResponse_Invalid(this Mock<ILabelService> service)
         {
             service.Setup(x => x.RestoreLabelTranslation(It.IsAny<LabelTranslationRestoreRequest>()))
-                .ReturnsAsync(new LabelTranslationRestoreResponse() { Status = ResponseStatus.Invalid });
+                   .ReturnsAsync(new LabelTranslationRestoreResponse() { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } });
         }
 
         public static void Setup_CreateTranslation_Returns_LabelTranslationCreateResponse_Failed(this Mock<ILabelService> service)

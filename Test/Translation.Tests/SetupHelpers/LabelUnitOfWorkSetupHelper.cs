@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 using Moq;
 
 using Translation.Data.Entities.Domain;
@@ -148,14 +149,14 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_DoDeleteTranslationWork_Returns_False(this Mock<ILabelUnitOfWork> unitOfWork)
         {
             unitOfWork.Setup(x => x.DoDeleteTranslationWork(It.IsAny<long>(),
-                                                 It.IsAny<LabelTranslation>()))
+                                                            It.IsAny<LabelTranslation>()))
                       .ReturnsAsync(BooleanFalse);
         }
 
         public static void Verify_DoDeleteTranslationWork(this Mock<ILabelUnitOfWork> unitOfWork)
         {
             unitOfWork.Verify(x => x.DoDeleteTranslationWork(It.IsAny<long>(),
-                                                  It.IsAny<LabelTranslation>()));
+                                                             It.IsAny<LabelTranslation>()));
         }
     }
 }

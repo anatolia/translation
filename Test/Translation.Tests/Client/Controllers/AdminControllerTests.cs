@@ -16,8 +16,6 @@ using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
-using static Translation.Tests.TestHelpers.AssertModelTestHelper;
-using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Tests.Client.Controllers
 {
@@ -29,6 +27,7 @@ namespace Translation.Tests.Client.Controllers
         [SetUp]
         public void run_before_every_test()
         {
+            Refresh();
             SystemUnderTest = Container.Resolve<AdminController>();
             SetControllerContext(SystemUnderTest);
         }

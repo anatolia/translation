@@ -12,7 +12,6 @@ using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
-using static Translation.Tests.TestHelpers.AssertModelTestHelper;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Tests.Client.Controllers
@@ -25,6 +24,7 @@ namespace Translation.Tests.Client.Controllers
         [SetUp]
         public void run_before_every_test()
         {
+            Refresh();
             SystemUnderTest = Container.Resolve<UserController>();
             SetControllerContext(SystemUnderTest);
         }
@@ -410,6 +410,36 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public async Task ResetPassword_POST_InvalidResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_PasswordReset_Returns_PasswordResetResponse_Invalid();
+            var model = GetOrganizationOneUserOneResetPasswordModel();
+
+            // act
+            var result = await SystemUnderTest.ResetPassword(model);
+
+            // assert
+            AssertViewAccessDenied(result);
+            MockOrganizationService.Verify_PasswordReset();
+        }
+
+        [Test]
+        public async Task ResetPassword_POST_FailedResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_PasswordReset_Returns_PasswordResetResponse_Failed();
+            var model = GetOrganizationOneUserOneResetPasswordModel();
+
+            // act
+            var result = await SystemUnderTest.ResetPassword(model);
+
+            // assert
+            AssertViewAccessDenied(result);
+            MockOrganizationService.Verify_PasswordReset();
+        }
+
+        [Test]
         public async Task ResetPassword_POST_InvalidModel()
         {
             // arrange
@@ -422,19 +452,7 @@ namespace Translation.Tests.Client.Controllers
             AssertInputErrorMessagesOfView(result, model);
         }
 
-        [Test]
-        public async Task ResetPassword_POST_FailedResponse()
-        {
-            // arrange
-            MockOrganizationService.Setup_PasswordReset_Returns_PasswordResetResponse_Failed();
 
-            // act
-            var result = await SystemUnderTest.ResetPassword(EmailOne, UidOne);
-
-            // assert
-            AssertViewAccessDenied(result);
-            MockOrganizationService.Verify_PasswordReset();
-        }
 
         [Test]
         public void ResetPasswordDone_GET()
@@ -529,7 +547,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockOrganizationService.Setup_ChangePassword_Returns_PasswordChangeResponse_Invalid();
-            var model = new ChangePasswordModel();
+            var model = GetOrganizationOneUserOneChangePasswordModel();
 
             // act
             var result = await SystemUnderTest.ChangePassword(model);
@@ -545,7 +563,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockOrganizationService.Setup_ChangePassword_Returns_PasswordChangeResponse_Invalid();
-            var model = new ChangePasswordModel();
+            var model = GetOrganizationOneUserOneChangePasswordModel();
 
             // act
             var result = await SystemUnderTest.ChangePassword(model);
@@ -606,18 +624,6 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertViewAccessDenied(result);
             MockOrganizationService.Verify_GetUser();
-        }
-
-        [Test]
-        public void Edit_GET_InvalidParameter()
-        {
-            // arrange
-
-            // act
-            var result = SystemUnderTest.Edit(EmptyUid);
-
-            // assert
-            AssertViewAccessDenied(result);
         }
 
         [Test]
@@ -1032,14 +1038,12 @@ namespace Translation.Tests.Client.Controllers
         public void Revisions_GET_InvalidParameter()
         {
             // arrange
-            MockOrganizationService.Setup_GetUser_Returns_UserReadResponse_Success();
 
             // act
             var result = SystemUnderTest.Revisions(EmptyUid);
 
             // assert
             AssertViewRedirectToHome(result);
-            MockOrganizationService.Verify_GetUser();
         }
 
         [Test]

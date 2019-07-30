@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 
 using Moq;
-using Shouldly;
+
 using Translation.Data.Entities.Domain;
 using Translation.Data.Repositories.Contracts;
 using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
@@ -69,10 +69,10 @@ namespace Translation.Tests.SetupHelpers
         public static void Verify_SelectMany(this Mock<ILabelRepository> repository)
         {
             repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<Label, bool>>>(),
-                                                 It.IsAny<int>(),
-                                                 It.IsAny<int>(),
-                                                 It.IsAny<Expression<Func<Label, object>>>(),
-                                                 It.IsAny<bool>(), false));
+                                                It.IsAny<int>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<Expression<Func<Label, object>>>(),
+                                                It.IsAny<bool>(), false));
         }
 
         public static void Verify_Count(this Mock<ILabelRepository> repository)

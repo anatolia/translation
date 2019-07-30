@@ -70,7 +70,6 @@ namespace Translation.Tests.TestHelpers
             messages.Any(x => x == errorMessage).ShouldBeTrue();
         }
 
-
         public static void AssertViewWithModel<T>(IActionResult result)
         {
             result.ShouldNotBeNull();
@@ -213,6 +212,16 @@ namespace Translation.Tests.TestHelpers
             result.ShouldBeAssignableTo<T>();
         }
 
+        public static void AssertPagingInfo(JsonResult result)
+        {
+            var pagingInfo = new PagingInfo();
+
+            var resultValue = (DataResult)result.Value;
+            resultValue.PagingInfo.Type.ShouldBe(PagingInfo.PAGE_NUMBERS);
+            resultValue.PagingInfo.Take.ShouldBe(pagingInfo.Take);
+            resultValue.PagingInfo.Skip.ShouldBe(pagingInfo.Skip);
+        }
+
         public static void AssertPagingInfoForSelectAfter(PagingInfo info, int totalItemCountOfPagingInfo)
         {
             var pagingInfo = GetPagingInfoForSelectAfter();
@@ -266,7 +275,7 @@ namespace Translation.Tests.TestHelpers
             input.Value.ShouldBe(value);
         }
 
-        public static void AssertLongInputModel(LongInputModel input, string name, string labelKey, 
+        public static void AssertLongInputModel(LongInputModel input, string name, string labelKey,
                                                 bool isRequired = false, string value = "")
         {
             input.ShouldNotBeNull();

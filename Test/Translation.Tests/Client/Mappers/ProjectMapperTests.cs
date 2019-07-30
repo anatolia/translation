@@ -40,6 +40,7 @@ namespace Translation.Tests.Client.Mappers
             result.OrganizationUid.ShouldBe(dto.OrganizationUid);
             result.OrganizationName.ShouldBe(dto.OrganizationName);
             result.Name.ShouldBe(dto.Name);
+            result.Slug.ShouldBe(dto.Slug);
             result.Description.ShouldBe(dto.Description);
             result.Url.ShouldBe(dto.Url);
             result.LabelCount.ShouldBe(dto.LabelCount);
@@ -60,6 +61,7 @@ namespace Translation.Tests.Client.Mappers
             result.OrganizationUid.ShouldBe(dto.OrganizationUid);
             result.ProjectUid.ShouldBe(dto.Uid);
             result.Name.ShouldBe(dto.Name);
+            result.Slug.ShouldBe(dto.Slug);
             result.Url.ShouldBe(dto.Url);
             result.Description.ShouldBe(dto.Description);
         }

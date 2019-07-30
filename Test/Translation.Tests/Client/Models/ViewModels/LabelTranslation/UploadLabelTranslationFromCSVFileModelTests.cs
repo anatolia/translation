@@ -92,8 +92,8 @@ namespace Translation.Tests.Client.Models.ViewModels.LabelTranslation
                                               EmptyUid, EmptyUid, EmptyString,
                                               GetCsvFile(4),
                                               new[] { "organization_uid_not_valid",
-                                                                      "label_uid_not_valid",
-                                                                      "label_key_not_valid" },
+                                                      "label_uid_not_valid",
+                                                      "label_key_not_valid" },
                                               new[] { "csv_required_error_message" },
                                               false);
 

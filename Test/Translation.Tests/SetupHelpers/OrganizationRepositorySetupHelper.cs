@@ -147,19 +147,19 @@ namespace Translation.Tests.SetupHelpers
         public static void Verify_SelectMany(this Mock<IOrganizationRepository> repository)
         {
             repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<Organization, bool>>>(),
-                    It.IsAny<int>(),
-                    It.IsAny<int>(),
-                    It.IsAny<Expression<Func<Organization, object>>>(),
-                    It.IsAny<bool>(), It.IsAny<bool>()));
+                                                It.IsAny<int>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<Expression<Func<Organization, object>>>(),
+                                                It.IsAny<bool>(), It.IsAny<bool>()));
         }
 
         public static void Verify_SelectAfter(this Mock<IOrganizationRepository> repository)
         {
             repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<Organization, bool>>>(),
-                    It.IsAny<Guid>(),
-                    It.IsAny<int>(),
-                    It.IsAny<Expression<Func<Organization, object>>>(),
-                    It.IsAny<bool>(), It.IsAny<bool>()));
+                                                 It.IsAny<Guid>(),
+                                                 It.IsAny<int>(),
+                                                 It.IsAny<Expression<Func<Organization, object>>>(),
+                                                 It.IsAny<bool>(), It.IsAny<bool>()));
         }
 
         public static void Setup_Update_Success(this Mock<IOrganizationRepository> repository)

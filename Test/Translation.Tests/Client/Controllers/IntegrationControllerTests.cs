@@ -26,6 +26,7 @@ namespace Translation.Tests.Client.Controllers
         [SetUp]
         public void run_before_every_test()
         {
+            Refresh();
             SystemUnderTest = Container.Resolve<IntegrationController>();
             SetControllerContext(SystemUnderTest);
         }
@@ -107,13 +108,13 @@ namespace Translation.Tests.Client.Controllers
         public void Create_GET_InvalidParameter()
         {
             // arrange
-
+            MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Success();
 
             // act
             var result = SystemUnderTest.Create(EmptyUid);
 
             // assert
-
+            MockOrganizationService.Verify_GetOrganization();
         }
 
         [Test]

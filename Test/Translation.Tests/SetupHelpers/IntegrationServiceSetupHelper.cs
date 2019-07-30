@@ -22,7 +22,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_GetIntegrationRevisions_Returns_IntegrationRevisionReadListResponse_Failed(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.GetIntegrationRevisions(It.IsAny<IntegrationRevisionReadListRequest>()))
-                .Returns(Task.FromResult(new IntegrationRevisionReadListResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+                   .Returns(Task.FromResult(new IntegrationRevisionReadListResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_GetIntegrations_Returns_IntegrationReadListResponse_Success(this Mock<IIntegrationService> service)
@@ -48,7 +48,7 @@ namespace Translation.Tests.SetupHelpers
             service.Setup(x => x.EditIntegration(It.IsAny<IntegrationEditRequest>()))
                    .Returns(Task.FromResult(new IntegrationEditResponse { Status = ResponseStatus.Success, Item = new IntegrationDto() { Uid = UidOne } }));
         }
-        
+
         public static void Setup_DeleteIntegration_Returns_IntegrationDeleteResponse_Success(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.DeleteIntegration(It.IsAny<IntegrationDeleteRequest>()))
@@ -58,13 +58,13 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_RestoreIntegration_Returns_IntegrationRestoreResponse_Success(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.RestoreIntegration(It.IsAny<IntegrationRestoreRequest>()))
-                .Returns(Task.FromResult(new IntegrationRestoreResponse { Status = ResponseStatus.Success }));
+                   .Returns(Task.FromResult(new IntegrationRestoreResponse { Status = ResponseStatus.Success }));
         }
 
         public static void Setup_RestoreIntegration_Returns_IntegrationRestoreResponse_Failed(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.RestoreIntegration(It.IsAny<IntegrationRestoreRequest>()))
-                .Returns(Task.FromResult(new IntegrationRestoreResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+                   .Returns(Task.FromResult(new IntegrationRestoreResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_ChangeActivationForIntegration_Returns_IntegrationChangeActivationResponse_Success(this Mock<IIntegrationService> service)
@@ -160,7 +160,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_GetIntegrations_Returns_IntegrationReadListResponse_Failed(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.GetIntegrations(It.IsAny<IntegrationReadListRequest>()))
-                .Returns(Task.FromResult(new IntegrationReadListResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+                   .Returns(Task.FromResult(new IntegrationReadListResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_GetIntegration_Returns_IntegrationReadResponse_Failed(this Mock<IIntegrationService> service)
@@ -214,7 +214,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_ChangeActivationForIntegrationClient_Returns_IntegrationClientChangeActivationResponse_Failed(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.ChangeActivationForIntegrationClient(It.IsAny<IntegrationClientChangeActivationRequest>()))
-                .Returns(Task.FromResult(new IntegrationClientChangeActivationResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
+                   .Returns(Task.FromResult(new IntegrationClientChangeActivationResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_GetIntegrationClient_Returns_IntegrationClientReadResponse_Failed(this Mock<IIntegrationService> service)
@@ -307,15 +307,15 @@ namespace Translation.Tests.SetupHelpers
             items.Add(new RevisionDto<IntegrationDto>() { RevisionedByUid = UidOne, Revision = One, Item = new IntegrationDto() { Uid = UidOne } });
 
             service.Setup(x => x.GetIntegrationRevisions(It.IsAny<IntegrationRevisionReadListRequest>()))
-                .Returns(Task.FromResult(new IntegrationRevisionReadListResponse() { Status = ResponseStatus.Success, Items = items }));
+                   .Returns(Task.FromResult(new IntegrationRevisionReadListResponse() { Status = ResponseStatus.Success, Items = items }));
         }
 
         public static void Setup_GetIntegrationClients_Returns_IntegrationClientReadListResponse_Success(this Mock<IIntegrationService> service)
         {
-           var items= new  List<IntegrationClientDto>();
-           items.Add(new  IntegrationClientDto(){Uid = UidOne});
-           service.Setup(x => x.GetIntegrationClients(It.IsAny<IntegrationClientReadListRequest>()))
-               .ReturnsAsync(new IntegrationClientReadListResponse() {Status = ResponseStatus.Success, Items = items});
+            var items = new List<IntegrationClientDto>();
+            items.Add(new IntegrationClientDto() { Uid = UidOne });
+            service.Setup(x => x.GetIntegrationClients(It.IsAny<IntegrationClientReadListRequest>()))
+                   .ReturnsAsync(new IntegrationClientReadListResponse() { Status = ResponseStatus.Success, Items = items });
         }
 
         public static void Setup_GetIntegrationClients_Returns_IntegrationClientReadListResponse_Failed(this Mock<IIntegrationService> service)
@@ -323,7 +323,7 @@ namespace Translation.Tests.SetupHelpers
             var items = new List<IntegrationClientDto>();
             items.Add(new IntegrationClientDto() { Uid = UidOne });
             service.Setup(x => x.GetIntegrationClients(It.IsAny<IntegrationClientReadListRequest>()))
-                .ReturnsAsync(new IntegrationClientReadListResponse() { Status = ResponseStatus.Failed, Items = items });
+                   .ReturnsAsync(new IntegrationClientReadListResponse() { Status = ResponseStatus.Failed, Items = items });
         }
 
         public static void Setup_GetIntegrationClients_Returns_IntegrationClientReadListResponse_Invalid(this Mock<IIntegrationService> service)
@@ -331,7 +331,7 @@ namespace Translation.Tests.SetupHelpers
             var items = new List<IntegrationClientDto>();
             items.Add(new IntegrationClientDto() { Uid = UidOne });
             service.Setup(x => x.GetIntegrationClients(It.IsAny<IntegrationClientReadListRequest>()))
-                .ReturnsAsync(new IntegrationClientReadListResponse() { Status = ResponseStatus.Invalid, Items = items });
+                   .ReturnsAsync(new IntegrationClientReadListResponse() { Status = ResponseStatus.Invalid, Items = items });
         }
 
         public static void Verify_GetIntegrationClients(this Mock<IIntegrationService> service)
@@ -341,8 +341,8 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetIntegrationRevisions_Returns_IntegrationRevisionReadListResponse_Invalid(this Mock<IIntegrationService> service)
         {
-            service.Setup(x => x.GetIntegrations(It.IsAny<IntegrationReadListRequest>()))
-                .Returns(Task.FromResult(new IntegrationReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+            service.Setup(x => x.GetIntegrationRevisions(It.IsAny<IntegrationRevisionReadListRequest>()))
+                   .ReturnsAsync(new IntegrationRevisionReadListResponse() { Status = ResponseStatus.Invalid });
         }
 
         public static void Verify_GetIntegrationRevisions(this Mock<IIntegrationService> service)
@@ -362,7 +362,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_RestoreIntegration_Returns_IntegrationRestoreResponse_Invalid(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.RestoreIntegration(It.IsAny<IntegrationRestoreRequest>()))
-                .Returns(Task.FromResult(new IntegrationRestoreResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+                   .Returns(Task.FromResult(new IntegrationRestoreResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_ChangeActivationForIntegration_Returns_IntegrationChangeActivationResponse_Invalid(this Mock<IIntegrationService> service)
@@ -391,10 +391,8 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_ChangeActivationForIntegrationClient_Returns_IntegrationClientChangeActivationResponse_Invalid(this Mock<IIntegrationService> service)
         {
-            service.Setup(x =>
-                    x.ChangeActivationForIntegrationClient(It.IsAny<IntegrationClientChangeActivationRequest>()))
-                .Returns(Task.FromResult(
-                    new IntegrationClientChangeActivationResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+            service.Setup(x => x.ChangeActivationForIntegrationClient(It.IsAny<IntegrationClientChangeActivationRequest>()))
+                   .Returns(Task.FromResult(new IntegrationClientChangeActivationResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_GetIntegrationClient_Returns_IntegrationClientReadResponse_Invalid(this Mock<IIntegrationService> service)
@@ -418,8 +416,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_GetActiveTokensOfOrganization_Returns_OrganizationActiveTokenReadListResponse_Invalid(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.GetActiveTokensOfOrganization(It.IsAny<OrganizationActiveTokenReadListRequest>()))
-                .Returns(Task.FromResult(
-                    new OrganizationActiveTokenReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+                   .Returns(Task.FromResult(new OrganizationActiveTokenReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_GetActiveTokensOfIntegration_Returns_IntegrationActiveTokenReadListResponse_Invalid(this Mock<IIntegrationService> service)
@@ -432,9 +429,7 @@ namespace Translation.Tests.SetupHelpers
         {
             service.Setup(x =>
                     x.GetActiveTokensOfIntegrationClient(It.IsAny<IntegrationClientActiveTokenReadListRequest>()))
-                .Returns(
-                    Task.FromResult(
-                        new IntegrationClientActiveTokenReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+                   .Returns(Task.FromResult(new IntegrationClientActiveTokenReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_GetAllTokenRequestLogs_Returns_AllTokenRequestLogReadListResponse_Invalid(this Mock<IIntegrationService> service)
@@ -513,8 +508,7 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Verify_ChangeActivationForIntegrationClient(this Mock<IIntegrationService> service)
         {
-            service.Setup(x =>
-                x.ChangeActivationForIntegrationClient(It.IsAny<IntegrationClientChangeActivationRequest>()));
+            service.Setup(x => x.ChangeActivationForIntegrationClient(It.IsAny<IntegrationClientChangeActivationRequest>()));
         }
 
         public static void Verify_GetIntegrationClient(this Mock<IIntegrationService> service)
@@ -544,8 +538,7 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Verify_GetActiveTokensOfIntegrationClient(this Mock<IIntegrationService> service)
         {
-            service.Setup(x =>
-                x.GetActiveTokensOfIntegrationClient(It.IsAny<IntegrationClientActiveTokenReadListRequest>()));
+            service.Setup(x => x.GetActiveTokensOfIntegrationClient(It.IsAny<IntegrationClientActiveTokenReadListRequest>()));
         }
 
         public static void Verify_GetAllTokenRequestLogs(this Mock<IIntegrationService> service)
@@ -555,20 +548,17 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Verify_GetTokenRequestLogsOfOrganization(this Mock<IIntegrationService> service)
         {
-            service.Setup(x =>
-                x.GetTokenRequestLogsOfOrganization(It.IsAny<OrganizationTokenRequestLogReadListRequest>()));
+            service.Setup(x => x.GetTokenRequestLogsOfOrganization(It.IsAny<OrganizationTokenRequestLogReadListRequest>()));
         }
 
         public static void Verify_GetTokenRequestLogsOfIntegration(this Mock<IIntegrationService> service)
         {
-            service.Setup(
-                x => x.GetTokenRequestLogsOfIntegration(It.IsAny<IntegrationTokenRequestLogReadListRequest>()));
+            service.Setup(x => x.GetTokenRequestLogsOfIntegration(It.IsAny<IntegrationTokenRequestLogReadListRequest>()));
         }
 
         public static void Verify_GetTokenRequestLogsOfIntegrationClient(this Mock<IIntegrationService> service)
         {
-            service.Setup(x =>
-                x.GetTokenRequestLogsOfIntegrationClient(It.IsAny<IntegrationClientTokenRequestLogReadListRequest>()));
+            service.Setup(x => x.GetTokenRequestLogsOfIntegrationClient(It.IsAny<IntegrationClientTokenRequestLogReadListRequest>()));
         }
     }
 }

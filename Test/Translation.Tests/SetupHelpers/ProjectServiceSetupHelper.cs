@@ -17,19 +17,19 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Success(this Mock<IProjectService> service)
         {
             service.Setup(x => x.GetProjectBySlug(It.IsAny<ProjectReadBySlugRequest>()))
-                .ReturnsAsync(new ProjectReadBySlugResponse() { Status = ResponseStatus.Success,Item = new  ProjectDto(){Name = StringOne}});
+                   .ReturnsAsync(new ProjectReadBySlugResponse() { Status = ResponseStatus.Success,Item = new  ProjectDto(){Name = StringOne}});
         }
 
         public static void Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Failed(this Mock<IProjectService> service)
         {
             service.Setup(x => x.GetProjectBySlug(It.IsAny<ProjectReadBySlugRequest>()))
-                .ReturnsAsync(new ProjectReadBySlugResponse() { Status = ResponseStatus.Failed });
+                   .ReturnsAsync(new ProjectReadBySlugResponse() { Status = ResponseStatus.Failed });
         }
 
         public static void Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Invalid(this Mock<IProjectService> service)
         {
             service.Setup(x => x.GetProjectBySlug(It.IsAny<ProjectReadBySlugRequest>()))
-                .ReturnsAsync(new ProjectReadBySlugResponse() { Status = ResponseStatus.Invalid });
+                   .ReturnsAsync(new ProjectReadBySlugResponse() { Status = ResponseStatus.Invalid });
         }
 
         public static void Verify_GetProjectBySlug(this Mock<IProjectService> service)

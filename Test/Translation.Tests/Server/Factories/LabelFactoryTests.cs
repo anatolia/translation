@@ -66,19 +66,21 @@ namespace Translation.Tests.Server.Factories
         {
             // arrange
             var label = GetLabel();
+            var project = GetProject();
             var request = GetLabelCloneRequest(label);
 
+
             // act
-            var result = LabelFactory.CreateEntityFromRequest(request, label);
+            var result = LabelFactory.CreateEntityFromRequest(request, label, project);
 
             // assert
             result.OrganizationId.ShouldBe(label.OrganizationId);
             result.OrganizationUid.ShouldBe(label.OrganizationUid);
             result.OrganizationName.ShouldBe(label.OrganizationName);
 
-            result.ProjectUid.ShouldBe(label.Uid);
-            result.ProjectId.ShouldBe(label.Id);
-            result.ProjectName.ShouldBe(label.Name);
+            result.ProjectUid.ShouldBe(project.Uid);
+            result.ProjectId.ShouldBe(project.Id);
+            result.ProjectName.ShouldBe(project.Name);
 
             result.Key.ShouldBe(request.LabelKey);
             result.Name.ShouldBe(request.LabelKey);

@@ -13,7 +13,6 @@ using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
-using static Translation.Tests.TestHelpers.AssertModelTestHelper;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Tests.Client.Controllers
@@ -26,6 +25,7 @@ namespace Translation.Tests.Client.Controllers
         [SetUp]
         public void run_before_every_test()
         {
+            Refresh();
             SystemUnderTest = Container.Resolve<ProjectController>();
             SetControllerContext(SystemUnderTest);
         }
@@ -102,20 +102,6 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertViewAccessDenied(result);
             MockOrganizationService.Verify_GetOrganization();
-        }
-
-        [Test]
-        public void Create_GET_InvalidParameterIf()
-        {
-            // arrange
-
-
-            // act
-            var result = SystemUnderTest.Create(EmptyUid);
-
-            // assert
-
-
         }
 
         [Test]
@@ -224,7 +210,7 @@ namespace Translation.Tests.Client.Controllers
             // arrange
 
             // act
-            var result = await SystemUnderTest.Detail(OrganizationOneProjectOneUid);
+            var result = await SystemUnderTest.Detail(EmptyUid);
 
             // assert
             AssertViewAccessDenied(result);
@@ -572,14 +558,12 @@ namespace Translation.Tests.Client.Controllers
         public async Task PendingTranslations_GET_InvalidParameter()
         {
             // arrange
-            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
 
             // act
             var result = await SystemUnderTest.PendingTranslations(EmptyUid);
 
             // assert
             AssertViewRedirectToHome(result);
-            MockProjectService.Verify_GetProject();
         }
 
         [Test]
@@ -861,14 +845,12 @@ namespace Translation.Tests.Client.Controllers
         public async Task Revisions_GET_InvalidParameter()
         {
             // arrange
-            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
 
             // act
             var result = await SystemUnderTest.Revisions(EmptyUid);
 
             // assert
             AssertViewRedirectToHome(result);
-            MockProjectService.Verify_GetProject();
         }
 
         [Test]

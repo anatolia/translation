@@ -15,32 +15,40 @@ namespace Translation.Tests.Common
 
     public class BaseTests
     {
-        public IWindsorContainer Container { get; set; } = new WindsorContainer();
+        public IWindsorContainer Container { get; set; }
 
-        public Mock<IHostingEnvironment> MockHostingEnvironment { get; }
+        protected Mock<IHostingEnvironment> MockHostingEnvironment { get; set; }
 
 
-        protected Mock<IIntegrationClientRepository> MockIntegrationClientRepository { get; }
-        protected Mock<IIntegrationRepository> MockIntegrationRepository { get; }
-        protected Mock<IJournalRepository> MockJournalRepository { get; }
-        protected Mock<ILabelRepository> MockLabelRepository { get; }
-        protected Mock<ILabelTranslationRepository> MockLabelTranslationRepository { get; }
-        protected Mock<ILanguageRepository> MockLanguageRepository { get; }
-        protected Mock<IOrganizationRepository> MockOrganizationRepository { get; }
-        protected Mock<IProjectRepository> MockProjectRepository { get; }
-        protected Mock<ISendEmailLogRepository> MockSendEmailLogRepository { get; }
-        protected Mock<ITokenRepository> MockTokenRepository { get; }
-        protected Mock<ITokenRequestLogRepository> MockTokenRequestLogRepository { get; }
-        protected Mock<IUserLoginLogRepository> MockUserLoginLogRepository { get; }
-        protected Mock<IUserRepository> MockUserRepository { get; }
-        
-        protected Mock<ILabelUnitOfWork> MockLabelUnitOfWork { get; }
-        protected Mock<ILogOnUnitOfWork> MockLogOnUnitOfWork { get; }
-        protected Mock<IProjectUnitOfWork> MockProjectUnitOfWork { get; }
-        protected Mock<ISignUpUnitOfWork> MockSignUpUnitOfWork { get; }
+        protected Mock<IIntegrationClientRepository> MockIntegrationClientRepository { get; set; }
+        protected Mock<IIntegrationRepository> MockIntegrationRepository { get; set; }
+        protected Mock<IJournalRepository> MockJournalRepository { get; set; }
+        protected Mock<ILabelRepository> MockLabelRepository { get; set; }
+        protected Mock<ILabelTranslationRepository> MockLabelTranslationRepository { get; set; }
+        protected Mock<ILanguageRepository> MockLanguageRepository { get; set; }
+        protected Mock<IOrganizationRepository> MockOrganizationRepository { get; set; }
+        protected Mock<IProjectRepository> MockProjectRepository { get; set; }
+        protected Mock<ISendEmailLogRepository> MockSendEmailLogRepository { get; set; }
+        protected Mock<ITokenRepository> MockTokenRepository { get; set; }
+        protected Mock<ITokenRequestLogRepository> MockTokenRequestLogRepository { get; set; }
+        protected Mock<IUserLoginLogRepository> MockUserLoginLogRepository { get; set; }
+        protected Mock<IUserRepository> MockUserRepository { get; set; }
 
-        protected BaseTests()
+        protected Mock<ILabelUnitOfWork> MockLabelUnitOfWork { get; set; }
+        protected Mock<ILogOnUnitOfWork> MockLogOnUnitOfWork { get; set; }
+        protected Mock<IProjectUnitOfWork> MockProjectUnitOfWork { get; set; }
+        protected Mock<ISignUpUnitOfWork> MockSignUpUnitOfWork { get; set; }
+
+        protected void Refresh()
         {
+            InitializeComponents();
+            ConfigureIocContainer();
+        }
+
+        protected void InitializeComponents()
+        {
+            Container = new WindsorContainer();
+
             MockHostingEnvironment = new Mock<IHostingEnvironment>();
 
             #region Repository
@@ -71,8 +79,6 @@ namespace Translation.Tests.Common
             #region Services
 
             #endregion
-
-            ConfigureIocContainer();
         }
 
         public void ConfigureIocContainer()

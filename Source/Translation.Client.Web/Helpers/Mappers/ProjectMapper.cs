@@ -44,6 +44,7 @@ namespace Translation.Client.Web.Helpers.Mappers
 
             model.ProjectUid = dto.Uid;
             model.Name = dto.Name;
+            model.Slug = dto.Slug;
             model.Description = dto.Description;
             model.Url = dto.Url;
 

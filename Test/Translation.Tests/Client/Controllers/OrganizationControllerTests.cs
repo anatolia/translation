@@ -12,7 +12,6 @@ using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
-using static Translation.Tests.TestHelpers.AssertModelTestHelper;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Tests.Client.Controllers
@@ -25,6 +24,7 @@ namespace Translation.Tests.Client.Controllers
         [SetUp]
         public void run_before_every_test()
         {
+            Refresh();
             SystemUnderTest = Container.Resolve<OrganizationController>();
             SetControllerContext(SystemUnderTest);
         }
@@ -248,14 +248,12 @@ namespace Translation.Tests.Client.Controllers
         public void Revisions_GET_InvalidParameter()
         {
             // arrange
-            MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Success();
 
             // act
             var result = SystemUnderTest.Revisions(EmptyUid);
 
             // assert
             AssertViewRedirectToHome(result);
-            MockOrganizationService.Verify_GetOrganization();
         }
 
         [Test]
@@ -370,14 +368,12 @@ namespace Translation.Tests.Client.Controllers
         public void PendingTranslations_GET()
         {
             // arrange
-            MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Success();
-
+            
             // act
             var result = SystemUnderTest.PendingTranslations();
 
             // assert
             AssertViewWithModel<OrganizationPendingTranslationReadListModel>(result);
-            MockOrganizationService.Verify_GetOrganization();
         }
 
         [Test]

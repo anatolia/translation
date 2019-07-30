@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
 using Translation.Client.Web.Helpers.Mappers;
@@ -22,19 +22,23 @@ namespace Translation.Client.Web.Controllers
 {
     public class LabelController : BaseController
     {
+        private readonly IHostingEnvironment _environment;
         private readonly IProjectService _projectService;
         private readonly ILabelService _labelService;
 
-        public LabelController(IProjectService projectService,
-                               ILabelService labelService,
-                               IOrganizationService organizationService,
-                               IJournalService journalService) : base(organizationService, journalService)
+        public LabelController(IHostingEnvironment environment,
+            IProjectService projectService,
+            ILabelService labelService,
+            IOrganizationService organizationService,
+            IJournalService journalService) : base(organizationService, journalService)
         {
+            _environment = environment;
             _projectService = projectService;
             _labelService = labelService;
         }
 
         #region Label
+
         [HttpGet]
         public async Task<IActionResult> Create(Guid id)
         {
@@ -66,7 +70,8 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            var request = new LabelCreateRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid, model.Key, model.Description);
+            var request = new LabelCreateRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid, model.Key,
+                model.Description);
             var response = await _labelService.CreateLabel(request);
             if (response.Status.IsNotSuccess)
             {
@@ -83,7 +88,7 @@ namespace Translation.Client.Web.Controllers
         public async Task<IActionResult> Detail(Guid id, string project, string label)
         {
             var labelUid = id;
-            if(labelUid.IsNotEmptyGuid())
+            if (labelUid.IsNotEmptyGuid())
             {
                 var labelReadRequest = new LabelReadRequest(CurrentUser.Id, labelUid);
                 var labelReadResponse = await _labelService.GetLabel(labelReadRequest);
@@ -99,7 +104,7 @@ namespace Translation.Client.Web.Controllers
             }
             else
             {
-                if (project.IsEmpty() 
+                if (project.IsEmpty()
                     || label.IsEmpty())
                 {
                     return RedirectToHome();
@@ -161,7 +166,8 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            var request = new LabelEditRequest(CurrentUser.Id, model.OrganizationUid, model.LabelUid, model.Key, model.Description);
+            var request = new LabelEditRequest(CurrentUser.Id, model.OrganizationUid, model.LabelUid, model.Key,
+                model.Description);
             var response = await _labelService.EditLabel(request);
             if (response.Status.IsNotSuccess)
             {
@@ -227,7 +233,8 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new LabelCloneRequest(CurrentUser.Id, model.OrganizationUid, model.CloningLabelUid,
-                                                model.ProjectUid, model.Key, model.Description);
+                model.ProjectUid, model.Key, model.Description);
+
             var response = await _labelService.CloneLabel(request);
             if (response.Status.IsNotSuccess)
             {
@@ -294,7 +301,8 @@ namespace Translation.Client.Web.Controllers
                 var item = response.Items[i];
                 var stringBuilder = new StringBuilder();
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Key}", item.Key)}{DataResult.SEPARATOR}");
+                stringBuilder.Append(
+                    $"{result.PrepareLink($"/Label/Detail/{item.Key}", item.Key)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
@@ -353,7 +361,8 @@ namespace Translation.Client.Web.Controllers
             }
 
             var result = new DataResult();
-            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "label_name", "is_active", "created_at", "");
+            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "label_name", "is_active", "created_at",
+                "");
 
             for (var i = 0; i < response.Items.Count; i++)
             {
@@ -364,10 +373,12 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append($"{revisionItem.Revision}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{GetDateTimeAsString(revisionItem.RevisionedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
+                stringBuilder.Append(
+                    $"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Label/Restore/", "/Label/Detail")}{DataResult.SEPARATOR}");
+                stringBuilder.Append(
+                    $"{result.PrepareRestoreButton("restore", "/Label/Restore/", "/Label/Detail")}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
             }
@@ -492,7 +503,8 @@ namespace Translation.Client.Web.Controllers
                 });
             }
 
-            var request = new LabelCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid, labelListInfos);
+            var request = new LabelCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
+                labelListInfos);
             var response = await _labelService.CreateLabelFromList(request);
             if (response.Status.IsNotSuccess)
             {
@@ -513,6 +525,21 @@ namespace Translation.Client.Web.Controllers
 
             CurrentUser.IsActionSucceed = true;
             return View("UploadLabelFromCSVFileDone", doneModel);
+        }
+
+        [HttpGet]
+        public IActionResult DownloadSampleCSVFileForBulkLabelUpload()
+        {
+            var labelsFilePath = Path.Combine(_environment.WebRootPath, "files", "uploadLabelCsvTemplate.csv");
+
+            if (System.IO.File.Exists(labelsFilePath))
+            {
+                var lines = System.IO.File.ReadAllText(labelsFilePath, Encoding.UTF8);
+
+                return File(Encoding.UTF8.GetBytes(lines), "text/csv", "uploadLabelCsvTemplate.csv");
+            }
+
+            return NotFound();
         }
 
         [HttpGet]
@@ -568,7 +595,8 @@ namespace Translation.Client.Web.Controllers
                 });
             }
 
-            var request = new LabelCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid, labelListInfos);
+            var request = new LabelCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
+                labelListInfos);
             var response = await _labelService.CreateLabelFromList(request);
             if (response.Status.IsNotSuccess)
             {
@@ -590,9 +618,11 @@ namespace Translation.Client.Web.Controllers
             CurrentUser.IsActionSucceed = true;
             return View("CreateBulkLabelDone", doneModel);
         }
+
         #endregion
 
         #region LabelTranslation
+
         [HttpGet]
         public async Task<IActionResult> LabelTranslationCreate(Guid id)
         {
@@ -625,7 +655,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new LabelTranslationCreateRequest(CurrentUser.Id, model.OrganizationUid, model.LabelUid,
-                                                            model.LanguageUid, model.LabelTranslation);
+                model.LanguageUid, model.LabelTranslation);
 
             var response = await _labelService.CreateTranslation(request);
             if (response.Status.IsNotSuccess)
@@ -691,7 +721,8 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            var request = new LabelTranslationEditRequest(CurrentUser.Id, model.OrganizationUid, model.LabelTranslationUid, model.Translation);
+            var request = new LabelTranslationEditRequest(CurrentUser.Id, model.OrganizationUid,
+                model.LabelTranslationUid, model.Translation);
             var response = await _labelService.EditTranslation(request);
             if (response.Status.IsNotSuccess)
             {
@@ -730,10 +761,13 @@ namespace Translation.Client.Web.Controllers
                 var item = response.Items[i];
                 var stringBuilder = new StringBuilder();
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareImage($"{item.LanguageIconUrl}", item.LanguageName)} {item.LanguageName}{DataResult.SEPARATOR}");
+                stringBuilder.Append(
+                    $"{result.PrepareImage($"{item.LanguageIconUrl}", item.LanguageName)} {item.LanguageName}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Translation}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationEdit/{item.Uid}", Localizer.Localize("edit"), true)}");
-                stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}{DataResult.SEPARATOR}");
+                stringBuilder.Append(
+                    $"{result.PrepareLink($"/Label/LabelTranslationEdit/{item.Uid}", Localizer.Localize("edit"), true)}");
+                stringBuilder.Append(
+                    $"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
             }
@@ -805,7 +839,8 @@ namespace Translation.Client.Web.Controllers
                 });
             }
 
-            var request = new LabelTranslationCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.LabelUid, translationListInfos);
+            var request = new LabelTranslationCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.LabelUid,
+                translationListInfos);
             var response = await _labelService.CreateTranslationFromList(request);
             if (response.Status.IsNotSuccess)
             {
@@ -824,7 +859,21 @@ namespace Translation.Client.Web.Controllers
 
             CurrentUser.IsActionSucceed = true;
             return View("UploadLabelTranslationFromCSVFileDone", doneModel);
+        }
 
+        [HttpGet]
+        public IActionResult DownloadSampleCSVFileForBulkLabelTranslationUpload()
+        {
+            var labelsFilePath = Path.Combine(_environment.WebRootPath, "files", "uploadTranslationCsvTemplate.csv");
+
+            if (System.IO.File.Exists(labelsFilePath))
+            {
+                var lines = System.IO.File.ReadAllText(labelsFilePath, Encoding.UTF8);
+
+                return File(Encoding.UTF8.GetBytes(lines), "text/csv", "uploadTranslationCsvTemplate.csv");
+            }
+
+            return NotFound();
         }
 
         [HttpPost,
@@ -943,9 +992,11 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append($"{revisionItem.Revision}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{GetDateTimeAsString(revisionItem.RevisionedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
+                stringBuilder.Append(
+                    $"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Label/RestoreLabelTranslation/", "/Label/LabelTranslationDetail")}{DataResult.SEPARATOR}");
+                stringBuilder.Append(
+                    $"{result.PrepareRestoreButton("restore", "/Label/RestoreLabelTranslation/", "/Label/LabelTranslationDetail")}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
             }
