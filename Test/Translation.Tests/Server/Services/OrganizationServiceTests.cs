@@ -9,6 +9,7 @@ using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Models.Responses.Organization;
 using Translation.Common.Models.Responses.User;
+using Translation.Common.Models.Responses.User.LoginLog;
 using Translation.Common.Models.Shared;
 using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
