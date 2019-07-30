@@ -506,7 +506,6 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
             MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
             MockOrganizationRepository.Setup_Update_Success();
-            MockUserRepository.Setup_Update_Success();
 
             // act
             var result = await SystemUnderTest.OrganizationChangeActivation(request);
@@ -517,7 +516,6 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Select();
             MockOrganizationRepository.Verify_Update();
-            MockUserRepository.Verify_Update();
         }
 
         [Test]
@@ -538,22 +536,20 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task AdminService_OrganizationChangeActivation_Invalid_UserNotExist()
+        public async Task AdminService_OrganizationChangeActivation_Invalid_OrganizationNotFound()
         {
             // arrange
             var request = GetOrganizationChangeActivationRequest();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockOrganizationRepository.Setup_Select_Returns_OrganizationOneNotExist();
 
             // act
             var result = await SystemUnderTest.OrganizationChangeActivation(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Invalid);
-            result.ErrorMessages.ShouldNotBeNull();
-            AssertReturnType<OrganizationChangeActivationResponse>(result);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
             MockUserRepository.Verify_SelectById();
-            MockUserRepository.Verify_Select();
+            MockOrganizationRepository.Verify_Select();
         }
 
         [Test]

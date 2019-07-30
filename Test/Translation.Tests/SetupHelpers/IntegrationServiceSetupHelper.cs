@@ -341,8 +341,8 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetIntegrationRevisions_Returns_IntegrationRevisionReadListResponse_Invalid(this Mock<IIntegrationService> service)
         {
-            service.Setup(x => x.GetIntegrations(It.IsAny<IntegrationReadListRequest>()))
-                   .Returns(Task.FromResult(new IntegrationReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+            service.Setup(x => x.GetIntegrationRevisions(It.IsAny<IntegrationRevisionReadListRequest>()))
+                   .ReturnsAsync(new IntegrationRevisionReadListResponse() { Status = ResponseStatus.Invalid });
         }
 
         public static void Verify_GetIntegrationRevisions(this Mock<IIntegrationService> service)

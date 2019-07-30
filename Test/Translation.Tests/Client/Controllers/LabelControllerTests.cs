@@ -257,12 +257,11 @@ namespace Translation.Tests.Client.Controllers
             // arrange 
             MockProjectService.Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Invalid();
 
-
             // act
-            var result = await SystemUnderTest.Detail(EmptyUid, EmptySlug, StringOne);
+            var result = await SystemUnderTest.Detail(EmptyUid, SlugOne, StringOne);
 
             // assert
-            AssertViewRedirectToHome(result);
+            AssertViewAccessDenied(result);
             MockProjectService.Verify_GetProjectBySlug();
         }
 
@@ -274,10 +273,10 @@ namespace Translation.Tests.Client.Controllers
             MockLabelService.Setup_GetLabelByKey_Returns_LabelReadByKeyResponse_Invalid();
 
             // act
-            var result = await SystemUnderTest.Detail(EmptyUid, SlugOne, EmptyString);
+            var result = await SystemUnderTest.Detail(EmptyUid, SlugOne, StringOne);
 
             // assert
-            AssertViewRedirectToHome(result);
+            AssertViewAccessDenied(result);
             MockProjectService.Verify_GetProjectBySlug();
             MockLabelService.Verify_GetLabelByKey();
         }
@@ -286,15 +285,13 @@ namespace Translation.Tests.Client.Controllers
         public async Task Detail_GET_InvalidLabelReadResponse()
         {
             // arrange 
-            MockProjectService.Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Success();
             MockLabelService.Setup_GetLabel_Returns_LabelReadResponse_Invalid();
 
             // act
-            var result = await SystemUnderTest.Detail(UidOne, StringOne, UidStringOne);
+            var result = await SystemUnderTest.Detail(UidOne, StringOne, StringOne);
 
             // assert
             AssertViewAccessDenied(result);
-            MockProjectService.Verify_GetProjectBySlug();
             MockLabelService.Verify_GetLabel();
         }
 
@@ -311,31 +308,15 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task Detail_GET_LabelKeyInvalidParameter_RedirectToHome()
-        {
-            // arrange 
-            MockProjectService.Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Success();
-
-            // act
-            var result = await SystemUnderTest.Detail(UidOne, EmptySlug, EmptyString);
-
-            // assert
-            AssertViewAccessDenied(result);
-            MockProjectService.Verify_GetProjectBySlug();
-        }
-
-        [Test]
-        public async Task Detail_GET_LabelUidInvalidParameter_RedirectToHome()
+        public async Task Detail_GET_ProjectSlugOrLabelKeyInvalidParameter_RedirectToHome()
         {
             // arrange
-            MockProjectService.Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Success();
 
             // act
             var result = await SystemUnderTest.Detail(EmptyUid, EmptySlug, EmptyString);
 
             // assert
             AssertViewRedirectToHome(result);
-            MockProjectService.Verify_GetProjectBySlug();
         }
 
         [Test]
@@ -1747,13 +1728,13 @@ namespace Translation.Tests.Client.Controllers
         public async Task RestoreLabelTranslation_POST_FailedResponse()
         {
             // arrange 
-            MockLabelService.Setup_GetTranslations_Returns_LabelTranslationReadListResponse_Failed();
+            MockLabelService.Setup_RestoreLabelTranslation_Returns_LabelTranslationRestoreResponse_Failed();
 
             // act
             var result = (JsonResult)await SystemUnderTest.RestoreLabelTranslation(UidOne, One);
 
             // assert
-            ((CommonResult)result.Value).IsOk.ShouldBe(true);
+            AssertView<CommonResult>(result);
             MockLabelService.Verify_RestoreLabelTranslation();
         }
 
@@ -1761,13 +1742,13 @@ namespace Translation.Tests.Client.Controllers
         public async Task RestoreLabelTranslation_POST_InvalidResponse()
         {
             // arrange 
-            MockLabelService.Setup_GetTranslations_Returns_LabelTranslationReadListResponse_Invalid();
+            MockLabelService.Setup_RestoreLabelTranslation_Returns_LabelTranslationRestoreResponse_Invalid();
 
             // act
             var result = (JsonResult)await SystemUnderTest.RestoreLabelTranslation(UidOne, One);
 
             // assert
-            ((CommonResult)result.Value).IsOk.ShouldBe(true);
+            AssertView<CommonResult>(result);
             MockLabelService.Verify_RestoreLabelTranslation();
         }
 

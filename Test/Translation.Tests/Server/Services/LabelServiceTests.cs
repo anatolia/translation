@@ -737,7 +737,6 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetLabelChangeActivationRequest();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
             MockLabelRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOneNotExist();
 
             // act
@@ -746,7 +745,6 @@ namespace Translation.Tests.Server.Services
             // assert
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelNotFound);
             AssertReturnType<LabelChangeActivationResponse>(result);
-            MockUserRepository.Verify_SelectById();
             MockLabelRepository.Verify_Select();
         }
 

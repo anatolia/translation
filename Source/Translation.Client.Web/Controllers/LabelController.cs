@@ -464,7 +464,7 @@ namespace Translation.Client.Web.Controllers
             var labelListInfos = new List<LabelListInfo>();
 
             var lines = new List<string>();
-            using (var reader = new StreamReader(model.CSVFile.OpenReadStream(), Encoding.GetEncoding("ISO-8859-1")))
+            using (var reader = new StreamReader(model.CSVFile.OpenReadStream()))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)
@@ -778,7 +778,7 @@ namespace Translation.Client.Web.Controllers
             var translationListInfos = new List<TranslationListInfo>();
 
             var lines = new List<string>();
-            using (var reader = new StreamReader(model.CSVFile.OpenReadStream(), Encoding.GetEncoding("ISO-8859-1")))
+            using (var reader = new StreamReader(model.CSVFile.OpenReadStream()))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)

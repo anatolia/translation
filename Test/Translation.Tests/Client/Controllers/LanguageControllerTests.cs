@@ -173,8 +173,9 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
 
+
             // act
-            var result = await SystemUnderTest.Edit(UidOne);
+            var result = await SystemUnderTest.Edit(EmptyUid);
 
             // assert
             AssertViewAccessDenied(result);
@@ -376,14 +377,12 @@ namespace Translation.Tests.Client.Controllers
         public async Task Revisions_GET_InvalidParameter()
         {
             // arrange
-            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
 
             // act
             var result = await SystemUnderTest.Revisions(EmptyUid);
 
             // assert
             AssertViewRedirectToHome(result);
-            MockLanguageService.Verify_GetLanguage();
         }
 
         [Test]
