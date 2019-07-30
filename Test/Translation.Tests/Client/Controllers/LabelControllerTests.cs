@@ -1070,6 +1070,19 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public void DownloadSampleCSVFileForBulkLabelUpload_GET()
+        {
+            // arrange
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
+
+            // act
+            var result = SystemUnderTest.DownloadSampleCSVFileForBulkLabelUpload();
+
+            // assert
+            AssertView<FileResult>(result);
+        }
+
+        [Test]
         public async Task CreateBulkLabel_GET()
         {
             // arrange
@@ -1653,6 +1666,19 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertInputErrorMessagesOfView(result, model);
+        }
+
+        [Test]
+        public void DownloadSampleCSVFileForBulkLabelTranslationUpload_GET()
+        {
+            // arrange
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
+
+            // act
+            var result = SystemUnderTest.DownloadSampleCSVFileForBulkLabelTranslationUpload();
+
+            // assert
+            AssertView<FileResult>(result);
         }
 
         [Test]
