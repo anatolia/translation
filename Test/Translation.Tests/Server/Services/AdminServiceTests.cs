@@ -28,6 +28,7 @@ namespace Translation.Tests.Server.Services
         [SetUp]
         public void run_before_every_test()
         {
+            Refresh();
             SystemUnderTest = Container.Resolve<IAdminService>();
         }
 

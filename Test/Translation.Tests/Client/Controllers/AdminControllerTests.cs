@@ -29,6 +29,7 @@ namespace Translation.Tests.Client.Controllers
         [SetUp]
         public void run_before_every_test()
         {
+            Refresh();
             SystemUnderTest = Container.Resolve<AdminController>();
             SetControllerContext(SystemUnderTest);
         }

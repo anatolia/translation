@@ -4,12 +4,11 @@ using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using Shouldly;
+
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
-using Translation.Common.Models.Requests.User.LoginLog;
 using Translation.Common.Models.Responses.Organization;
 using Translation.Common.Models.Responses.User;
-using Translation.Common.Models.Responses.User.LoginLog;
 using Translation.Common.Models.Shared;
 using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
@@ -27,6 +26,7 @@ namespace Translation.Tests.Server.Services
         [SetUp]
         public void run_before_every_test()
         {
+            Refresh();
             SystemUnderTest = Container.Resolve<IOrganizationService>();
         }
 

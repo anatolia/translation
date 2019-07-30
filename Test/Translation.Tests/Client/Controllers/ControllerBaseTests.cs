@@ -25,16 +25,18 @@ namespace Translation.Tests.Client.Controllers
 {
     public class ControllerBaseTests : BaseTests
     {
-        public Mock<IOrganizationService> MockOrganizationService { get; }
-        public Mock<IIntegrationService> MockIntegrationService { get; }
-        public Mock<IAdminService> MockAdminService { get; }
-        public Mock<ILanguageService> MockLanguageService { get; }
-        public Mock<IProjectService> MockProjectService { get; }
-        public Mock<ILabelService> MockLabelService { get; }
-        public Mock<IJournalService> MockJournalService { get; }
+        public Mock<IOrganizationService> MockOrganizationService { get; set; }
+        public Mock<IIntegrationService> MockIntegrationService { get; set; }
+        public Mock<IAdminService> MockAdminService { get; set; }
+        public Mock<ILanguageService> MockLanguageService { get; set; }
+        public Mock<IProjectService> MockProjectService { get; set; }
+        public Mock<ILabelService> MockLabelService { get; set; }
+        public Mock<IJournalService> MockJournalService { get; set; }
 
-        public ControllerBaseTests()
+        protected new void Refresh()
         {
+            base.Refresh();
+
             MockOrganizationService = new Mock<IOrganizationService>();
             MockIntegrationService = new Mock<IIntegrationService>();
             MockAdminService = new Mock<IAdminService>();
