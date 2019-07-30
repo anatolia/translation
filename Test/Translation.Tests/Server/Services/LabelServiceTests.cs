@@ -979,6 +979,7 @@ namespace Translation.Tests.Server.Services
             var request = GetLabelCloneRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
             MockLabelRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOne();
             MockLabelRepository.Setup_Any_Returns_False();
             MockLabelUnitOfWork.Setup_DoCloneWork_Returns_True();
@@ -991,6 +992,7 @@ namespace Translation.Tests.Server.Services
             AssertReturnType<LabelCloneResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
+            MockProjectRepository.Verify_Select();
             MockLabelRepository.Verify_Select();
             MockLabelRepository.Verify_Any();
             MockLabelUnitOfWork.Verify_DoCloneWork();
@@ -1037,6 +1039,7 @@ namespace Translation.Tests.Server.Services
             var request = GetLabelCloneRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
             MockLabelRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOneNotExist();
 
             // act
@@ -1047,7 +1050,29 @@ namespace Translation.Tests.Server.Services
             AssertReturnType<LabelCloneResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
+            MockProjectRepository.Verify_Select();
             MockLabelRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task LabelService_CloneLabel_Invalid_ProjectNotFound()
+        {
+            // arrange
+            var request = GetLabelCloneRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOneNotExist();
+          
+
+            // act
+            var result = await SystemUnderTest.CloneLabel(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
+            AssertReturnType<LabelCloneResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockProjectRepository.Verify_Select();
         }
 
         [Test]
@@ -1057,6 +1082,7 @@ namespace Translation.Tests.Server.Services
             var request = GetLabelCloneRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
             MockLabelRepository.Setup_Select_Returns_OrganizationTwoProjectOneLabelOne();
 
             // act
@@ -1067,6 +1093,7 @@ namespace Translation.Tests.Server.Services
             AssertReturnType<LabelCloneResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
+            MockProjectRepository.Verify_Select();
             MockLabelRepository.Verify_Select();
         }
 
@@ -1077,6 +1104,7 @@ namespace Translation.Tests.Server.Services
             var request = GetLabelCloneRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
             MockLabelRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOne();
             MockLabelRepository.Setup_Any_Returns_True();
 
@@ -1088,6 +1116,7 @@ namespace Translation.Tests.Server.Services
             AssertReturnType<LabelCloneResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
+            MockProjectRepository.Verify_Select();
             MockLabelRepository.Verify_Select();
             MockLabelRepository.Verify_Any();
         }
@@ -1099,6 +1128,7 @@ namespace Translation.Tests.Server.Services
             var request = GetLabelCloneRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
             MockLabelRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOne();
             MockLabelRepository.Setup_Any_Returns_False();
             MockLabelUnitOfWork.Setup_DoCloneWork_Returns_False();
@@ -1111,6 +1141,7 @@ namespace Translation.Tests.Server.Services
             AssertReturnType<LabelCloneResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
+            MockProjectRepository.Verify_Select();
             MockLabelRepository.Verify_Select();
             MockLabelRepository.Verify_Any();
             MockLabelUnitOfWork.Verify_DoCloneWork();

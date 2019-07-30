@@ -14,6 +14,7 @@ namespace Translation.Client.Web.Models.Label
         public string CloningLabelDescription { get; set; }
 
         public Guid ProjectUid { get; set; }
+        public string ProjectName { get; set; }
         public string Key { get; set; }
         public string Description { get; set; }
 

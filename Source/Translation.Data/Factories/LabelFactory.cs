@@ -24,16 +24,16 @@ namespace Translation.Data.Factories
             return entity;
         }
 
-        public Label CreateEntityFromRequest(LabelCloneRequest request, Label label)
+        public Label CreateEntityFromRequest(LabelCloneRequest request, Label label, Project project)
         {
             var entity = new Label();
             entity.OrganizationId = label.OrganizationId;
             entity.OrganizationUid = label.OrganizationUid;
             entity.OrganizationName = label.OrganizationName;
 
-            entity.ProjectUid = label.ProjectUid;
-            entity.ProjectId = label.ProjectId;
-            entity.ProjectName = label.ProjectName;
+            entity.ProjectUid = project.Uid;
+            entity.ProjectId = project.Id;
+            entity.ProjectName =project.Name;
 
             entity.Description = request.Description;
             entity.Key = request.LabelKey;
