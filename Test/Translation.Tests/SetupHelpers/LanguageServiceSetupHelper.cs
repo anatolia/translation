@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Moq;
 
 using Translation.Common.Contracts;
@@ -106,7 +107,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_RestoreLanguage_Returns_LanguageRestoreResponse_Invalid(this Mock<ILanguageService> service)
         {
             service.Setup(x => x.RestoreLanguage(It.IsAny<LanguageRestoreRequest>()))
-                .Returns(Task.FromResult(new LanguageRestoreResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+                   .Returns(Task.FromResult(new LanguageRestoreResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
         }
 
         public static void Setup_GetLanguageRevisions_Returns_LanguageRevisionReadListResponse_Invalid(this Mock<ILanguageService> service)

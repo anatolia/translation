@@ -8,9 +8,10 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class HostingEnvironmentSetupHelper
     {
-        public static void Setup_WebRootPath_Returns_WebRootPath(this Mock<IHostingEnvironment> environment)
+        public static void Setup_WebRootPath_Returns_TestWebRootPath(this Mock<IHostingEnvironment> environment)
         {
-            environment.Setup(x => x.WebRootPath).Returns(GetWebRootPath());
+            environment.Setup(x => x.WebRootPath)
+                       .Returns(GetTestWebRootPath());
         }
 
         public static void Verify_WebRootPath(this Mock<IHostingEnvironment> environment)

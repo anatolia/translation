@@ -12,7 +12,6 @@ using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
-using static Translation.Tests.TestHelpers.AssertModelTestHelper;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Tests.Client.Controllers
@@ -67,7 +66,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task Create_POST()
         {
             // arrange
-            MockHostingEnvironment.Setup_WebRootPath_Returns_WebRootPath();
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
             MockLanguageService.Setup_CreateLanguage_Returns_LanguageCreateResponse_Success();
             var model = GetLanguageOneCreateModel();
 
@@ -84,7 +83,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task Create_POST_FailedResponse()
         {
             // arrange
-            MockHostingEnvironment.Setup_WebRootPath_Returns_WebRootPath();
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
             MockLanguageService.Setup_CreateLanguage_Returns_LanguageCreateResponse_Failed();
             var model = GetLanguageOneCreateModel();
 
@@ -101,7 +100,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task Create_POST_InvalidResponse()
         {
             // arrange
-            MockHostingEnvironment.Setup_WebRootPath_Returns_WebRootPath();
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
             MockLanguageService.Setup_CreateLanguage_Returns_LanguageCreateResponse_Invalid();
             var model = GetLanguageOneCreateModel();
 
@@ -185,7 +184,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task Edit_POST()
         {
             // arrange
-            MockHostingEnvironment.Setup_WebRootPath_Returns_WebRootPath();
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
             MockLanguageService.Setup_EditLanguage_Returns_LanguageEditResponse_Success();
             var model = GetLanguageOneEditModel();
 
@@ -202,7 +201,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task Edit_POST_FailedResponse()
         {
             // arrange
-            MockHostingEnvironment.Setup_WebRootPath_Returns_WebRootPath();
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
             MockLanguageService.Setup_EditLanguage_Returns_LanguageEditResponse_Failed();
             var model = GetLanguageOneEditModel();
 
@@ -219,7 +218,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task Edit_POST_InvalidResponse()
         {
             // arrange
-            MockHostingEnvironment.Setup_WebRootPath_Returns_WebRootPath();
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
             MockLanguageService.Setup_EditLanguage_Returns_LanguageEditResponse_Invalid();
             var model = GetLanguageOneEditModel();
 

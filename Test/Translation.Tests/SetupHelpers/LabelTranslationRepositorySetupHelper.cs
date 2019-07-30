@@ -81,7 +81,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_SelectRevisions_Returns_GetOrganizationOneProjectOneLabelOneLabelTranslationOneRevisionsRevisionTwoInIt(this Mock<ILabelTranslationRepository> repository)
         {
             repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
-                .ReturnsAsync(GetOrganizationOneProjectOneLabelOneLabelTranslationOneRevisionsRevisionTwoInIt());
+                      .ReturnsAsync(GetOrganizationOneProjectOneLabelOneLabelTranslationOneRevisionsRevisionTwoInIt());
         }
 
         public static void Verify_SelectRevisions(this Mock<ILabelTranslationRepository> repository)
@@ -104,13 +104,13 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_Select_Returns_OrganizationOneProjectOneLabelOneLabelTranslationOneNotExist(this Mock<ILabelTranslationRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<LabelTranslation, bool>>>(), false))
-                .ReturnsAsync(GetOrganizationOneProjectOneLabelOneLabelTranslationOneNotExist());
+                      .ReturnsAsync(GetOrganizationOneProjectOneLabelOneLabelTranslationOneNotExist());
         }
 
         public static void Setup_Select_Returns_OrganizationTwoProjectOneLabelOneLabelTranslationOne(this Mock<ILabelTranslationRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<LabelTranslation, bool>>>(), false))
-                .ReturnsAsync(GetOrganizationTwoProjectOneLabelOneLabelTranslationOne());
+                      .ReturnsAsync(GetOrganizationTwoProjectOneLabelOneLabelTranslationOne());
         }
 
         public static void Setup_Select_Returns_OrganizationOneLabelTranslationOneNotExist(this Mock<ILabelTranslationRepository> repository)
@@ -150,7 +150,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Verify_Insert(this Mock<ILabelTranslationRepository> repository)
         {
             repository.Verify(x => x.Insert(It.IsAny<long>(),
-                It.IsAny<LabelTranslation>()));
+                                            It.IsAny<LabelTranslation>()));
         }
 
         public static void Setup_Delete_Success(this Mock<ILabelTranslationRepository> repository)

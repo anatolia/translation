@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
+
 using Moq;
 using StandardRepository.Models.Entities;
 
@@ -1276,7 +1273,7 @@ namespace Translation.Tests.TestHelpers
             return mockFormFile.Object;
         }
 
-        public static string GetWebRootPath()
+        public static string GetTestWebRootPath()
         {
             var root = "";
             var currentDirectory = Directory.GetCurrentDirectory();

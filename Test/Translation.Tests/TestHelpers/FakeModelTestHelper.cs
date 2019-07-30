@@ -1,9 +1,6 @@
-
 using System;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 
-using Moq;
 using Translation.Client.Web.Models.Admin;
 using Translation.Client.Web.Models.Integration;
 using Translation.Client.Web.Models.Label;
@@ -20,45 +17,6 @@ namespace Translation.Tests.TestHelpers
 {
     public class FakeModelTestHelper
     {
-        public static PagingInfo GetFakePagingInfo()
-        {
-            var pagingInfo = new PagingInfo();
-            pagingInfo.Skip = One;
-            pagingInfo.Take = Two;
-            pagingInfo.LastUid = UidOne;
-            pagingInfo.IsAscending = BooleanTrue;
-            pagingInfo.TotalItemCount = Ten;
-            pagingInfo.Type = PagingInfo.PAGE_NUMBERS;
-
-            return pagingInfo;
-        }
-
-        public static PagingInfo GetFakePagingInfoForSelectMany()
-        {
-            var pagingInfo = new PagingInfo();
-            pagingInfo.Skip = One;
-            pagingInfo.Take = Two;
-            pagingInfo.LastUid = UidOne;
-            pagingInfo.IsAscending = BooleanTrue;
-            pagingInfo.TotalItemCount = Ten;
-            pagingInfo.Type = PagingInfo.PAGE_NUMBERS;
-
-            return pagingInfo;
-        }
-
-        public static PagingInfo GetFakePagingInfoForSelectAfter()
-        {
-            var pagingInfo = new PagingInfo();
-            pagingInfo.Skip = Zero;
-            pagingInfo.Take = Two;
-            pagingInfo.LastUid = UidOne;
-            pagingInfo.IsAscending = BooleanTrue;
-            pagingInfo.TotalItemCount = Ten;
-            pagingInfo.Type = PagingInfo.PAGE_NUMBERS;
-
-            return pagingInfo;
-        }
-
         public static ProjectCreateModel GetOrganizationOneProjectOneCreateModel()
         {
             var model = new ProjectCreateModel();
@@ -267,20 +225,6 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
-        public static LanguageDetailModel GetLanguageDetailModel(Guid LanguageUid, string name, string originalName, 
-                                                                 string isoCode2, string isoCode3, IFormFile icon)
-        {
-            var model = new LanguageDetailModel();
-            model.Name = name;
-            model.OriginalName = originalName;
-            model.IsoCode2 = isoCode2;
-            model.IsoCode3 = isoCode3;
-            model.Icon = icon;
-
-            return model;
-        }
-
-
         public static SignUpModel GetOrganizationOneUserOneSignUpModel()
         {
             var model = new SignUpModel();
@@ -293,7 +237,6 @@ namespace Translation.Tests.TestHelpers
 
             return model;
         }
-
 
         public static LogOnModel GetOrganizationOneUserOneLogOnModel()
         {
@@ -458,15 +401,6 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
-        public static IntegrationActiveTokensModel GetIntegrationActiveTokensModel()
-        {
-            var model = new IntegrationActiveTokensModel();
-            model.IntegrationUid = UidOne;
-            model.IntegrationName = StringOne;
-
-            return model;
-        }
-
         public static AdminAcceptInviteDoneModel GetAdminAcceptInviteDoneModel()
         {
             var model = new AdminAcceptInviteDoneModel();
@@ -559,18 +493,6 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
-        public static IntegrationDetailModel GetIntegrationDetailModel()
-        {
-            var model = new IntegrationDetailModel();
-            model.OrganizationUid = UidOne;
-            model.OrganizationName = StringOne;
-            model.IntegrationUid = UidTwo;
-            model.Name = StringTwo;
-            model.Description = StringThree;
-
-            return model;
-        }
-
         public static IntegrationDetailModel GetIntegrationDetailModel(Guid organizationUid, string organizationName, Guid integrationUid,
                                                                        string name, string description = StringOne)
         {
@@ -626,20 +548,6 @@ namespace Translation.Tests.TestHelpers
         public static LabelUploadFromCSVDoneModel GetLabelUploadFromCSVDoneModel()
         {
             var model = new LabelUploadFromCSVDoneModel();
-
-            return model;
-        }
-
-        public static LabelDetailModel GetLabelDetailModel(Guid organizationUid, string organizationName, Guid projectUid,
-                                                           string projectName, string key)
-        {
-            var model = new LabelDetailModel();
-            model.OrganizationUid = organizationUid;
-            model.OrganizationName = organizationName;
-            model.ProjectUid = projectUid;
-            model.ProjectName = projectName;
-            model.Key = key;
-            model.Description = StringOne;
 
             return model;
         }
@@ -720,19 +628,6 @@ namespace Translation.Tests.TestHelpers
             model.OrganizationUid = OrganizationOneUid;
             model.ProjectUid = OrganizationOneProjectOneUid;
             model.ProjectName = StringOne;
-
-            return model;
-        }
-
-        public static CreateBulkLabelModel GetCreateBulkLabelModel(Guid organizationUid, Guid projectUid, string projectName,
-                                                                   int csvContentLength)
-        {
-            var model = new CreateBulkLabelModel();
-
-            model.OrganizationUid = organizationUid;
-            model.ProjectUid = projectUid;
-            model.ProjectName = projectName;
-            model.BulkLabelData = GenerateCsvContent(csvContentLength);
 
             return model;
         }
@@ -933,24 +828,6 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
-        public static ProjectDetailModel GetProjectDetailModel(Guid organizationUid, string organizationName, Guid projectUid,
-                                                               string name, string slug, string url,
-                                                               int labelCount, string description = StringOne)
-        {
-            var model = new ProjectDetailModel();
-            model.OrganizationUid = organizationUid;
-            model.OrganizationName = organizationName;
-            model.ProjectUid = projectUid;
-            model.Name = name;
-            model.Slug = slug;
-            model.Url = url;
-            model.Description = description;
-            model.LabelCount = labelCount;
-            model.IsActive = true;
-
-            return model;
-        }
-
         public static ProjectEditModel GetProjectEditModel(Guid organizationUid, Guid projectUid, string name,
                                                            string slug, string url, string description = StringOne)
         {
@@ -997,6 +874,5 @@ namespace Translation.Tests.TestHelpers
 
             return model;
         }
-
     }
 }

@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using Moq;
+﻿using Moq;
 
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
 using Translation.Data.UnitOfWorks.Contracts;
-using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Tests.SetupHelpers

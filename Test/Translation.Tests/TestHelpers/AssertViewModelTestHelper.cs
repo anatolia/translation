@@ -213,6 +213,16 @@ namespace Translation.Tests.TestHelpers
             result.ShouldBeAssignableTo<T>();
         }
 
+        public static void AssertPagingInfo(JsonResult result)
+        {
+            var pagingInfo = new PagingInfo();
+
+            var resultValue = (DataResult)result.Value;
+            resultValue.PagingInfo.Type.ShouldBe(PagingInfo.PAGE_NUMBERS);
+            resultValue.PagingInfo.Take.ShouldBe(pagingInfo.Take);
+            resultValue.PagingInfo.Skip.ShouldBe(pagingInfo.Skip);
+        }
+
         public static void AssertPagingInfoForSelectAfter(PagingInfo info, int totalItemCountOfPagingInfo)
         {
             var pagingInfo = GetPagingInfoForSelectAfter();
