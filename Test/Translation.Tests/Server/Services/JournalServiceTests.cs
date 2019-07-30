@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-
+using Moq;
 using NUnit.Framework;
 
 using Translation.Common.Contracts;
@@ -30,7 +30,7 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetJournalCreateRequest();
-            
+
             // act
             var result = SystemUnderTest.CreateJournal(request);
 
@@ -81,8 +81,8 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetUserJournalReadListRequestForSelectMany();
-            MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
-            MockJournalRepository.Setup_SelectAfter_Returns_Journals();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockJournalRepository.Setup_SelectMany_Returns_Journals();
             MockJournalRepository.Setup_Count_Returns_Ten();
 
             // act
@@ -92,7 +92,7 @@ namespace Translation.Tests.Server.Services
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<JournalReadListResponse>(result);
             AssertPagingInfoForSelectMany(request.PagingInfo, Ten);
-            MockOrganizationRepository.Verify_Select();
+            MockUserRepository.Verify_Select();
             MockJournalRepository.Verify_SelectMany();
             MockJournalRepository.Verify_Count();
         }
@@ -102,15 +102,15 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetUserJournalReadListRequest();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
 
             // act
             var result = await SystemUnderTest.GetJournalsOfUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
             AssertReturnType<JournalReadListResponse>(result);
-            MockUserRepository.Verify_SelectById();
+            MockUserRepository.Verify_Select();
         }
     }
 }

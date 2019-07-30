@@ -249,14 +249,12 @@ namespace Translation.Tests.Client.Controllers
         public void Revisions_GET_InvalidParameter()
         {
             // arrange
-            MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Success();
 
             // act
             var result = SystemUnderTest.Revisions(EmptyUid);
 
             // assert
             AssertViewRedirectToHome(result);
-            MockOrganizationService.Verify_GetOrganization();
         }
 
         [Test]
@@ -371,14 +369,12 @@ namespace Translation.Tests.Client.Controllers
         public void PendingTranslations_GET()
         {
             // arrange
-            MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Success();
-
+            
             // act
             var result = SystemUnderTest.PendingTranslations();
 
             // assert
             AssertViewWithModel<OrganizationPendingTranslationReadListModel>(result);
-            MockOrganizationService.Verify_GetOrganization();
         }
 
         [Test]

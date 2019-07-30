@@ -70,7 +70,6 @@ namespace Translation.Tests.TestHelpers
             messages.Any(x => x == errorMessage).ShouldBeTrue();
         }
 
-
         public static void AssertViewWithModel<T>(IActionResult result)
         {
             result.ShouldNotBeNull();
@@ -266,7 +265,7 @@ namespace Translation.Tests.TestHelpers
             input.Value.ShouldBe(value);
         }
 
-        public static void AssertLongInputModel(LongInputModel input, string name, string labelKey, 
+        public static void AssertLongInputModel(LongInputModel input, string name, string labelKey,
                                                 bool isRequired = false, string value = "")
         {
             input.ShouldNotBeNull();

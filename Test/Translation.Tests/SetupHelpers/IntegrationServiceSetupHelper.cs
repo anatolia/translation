@@ -48,7 +48,7 @@ namespace Translation.Tests.SetupHelpers
             service.Setup(x => x.EditIntegration(It.IsAny<IntegrationEditRequest>()))
                    .Returns(Task.FromResult(new IntegrationEditResponse { Status = ResponseStatus.Success, Item = new IntegrationDto() { Uid = UidOne } }));
         }
-        
+
         public static void Setup_DeleteIntegration_Returns_IntegrationDeleteResponse_Success(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.DeleteIntegration(It.IsAny<IntegrationDeleteRequest>()))
@@ -312,10 +312,10 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetIntegrationClients_Returns_IntegrationClientReadListResponse_Success(this Mock<IIntegrationService> service)
         {
-           var items= new  List<IntegrationClientDto>();
-           items.Add(new  IntegrationClientDto(){Uid = UidOne});
-           service.Setup(x => x.GetIntegrationClients(It.IsAny<IntegrationClientReadListRequest>()))
-               .ReturnsAsync(new IntegrationClientReadListResponse() {Status = ResponseStatus.Success, Items = items});
+            var items = new List<IntegrationClientDto>();
+            items.Add(new IntegrationClientDto() { Uid = UidOne });
+            service.Setup(x => x.GetIntegrationClients(It.IsAny<IntegrationClientReadListRequest>()))
+                .ReturnsAsync(new IntegrationClientReadListResponse() { Status = ResponseStatus.Success, Items = items });
         }
 
         public static void Setup_GetIntegrationClients_Returns_IntegrationClientReadListResponse_Failed(this Mock<IIntegrationService> service)
@@ -341,8 +341,8 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetIntegrationRevisions_Returns_IntegrationRevisionReadListResponse_Invalid(this Mock<IIntegrationService> service)
         {
-            service.Setup(x => x.GetIntegrations(It.IsAny<IntegrationReadListRequest>()))
-                .Returns(Task.FromResult(new IntegrationReadListResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } }));
+            service.Setup(x => x.GetIntegrationRevisions(It.IsAny<IntegrationRevisionReadListRequest>()))
+                .ReturnsAsync(new IntegrationRevisionReadListResponse() { Status = ResponseStatus.Invalid });
         }
 
         public static void Verify_GetIntegrationRevisions(this Mock<IIntegrationService> service)

@@ -9,6 +9,7 @@ using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Models.Responses.Organization;
 using Translation.Common.Models.Responses.User;
+using Translation.Common.Models.Responses.User.LoginLog;
 using Translation.Common.Models.Shared;
 using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
@@ -451,7 +452,6 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetOrganizationPendingTranslationReadListRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationTwoUserOne();
-            MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
 
             // act
             var result = await SystemUnderTest.GetPendingTranslations(request);
@@ -460,7 +460,6 @@ namespace Translation.Tests.Server.Services
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<OrganizationPendingTranslationReadListResponse>(result);
             MockUserRepository.Verify_SelectById();
-            MockOrganizationRepository.Verify_Select();
         }
 
         [Test]
@@ -520,7 +519,6 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetLogOnRequest();
             MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
-            MockLogOnUnitOfWork.Setup_DoWork_Returns_True();
 
             // act
             var result = await SystemUnderTest.LogOn(request);
@@ -529,7 +527,6 @@ namespace Translation.Tests.Server.Services
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
             AssertReturnType<LogOnResponse>(result);
             MockUserRepository.Verify_Select();
-            MockLogOnUnitOfWork.Verify_DoWork();
         }
 
         [Test]
@@ -538,7 +535,6 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetLogOnRequest();
             MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotActive();
-            MockLogOnUnitOfWork.Setup_DoWork_Returns_True();
 
             // act
             var result = await SystemUnderTest.LogOn(request);
@@ -547,7 +543,6 @@ namespace Translation.Tests.Server.Services
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotActive);
             AssertReturnType<LogOnResponse>(result);
             MockUserRepository.Verify_Select();
-            MockLogOnUnitOfWork.Verify_DoWork();
         }
 
         [Test]
@@ -708,7 +703,6 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetPasswordResetRequest();
             MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
-            MockUserRepository.Setup_Update_Success();
 
             // act
             var result = await SystemUnderTest.PasswordReset(request);
@@ -717,7 +711,22 @@ namespace Translation.Tests.Server.Services
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<PasswordResetResponse>(result);
             MockUserRepository.Verify_Select();
-            MockUserRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task OrganizationService_PasswordReset_Failed_UserNotActive()
+        {
+            // arrange
+            var request = GetPasswordResetRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotActive();
+
+            // act
+            var result = await SystemUnderTest.PasswordReset(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<PasswordResetResponse>(result);
+            MockUserRepository.Verify_Select();
         }
 
         [Test]
@@ -726,7 +735,6 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetPasswordResetRequest();
             MockUserRepository.Setup_Select_Returns_OrganizationOneUserOnePasswordResetRequestedAtTwoDaysBefore();
-            MockUserRepository.Setup_Update_Success();
 
             // act
             var result = await SystemUnderTest.PasswordReset(request);
@@ -735,7 +743,6 @@ namespace Translation.Tests.Server.Services
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<PasswordResetResponse>(result);
             MockUserRepository.Verify_Select();
-            MockUserRepository.Verify_Update();
         }
 
         [Test]
@@ -883,10 +890,9 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetUserChangeActivationRequest();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationTwoAdminUserOne();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationTwoUserOne();
-            // MockUserRepository.Setup_Update_Success();
+            MockUserRepository.Setup_Select_Returns_OrganizationTwoUserOne();
 
             // act
             var result = await SystemUnderTest.ChangeActivationForUser(request);
@@ -896,7 +902,6 @@ namespace Translation.Tests.Server.Services
             AssertReturnType<UserChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
-            // MockUserRepository.Verify_Update();
             MockUserRepository.Verify_Select();
         }
 
@@ -920,7 +925,6 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Verify_Update();
         }
 
-        [Ignore("It pass alone but it don't pass with  other methods")]
         [Test]
         public async Task OrganizationService_EditUser_Success()
         {
@@ -943,7 +947,6 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Verify_Update();
         }
 
-        [Ignore("It pass alone but it don't pass with  other methods")]
         [Test]
         public async Task OrganizationService_EditUser_Failed()
         {
@@ -1039,7 +1042,6 @@ namespace Translation.Tests.Server.Services
             MockLanguageRepository.Verify_Select();
         }
 
-        [Ignore("It pass alone but it don't pass with other methods")]
         [Test]
         public async Task OrganizationService_DeleteUser_Success()
         {
@@ -1060,7 +1062,6 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Verify_Delete();
         }
 
-        [Ignore("It pass alone but it don't pass with other methods")]
         [Test]
         public async Task OrganizationService_DeleteUser_Failed()
         {
@@ -1353,7 +1354,6 @@ namespace Translation.Tests.Server.Services
             MockOrganizationRepository.Verify_Update();
         }
 
-        [Ignore("It pass alone but it don't pass with other methods")]
         [Test]
         public void OrganizationService_GetUser_Success()
         {
@@ -1462,7 +1462,6 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Verify_Select();
         }
 
-        [Ignore("It pass alone but it don't pass with other methods")]
         [Test]
         public async Task OrganizationService_GetUserLoginLogs_Success_SelectAfter()
         {
@@ -1487,7 +1486,6 @@ namespace Translation.Tests.Server.Services
 
         }
 
-        [Ignore("It pass alone but it don't pass with other methods")]
         [Test]
         public async Task OrganizationService_GetUserLoginLogs_Success_SelectMany()
         {
@@ -1526,7 +1524,6 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Verify_SelectById();
         }
 
-        [Ignore("It pass alone but it don't pass with other methods")]
         [Test]
         public async Task OrganizationService_GetUserLoginLogsOfOrganization_Success_SelectAfter()
         {
@@ -1551,7 +1548,6 @@ namespace Translation.Tests.Server.Services
 
         }
 
-        [Ignore("It pass alone but it don't pass with other methods")]
         [Test]
         public async Task OrganizationService_GetUserLoginLogsOfOrganization_Success_SelectMany()
         {

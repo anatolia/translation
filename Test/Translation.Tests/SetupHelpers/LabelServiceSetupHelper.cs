@@ -325,13 +325,13 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_RestoreLabelTranslation_Returns_LabelTranslationRestoreResponse_Failed(this Mock<ILabelService> service)
         {
             service.Setup(x => x.RestoreLabelTranslation(It.IsAny<LabelTranslationRestoreRequest>()))
-                .ReturnsAsync(new LabelTranslationRestoreResponse() { Status = ResponseStatus.Failed });
+                .ReturnsAsync(new LabelTranslationRestoreResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } });
         }
 
         public static void Setup_RestoreLabelTranslation_Returns_LabelTranslationRestoreResponse_Invalid(this Mock<ILabelService> service)
         {
             service.Setup(x => x.RestoreLabelTranslation(It.IsAny<LabelTranslationRestoreRequest>()))
-                .ReturnsAsync(new LabelTranslationRestoreResponse() { Status = ResponseStatus.Invalid });
+                .ReturnsAsync(new LabelTranslationRestoreResponse() { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } });
         }
 
         public static void Setup_CreateTranslation_Returns_LabelTranslationCreateResponse_Failed(this Mock<ILabelService> service)
