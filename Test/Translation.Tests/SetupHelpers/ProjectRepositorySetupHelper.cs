@@ -37,33 +37,33 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_Count_Returns_Ten(this Mock<IProjectRepository> repository)
         {
             repository.Setup(x => x.Count(It.IsAny<Expression<Func<Project, bool>>>(),
-                    It.IsAny<bool>()))
-                .ReturnsAsync(Ten);
+                                          It.IsAny<bool>()))
+                      .ReturnsAsync(Ten);
         }
 
         public static void Verify_SelectAfter(this Mock<IProjectRepository> repository)
         {
             repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<Project, bool>>>(),
-                It.IsAny<Guid>(),
-                It.IsAny<int>(),
-                It.IsAny<Expression<Func<Project, object>>>(),
-                It.IsAny<bool>(), false));
+                                                 It.IsAny<Guid>(),
+                                                 It.IsAny<int>(),
+                                                 It.IsAny<Expression<Func<Project, object>>>(),
+                                                 It.IsAny<bool>(), false));
         }
 
         public static void Verify_SelectMany(this Mock<IProjectRepository> repository)
         {
-            repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<Project, bool>>>(),
-                It.IsAny<Guid>(),
-                It.IsAny<int>(),
-                It.IsAny<Expression<Func<Project, object>>>(),
-                It.IsAny<bool>(), false));
+            repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<Project, bool>>>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<Expression<Func<Project, object>>>(),
+                                                It.IsAny<bool>(), false));
         }
 
         public static void Verify_Count(this Mock<IProjectRepository> repository)
         {
             repository.Setup(x => x.Count(It.IsAny<Expression<Func<Project, bool>>>(),
-                    It.IsAny<bool>()))
-                .ReturnsAsync(Ten);
+                                          It.IsAny<bool>()))
+                      .ReturnsAsync(Ten);
         }
 
         public static void Setup_RestoreRevision_Returns_True(this Mock<IProjectRepository> repository)
