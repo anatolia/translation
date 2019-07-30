@@ -76,6 +76,12 @@ namespace Translation.Common.Models.Base
             Status = ResponseStatus.Failed;
             ErrorMessages.Add(entityName + "_name_must_be_unique");
         }
+
+        public void SetFailedBecauseSlugMustBeUnique(string entityName = "entity")
+        {
+            Status = ResponseStatus.Failed;
+            ErrorMessages.Add(entityName + "_slug_must_be_unique");
+        }
     }
 
     public abstract class BaseResponse<T> : BaseResponse where T : BaseDto, new()

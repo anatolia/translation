@@ -192,7 +192,7 @@ namespace Translation.Service
                 response.SetInvalidBecauseNotActive("organization");
                 return response;
             }
-            
+
             if (await _projectRepository.Any(x => (x.Name == request.ProjectName
                                                   || x.Slug == request.ProjectSlug)
                                                   && x.OrganizationId == currentUser.OrganizationId))
@@ -308,7 +308,7 @@ namespace Translation.Service
                 response.Status = ResponseStatus.Success;
                 return response;
             }
-            
+
             var uowResult = await _projectUnitOfWork.DoDeleteWork(request.CurrentUserId, project);
             if (uowResult)
             {
@@ -330,7 +330,7 @@ namespace Translation.Service
                 response.SetInvalid();
                 return response;
             }
-            
+
             var project = await _projectRepository.Select(x => x.Uid == request.CloningProjectUid);
             if (project.IsNotExist())
             {
@@ -357,6 +357,13 @@ namespace Translation.Service
                 return response;
             }
 
+            if (await _projectRepository.Any(x =>  x.Slug == request.Slug
+                                                  && x.OrganizationId == currentUser.OrganizationId))
+            {
+                response.SetFailedBecauseSlugMustBeUnique("project");
+                return response;
+            }
+
             var cloningEntity = _projectFactory.CreateEntityFromRequest(request, project);
             var uowResult = await _projectUnitOfWork.DoCloneWork(request.CurrentUserId, project.Id, cloningEntity);
             if (uowResult)
@@ -380,7 +387,7 @@ namespace Translation.Service
                 response.SetInvalid();
                 return response;
             }
-            
+
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
@@ -472,7 +479,7 @@ namespace Translation.Service
 
             if (request.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm) 
+                filter = x => x.Name.Contains(request.SearchTerm)
                               && x.ProjectId == project.Id
                               && x.LabelTranslationCount == 0;
             }
