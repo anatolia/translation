@@ -38,6 +38,7 @@ namespace Translation.Data.Factories
             entity.Description = request.Description;
             entity.Key = request.LabelKey;
             entity.Name = request.LabelKey;
+            entity.LabelTranslationCount = label.LabelTranslationCount;
 
             entity.IsActive = true;
 
