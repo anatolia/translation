@@ -27,7 +27,7 @@ namespace Translation.Tests.Client.Models.ViewModels.LabelTranslation
         [Test]
         public void UploadLabelTranslationFromCSVFileModel_Title()
         {
-            Assert.AreEqual(SystemUnderTest.Title, "upload_labels_from_csv_file_title");
+            Assert.AreEqual(SystemUnderTest.Title, "upload_labels_translation_from_csv_file_title");
         }
 
         [Test]
