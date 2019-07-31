@@ -63,6 +63,7 @@
         public const string DownloadSampleCSVFileForBulkLabelUploadAction = "DownloadSampleCSVFileForBulkLabelUpload";
 
         public const string CreateBulkLabelAction = "CreateBulkLabel";
+        public const string TranslateAction = "Translate";
 
         public const string LabelTranslationCreateAction = "LabelTranslationCreate";
         public const string LabelTranslationDetailAction = "LabelTranslationDetail";

@@ -50,6 +50,7 @@ namespace Translation.Tests.Client.Controllers
          TestCase(DownloadSampleCSVFileForBulkLabelUploadAction, new Type[] { }, typeof(HttpGetAttribute)),
          TestCase(CreateBulkLabelAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(CreateBulkLabelAction, new[] { typeof(CreateBulkLabelModel) }, typeof(HttpPostAttribute)),
+         TestCase(TranslateAction, new[] { typeof(string), typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(LabelTranslationCreateAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(LabelTranslationCreateAction, new[] { typeof(LabelTranslationCreateModel) }, typeof(HttpPostAttribute)),
          TestCase(LabelTranslationDetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
@@ -1140,6 +1141,175 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public async Task CreateBulkLabel_POST()
+        {
+            // arrange
+            MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Success();
+            var model = GetCreateBulkLabelModel(3);
+
+            // act
+            var result = await SystemUnderTest.CreateBulkLabel(model);
+
+            // assert
+
+            AssertViewWithModelAndMessage<CreateBulkLabelDoneModel>("CreateBulkLabelDone", result);
+            MockLabelService.Verify_CreateLabelFromList();
+        }
+
+        [Test]
+        public async Task CreateBulkLabel_POST_FailedResponse()
+        {
+            // arrange 
+            MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Failed();
+            var model = GetCreateBulkLabelModel(3);
+
+            // act
+            var result = await SystemUnderTest.CreateBulkLabel(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<CreateBulkLabelModel>(result);
+            MockLabelService.Verify_CreateLabelFromList();
+        }
+
+        [Test]
+        public async Task CreateBulkLabel_POST_InvalidResponse()
+        {
+            // arrange 
+            MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Invalid();
+            var model = GetCreateBulkLabelModel(3);
+
+            // act
+            var result = await SystemUnderTest.CreateBulkLabel(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<CreateBulkLabelModel>(result);
+            MockLabelService.Verify_CreateLabelFromList();
+        }
+
+        [Test]
+        public async Task CreateBulkLabel_POST_Failed_FileHasMoreColumnsThanExpected()
+        {
+            // arrange 
+            var model = GetCreateBulkLabelModel(5);
+
+            // act
+            var result = await SystemUnderTest.CreateBulkLabel(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<CreateBulkLabelModel>("file_has_more_columns_than_expected", result);
+        }
+
+        [Test]
+        public async Task CreateBulkLabel_POST_InvalidParameter()
+        {
+            // arrange
+            var model = new CreateBulkLabelModel();
+
+            // act
+            var result = await SystemUnderTest.CreateBulkLabel(model);
+
+            // assert
+            AssertInputErrorMessagesOfView(result, model);
+        }
+
+        [Test]
+        public async Task Translate_GET()
+        {
+            // arrange
+            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockCloudTranslationService.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Success();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Translate(StringOne, UidOne);
+
+            // assert
+            result.Value.ShouldNotBeNull();
+            var name = (string)result.Value;
+            name.ShouldBe(StringTwo);
+            MockLanguageService.Verify_GetLanguage();
+            MockUserRepository.Verify_Select();
+            MockCloudTranslationService.Verify_GetTranslatedText();
+        }
+
+        [Test]
+        public async Task Translate_GET_LanguageReadResponse_Failed()
+        {
+            // arrange
+            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Failed();
+           
+
+            // act
+            var result = await SystemUnderTest.Translate(StringOne, UidOne);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockLanguageService.Verify_GetLanguage();
+        }
+
+        [Test]
+        public async Task Translate_GET_LanguageReadResponse_Invalid()
+        {
+            // arrange
+            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.Translate(StringOne, UidOne);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockLanguageService.Verify_GetLanguage();
+        }
+
+        [Test]
+        public async Task Translate_GET_LabelGetTranslatedTextResponse_Failed()
+        {
+            // arrange
+            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockCloudTranslationService.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Failed();
+
+            // act
+            var result =await SystemUnderTest.Translate(StringOne, UidOne);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockLanguageService.Verify_GetLanguage();
+            MockUserRepository.Verify_Select();
+            MockCloudTranslationService.Verify_GetTranslatedText();
+        }
+
+        [Test]
+        public async Task Translate_GET_LabelGetTranslatedTextResponse_Invalid()
+        {
+            // arrange
+            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockCloudTranslationService.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.Translate(StringOne, UidOne);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockLanguageService.Verify_GetLanguage();
+            MockUserRepository.Verify_Select();
+            MockCloudTranslationService.Verify_GetTranslatedText();
+        }
+
+        [Test]
+        public async Task Translate_GET_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.Translate(EmptyString, UidOne);
+
+            // assert
+            AssertView<JsonResult>(result);
+        }
+
+        [Test]
         public async Task LabelTranslationCreate_GET()
         {
             // arrange
@@ -1247,78 +1417,6 @@ namespace Translation.Tests.Client.Controllers
 
             // act
             var result = await SystemUnderTest.LabelTranslationCreate(model);
-
-            // assert
-            AssertInputErrorMessagesOfView(result, model);
-        }
-
-        [Test]
-        public async Task CreateBulkLabel_POST()
-        {
-            // arrange
-            MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Success();
-            var model = GetCreateBulkLabelModel(3);
-
-            // act
-            var result = await SystemUnderTest.CreateBulkLabel(model);
-
-            // assert
-
-            AssertViewWithModelAndMessage<CreateBulkLabelDoneModel>("CreateBulkLabelDone", result);
-            MockLabelService.Verify_CreateLabelFromList();
-        }
-
-        [Test]
-        public async Task CreateBulkLabel_POST_FailedResponse()
-        {
-            // arrange 
-            MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Failed();
-            var model = GetCreateBulkLabelModel(3);
-
-            // act
-            var result = await SystemUnderTest.CreateBulkLabel(model);
-
-            // assert
-            AssertErrorMessagesForInvalidOrFailedResponse<CreateBulkLabelModel>(result);
-            MockLabelService.Verify_CreateLabelFromList();
-        }
-
-        [Test]
-        public async Task CreateBulkLabel_POST_InvalidResponse()
-        {
-            // arrange 
-            MockLabelService.Setup_CreateLabelFromList_Returns_LabelCreateListResponse_Invalid();
-            var model = GetCreateBulkLabelModel(3);
-
-            // act
-            var result = await SystemUnderTest.CreateBulkLabel(model);
-
-            // assert
-            AssertErrorMessagesForInvalidOrFailedResponse<CreateBulkLabelModel>(result);
-            MockLabelService.Verify_CreateLabelFromList();
-        }
-
-        [Test]
-        public async Task CreateBulkLabel_POST_Failed_FileHasMoreColumnsThanExpected()
-        {
-            // arrange 
-            var model = GetCreateBulkLabelModel(5);
-
-            // act
-            var result = await SystemUnderTest.CreateBulkLabel(model);
-
-            // assert
-            AssertErrorMessagesForInvalidOrFailedResponse<CreateBulkLabelModel>("file_has_more_columns_than_expected", result);
-        }
-
-        [Test]
-        public async Task CreateBulkLabel_POST_InvalidParameter()
-        {
-            // arrange
-            var model = new CreateBulkLabelModel();
-
-            // act
-            var result = await SystemUnderTest.CreateBulkLabel(model);
 
             // assert
             AssertInputErrorMessagesOfView(result, model);
