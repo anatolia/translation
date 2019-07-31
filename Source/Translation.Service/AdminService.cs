@@ -259,13 +259,13 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.InvitationToken == request.Token && x.Email == request.Email);
             if (user.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("user");
+                response.SetInvalidBecauseNotFound(nameof(User));
                 return response;
             }
 
             if (await _organizationRepository.Any(x => x.Id == user.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound("organization");
+                response.SetInvalidBecauseNotFound(nameof(Organization));
                 return response;
             }
 
@@ -290,13 +290,13 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.InvitationToken == request.Token && x.Email == request.Email);
             if (user.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("user");
+                response.SetInvalidBecauseNotFound(nameof(User));
                 return response;
             }
 
             if (await _organizationRepository.Any(x => x.Id == user.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound("organization");
+                response.SetInvalidBecauseNotFound(nameof(Organization));
                 return response;
             }
 
@@ -346,7 +346,7 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Uid == request.UserUid);
             if (user.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("user");
+                response.SetInvalidBecauseNotFound(nameof(User));
                 return response;
             }
 
@@ -378,7 +378,7 @@ namespace Translation.Service
             var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
             if (organization.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("organization");
+                response.SetInvalidBecauseNotFound(nameof(Organization));
                 return response;
             }
 
@@ -410,7 +410,7 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Uid == request.UserUid);
             if (user.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("user");
+                response.SetInvalidBecauseNotFound(nameof(User));
                 return response;
             }
 
@@ -443,7 +443,7 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Uid == request.UserUid);
             if (user.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("user");
+                response.SetInvalidBecauseNotFound(nameof(User));
                 return response;
             }
 

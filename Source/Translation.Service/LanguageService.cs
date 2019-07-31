@@ -12,6 +12,7 @@ using Translation.Common.Helpers;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Responses.Language;
+using Translation.Data.Entities.Main;
 using Translation.Data.Entities.Parameter;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
@@ -40,7 +41,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("language");
+                response.SetInvalidBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -101,7 +102,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("language");
+                response.SetInvalidBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -135,7 +136,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedUser(request.CurrentUserId);
             if (!currentUser.IsSuperAdmin)
             {
-                response.SetInvalidBecauseNotSuperAdmin("user");
+                response.SetInvalidBecauseNotSuperAdmin(nameof(User));
                 return response;
             }
 
@@ -145,7 +146,7 @@ namespace Translation.Service
                                                             || x.IsoCode3Char == request.IsoCode3);
             if (result)
             {
-                response.SetFailedBecauseNameMustBeUnique("language");
+                response.SetFailedBecauseNameMustBeUnique(nameof(Language));
                 return response;
             }
 
@@ -169,7 +170,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedUser(request.CurrentUserId);
             if (!currentUser.IsSuperAdmin)
             {
-                response.SetInvalidBecauseNotSuperAdmin("user");
+                response.SetInvalidBecauseNotSuperAdmin(nameof(User));
              
                 return response;
             }
@@ -177,7 +178,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("language");
+                response.SetInvalidBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -211,14 +212,14 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedUser(request.CurrentUserId);
             if (!currentUser.IsSuperAdmin)
             {
-                response.SetInvalidBecauseNotSuperAdmin("user");
+                response.SetInvalidBecauseNotSuperAdmin(nameof(User));
                 return response;
             }
 
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("language");
+                response.SetInvalidBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -242,7 +243,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("language");
+                response.SetInvalidBecauseNotFound(nameof(Language));
                 return response;
             }
 

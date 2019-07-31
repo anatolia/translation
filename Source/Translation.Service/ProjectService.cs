@@ -13,6 +13,7 @@ using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Responses.Project;
 using Translation.Data.Entities.Domain;
+using Translation.Data.Entities.Main;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
 using Translation.Data.UnitOfWorks.Contracts;
@@ -101,7 +102,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("project");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -137,7 +138,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("project");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -161,7 +162,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Slug == request.ProjectSlug);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("project");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -189,7 +190,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotActive("organization");
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
@@ -228,14 +229,14 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotActive("organization");
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("project");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -249,7 +250,7 @@ namespace Translation.Service
                                                        && x.OrganizationId == project.OrganizationId
                                                        && x.Id != project.Id))
             {
-                response.SetFailedBecauseNameMustBeUnique("project");
+                response.SetFailedBecauseNameMustBeUnique(nameof(Project));
                 return response;
             }
 
@@ -280,7 +281,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("project");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -298,7 +299,7 @@ namespace Translation.Service
 
             if (await _labelRepository.Any(x => x.ProjectId == project.Id))
             {
-                response.SetInvalidBecauseHasChildren("project");
+                response.SetInvalidBecauseHasChildren(nameof(Project));
                 return response;
             }
 
@@ -334,7 +335,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.CloningProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("project");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -353,14 +354,14 @@ namespace Translation.Service
             if (await _projectRepository.Any(x => x.Name == request.Name
                                                   && x.OrganizationId == currentUser.OrganizationId))
             {
-                response.SetFailedBecauseNameMustBeUnique("project");
+                response.SetFailedBecauseNameMustBeUnique(nameof(Project));
                 return response;
             }
 
             if (await _projectRepository.Any(x =>  x.Slug == request.Slug
                                                   && x.OrganizationId == currentUser.OrganizationId))
             {
-                response.SetFailedBecauseSlugMustBeUnique("project");
+                response.SetFailedBecauseSlugMustBeUnique(nameof(Project));
                 return response;
             }
 
@@ -391,7 +392,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("project");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -434,14 +435,14 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("project");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
             var revisions = await _projectRepository.SelectRevisions(project.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalidBecauseRevisionNotFound("project");
+                response.SetInvalidBecauseRevisionNotFound(nameof(Project));
                 return response;
             }
 
@@ -463,7 +464,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("project");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
