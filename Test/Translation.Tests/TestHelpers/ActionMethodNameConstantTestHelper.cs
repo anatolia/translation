@@ -67,6 +67,7 @@
         public const string LabelTranslationCreateAction = "LabelTranslationCreate";
         public const string LabelTranslationDetailAction = "LabelTranslationDetail";
         public const string LabelTranslationEditAction = "LabelTranslationEdit";
+        public const string LabelTranslationDeleteAction = "LabelTranslationDelete";
         public const string LabelTranslationListDataAction = "LabelTranslationListData";
         public const string UploadLabelTranslationFromCSVFileAction = "UploadLabelTranslationFromCSVFile";
         public const string DownloadSampleCSVFileForBulkLabelTranslationUploadAction = "DownloadSampleCSVFileForBulkLabelTranslationUpload";
