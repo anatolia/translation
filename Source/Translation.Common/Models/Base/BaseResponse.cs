@@ -50,7 +50,7 @@ namespace Translation.Common.Models.Base
         public void SetInvalidBecauseNotActive(string entityName = "entity")
         {
             Status = ResponseStatus.Invalid;
-            ErrorMessages.Add(entityName + "_not_active");
+            ErrorMessages.Add(entityName.ToLowerInvariant() + "_not_active");
         }
 
         public void SetInvalidBecauseHasChildren(string entityName = "entity")
