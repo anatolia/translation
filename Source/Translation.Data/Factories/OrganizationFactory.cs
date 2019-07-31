@@ -38,10 +38,13 @@ namespace Translation.Data.Factories
             dto.CreatedAt = entity.CreatedAt;
             dto.UpdatedAt = entity.UpdatedAt;
             dto.IsActive = entity.IsActive;
-
+ 
             dto.Description = entity.Description;
             dto.IsActive = entity.IsActive;
             dto.UserCount = entity.UserCount;
+            dto.ProjectCount = entity.ProjectCount;
+            dto.LabelCount = entity.LabelCount;
+            dto.LabelTranslationCount = entity.LabelTranslationCount;
 
             return dto;
         }
