@@ -788,8 +788,6 @@ namespace Translation.Client.Web.Controllers
 
                 stringBuilder.Append(
                     $"{result.PrepareLink($"/Label/LabelTranslationEdit/{item.Uid}", Localizer.Localize("edit"), true)}");
-                stringBuilder.Append(
-                    $"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}");
 
                 if (CurrentUser.IsSuperAdmin)
                 {
