@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
 using Translation.Client.Web.Helpers.Mappers;
@@ -15,24 +16,37 @@ using Translation.Common.Contracts;
 using Translation.Common.Helpers;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
+using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Requests.Project;
+using Translation.Common.Models.Requests.User;
+using Translation.Common.Models.Responses.Language;
 using Translation.Common.Models.Shared;
+using Translation.Service.Managers;
 
 namespace Translation.Client.Web.Controllers
 {
     public class LabelController : BaseController
     {
         private readonly IHostingEnvironment _environment;
+        private readonly CacheManager _cacheManager;
+        private readonly ILanguageService _languageService;
+        private readonly ICloudTranslationService _cloudTranslationService;
         private readonly IProjectService _projectService;
         private readonly ILabelService _labelService;
 
         public LabelController(IHostingEnvironment environment,
-            IProjectService projectService,
-            ILabelService labelService,
-            IOrganizationService organizationService,
-            IJournalService journalService) : base(organizationService, journalService)
+                               CacheManager cacheManager,
+                               ILanguageService languageService,
+                               ICloudTranslationService cloudTranslationService,
+                               IProjectService projectService,
+                               ILabelService labelService,
+                               IOrganizationService organizationService,
+                               IJournalService journalService) : base(organizationService, journalService)
         {
             _environment = environment;
+            _cacheManager = cacheManager;
+            _languageService = languageService;
+            _cloudTranslationService = cloudTranslationService;
             _projectService = projectService;
             _labelService = labelService;
         }
@@ -617,6 +631,48 @@ namespace Translation.Client.Web.Controllers
 
             CurrentUser.IsActionSucceed = true;
             return View("CreateBulkLabelDone", doneModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Translate(string text, Guid target)
+        {
+            var textToTranslate = text;
+            var targetLanguageUid = target;
+            if (textToTranslate.IsEmpty()
+                || targetLanguageUid.IsEmptyGuid())
+            {
+                return Json(null);
+            }
+
+            var targetLanguageReadRequest = new LanguageReadRequest(CurrentUser.Id, targetLanguageUid);
+            var targetLanguageReadResponse = await _languageService.GetLanguage(targetLanguageReadRequest);
+            if (targetLanguageReadResponse.Status.IsNotSuccess)
+            {
+                return Json(null);
+            }
+
+            var targetLanguageIsoCode2 = targetLanguageReadResponse.Item.IsoCode2;
+
+            var user = _cacheManager.GetCachedUser(CurrentUser.Uid);
+            var sourceLanguageReadRequest = new LanguageReadRequest(CurrentUser.Id, user.LanguageUid);
+            var sourceLanguageReadResponse = await _languageService.GetLanguage(sourceLanguageReadRequest);
+            if (sourceLanguageReadResponse.Status.IsNotSuccess)
+            {
+                return Json(null);
+            }
+
+            var sourceLanguageIsoCode2 = sourceLanguageReadResponse.Item.IsoCode2;
+
+            var request = new LabelGetTranslatedTextRequest(CurrentUser.Id, textToTranslate, targetLanguageIsoCode2,
+                                                            sourceLanguageIsoCode2);
+
+            var response = _cloudTranslationService.GetTranslatedText(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return Json(null);
+            }
+
+            return Json(response.Item.Name);
         }
 
         #endregion

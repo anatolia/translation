@@ -93,7 +93,7 @@ namespace Translation.Client.Web.Helpers
             var english = languageFactory.CreateEntity("en", "eng", "English", "English");
             var hindi = languageFactory.CreateEntity("hi", "hin", "Hindi", "हिन्दी");
             var arabic = languageFactory.CreateEntity("ar", "ara", "Arabic", "العربية");
-            var portuguese = languageFactory.CreateEntity("po", "por", "Portuguese", "Português");
+            var portuguese = languageFactory.CreateEntity("pt", "por", "Portuguese", "Português");
             var russian = languageFactory.CreateEntity("ru", "rus", "Russian", "русский");
             var japanese = languageFactory.CreateEntity("ja", "jpn", "Japanese", "日本語");
             var turkish = languageFactory.CreateEntity("tr", "tur", "Turkish", "Türkçe");
