@@ -32,19 +32,19 @@ namespace Translation.Common.Models.Base
         public void SetInvalidBecauseNotFound(string entityName = "entity")
         {
             Status = ResponseStatus.Invalid;
-            ErrorMessages.Add(entityName + "_not_found");
+            ErrorMessages.Add(entityName.ToLowerInvariant() + "_not_found");
         }
 
         public void SetInvalidBecauseNotSuperAdmin(string entityName = "entity")
         {
             Status = ResponseStatus.Invalid;
-            ErrorMessages.Add(entityName + "_not_super_admin");
+            ErrorMessages.Add(entityName.ToLowerInvariant() + "_not_super_admin");
         }
 
         public void SetInvalidBecauseNotAdmin(string entityName = "entity")
         {
             Status = ResponseStatus.Invalid;
-            ErrorMessages.Add(entityName + "_not_admin");
+            ErrorMessages.Add(entityName.ToLowerInvariant() + "_not_admin");
         }
 
         public void SetInvalidBecauseNotActive(string entityName = "entity")
@@ -56,13 +56,13 @@ namespace Translation.Common.Models.Base
         public void SetInvalidBecauseHasChildren(string entityName = "entity")
         {
             Status = ResponseStatus.Invalid;
-            ErrorMessages.Add(entityName + "_has_children");
+            ErrorMessages.Add(entityName.ToLowerInvariant() + "_has_children");
         }
 
         public void SetInvalidBecauseRevisionNotFound(string entityName = "entity")
         {
             Status = ResponseStatus.Invalid;
-            ErrorMessages.Add(entityName + "_revision_not_found");
+            ErrorMessages.Add(entityName.ToLowerInvariant() + "_revision_not_found");
         }
 
         public void SetFailed()
@@ -74,13 +74,13 @@ namespace Translation.Common.Models.Base
         public void SetFailedBecauseNameMustBeUnique(string entityName = "entity")
         {
             Status = ResponseStatus.Failed;
-            ErrorMessages.Add(entityName + "_name_must_be_unique");
+            ErrorMessages.Add(entityName.ToLowerInvariant() + "_name_must_be_unique");
         }
 
         public void SetFailedBecauseSlugMustBeUnique(string entityName = "entity")
         {
             Status = ResponseStatus.Failed;
-            ErrorMessages.Add(entityName + "_slug_must_be_unique");
+            ErrorMessages.Add(entityName.ToLowerInvariant() + "_slug_must_be_unique");
         }
     }
 
