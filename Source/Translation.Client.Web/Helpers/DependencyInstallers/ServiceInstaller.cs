@@ -3,7 +3,7 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 
 using Translation.Common.Contracts;
-using Translation.Integration.Google;
+using Translation.Integrations.Google;
 using Translation.Service;
 using Translation.Service.Managers;
 

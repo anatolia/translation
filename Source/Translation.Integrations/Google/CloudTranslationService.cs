@@ -9,7 +9,7 @@ using Translation.Common.Enumerations;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Responses.Label;
 
-namespace Translation.Integration.Google
+namespace Translation.Integrations.Google
 {
     public class CloudTranslationService : ICloudTranslationService
     {

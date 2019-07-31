@@ -51,7 +51,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Translation.Common\Translation.Common.csproj" />
     <ProjectReference Include="..\Translation.Data\Translation.Data.csproj" />
-    <ProjectReference Include="..\Translation.Integration\Translation.Integration.csproj" />
+    <ProjectReference Include="..\Translation.Integrations\Translation.Integrations.csproj" />
     <ProjectReference Include="..\Translation.Service\Translation.Service.csproj" />
   </ItemGroup>
 
