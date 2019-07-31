@@ -3,6 +3,10 @@
 <h1 data-translation="@Model.Title">@Model.Title</h1>
 
 <div>
+    <partial name="Components/_InfoMessages" model="@Model.InfoMessages" />
+</div>
+
+<div>
     <label data-translation="label">label</label>
     <a href="/Label/Detail/@Model.LabelUid">@Model.LabelKey</a>
 </div>

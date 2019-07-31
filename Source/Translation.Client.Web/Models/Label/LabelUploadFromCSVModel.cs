@@ -38,6 +38,12 @@ namespace Translation.Client.Web.Models.Label
             OrganizationInput.Value = OrganizationUid.ToUidString();
             ProjectInput.Value = ProjectUid.ToUidString();
             ProjectNameInput.Value = ProjectName;
+            InfoMessages.Clear();
+            InfoMessages.Add("this_page_imports_your_label_file_in_csv_format");
+            InfoMessages.Add("the_file_must_be_UTF-8_encoded");
+            InfoMessages.Add("you_can_download_the_sample_csv_file_below");
+            InfoMessages.Add("added_if_there_is_no_label_during_import");
+            InfoMessages.Add("only_the_label_translation_is_added_if_there_is_a_label_but_no_translation_in_the_import_phase");
         }
 
         public override void SetInputErrorMessages()
