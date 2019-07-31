@@ -791,6 +791,27 @@ namespace Translation.Client.Web.Controllers
             return Redirect($"/Label/Detail/{response.Item.LabelUid}");
         }
 
+        [HttpPost,
+         JournalFilter(Message = "journal_label_translation_delete")]
+        public async Task<IActionResult> LabelTranslationDelete(Guid id)
+        {
+            var labelTranslationUid = id;
+            if (labelTranslationUid.IsEmptyGuid())
+            {
+                return Forbid();
+            }
+
+            var request = new LabelTranslationDeleteRequest(CurrentUser.Id, CurrentUser.OrganizationUid, labelTranslationUid);
+            var response = await _labelService.DeleteTranslation(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return Json(new CommonResult { IsOk = false, Messages = response.ErrorMessages });
+            }
+
+            CurrentUser.IsActionSucceed = true;
+            return Json(new CommonResult { IsOk = true });
+        }
+
         [HttpGet]
         public async Task<IActionResult> LabelTranslationListData(Guid id, int skip, int take)
         {
@@ -820,10 +841,22 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append(
                     $"{result.PrepareImage($"{item.LanguageIconUrl}", item.LanguageName)} {item.LanguageName}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Translation}{DataResult.SEPARATOR}");
+
                 stringBuilder.Append(
                     $"{result.PrepareLink($"/Label/LabelTranslationEdit/{item.Uid}", Localizer.Localize("edit"), true)}");
-                stringBuilder.Append(
-                    $"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}{DataResult.SEPARATOR}");
+
+                if (CurrentUser.IsSuperAdmin)
+                {
+                    stringBuilder.Append(
+                        $"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}");
+                    stringBuilder.Append(
+                        $"{result.PrepareDeleteButton($"/Label/LabelTranslationDelete")}{DataResult.SEPARATOR}");
+                }
+                else
+                {
+                    stringBuilder.Append(
+                        $"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}{DataResult.SEPARATOR}");
+                }
 
                 result.Data.Add(stringBuilder.ToString());
             }

@@ -47,6 +47,7 @@ namespace Translation.Tests.Client.Controllers
          TestCase(ChangeActivationAction, new[] { typeof(Guid), typeof(Guid) }, typeof(HttpPostAttribute)),
          TestCase(UploadLabelFromCSVFileAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(UploadLabelFromCSVFileAction, new[] { typeof(LabelUploadFromCSVModel) }, typeof(HttpPostAttribute)),
+         TestCase(DownloadSampleCSVFileForBulkLabelUploadAction, new Type[] { }, typeof(HttpGetAttribute)),
          TestCase(CreateBulkLabelAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(CreateBulkLabelAction, new[] { typeof(CreateBulkLabelModel) }, typeof(HttpPostAttribute)),
          TestCase(LabelTranslationCreateAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
@@ -54,9 +55,11 @@ namespace Translation.Tests.Client.Controllers
          TestCase(LabelTranslationDetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(LabelTranslationEditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(LabelTranslationEditAction, new[] { typeof(LabelTranslationEditModel) }, typeof(HttpPostAttribute)),
+         TestCase(LabelTranslationDeleteAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
          TestCase(LabelTranslationListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
          TestCase(UploadLabelTranslationFromCSVFileAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(UploadLabelTranslationFromCSVFileAction, new[] { typeof(UploadLabelTranslationFromCSVFileModel) }, typeof(HttpPostAttribute)),
+         TestCase(DownloadSampleCSVFileForBulkLabelTranslationUploadAction, new Type[] { }, typeof(HttpGetAttribute)),
          TestCase(DownloadTranslationsAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
          TestCase(RestoreLabelTranslationAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute)),
          TestCase(LabelTranslationRevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
@@ -1487,6 +1490,66 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertInputErrorMessagesOfView(result, model);
         }
+
+
+        [Test]
+        public async Task LabelTranslationDelete_POST()
+        {
+            // arrange
+            MockLabelService.Setup_DeleteTranslation_Returns_LabelTranslationDeleteResponse_Success();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.LabelTranslationDelete(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(true);
+            MockLabelService.Verify_DeleteTranslation();
+        }
+
+        [Test]
+        public async Task LabelTranslationDelete_POST_FailedResponse()
+        {
+            // arrange
+            MockLabelService.Setup_DeleteTranslation_Returns_LabelTranslationDeleteResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationDelete(UidOne);
+
+            // assert
+            var commonResult = ((CommonResult)((JsonResult)result).Value);
+            commonResult.IsOk.ShouldBeFalse();
+            commonResult.Messages.Any(x => x == StringOne);
+            MockLabelService.Verify_DeleteTranslation();
+        }
+
+        [Test]
+        public async Task LabelTranslationDelete_POST_InvalidResponse()
+        {
+            // arrange
+            MockLabelService.Setup_DeleteTranslation_Returns_LabelTranslationDeleteResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationDelete(UidOne);
+
+            // assert
+            var commonResult = ((CommonResult)((JsonResult)result).Value);
+            commonResult.IsOk.ShouldBeFalse();
+            commonResult.Messages.Any(x => x == StringOne);
+            MockLabelService.Verify_DeleteTranslation();
+        }
+
+        [Test]
+        public async Task LabelTranslationDelete_POST_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationDelete(EmptyUid);
+
+            // assert
+            AssertView<ForbidResult>(result);
+        }
+
 
         [Test]
         public async Task LabelTranslationListData_GET()

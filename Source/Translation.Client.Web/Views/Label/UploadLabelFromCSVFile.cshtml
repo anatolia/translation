@@ -3,8 +3,12 @@
 <h1 data-translation="@Model.Title">@Model.Title</h1>
 
 <div>
+    <partial name="Components/_InfoMessages" model="@Model.InfoMessages" />
+</div>
+
+<div>
     <label data-translation="project">project</label>
-    <a href="/Project/Detail/@Model.ProjectUid">@Model.ProjectName</a>
+    
 </div>
 
 <form method="post" enctype="multipart/form-data">
