@@ -32,7 +32,7 @@ namespace Translation.Tests.Client.Controllers
         public Mock<IProjectService> MockProjectService { get; set; }
         public Mock<ILabelService> MockLabelService { get; set; }
         public Mock<IJournalService> MockJournalService { get; set; }
-        public Mock<ICloudTranslationService> MockCloudTranslationService { get; set; }
+        public Mock<ITextTranslateIntegration> MockCloudTranslationService { get; set; }
 
         protected new void Refresh()
         {
@@ -45,7 +45,7 @@ namespace Translation.Tests.Client.Controllers
             MockProjectService = new Mock<IProjectService>();
             MockLabelService = new Mock<ILabelService>();
             MockJournalService = new Mock<IJournalService>();
-            MockCloudTranslationService = new Mock<ICloudTranslationService>();
+            MockCloudTranslationService = new Mock<ITextTranslateIntegration>();
 
             SetupCurrentUser();
 
@@ -57,7 +57,7 @@ namespace Translation.Tests.Client.Controllers
             Container.Register(Component.For<ILabelService>().Instance(MockLabelService.Object).LifestyleTransient());
             Container.Register(Component.For<IJournalService>().Instance(MockJournalService.Object).LifestyleTransient());
 
-            Container.Register(Component.For<ICloudTranslationService>().Instance(MockCloudTranslationService.Object).LifestyleTransient());
+            Container.Register(Component.For<ITextTranslateIntegration>().Instance(MockCloudTranslationService.Object).LifestyleTransient());
 
             Container.Register(Component.For<HomeController>().LifestyleTransient());
             Container.Register(Component.For<AdminController>().LifestyleTransient());

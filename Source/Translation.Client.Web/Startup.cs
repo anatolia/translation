@@ -71,6 +71,7 @@ namespace Translation.Client.Web
             Container.Install(new FactoryAndMapperInstaller());
             Container.Install(new RepositoryAndUnitOfWorkInstaller());
             Container.Install(new ServiceInstaller());
+            Container.Install(new IntegrationsInstaller());
 
             DbGeneratorHelper.Generate(Container, env.WebRootPath);
         }

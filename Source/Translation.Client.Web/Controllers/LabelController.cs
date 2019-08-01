@@ -18,8 +18,6 @@ using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
 using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Requests.Project;
-using Translation.Common.Models.Requests.User;
-using Translation.Common.Models.Responses.Language;
 using Translation.Common.Models.Shared;
 using Translation.Service.Managers;
 
@@ -30,14 +28,14 @@ namespace Translation.Client.Web.Controllers
         private readonly IHostingEnvironment _environment;
         private readonly CacheManager _cacheManager;
         private readonly ILanguageService _languageService;
-        private readonly ICloudTranslationService _cloudTranslationService;
+        private readonly ITextTranslateIntegration _textTranslateIntegration;
         private readonly IProjectService _projectService;
         private readonly ILabelService _labelService;
 
         public LabelController(IHostingEnvironment environment,
                                CacheManager cacheManager,
                                ILanguageService languageService,
-                               ICloudTranslationService cloudTranslationService,
+                               ITextTranslateIntegration textTranslateIntegration,
                                IProjectService projectService,
                                ILabelService labelService,
                                IOrganizationService organizationService,
@@ -46,7 +44,7 @@ namespace Translation.Client.Web.Controllers
             _environment = environment;
             _cacheManager = cacheManager;
             _languageService = languageService;
-            _cloudTranslationService = cloudTranslationService;
+            _textTranslateIntegration = textTranslateIntegration;
             _projectService = projectService;
             _labelService = labelService;
         }
@@ -666,7 +664,7 @@ namespace Translation.Client.Web.Controllers
             var request = new LabelGetTranslatedTextRequest(CurrentUser.Id, textToTranslate, targetLanguageIsoCode2,
                                                             sourceLanguageIsoCode2);
 
-            var response = _cloudTranslationService.GetTranslatedText(request);
+            var response = await _textTranslateIntegration.GetTranslatedText(request);
             if (response.Status.IsNotSuccess)
             {
                 return Json(null);
