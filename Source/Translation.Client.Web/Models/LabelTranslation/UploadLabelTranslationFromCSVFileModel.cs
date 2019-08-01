@@ -40,10 +40,9 @@ namespace Translation.Client.Web.Models.LabelTranslation
             LabelInput.Value = LabelUid.ToUidString();
             LabelKeyInput.Value = LabelKey;
             InfoMessages.Clear();
-            InfoMessages.Add("this_page_imports_your_label_translation_file_in_csv_format");
             InfoMessages.Add("the_file_must_be_UTF-8_encoded");
-            InfoMessages.Add("you_can_download_the_sample_csv_file_below");
-            InfoMessages.Add("label_translation_is not_added_for_label_with_translation_at_import_stage");
+            InfoMessages.Add("you_update_label_translation_previously_added_that_have_same_language");
+            InfoMessages.Add("if_you_add_multiple_translation_for_same_language_accepts_the_first_one");
         }
 
         public override void SetInputErrorMessages()
