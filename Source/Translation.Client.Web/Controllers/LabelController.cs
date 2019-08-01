@@ -534,6 +534,7 @@ namespace Translation.Client.Web.Controllers
             doneModel.AddedLabelCount = response.AddedLabelCount;
             doneModel.CanNotAddedLabelCount = response.CanNotAddedLabelCount;
             doneModel.AddedLabelTranslationCount = response.AddedLabelTranslationCount;
+            doneModel.UpdatedLabelTranslationCount = response.UpdatedLabelTranslationCount;
             doneModel.CanNotAddedLabelTranslationCount = response.CanNotAddedLabelTranslationCount;
             doneModel.TotalRowsProcessed = lines.Count - 1;
 
@@ -943,6 +944,7 @@ namespace Translation.Client.Web.Controllers
             doneModel.LabelUid = model.LabelUid;
             doneModel.LabelKey = model.LabelKey;
             doneModel.AddedTranslationCount = response.AddedTranslationCount;
+            doneModel.UpdatedTranslationCount = response.UpdatedTranslationCount;
             doneModel.CanNotAddedTranslationCount = response.CanNotAddedTranslationCount;
             doneModel.TotalRowsProcessed = lines.Count - 1;
 
