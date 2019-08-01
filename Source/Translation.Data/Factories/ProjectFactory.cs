@@ -3,12 +3,13 @@ using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
+using Translation.Data.Entities.Parameter;
 
 namespace Translation.Data.Factories
 {
     public class ProjectFactory
     {
-        public Project CreateEntityFromRequest(ProjectEditRequest request, Project entity)
+        public Project CreateEntityFromRequest(ProjectEditRequest request, Project entity, Language language)
         {
             entity.Name = request.ProjectName;
             entity.Slug = request.ProjectSlug;
@@ -16,27 +17,15 @@ namespace Translation.Data.Factories
             entity.Description = request.Description;
             entity.Url = request.Url;
 
-            return entity;
-        }
-
-        public Project CreateEntityFromRequest(ProjectCreateRequest request, Organization organization)
-        {
-            var entity = new Project();
-            entity.OrganizationId = organization.Id;
-            entity.OrganizationUid = organization.Uid;
-            entity.OrganizationName = organization.Name;
-
-            entity.Name = request.ProjectName;
-            entity.Slug = request.ProjectSlug;
-
-            entity.Description = request.Description;
-            entity.Url = request.Url;
-            entity.IsActive = true;
+            entity.LanguageId = language.Id;
+            entity.LanguageUid = language.Uid;
+            entity.LanguageName = language.Name;
+            entity.LanguageIconUrl = language.IconUrl;
 
             return entity;
         }
 
-        public Project CreateEntityFromRequest(ProjectCreateRequest request, CurrentOrganization organization)
+        public Project CreateEntityFromRequest(ProjectCreateRequest request, CurrentOrganization organization, Language language)
         {
             var entity = new Project();
             entity.OrganizationId = organization.Id;
@@ -50,10 +39,15 @@ namespace Translation.Data.Factories
             entity.Url = request.Url;
             entity.IsActive = true;
 
+            entity.LanguageId = language.Id;
+            entity.LanguageUid = language.Uid;
+            entity.LanguageName = language.Name;
+            entity.LanguageIconUrl = language.IconUrl;
+
             return entity;
         }
 
-        public Project CreateEntityFromRequest(ProjectCloneRequest request, Project cloningProject)
+        public Project CreateEntityFromRequest(ProjectCloneRequest request, Project cloningProject, Language language)
         {
             var entity = new Project();
             entity.OrganizationId = cloningProject.OrganizationId;
@@ -70,6 +64,11 @@ namespace Translation.Data.Factories
             entity.Description = request.Description;
             entity.Url = request.Url;
             entity.IsActive = true;
+
+            entity.LanguageId = language.Id;
+            entity.LanguageUid = language.Uid;
+            entity.LanguageName = language.Name;
+            entity.LanguageIconUrl = language.IconUrl;
 
             return entity;
         }
@@ -93,6 +92,11 @@ namespace Translation.Data.Factories
             dto.CreatedAt = entity.CreatedAt;
             dto.UpdatedAt = entity.UpdatedAt;
 
+            dto.LanguageId = entity.LanguageId;
+            dto.LanguageUid = entity.LanguageUid;
+            dto.LanguageName = entity.LanguageName;
+            dto.LanguageIconUrl = entity.LanguageIconUrl;
+
             return dto;
         }
 
@@ -102,7 +106,7 @@ namespace Translation.Data.Factories
             return entity;
         }
 
-        public Project CreateDefault(Organization organization)
+        public Project CreateDefault(Organization organization, Language language)
         {
             var entity = new Project();
             entity.OrganizationId = organization.Id;
@@ -111,6 +115,11 @@ namespace Translation.Data.Factories
             entity.Name = "Default";
             entity.Slug = "default";
             entity.IsActive = true;
+
+            entity.LanguageId = language.Id;
+            entity.LanguageUid = language.Uid;
+            entity.LanguageName = language.Name;
+            entity.LanguageIconUrl = language.IconUrl;
 
             return entity;
         }

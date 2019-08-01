@@ -65,7 +65,8 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new ProjectCreateRequest(CurrentUser.Id, model.OrganizationUid, model.Name,
-                                                   model.Url, model.Description, model.Slug);
+                                                   model.Url, model.Description, model.Slug, 
+                                                   model.LanguageUid);
             var response = await _projectService.CreateProject(request);
             if (response.Status.IsNotSuccess)
             {
@@ -132,7 +133,7 @@ namespace Translation.Client.Web.Controllers
 
             var request = new ProjectEditRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
                                                  model.Name, model.Url, model.Description,
-                                                 model.Slug);
+                                                 model.Slug, model.LanguageUid);
             var response = await _projectService.EditProject(request);
             if (response.Status.IsNotSuccess)
             {
@@ -199,7 +200,7 @@ namespace Translation.Client.Web.Controllers
             var request = new ProjectCloneRequest(CurrentUser.Id, model.OrganizationUid, model.CloningProjectUid,
                                                   model.Name, model.Url, model.Description,
                                                   model.LabelCount, model.LabelTranslationCount, model.IsSuperProject,
-                                                  model.Slug);
+                                                  model.Slug, model.LanguageUid);
             var response = await _projectService.CloneProject(request);
             if (response.Status.IsNotSuccess)
             {

@@ -24,9 +24,10 @@ namespace Translation.Tests.Server.Factories
             // arrange
             var project = GetOrganizationOneProjectOne();
             var request = GetProjectEditRequest(project);
-            
+            var language = GetLanguageOne();
+
             // act
-            var result = ProjectFactory.CreateEntityFromRequest(request, project);
+            var result = ProjectFactory.CreateEntityFromRequest(request, project, language);
 
             // assert
             result.OrganizationId.ShouldBe(project.OrganizationId);
@@ -38,29 +39,12 @@ namespace Translation.Tests.Server.Factories
 
             result.Url.ShouldBe(request.Url);
             result.Description.ShouldBe(request.Description);
-        }
 
-        [Test]
-        public void ProjectFactory_CreateEntityFromRequest_ProjectCreateRequest_Organization()
-        {
-            // arrange
-            var organization = GetOrganizationOne();
-            var project = GetOrganizationOneProjectOne();
-            var request = GetProjectCreateRequest(organization, project);
-
-            // act
-            var result = ProjectFactory.CreateEntityFromRequest(request, organization);
-
-            // assert
-            result.OrganizationId.ShouldBe(organization.Id);
-            result.OrganizationUid.ShouldBe(organization.Uid);
-            result.OrganizationName.ShouldBe(organization.Name);
-
-            result.Name.ShouldBe(request.ProjectName);
-
-            result.Description.ShouldBe(request.Description);
-            result.Url.ShouldBe(request.Url);
-            result.IsActive.ShouldBeTrue();
+            result.LanguageId.ShouldBe(language.Id);
+            result.LanguageUid.ShouldBe(language.Uid);
+            result.LanguageName.ShouldBe(language.Name);
+            result.LanguageName.ShouldBe(language.Name);
+            result.LanguageIconUrl.ShouldBe(language.IconUrl);
         }
 
         [Test]
@@ -70,9 +54,10 @@ namespace Translation.Tests.Server.Factories
             var organization = GetCurrentOrganizationOne();
             var project = GetOrganizationOneProjectOne();
             var request = GetProjectCreateRequest(organization, project);
+            var language = GetLanguageOne();
 
             // act
-            var result = ProjectFactory.CreateEntityFromRequest(request, organization);
+            var result = ProjectFactory.CreateEntityFromRequest(request, organization, language);
 
             // assert
             result.OrganizationId.ShouldBe(organization.Id);
@@ -84,6 +69,12 @@ namespace Translation.Tests.Server.Factories
             result.Description.ShouldBe(request.Description);
             result.Url.ShouldBe(request.Url);
             result.IsActive.ShouldBeTrue();
+
+            result.LanguageId.ShouldBe(language.Id);
+            result.LanguageUid.ShouldBe(language.Uid);
+            result.LanguageName.ShouldBe(language.Name);
+            result.LanguageName.ShouldBe(language.Name);
+            result.LanguageIconUrl.ShouldBe(language.IconUrl);
         }
 
         [Test]
@@ -92,9 +83,10 @@ namespace Translation.Tests.Server.Factories
             // arrange
             var project = GetOrganizationOneProjectOne();
             var request = GetProjectCloneRequest(project);
+            var language = GetLanguageOne();
 
             // act
-            var result = ProjectFactory.CreateEntityFromRequest(request, project);
+            var result = ProjectFactory.CreateEntityFromRequest(request, project, language);
 
             // assert
             result.OrganizationId.ShouldBe(project.OrganizationId);
@@ -109,6 +101,12 @@ namespace Translation.Tests.Server.Factories
             result.LabelCount.ShouldBe(request.LabelCount);
             result.LabelTranslationCount.ShouldBe(request.LabelTranslationCount);
             result.IsSuperProject.ShouldBe(request.IsSuperProject);
+
+            result.LanguageId.ShouldBe(language.Id);
+            result.LanguageUid.ShouldBe(language.Uid);
+            result.LanguageName.ShouldBe(language.Name);
+            result.LanguageName.ShouldBe(language.Name);
+            result.LanguageIconUrl.ShouldBe(language.IconUrl);
         }
 
         [Test]
@@ -161,14 +159,20 @@ namespace Translation.Tests.Server.Factories
         {
             // arrange
             var organization = GetOrganizationOne();
+            var language = GetLanguageOne();
 
             // act
-            var result = ProjectFactory.CreateDefault(organization);
+            var result = ProjectFactory.CreateDefault(organization, language);
 
             // assert
             result.OrganizationId.ShouldBe(organization.Id);
             result.OrganizationUid.ShouldBe(organization.Uid);
             result.OrganizationName.ShouldBe(organization.Name);
+
+            result.LanguageId.ShouldBe(language.Id);
+            result.LanguageUid.ShouldBe(language.Uid);
+            result.LanguageName.ShouldBe(language.Name);
+            result.LanguageIconUrl.ShouldBe(language.IconUrl);
 
             result.Name.ShouldBe("Default");
 

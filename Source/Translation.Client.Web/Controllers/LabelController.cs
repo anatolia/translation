@@ -19,21 +19,18 @@ using Translation.Common.Models.Requests.Label.LabelTranslation;
 using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Shared;
-using Translation.Service.Managers;
 
 namespace Translation.Client.Web.Controllers
 {
     public class LabelController : BaseController
     {
         private readonly IHostingEnvironment _environment;
-        private readonly CacheManager _cacheManager;
         private readonly ILanguageService _languageService;
         private readonly ITextTranslateIntegration _textTranslateIntegration;
         private readonly IProjectService _projectService;
         private readonly ILabelService _labelService;
 
         public LabelController(IHostingEnvironment environment,
-                               CacheManager cacheManager,
                                ILanguageService languageService,
                                ITextTranslateIntegration textTranslateIntegration,
                                IProjectService projectService,
@@ -42,7 +39,6 @@ namespace Translation.Client.Web.Controllers
                                IJournalService journalService) : base(organizationService, journalService)
         {
             _environment = environment;
-            _cacheManager = cacheManager;
             _languageService = languageService;
             _textTranslateIntegration = textTranslateIntegration;
             _projectService = projectService;
@@ -632,13 +628,15 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Translate(string text, Guid target, string provider)
+        public async Task<IActionResult> Translate(string text, Guid target, Guid source, string provider)
         {
             var textToTranslate = text;
             var targetLanguageUid = target;
+            var sourceLanguageUid = source;
             var translateProviderType = provider;
             if (textToTranslate.IsEmpty()
                 || targetLanguageUid.IsEmptyGuid()
+                || sourceLanguageUid.IsEmptyGuid()
                 || translateProviderType.IsEmpty())
             {
                 return Json(null);
@@ -653,8 +651,7 @@ namespace Translation.Client.Web.Controllers
 
             var targetLanguageIsoCode2 = targetLanguageReadResponse.Item.IsoCode2;
 
-            var user = _cacheManager.GetCachedUser(CurrentUser.Uid);
-            var sourceLanguageReadRequest = new LanguageReadRequest(CurrentUser.Id, user.LanguageUid);
+            var sourceLanguageReadRequest = new LanguageReadRequest(CurrentUser.Id, sourceLanguageUid);
             var sourceLanguageReadResponse = await _languageService.GetLanguage(sourceLanguageReadRequest);
             if (sourceLanguageReadResponse.Status.IsNotSuccess)
             {
@@ -695,7 +692,14 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LabelMapper.MapLabelTranslationCreateModel(response.Item);
+            var projectReadRequest = new ProjectReadRequest(CurrentUser.Id, response.Item.ProjectUid);
+            var projectReadResponse = await _projectService.GetProject(projectReadRequest);
+            if (projectReadResponse.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = LabelMapper.MapLabelTranslationCreateModel(response.Item, projectReadResponse.Item);
 
             return View(model);
         }

@@ -18,6 +18,17 @@
     <label data-translation="url">url</label>
     <a href=@Model.Url target="_blank">@Model.Url</a>
 </div>
+
+<div>
+    <label data-translation="language">language</label>
+    <img src="@Model.LanguageIconUrl" alt="@Model.LanguageName" style="height: 34px; margin-top: 3px; margin-bottom: 5px;" />
+    <span style="display: block; margin-bottom: 10px;">@Model.LanguageName</span>
+</div>
+
+<div>
+    <partial name="Components/_InfoMessages" model="@Model.InfoMessages" />
+</div>
+
 <div>
     <label data-translation="label_count">label_count</label>
     @Model.LabelCount

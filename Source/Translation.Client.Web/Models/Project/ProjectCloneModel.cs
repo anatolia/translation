@@ -21,6 +21,9 @@ namespace Translation.Client.Web.Models.Project
 
         public string Slug { get; set; }
 
+        public Guid LanguageUid { get; set; }
+        public string LanguageName { get; set; }
+
         public HiddenInputModel OrganizationInput { get; }
         public HiddenInputModel CloningProjectInput { get; }
 
@@ -32,6 +35,8 @@ namespace Translation.Client.Web.Models.Project
         public HiddenInputModel LabelCountInput { get; set; }
         public HiddenInputModel LabelTranslationCountInput { get; set; }
         public CheckboxInputModel IsSuperProjectInput { get; set; }
+
+        public SelectInputModel LanguageInput { get; }
 
         public ProjectCloneModel()
         {
@@ -48,6 +53,8 @@ namespace Translation.Client.Web.Models.Project
             LabelCountInput = new HiddenInputModel("LabelCount");
             LabelTranslationCountInput = new HiddenInputModel("LabelTranslationCount");
             IsSuperProjectInput = new CheckboxInputModel("IsSuperProject", "is_super_project");
+            LanguageInput = new SelectInputModel("LanguageUid", "LanguageName", "language", "/Language/SelectData");
+            LanguageInput.IsOptionTypeContent = true;
         }
 
         public override void SetInputModelValues()
@@ -63,6 +70,15 @@ namespace Translation.Client.Web.Models.Project
             LabelCountInput.Value = LabelCount.ToString();
             LabelTranslationCountInput.Value = LabelTranslationCount.ToString();
             IsSuperProjectInput.Value = IsSuperProject;
+
+            if (LanguageUid.IsNotEmptyGuid())
+            {
+                LanguageInput.Value = LanguageUid.ToUidString();
+                LanguageInput.Text = LanguageName;
+            }
+
+            InfoMessages.Clear();
+            InfoMessages.Add("the_project_language_will_use_as_the_source_language_during_the_automatic_translation_of_the_labels");
         }
 
         public override void SetInputErrorMessages()
@@ -97,6 +113,12 @@ namespace Translation.Client.Web.Models.Project
             {
                 UrlInput.ErrorMessage.Add("url_is_not_valid_error_message");
                 InputErrorMessages.AddRange(UrlInput.ErrorMessage);
+            }
+
+            if (LanguageUid.IsEmptyGuid())
+            {
+                LanguageInput.ErrorMessage.Add("language_uid_not_valid");
+                InputErrorMessages.AddRange(LanguageInput.ErrorMessage);
             }
         }
     }

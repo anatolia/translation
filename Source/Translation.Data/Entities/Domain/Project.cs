@@ -19,5 +19,10 @@ namespace Translation.Data.Entities.Domain
         public bool IsSuperProject { get; set; }
 
         public string Slug { get; set; }
+
+        public long LanguageId { get; set; }
+        public Guid LanguageUid { get; set; }
+        public string LanguageName { get; set; }
+        public string LanguageIconUrl { get; set; }
     }
 }

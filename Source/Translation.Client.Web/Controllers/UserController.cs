@@ -312,7 +312,8 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            var request = new UserEditRequest(CurrentUser.Id, model.UserUid, model.FirstName, model.LastName, model.LanguageUid);
+            var request = new UserEditRequest(CurrentUser.Id, model.UserUid, model.FirstName,
+                                              model.LastName, model.LanguageUid);
             var response = await OrganizationService.EditUser(request);
             if (response.Status.IsNotSuccess)
             {

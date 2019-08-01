@@ -12,6 +12,7 @@ namespace Translation.Client.Web.Models.LabelTranslation
 
         public Guid ProjectUid { get; set; }
         public string ProjectName { get; set; }
+        public Guid ProjectLanguageUid { get; set; }
 
         public Guid LabelUid { get; set; }
         public string LabelKey { get; set; }
@@ -23,6 +24,7 @@ namespace Translation.Client.Web.Models.LabelTranslation
 
         public HiddenInputModel ProjectInput { get; }
         public HiddenInputModel ProjectNameInput { get; }
+        public HiddenInputModel ProjectLanguageInput { get; }
 
         public HiddenInputModel LabelInput { get; }
         public HiddenInputModel LabelKeyInput { get; }
@@ -38,6 +40,7 @@ namespace Translation.Client.Web.Models.LabelTranslation
 
             ProjectInput = new HiddenInputModel("ProjectUid");
             ProjectNameInput = new HiddenInputModel("ProjectName");
+            ProjectLanguageInput = new HiddenInputModel("ProjectLanguageUid");
 
             LabelInput = new HiddenInputModel("LabelUid");
             LabelKeyInput = new HiddenInputModel("LabelKey");
@@ -53,6 +56,7 @@ namespace Translation.Client.Web.Models.LabelTranslation
 
             ProjectInput.Value = ProjectUid.ToUidString();
             ProjectNameInput.Value = ProjectName;
+            ProjectLanguageInput.Value = ProjectLanguageUid.ToUidString();
 
             LabelInput.Value = LabelUid.ToUidString();
             LabelKeyInput.Value = LabelKey;

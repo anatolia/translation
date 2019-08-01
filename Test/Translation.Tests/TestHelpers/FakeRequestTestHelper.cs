@@ -458,16 +458,17 @@ namespace Translation.Tests.TestHelpers
         public static ProjectCreateRequest GetProjectCreateRequest()
         {
             var request = new ProjectCreateRequest(CurrentUserId, OrganizationOneUid, StringOne,
-                                                   HttpUrl, StringOne, StringOne);
+                                                   HttpUrl, StringOne, StringOne, UidOne);
 
             return request;
         }
 
         public static ProjectCreateRequest GetProjectCreateRequest(long currentUserId, Guid organizationUid, string projectName,
-                                                                   string url, string description, string projectSlug)
+                                                                   string url, string description, string projectSlug, 
+                                                                   Guid languageUid)
         {
             var request = new ProjectCreateRequest(currentUserId, organizationUid, projectName,
-            url, description, projectSlug);
+                                                   url, description, projectSlug, languageUid);
 
             return request;
         }
@@ -475,7 +476,8 @@ namespace Translation.Tests.TestHelpers
         public static ProjectCreateRequest GetProjectCreateRequest(Organization organization, Project project)
         {
             var request = new ProjectCreateRequest(CurrentUserId, organization.Uid, project.Name,
-                                                   project.Url, project.Description, project.Slug);
+                                                   project.Url, project.Description, project.Slug,
+                                                   project.LanguageUid);
 
             return request;
         }
@@ -483,7 +485,8 @@ namespace Translation.Tests.TestHelpers
         public static ProjectCreateRequest GetProjectCreateRequest(CurrentOrganization organization, Project project)
         {
             var request = new ProjectCreateRequest(CurrentUserId, organization.Uid, project.Name,
-                                                   project.Url, project.Description, project.Slug);
+                                                   project.Url, project.Description, project.Slug,
+                                                   project.LanguageUid);
 
             return request;
         }
@@ -492,18 +495,18 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new ProjectEditRequest(CurrentUserId, OrganizationOneUid, UidOne,
                                                  StringOne, HttpUrl, StringOne,
-                                                 StringOne);
+                                                 StringOne, UidOne);
 
             return request;
         }
 
         public static ProjectEditRequest GetProjectEditRequest(long currentUserId, Guid organizationUid, Guid projectUid,
                                                                 string projectName, string url, string description,
-                                                                string projectSlug)
+                                                                string projectSlug, Guid languageUid)
         {
             var request = new ProjectEditRequest(currentUserId, organizationUid, projectUid,
                                                  projectName, url, description,
-                                                 projectSlug);
+                                                 projectSlug, languageUid);
 
             return request;
         }
@@ -512,7 +515,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new ProjectEditRequest(CurrentUserId, project.OrganizationUid, project.Uid,
                                                  project.Name, project.Url, project.Description,
-                                                 project.Slug);
+                                                 project.Slug, project.LanguageUid);
 
             return request;
         }
@@ -522,7 +525,7 @@ namespace Translation.Tests.TestHelpers
             var request = new ProjectCloneRequest(CurrentUserId, OrganizationOneUid, UidOne,
                                                   StringOne, HttpUrl, StringOne,
                                                   One, Two, BooleanTrue,
-                                                  StringOne);
+                                                  StringOne, UidOne);
 
             return request;
         }
@@ -530,12 +533,12 @@ namespace Translation.Tests.TestHelpers
         public static ProjectCloneRequest GetProjectCloneRequest(long currentUserId, Guid organizationUid, Guid cloningProjectUid,
                                                                  string name, string url, string description,
                                                                  int labelCount, int labelTranslationCount, bool isSuperProject,
-                                                                 string slug)
+                                                                 string slug, Guid languageUid)
         {
             var request = new ProjectCloneRequest(currentUserId, organizationUid, cloningProjectUid,
                                                   name, url, description,
                                                   labelCount, labelTranslationCount, isSuperProject,
-                                                  slug);
+                                                  slug, languageUid);
 
             return request;
         }
@@ -545,7 +548,7 @@ namespace Translation.Tests.TestHelpers
             var request = new ProjectCloneRequest(CurrentUserId, project.OrganizationUid, project.Uid,
                                                   project.Name, project.Url, project.Description,
                                                   project.LabelCount, project.LabelTranslationCount, project.IsSuperProject,
-                                                  project.Slug);
+                                                  project.Slug, project.LanguageUid);
 
             return request;
         }

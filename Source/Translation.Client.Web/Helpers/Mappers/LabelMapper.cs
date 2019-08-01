@@ -100,13 +100,14 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static LabelTranslationCreateModel MapLabelTranslationCreateModel(LabelDto label)
+        public static LabelTranslationCreateModel MapLabelTranslationCreateModel(LabelDto label, ProjectDto project)
         {
             var model = new LabelTranslationCreateModel();
             model.OrganizationUid = label.OrganizationUid;
 
-            model.ProjectUid = label.ProjectUid;
-            model.ProjectName = label.ProjectName;
+            model.ProjectUid = project.Uid;
+            model.ProjectName = project.Name;
+            model.ProjectLanguageUid = project.LanguageUid;
 
             model.LabelUid = label.Uid;
             model.LabelKey= label.Key;

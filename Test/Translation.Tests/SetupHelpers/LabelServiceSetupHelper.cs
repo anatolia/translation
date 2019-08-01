@@ -137,8 +137,9 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetLabel_Returns_LabelReadResponse_Success(this Mock<ILabelService> service)
         {
+            var item = new LabelDto() { ProjectUid = UidOne };
             service.Setup(x => x.GetLabel(It.IsAny<LabelReadRequest>()))
-                   .ReturnsAsync(new LabelReadResponse { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new LabelReadResponse { Status = ResponseStatus.Success, Item = item});
         }
 
         public static void Setup_CreateLabel_Returns_LabelCreateResponse_Success(this Mock<ILabelService> service)

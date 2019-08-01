@@ -353,6 +353,9 @@ namespace Translation.Tests.TestHelpers
             project.Url = HttpUrl;
             project.CreatedAt = DateTimeOne;
 
+            project.Slug = SlugOne;
+            project.LanguageUid = UidOne;
+
             return project;
         }
 
@@ -372,6 +375,7 @@ namespace Translation.Tests.TestHelpers
             project.CreatedAt = DateTimeOne;
 
             project.Slug = OrganizationOneProjectOneSlug;
+            project.LanguageUid = UidOne;
 
             return project;
         }

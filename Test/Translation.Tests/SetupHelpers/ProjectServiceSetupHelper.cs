@@ -63,8 +63,10 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetProject_Returns_ProjectReadResponse_Success(this Mock<IProjectService> service)
         {
+            var item = new ProjectDto(){Uid = UidOne};
+
             service.Setup(x => x.GetProject(It.IsAny<ProjectReadRequest>()))
-                   .ReturnsAsync(new ProjectReadResponse { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new ProjectReadResponse { Status = ResponseStatus.Success, Item = item });
         }
 
         public static void Setup_CreateProject_Returns_ProjectCreateResponse_Success(this Mock<IProjectService> service)

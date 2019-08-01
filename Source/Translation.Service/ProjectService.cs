@@ -14,6 +14,7 @@ using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Responses.Project;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
+using Translation.Data.Entities.Parameter;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
 using Translation.Data.UnitOfWorks.Contracts;
@@ -28,6 +29,7 @@ namespace Translation.Service
         private readonly IProjectRepository _projectRepository;
         private readonly ProjectFactory _projectFactory;
         private readonly IOrganizationRepository _organizationRepository;
+        private readonly ILanguageRepository _languageRepository;
         private readonly ILabelRepository _labelRepository;
         private readonly LabelFactory _labelFactory;
 
@@ -35,6 +37,7 @@ namespace Translation.Service
                               IProjectUnitOfWork projectUnitOfWork,
                               IProjectRepository projectRepository, ProjectFactory projectFactory,
                               IOrganizationRepository organizationRepository,
+                              ILanguageRepository languageRepository,
                               ILabelRepository labelRepository,
                               LabelFactory labelFactory)
         {
@@ -43,6 +46,7 @@ namespace Translation.Service
             _projectRepository = projectRepository;
             _projectFactory = projectFactory;
             _organizationRepository = organizationRepository;
+            _languageRepository = languageRepository;
             _labelRepository = labelRepository;
             _labelFactory = labelFactory;
         }
@@ -203,7 +207,13 @@ namespace Translation.Service
                 return response;
             }
 
-            var entity = _projectFactory.CreateEntityFromRequest(request, currentUser.Organization);
+            var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
+            if (language.IsNotExist())
+            {
+                response.SetInvalidBecauseNotFound(nameof(Language));
+            }
+
+            var entity = _projectFactory.CreateEntityFromRequest(request, currentUser.Organization, language);
             var uowResult = await _projectUnitOfWork.DoCreateWork(request.CurrentUserId, entity);
             if (uowResult)
             {
@@ -254,7 +264,13 @@ namespace Translation.Service
                 return response;
             }
 
-            var updatedEntity = _projectFactory.CreateEntityFromRequest(request, project);
+            var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
+            if (language.IsNotExist())
+            {
+                response.SetInvalidBecauseNotFound(nameof(Language));
+            }
+
+            var updatedEntity = _projectFactory.CreateEntityFromRequest(request, project, language);
             var result = await _projectRepository.Update(request.CurrentUserId, updatedEntity);
             if (result)
             {
@@ -365,7 +381,13 @@ namespace Translation.Service
                 return response;
             }
 
-            var cloningEntity = _projectFactory.CreateEntityFromRequest(request, project);
+            var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
+            if (language.IsNotExist())
+            {
+                response.SetInvalidBecauseNotFound(nameof(Language));
+            }
+
+            var cloningEntity = _projectFactory.CreateEntityFromRequest(request, project, language);
             var uowResult = await _projectUnitOfWork.DoCloneWork(request.CurrentUserId, project.Id, cloningEntity);
             if (uowResult)
             {

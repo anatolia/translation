@@ -18,6 +18,8 @@ namespace Translation.Client.Web.Models.Project
         public string Url { get; set; }
         public int LabelCount { get; set; }
         public bool IsActive { get; set; }
+        public string LanguageName { get; set; }
+        public string LanguageIconUrl { get; set; }
 
         public HiddenInputModel OrganizationInput { get; }
         public HiddenInputModel ProjectInput { get; }
@@ -36,6 +38,9 @@ namespace Translation.Client.Web.Models.Project
         {
             OrganizationInput.Value = OrganizationUid.ToUidString();
             ProjectInput.Value = ProjectUid.ToUidString();
+
+            InfoMessages.Clear();
+            InfoMessages.Add("the_project_language_will_use_as_the_source_language_during_the_automatic_translation_of_the_labels");
         }
     }
 }

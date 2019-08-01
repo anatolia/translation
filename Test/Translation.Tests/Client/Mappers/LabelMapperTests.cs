@@ -137,18 +137,20 @@ namespace Translation.Tests.Client.Mappers
         public void LabelMapper_MapLabelTranslationCreateModel()
         {
             // arrange
-            var dto = GetLabelDto();
+            var labelDto = GetLabelDto();
+            var projectDto = GetProjectDto();
 
             // act
-            var result = LabelMapper.MapLabelTranslationCreateModel(dto);
+            var result = LabelMapper.MapLabelTranslationCreateModel(labelDto, projectDto);
 
             // assert
             result.ShouldBeAssignableTo<LabelTranslationCreateModel>();
-            result.OrganizationUid.ShouldBe(dto.OrganizationUid);
-            result.ProjectUid.ShouldBe(dto.ProjectUid);
-            result.ProjectName.ShouldBe(dto.ProjectName);
-            result.LabelUid.ShouldBe(dto.Uid);
-            result.LabelKey.ShouldBe(dto.Key);
+            result.OrganizationUid.ShouldBe(labelDto.OrganizationUid);
+            result.ProjectUid.ShouldBe(projectDto.Uid);
+            result.ProjectName.ShouldBe(projectDto.Name);
+            result.ProjectLanguageUid.ShouldBe(projectDto.LanguageUid);
+            result.LabelUid.ShouldBe(labelDto.Uid);
+            result.LabelKey.ShouldBe(labelDto.Key);
         }
 
         [Test]

@@ -50,7 +50,7 @@ namespace Translation.Tests.Client.Controllers
          TestCase(DownloadSampleCSVFileForBulkLabelUploadAction, new Type[] { }, typeof(HttpGetAttribute)),
          TestCase(CreateBulkLabelAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(CreateBulkLabelAction, new[] { typeof(CreateBulkLabelModel) }, typeof(HttpPostAttribute)),
-         TestCase(TranslateAction, new[] { typeof(string), typeof(Guid), typeof(string) }, typeof(HttpGetAttribute)),
+         TestCase(TranslateAction, new[] { typeof(string), typeof(Guid), typeof(Guid), typeof(string) }, typeof(HttpGetAttribute)),
          TestCase(LabelTranslationCreateAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(LabelTranslationCreateAction, new[] { typeof(LabelTranslationCreateModel) }, typeof(HttpPostAttribute)),
          TestCase(LabelTranslationDetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
@@ -1217,18 +1217,16 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
             MockCloudTranslationService.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Success();
 
             // act
-            var result = (JsonResult)await SystemUnderTest.Translate(StringOne, UidOne, StringOne);
+            var result = (JsonResult)await SystemUnderTest.Translate(StringOne, UidOne, UidTwo, StringTwo);
 
             // assert
             result.Value.ShouldNotBeNull();
             var name = (string)result.Value;
             name.ShouldBe(StringTwo);
             MockLanguageService.Verify_GetLanguage();
-            MockUserRepository.Verify_Select();
             MockCloudTranslationService.Verify_GetTranslatedText();
         }
 
@@ -1237,10 +1235,9 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Failed();
-           
 
             // act
-            var result = await SystemUnderTest.Translate(StringOne, UidOne, StringOne);
+            var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo, StringTwo);
 
             // assert
             AssertView<JsonResult>(result);
@@ -1254,7 +1251,7 @@ namespace Translation.Tests.Client.Controllers
             MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Invalid();
 
             // act
-            var result = await SystemUnderTest.Translate(StringOne, UidOne, StringOne);
+            var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo, StringTwo);
 
             // assert
             AssertView<JsonResult>(result);
@@ -1266,16 +1263,14 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
             MockCloudTranslationService.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Failed();
 
             // act
-            var result =await SystemUnderTest.Translate(StringOne, UidOne, StringOne);
+            var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo, StringTwo);
 
             // assert
             AssertView<JsonResult>(result);
             MockLanguageService.Verify_GetLanguage();
-            MockUserRepository.Verify_Select();
             MockCloudTranslationService.Verify_GetTranslatedText();
         }
 
@@ -1284,16 +1279,14 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
             MockCloudTranslationService.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Invalid();
 
             // act
-            var result = await SystemUnderTest.Translate(StringOne, UidOne, StringOne);
+            var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo, StringTwo);
 
             // assert
             AssertView<JsonResult>(result);
             MockLanguageService.Verify_GetLanguage();
-            MockUserRepository.Verify_Select();
             MockCloudTranslationService.Verify_GetTranslatedText();
         }
 
@@ -1303,7 +1296,7 @@ namespace Translation.Tests.Client.Controllers
             // arrange
 
             // act
-            var result = await SystemUnderTest.Translate(EmptyString, UidOne, StringOne);
+            var result = await SystemUnderTest.Translate(EmptyString, UidOne, UidTwo, StringTwo);
 
             // assert
             AssertView<JsonResult>(result);
@@ -1314,6 +1307,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLabelService.Setup_GetLabel_Returns_LabelReadResponse_Success();
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
 
             // act
             var result = await SystemUnderTest.LabelTranslationCreate(UidOne);
@@ -1321,6 +1315,7 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertViewWithModel<LabelTranslationCreateModel>(result);
             MockLabelService.Verify_GetLabel();
+            MockProjectService.Verify_GetProject();
         }
 
         [Test]
@@ -1361,6 +1356,38 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertViewAccessDenied(result);
+        }
+
+        [Test]
+        public async Task LabelTranslationCreate_GET_FailedProjectReadResponse()
+        {
+            // arrange
+            MockLabelService.Setup_GetLabel_Returns_LabelReadResponse_Success();
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationCreate(UidOne);
+
+            // assert
+            AssertViewAccessDenied(result);
+            MockLabelService.Verify_GetLabel();
+            MockProjectService.Verify_GetProject();
+        }
+
+        [Test]
+        public async Task LabelTranslationCreate_GET_InvalidProjectReadResponse()
+        {
+            // arrange
+            MockLabelService.Setup_GetLabel_Returns_LabelReadResponse_Success();
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationCreate(UidOne);
+
+            // assert
+            AssertViewAccessDenied(result);
+            MockLabelService.Verify_GetLabel();
+            MockProjectService.Verify_GetProject();
         }
 
         [Test]

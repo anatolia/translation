@@ -17,6 +17,7 @@
 
     <partial name="Components/_Hidden" model="@Model.ProjectInput" />
     <partial name="Components/_Hidden" model="@Model.ProjectNameInput" />
+    <partial name="Components/_Hidden" model="@Model.ProjectLanguageInput" />
 
     <partial name="Components/_Hidden" model="@Model.LabelInput" />
     <partial name="Components/_Hidden" model="@Model.LabelKeyInput" />
@@ -33,6 +34,7 @@
 {
     <script>
         let languageInput = getElement('@Model.LanguageInput.Name');
+        let projectLanguageInput = getElement('@Model.ProjectLanguageInput.Name');
         let labelKeyInput = getElement('@Model.LabelKeyInput.Name');
         let labelTranslationInput = getElement('@Model.LabelTranslationInput.Name');
         let textToTranslate = labelKeyInput.value;
@@ -40,7 +42,8 @@
 
         onSelectChange('@Model.LanguageInput.Name', function () {
             var targetLanguageUid = languageInput.value;
-            doGet('/Label/Translate?text=' + textToTranslate + '&target=' + targetLanguageUid + '&provider=google', function (req) {
+            var sourceLanguageUid = projectLanguageInput.value;
+            doGet('/Label/Translate?text=' + textToTranslate + '&target=' + targetLanguageUid + '&source=' + sourceLanguageUid  + '&provider=google', function (req) {
                 if (199 < req.status && req.status < 300) {
                     if (labelTranslationInput.value === ''
                         || labelTranslationInput.value === lastLabelTranslation) {
