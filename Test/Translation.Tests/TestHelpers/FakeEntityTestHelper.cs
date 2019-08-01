@@ -551,6 +551,8 @@ namespace Translation.Tests.TestHelpers
             user.ObfuscationSalt = StringSixtyFourOne;
             user.PasswordHash = PasswordHashOne;
 
+            user.LanguageUid = UidOne;
+
             return user;
         }
 
