@@ -104,11 +104,11 @@ namespace Translation.Service
             var passwordHash = _cryptoHelper.Hash(request.Password, salt);
             user = _userFactory.CreateEntityFromRequest(request, organization, salt, passwordHash);
 
-            var english = await _languageRepository.Select(x => x.IsoCode2Char == "en");
-            user.LanguageId = english.Id;
-            user.LanguageUid = english.Uid;
-            user.LanguageName = english.Name;
-            user.LanguageIconUrl = english.IconUrl;
+            var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
+            user.LanguageId = language.Id;
+            user.LanguageUid = language.Uid;
+            user.LanguageName = language.Name;
+            user.LanguageIconUrl = language.IconUrl;
 
             var loginLog = _userLoginLogFactory.CreateEntityFromRequest(request, user);
             var integration = _integrationFactory.CreateDefault(organization);
@@ -319,12 +319,12 @@ namespace Translation.Service
                 return response;
             }
 
-            Expression<Func<Label, bool>> filter = x => x.OrganizationId == organization.Id 
+            Expression<Func<Label, bool>> filter = x => x.OrganizationId == organization.Id
                                                         && x.LabelTranslationCount == 0;
 
             if (request.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm) 
+                filter = x => x.Name.Contains(request.SearchTerm)
                               && x.OrganizationId == organization.Id
                               && x.LabelTranslationCount == 0;
             }
@@ -824,7 +824,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
             Expression<Func<User, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
-            
+
             if (request.SearchTerm.IsNotEmpty())
             {
                 filter = x => x.OrganizationId == currentUser.OrganizationId && x.Name.Contains(request.SearchTerm);
