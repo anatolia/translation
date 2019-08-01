@@ -1438,7 +1438,7 @@ namespace Translation.Tests.Server.Services
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockProjectRepository.Setup_Any_Returns_False();
             MockLanguageRepository.Setup_SelectAll_Returns_Languages();
-            MockLabelTranslationRepository.Setup_Any_Return_False();
+            MockLabelTranslationRepository.Setup_Any_Return_True();
             MockLabelUnitOfWork.Setup_DoCreateTranslationWorkBulk_Returns_True();
 
             // act
@@ -1550,7 +1550,7 @@ namespace Translation.Tests.Server.Services
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockProjectRepository.Setup_Any_Returns_False();
             MockLanguageRepository.Setup_SelectAll_Returns_Languages();
-            MockLabelTranslationRepository.Setup_Any_Return_False();
+            MockLabelTranslationRepository.Setup_Any_Return_True();
             MockLabelUnitOfWork.Setup_DoCreateTranslationWorkBulk_Returns_False();
 
             // act

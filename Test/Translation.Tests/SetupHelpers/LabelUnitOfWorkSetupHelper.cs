@@ -38,21 +38,21 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_DoCreateTranslationWorkBulk_Returns_True(this Mock<ILabelUnitOfWork> unitOfWork)
         {
-            unitOfWork.Setup(x => x.DoCreateTranslationWorkBulk(It.IsAny<long>(),
+            unitOfWork.Setup(x => x.DoCreateTranslationWorkBulk(It.IsAny<long>(), It.IsAny<List<LabelTranslation>>(),
                                                                 It.IsAny<List<LabelTranslation>>()))
                       .ReturnsAsync(BooleanTrue);
         }
 
         public static void Setup_DoCreateTranslationWorkBulk_Returns_False(this Mock<ILabelUnitOfWork> unitOfWork)
         {
-            unitOfWork.Setup(x => x.DoCreateTranslationWorkBulk(It.IsAny<long>(),
+            unitOfWork.Setup(x => x.DoCreateTranslationWorkBulk(It.IsAny<long>(), It.IsAny<List<LabelTranslation>>(),
                                                                 It.IsAny<List<LabelTranslation>>()))
                       .ReturnsAsync(BooleanFalse);
         }
 
         public static void Verify_DoCreateTranslationWorkBulk(this Mock<ILabelUnitOfWork> unitOfWork)
         {
-            unitOfWork.Verify(x => x.DoCreateTranslationWorkBulk(It.IsAny<long>(),
+            unitOfWork.Verify(x => x.DoCreateTranslationWorkBulk(It.IsAny<long>(), It.IsAny<List<LabelTranslation>>(),
                                                                  It.IsAny<List<LabelTranslation>>()));
         }
 

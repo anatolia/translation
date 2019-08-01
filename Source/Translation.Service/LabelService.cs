@@ -203,6 +203,7 @@ namespace Translation.Service
                 if (oldLabels.Any(x => x.Key == translationInfo.LabelKey)
                     || labels.Any(x => x.Key == translationInfo.LabelKey))
                 {
+                    response.CanNotAddedLabelCount++;
                     continue;
                 }
 
@@ -242,6 +243,7 @@ namespace Translation.Service
                         if (translationsToInsert.Any(x => x.LanguageId == language.Id
                                                           && x.LabelUid == oldLabel.Uid))
                         {
+                            response.CanNotAddedLabelTranslationCount++;
                             continue;
                         }
 
@@ -256,6 +258,7 @@ namespace Translation.Service
 
                         if (translationForExistingLabel.Translation == translationInfo.Translation)
                         {
+                            response.CanNotAddedLabelTranslationCount++;
                             continue;
                         }
 
@@ -272,6 +275,7 @@ namespace Translation.Service
                 if (translationsToInsert.Any(x => x.LanguageId == language.Id
                                                   && x.LabelUid == label.Uid))
                 {
+                    response.CanNotAddedLabelTranslationCount++;
                     continue;
                 }
 
@@ -280,6 +284,7 @@ namespace Translation.Service
                 {
                     if (oldTranslation.Translation == translationInfo.Translation)
                     {
+                        response.CanNotAddedLabelTranslationCount++;
                         continue;
                     }
 
@@ -412,7 +417,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
             Expression<Func<Label, bool>> filter = x => x.Name.Contains(request.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
-            
+
             List<Label> entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
 
             if (entities != null)
@@ -761,14 +766,14 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _labelRepository.Any(x => x.Key == request.LabelKey && x.ProjectUid ==request.ProjectUid))
+            if (await _labelRepository.Any(x => x.Key == request.LabelKey && x.ProjectUid == request.ProjectUid))
             {
                 response.ErrorMessages.Add("label_key_must_be_unique");
                 response.Status = ResponseStatus.Failed;
                 return response;
             }
 
-            var newLabel = _labelFactory.CreateEntityFromRequest(request, label,project);
+            var newLabel = _labelFactory.CreateEntityFromRequest(request, label, project);
             var uowResult = await _labelUnitOfWork.DoCloneWork(request.CurrentUserId, label.Id, newLabel);
             if (uowResult)
             {
@@ -917,42 +922,68 @@ namespace Translation.Service
             }
 
             var languages = await _languageRepository.SelectAll(null);
+            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == label.ProjectId);
 
-            var translations = new List<LabelTranslation>();
-            var warningCount = 0;
+            var translationsToInsert = new List<LabelTranslation>();
+            var translationsToUpdate = new List<LabelTranslation>();
+
             for (var i = 0; i < request.LabelTranslations.Count; i++)
             {
                 var translationInfo = request.LabelTranslations[i];
+
                 var language = languages.Find(x => x.IsoCode2Char == translationInfo.LanguageIsoCode2);
                 if (language == null)
                 {
-                    warningCount++;
+                    response.CanNotAddedTranslationCount++;
+                    continue;
+                }
+
+                if (translationsToInsert.Any(x => x.LanguageId == language.Id
+                                                  && x.LabelId == label.Id))
+                {
+                    response.CanNotAddedTranslationCount++;
+                    continue;
+                }
+
+                if (translationsToUpdate.Any(x => x.LanguageId == language.Id
+                                                  && x.LabelId == label.Id))
+                {
+                    response.CanNotAddedTranslationCount++;
                     continue;
                 }
 
                 if (await _labelTranslationRepository.Any(x => x.Translation == translationInfo.Translation
-                                                                    && x.LanguageId == language.Id
-                                                                    && x.LabelId == label.Id))
+                                                               && x.LanguageId == language.Id
+                                                               && x.LabelId == label.Id))
                 {
-                    warningCount++;
+                    response.CanNotAddedTranslationCount++;
                     continue;
                 }
+                else
+                {
+                    var translationForExistingLabel = oldTranslations.FirstOrDefault(x => x.LabelId == label.Id && x.LanguageId == language.Id);
 
-                var labelTranslation = _labelTranslationFactory.CreateEntity(translationInfo.Translation, label, language);
-                translations.Add(labelTranslation);
+                    if (translationForExistingLabel == null)
+                    {
+                        var translationToInsert = _labelTranslationFactory.CreateEntity(translationInfo.Translation, label, language);
+                        translationsToInsert.Add(translationToInsert);
+                        response.AddedTranslationCount++;
+                        continue;
+                    }
+
+                    translationForExistingLabel.Translation = translationInfo.Translation;
+                    translationsToUpdate.Add(translationForExistingLabel);
+                    response.UpdatedTranslationCount++;
+                }
             }
 
-            response.CanNotAddedTranslationCount = warningCount;
+            var uowResult = await _labelUnitOfWork.DoCreateTranslationWorkBulk(request.CurrentUserId, translationsToInsert, translationsToUpdate);
 
-            if (translations.Any())
+            if (uowResult)
             {
-                var uowResult = await _labelUnitOfWork.DoCreateTranslationWorkBulk(request.CurrentUserId, translations);
-                if (uowResult)
-                {
-                    response.AddedTranslationCount = translations.Count;
-                    response.Status = ResponseStatus.Success;
-                    return response;
-                }
+                response.AddedTranslationCount = translationsToInsert.Count;
+                response.Status = ResponseStatus.Success;
+                return response;
             }
 
             response.SetFailed();
