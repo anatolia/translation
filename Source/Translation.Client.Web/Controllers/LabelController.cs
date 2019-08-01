@@ -632,12 +632,14 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Translate(string text, Guid target)
+        public async Task<IActionResult> Translate(string text, Guid target, string provider)
         {
             var textToTranslate = text;
             var targetLanguageUid = target;
+            var translateProviderType = provider;
             if (textToTranslate.IsEmpty()
-                || targetLanguageUid.IsEmptyGuid())
+                || targetLanguageUid.IsEmptyGuid()
+                || translateProviderType.IsEmpty())
             {
                 return Json(null);
             }
@@ -662,7 +664,7 @@ namespace Translation.Client.Web.Controllers
             var sourceLanguageIsoCode2 = sourceLanguageReadResponse.Item.IsoCode2;
 
             var request = new LabelGetTranslatedTextRequest(CurrentUser.Id, textToTranslate, targetLanguageIsoCode2,
-                                                            sourceLanguageIsoCode2);
+                                                            sourceLanguageIsoCode2, provider);
 
             var response = await _textTranslateIntegration.GetTranslatedText(request);
             if (response.Status.IsNotSuccess)

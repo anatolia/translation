@@ -11,8 +11,8 @@ namespace Translation.Integrations.Providers
 {
     public class GoogleTranslateProvider : IGoogleTranslateProvider
     {
-        public string GoogleApplicationCredentialsFile { get; set; }
-        public TranslationClient Client { get; set; }
+        public string GoogleApplicationCredentialsFile { get;}
+        public TranslationClient Client { get;}
 
         public GoogleTranslateProvider()
         {

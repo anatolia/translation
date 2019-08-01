@@ -40,7 +40,7 @@
 
         onSelectChange('@Model.LanguageInput.Name', function () {
             var targetLanguageUid = languageInput.value;
-            doGet('/Label/Translate?text=' + textToTranslate + '&target=' + targetLanguageUid, function (req) {
+            doGet('/Label/Translate?text=' + textToTranslate + '&target=' + targetLanguageUid + '&provider=google', function (req) {
                 if (199 < req.status && req.status < 300) {
                     if (labelTranslationInput.value === ''
                         || labelTranslationInput.value === lastLabelTranslation) {

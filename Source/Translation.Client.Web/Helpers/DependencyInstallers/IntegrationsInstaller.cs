@@ -13,6 +13,7 @@ namespace Translation.Client.Web.Helpers.DependencyInstallers
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(Component.For<IGoogleTranslateProvider>().ImplementedBy(typeof(GoogleTranslateProvider)).LifestyleTransient());
+            container.Register(Component.For<IYandexTranslateProvider>().ImplementedBy(typeof(YandexTranslateProvider)).LifestyleTransient());
             container.Register(Component.For<ITextTranslateIntegration>().ImplementedBy(typeof(TextTranslateIntegration)).LifestyleTransient());
         }
     }
