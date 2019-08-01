@@ -14,6 +14,8 @@ namespace Translation.Client.Web.Models.User
         public string LastName { get; set; }
         public string Password { get; set; }
         public string ReEnterPassword { get; set; }
+        public Guid LanguageUid { get; set; }
+        public string LanguageName { get; set; }
 
         public HiddenInputModel TokenInput { get; }
         public HiddenInputModel EmailInput { get; }
@@ -22,6 +24,7 @@ namespace Translation.Client.Web.Models.User
         public InputModel LastNameInput { get; }
         public PasswordInputModel PasswordInput { get; }
         public PasswordInputModel ReEnterPasswordInput { get; }
+        public SelectInputModel LanguageInput { get;}
 
         public InviteAcceptModel()
         {
@@ -34,6 +37,8 @@ namespace Translation.Client.Web.Models.User
             LastNameInput = new InputModel("LastName", "last_name", true);
             PasswordInput = new PasswordInputModel("Password", "password", true);
             ReEnterPasswordInput = new PasswordInputModel("ReEnterPassword", "re_enter_password", true);
+            LanguageInput = new SelectInputModel("LanguageUid", "LanguageName", "language", "/Language/SelectData");
+            LanguageInput.IsOptionTypeContent = true;
         }
 
         public override void SetInputModelValues()
@@ -45,6 +50,12 @@ namespace Translation.Client.Web.Models.User
             LastNameInput.Value = LastName;
             PasswordInput.Value = Password;
             ReEnterPasswordInput.Value = ReEnterPassword;
+
+            if (LanguageUid.IsNotEmptyGuid())
+            {
+                LanguageInput.Value = LanguageUid.ToUidString();
+                LanguageInput.Text = LanguageName;
+            }
         }
 
         public override void SetInputErrorMessages()
@@ -107,6 +118,12 @@ namespace Translation.Client.Web.Models.User
             {
                 ReEnterPasswordInput.ErrorMessage.Add("re_entered_password_does_not_match_error_message");
                 InputErrorMessages.AddRange(ReEnterPasswordInput.ErrorMessage);
+            }
+
+            if (LanguageUid.IsEmptyGuid())
+            {
+                LanguageInput.ErrorMessage.Add("language_uid_not_valid");
+                InputErrorMessages.AddRange(LanguageInput.ErrorMessage);
             }
         }
     }
