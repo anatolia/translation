@@ -233,6 +233,8 @@ namespace Translation.Tests.TestHelpers
             model.FirstName = StringOne;
             model.LastName = StringTwo;
             model.Password = PasswordOne;
+            model.LanguageUid = UidOne;
+            model.LanguageName = StringThree;
             model.IsTermsAccepted = BooleanTrue;
 
             return model;
@@ -368,6 +370,8 @@ namespace Translation.Tests.TestHelpers
             model.LastName = StringTwo;
             model.Password = PasswordTwo;
             model.ReEnterPassword = PasswordTwo;
+            model.LanguageUid = UidOne;
+            model.LanguageName = StringThree;
 
             return model;
         }
