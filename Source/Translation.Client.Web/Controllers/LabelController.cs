@@ -527,6 +527,7 @@ namespace Translation.Client.Web.Controllers
             doneModel.ProjectName = model.ProjectName;
             doneModel.AddedLabelCount = response.AddedLabelCount;
             doneModel.CanNotAddedLabelCount = response.CanNotAddedLabelCount;
+            doneModel.TotalLabelCount = response.TotalLabelCount;
             doneModel.AddedLabelTranslationCount = response.AddedLabelTranslationCount;
             doneModel.UpdatedLabelTranslationCount = response.UpdatedLabelTranslationCount;
             doneModel.CanNotAddedLabelTranslationCount = response.CanNotAddedLabelTranslationCount;
@@ -933,7 +934,7 @@ namespace Translation.Client.Web.Controllers
                 });
             }
 
-            var request = new LabelTranslationCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.LabelUid,
+            var request = new LabelTranslationCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.LabelUid,model.UpdateExistedTranslations,
                 translationListInfos);
             var response = await _labelService.CreateTranslationFromList(request);
             if (response.Status.IsNotSuccess)

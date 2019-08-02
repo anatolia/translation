@@ -16,11 +16,15 @@ namespace Translation.Client.Web.Models.LabelTranslation
 
         public IFormFile CSVFile { get; set; }
 
+        public bool UpdateExistedTranslations { get; set; }
+
         public HiddenInputModel OrganizationInput { get; }
         public HiddenInputModel LabelInput { get; }
         public HiddenInputModel LabelKeyInput { get; }
 
         public FileInputModel CSVFileInput { get; }
+
+        public CheckboxInputModel UpdateExistedTranslationsInput { get; set; }
 
         public UploadLabelTranslationFromCSVFileModel()
         {
@@ -31,6 +35,8 @@ namespace Translation.Client.Web.Models.LabelTranslation
             LabelKeyInput = new HiddenInputModel("LabelKey");
 
             CSVFileInput = new FileInputModel("CSVFile", "csv_file", true);
+
+            UpdateExistedTranslationsInput = new CheckboxInputModel("UpdateExistedTranslations", "update_existed_translations");
         }
 
         public override void SetInputModelValues()
@@ -39,6 +45,8 @@ namespace Translation.Client.Web.Models.LabelTranslation
 
             LabelInput.Value = LabelUid.ToUidString();
             LabelKeyInput.Value = LabelKey;
+            UpdateExistedTranslationsInput.Value = UpdateExistedTranslations;
+
             InfoMessages.Clear();
             InfoMessages.Add("the_file_must_be_UTF-8_encoded");
             InfoMessages.Add("you_update_label_translation_previously_added_that_have_same_language");

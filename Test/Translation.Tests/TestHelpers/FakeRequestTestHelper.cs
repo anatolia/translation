@@ -464,7 +464,7 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static ProjectCreateRequest GetProjectCreateRequest(long currentUserId, Guid organizationUid, string projectName,
-                                                                   string url, string description, string projectSlug, 
+                                                                   string url, string description, string projectSlug,
                                                                    Guid languageUid)
         {
             var request = new ProjectCreateRequest(currentUserId, organizationUid, projectName,
@@ -1281,16 +1281,16 @@ namespace Translation.Tests.TestHelpers
         public static LabelTranslationCreateListRequest GetLabelTranslationCreateListRequest()
         {
             var request = new LabelTranslationCreateListRequest(CurrentUserId, UidOne, UidOne,
-                                                                new List<TranslationListInfo>() { GetTranslationListInfo() });
+                                                                BooleanTrue, new List<TranslationListInfo>() { GetTranslationListInfo() });
 
             return request;
         }
 
         public static LabelTranslationCreateListRequest GetLabelTranslationCreateListRequest(long currentUserId, Guid organizationUid, Guid labelUid,
-                                                                                             List<TranslationListInfo> labelTranslations)
+                                                                                             bool updateExistedTranslations, List<TranslationListInfo> labelTranslations)
         {
             var request = new LabelTranslationCreateListRequest(currentUserId, organizationUid, labelUid,
-                labelTranslations);
+                                                                updateExistedTranslations, labelTranslations);
 
             return request;
         }
