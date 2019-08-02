@@ -23,7 +23,7 @@ namespace Translation.Client.Web.Controllers
     {
         private readonly IOrganizationService _organizationService;
 
-        public UserController(IOrganizationService organizationService, 
+        public UserController(IOrganizationService organizationService,
                               IJournalService journalService) : base(organizationService, journalService)
         {
             _organizationService = organizationService;
@@ -49,7 +49,7 @@ namespace Translation.Client.Web.Controllers
 
             var clientLog = GetClientInfoLog();
             var request = new SignUpRequest(model.OrganizationName, model.FirstName, model.LastName,
-                                            model.Email, model.Password, clientLog);
+                                            model.Email, model.Password, clientLog, model.LanguageUid);
             var response = await OrganizationService.CreateOrganizationWithAdmin(request);
             if (response.Status.IsNotSuccess)
             {

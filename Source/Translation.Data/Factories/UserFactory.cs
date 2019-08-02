@@ -36,6 +36,7 @@ namespace Translation.Data.Factories
             entity.FirstName = request.FirstName;
             entity.LastName = request.LastName;
             entity.Name = MapName(request.FirstName, request.LastName);
+           
             entity.IsActive = true;
             entity.IsAdmin = true;
             entity.ObfuscationSalt = salt;
