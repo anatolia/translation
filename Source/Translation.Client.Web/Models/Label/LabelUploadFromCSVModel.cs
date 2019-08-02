@@ -39,11 +39,10 @@ namespace Translation.Client.Web.Models.Label
             ProjectInput.Value = ProjectUid.ToUidString();
             ProjectNameInput.Value = ProjectName;
             InfoMessages.Clear();
-            InfoMessages.Add("this_page_imports_your_label_file_in_csv_format");
-            InfoMessages.Add("the_file_must_be_UTF-8_encoded");
-            InfoMessages.Add("you_can_download_the_sample_csv_file_below");
-            InfoMessages.Add("added_if_there_is_no_label_during_import");
-            InfoMessages.Add("only_the_label_translation_is_added_if_there_is_a_label_but_no_translation_in_the_import_phase");
+            InfoMessages.Add("the_file_must_be_utf8_encoded");
+            InfoMessages.Add("you_cannot_add_labels_and_same_label_translations_that_have_same_label_key");
+            InfoMessages.Add("you_update_label_translation_previously_added_that_have_same_label_key");
+            InfoMessages.Add("if_you_add_multiple_translation_for_same_language_accepts_the_first_one");
         }
 
         public override void SetInputErrorMessages()
