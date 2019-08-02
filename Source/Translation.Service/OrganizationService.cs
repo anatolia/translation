@@ -114,7 +114,7 @@ namespace Translation.Service
             var loginLog = _userLoginLogFactory.CreateEntityFromRequest(request, user);
             var integration = _integrationFactory.CreateDefault(organization);
             var integrationClient = _integrationClientFactory.CreateEntity(integration);
-            var project = _projectFactory.CreateDefault(organization, english);
+            var project = _projectFactory.CreateDefault(organization, language);
 
             var (uowResult,
                  insertedOrganization,
