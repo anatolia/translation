@@ -335,6 +335,11 @@ namespace Translation.Tests.TestHelpers
 
             project.IsActive = BooleanTrue;
 
+            project.LanguageId = LongTwo;
+            project.LanguageUid = UidTwo;
+            project.LanguageName = StringTwo;
+            project.LanguageIconUrl = HttpsUrl;
+
             return project;
         }
 

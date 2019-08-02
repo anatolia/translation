@@ -60,6 +60,12 @@ namespace Translation.Tests.Client.Models.ViewModels.Project
         }
 
         [Test]
+        public void ProjectEditModel_LanguageInput()
+        {
+            AssertSelectInputModel(SystemUnderTest.LanguageInput, "LanguageUid", "LanguageName", "language", "/Language/SelectData");
+        }
+
+        [Test]
         public void ProjectEditModel_DescriptionInput()
         {
             AssertInputModel(SystemUnderTest.DescriptionInput, "Description", "description");
@@ -80,6 +86,10 @@ namespace Translation.Tests.Client.Models.ViewModels.Project
             SystemUnderTest.SlugInput.Value.ShouldBe(SystemUnderTest.Slug);
             SystemUnderTest.UrlInput.Value.ShouldBe(SystemUnderTest.Url);
             SystemUnderTest.DescriptionInput.Value.ShouldBe(SystemUnderTest.Description);
+            SystemUnderTest.LanguageInput.Value.ShouldBe(SystemUnderTest.LanguageUid.ToUidString());
+            SystemUnderTest.LanguageInput.Text.ShouldBe(SystemUnderTest.LanguageName);
+            SystemUnderTest.LanguageInput.IsOptionTypeContent.ShouldBeTrue();
+            SystemUnderTest.InfoMessages.Contains("the_project_language_will_use_as_the_source_language_during_the_automatic_translation_of_the_labels").ShouldBeTrue();
         }
 
         public static IEnumerable MessageTestCases
@@ -88,19 +98,21 @@ namespace Translation.Tests.Client.Models.ViewModels.Project
             {
                 yield return new TestCaseData(CaseOne, 
                                               UidOne, UidTwo, StringOne, 
-                                              SlugOne, HttpsUrl,
+                                              SlugOne, HttpsUrl, UidOne,
                                               null,
                                               null, 
                                               true);
 
                 yield return new TestCaseData(CaseTwo, 
                                               EmptyUid, EmptyUid, EmptyString, 
-                                              EmptySlug, InvalidUrl,
+                                              EmptySlug, InvalidUrl, EmptyUid,
                                               new[] { "organization_uid_is_not_valid",
                                                       "project_uid_is_not_valid" },
                                               new[] { "project_name_required_error_message",
                                                       "project_slug_required_error_message",
-                                                      "url_is_not_valid_error_message" },
+                                                      "url_is_not_valid_error_message",
+                                                      "language_uid_not_valid"
+                                              },
                                               false);
             }
         }
@@ -108,12 +120,13 @@ namespace Translation.Tests.Client.Models.ViewModels.Project
         [TestCaseSource(nameof(MessageTestCases))]
         public void ProjectEditModel_InputErrorMessages(string caseName, 
                                                          Guid organizationUid, Guid projectUid, string name, 
-                                                         string slug, string url,
+                                                         string slug, string url, Guid languageUid,
                                                          string[] errorMessages, 
                                                          string[] inputErrorMessages,
                                                          bool result)
         {
-            var model = GetProjectEditModel(organizationUid, projectUid, name, slug, url);
+            var model = GetProjectEditModel(organizationUid, projectUid, name, 
+                                            slug, url, languageUid);
             model.IsValid().ShouldBe(result);
             model.IsNotValid().ShouldBe(!result);
 

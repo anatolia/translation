@@ -1024,6 +1024,14 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static LabelGetTranslatedTextRequest GetLabelGetTranslatedTextRequest(string textToTranslate, string targetLanguageIsoCode2, string sourceLanguageIsoCode2)
+        {
+            var request = new LabelGetTranslatedTextRequest(CurrentUserId, textToTranslate, targetLanguageIsoCode2, 
+                                                            sourceLanguageIsoCode2);
+
+            return request;
+        }
+
         public static LabelCreateListRequest GetLabelCreateListRequest()
         {
             var request = new LabelCreateListRequest(CurrentUserId, UidOne, UidOne,

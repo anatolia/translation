@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Configuration;
+using System.Threading.Tasks;
 
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
@@ -12,10 +13,12 @@ namespace Translation.Integrations
     {
         private readonly IGoogleTranslateProvider _googleTranslateProvider;
         private readonly IYandexTranslateProvider _yandexTranslateProvider;
+        public string ProviderType { get; set; }
 
         public TextTranslateIntegration(IGoogleTranslateProvider googleTranslateProvider,
                                         IYandexTranslateProvider yandexTranslateProvider)
         {
+            ProviderType = ConfigurationManager.AppSettings["TRANSLATE_PROVIDER_TYPE"];
             _googleTranslateProvider = googleTranslateProvider;
             _yandexTranslateProvider = yandexTranslateProvider;
         }
@@ -24,11 +27,11 @@ namespace Translation.Integrations
         {
             var response = new LabelGetTranslatedTextResponse();
 
-            if (request.TranslateProviderType == TranslateProviderType.Google)
+            if (ProviderType == TranslateProviderType.Google)
             {
                 response.Item.Name = await _googleTranslateProvider.TranslateText(request.TextToTranslate, request.TargetLanguageIsoCode2, request.SourceLanguageIsoCode2);
 
-            }else if (request.TranslateProviderType == TranslateProviderType.Yandex)
+            }else if (ProviderType == TranslateProviderType.Yandex)
             {
                 response.Item.Name = await _yandexTranslateProvider.TranslateText(request.TextToTranslate, request.TargetLanguageIsoCode2);
             }

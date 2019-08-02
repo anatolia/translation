@@ -250,6 +250,7 @@ namespace Translation.Tests.Server.Services
             var request = GetProjectCreateRequest();
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockProjectRepository.Setup_Any_Returns_False();
+            MockLanguageRepository.Setup_Select_Returns_Language();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockProjectUnitOfWork.Setup_DoCreateWork_Returns_True();
 
@@ -261,6 +262,7 @@ namespace Translation.Tests.Server.Services
             AssertReturnType<ProjectCreateResponse>(result);
             MockOrganizationRepository.Verify_Any();
             MockProjectRepository.Verify_Any();
+            MockLanguageRepository.Verify_Select();
             MockUserRepository.Verify_SelectById();
             MockProjectUnitOfWork.Verify_DoCreateWork();
         }
@@ -334,6 +336,7 @@ namespace Translation.Tests.Server.Services
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockProjectRepository.Setup_Update_Success();
             MockProjectRepository.Setup_Any_Returns_False();
+            MockLanguageRepository.Setup_Select_Returns_Language();
             MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
 
             // act
@@ -346,6 +349,7 @@ namespace Translation.Tests.Server.Services
             MockOrganizationRepository.Verify_Any();
             MockProjectRepository.Verify_Update();
             MockProjectRepository.Verify_Any();
+            MockLanguageRepository.Verify_Select();
             MockProjectRepository.Verify_Select();
         }
 
@@ -438,6 +442,7 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
             MockProjectRepository.Setup_Any_Returns_False();
+            MockLanguageRepository.Setup_Select_Returns_Language();
             MockProjectUnitOfWork.Setup_DoCloneWork_Returns_True();
 
             // act
@@ -449,6 +454,7 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
             MockProjectRepository.Verify_Any();
+            MockLanguageRepository.Verify_Select();
             MockProjectUnitOfWork.Verify_DoCloneWork();
         }
 
