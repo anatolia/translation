@@ -464,7 +464,7 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static ProjectCreateRequest GetProjectCreateRequest(long currentUserId, Guid organizationUid, string projectName,
-                                                                   string url, string description, string projectSlug, 
+                                                                   string url, string description, string projectSlug,
                                                                    Guid languageUid)
         {
             var request = new ProjectCreateRequest(currentUserId, organizationUid, projectName,
@@ -1020,6 +1020,14 @@ namespace Translation.Tests.TestHelpers
         public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequest(Guid token, Guid projectUid, string labelKey)
         {
             var request = new LabelCreateWithTokenRequest(token, projectUid, labelKey);
+
+            return request;
+        }
+
+        public static LabelGetTranslatedTextRequest GetLabelGetTranslatedTextRequest(string textToTranslate, string targetLanguageIsoCode2, string sourceLanguageIsoCode2)
+        {
+            var request = new LabelGetTranslatedTextRequest(CurrentUserId, textToTranslate, targetLanguageIsoCode2, 
+                                                            sourceLanguageIsoCode2);
 
             return request;
         }

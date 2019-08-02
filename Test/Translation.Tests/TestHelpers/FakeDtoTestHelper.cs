@@ -50,6 +50,10 @@ namespace Translation.Tests.TestHelpers
 
             dto.IsActive = BooleanTrue;
 
+            dto.LanguageUid = UidTwo;
+            dto.LanguageName = StringTwo;
+            dto.LanguageIconUrl = HttpsUrl;
+
             return dto;
         }
 

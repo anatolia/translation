@@ -32,7 +32,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_GetLanguage_Returns_LanguageReadResponse_Success(this Mock<ILanguageService> service)
         {
             service.Setup(x => x.GetLanguage(It.IsAny<LanguageReadRequest>()))
-                   .Returns(Task.FromResult(new LanguageReadResponse { Status = ResponseStatus.Success }));
+                   .Returns(Task.FromResult(new LanguageReadResponse { Status = ResponseStatus.Success, Item = new LanguageDto() { IsoCode2 = IsoCode2One } }));
         }
 
         public static void Setup_GetLanguages_Returns_LanguageReadListResponse_Success(this Mock<ILanguageService> service)

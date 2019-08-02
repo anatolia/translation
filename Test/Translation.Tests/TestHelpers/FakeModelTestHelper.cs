@@ -24,6 +24,7 @@ namespace Translation.Tests.TestHelpers
             model.Name = OrganizationOneProjectOneName;
             model.Url = HttpsUrl;
             model.Slug = OrganizationOneProjectOneSlug;
+            model.LanguageUid = UidOne;
 
             return model;
         }
@@ -66,6 +67,7 @@ namespace Translation.Tests.TestHelpers
             model.Name = OrganizationOneProjectOneName;
             model.Url = HttpsUrl;
             model.Slug = OrganizationOneProjectOneSlug;
+            model.LanguageUid = UidOne;
 
             return model;
         }
@@ -80,6 +82,8 @@ namespace Translation.Tests.TestHelpers
             model.LabelTranslationCount = Two;
             model.Url = HttpsUrl;
             model.Slug = StringOne;
+            model.LanguageUid = UidOne;
+            model.LanguageName = StringOne;
 
             return model;
         }
@@ -92,6 +96,8 @@ namespace Translation.Tests.TestHelpers
             model.LabelCount = One;
             model.Url = HttpsUrl;
             model.Slug = StringOne;
+            model.LanguageName = StringTwo;
+            model.LanguageIconUrl = HttpsUrl;
 
             return model;
         }
@@ -806,7 +812,8 @@ namespace Translation.Tests.TestHelpers
         }
 
         public static ProjectCloneModel GetProjectCloneModel(Guid organizationUid, Guid cloningProjectUid, string name,
-                                                             string slug, string url, string description = StringOne)
+                                                             string slug, string url, Guid languageUid,
+                                                             string description = StringOne)
         {
             var model = new ProjectCloneModel();
             model.OrganizationUid = organizationUid;
@@ -814,26 +821,29 @@ namespace Translation.Tests.TestHelpers
             model.Name = name;
             model.Slug = slug;
             model.Url = url;
+            model.LanguageUid = languageUid;
             model.Description = description;
 
             return model;
         }
 
         public static ProjectCreateModel GetProjectCreateModel(Guid organizationUid, string name, string slug,
-                                                               string url, string description = StringOne)
+                                                               string url, Guid languageUid, string description = StringOne)
         {
             var model = new ProjectCreateModel();
             model.OrganizationUid = organizationUid;
             model.Name = name;
             model.Slug = slug;
             model.Url = url;
+            model.LanguageUid = languageUid;
             model.Description = description;
 
             return model;
         }
 
         public static ProjectEditModel GetProjectEditModel(Guid organizationUid, Guid projectUid, string name,
-                                                           string slug, string url, string description = StringOne)
+                                                           string slug, string url, Guid languageUid,
+                                                           string description = StringOne)
         {
             var model = new ProjectEditModel();
             model.OrganizationUid = organizationUid;
@@ -841,6 +851,7 @@ namespace Translation.Tests.TestHelpers
             model.Name = name;
             model.Slug = slug;
             model.Url = url;
+            model.LanguageUid = languageUid;
             model.Description = description;
 
             return model;

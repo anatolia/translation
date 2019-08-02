@@ -50,7 +50,7 @@ namespace Translation.Tests.Client.Controllers
          TestCase(DownloadSampleCSVFileForBulkLabelUploadAction, new Type[] { }, typeof(HttpGetAttribute)),
          TestCase(CreateBulkLabelAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(CreateBulkLabelAction, new[] { typeof(CreateBulkLabelModel) }, typeof(HttpPostAttribute)),
-         TestCase(TranslateAction, new[] { typeof(string), typeof(Guid), typeof(Guid), typeof(string) }, typeof(HttpGetAttribute)),
+         TestCase(TranslateAction, new[] { typeof(string), typeof(Guid), typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(LabelTranslationCreateAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(LabelTranslationCreateAction, new[] { typeof(LabelTranslationCreateModel) }, typeof(HttpPostAttribute)),
          TestCase(LabelTranslationDetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
@@ -1220,7 +1220,7 @@ namespace Translation.Tests.Client.Controllers
             MockCloudTranslationService.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Success();
 
             // act
-            var result = (JsonResult)await SystemUnderTest.Translate(StringOne, UidOne, UidTwo, StringTwo);
+            var result = (JsonResult)await SystemUnderTest.Translate(StringOne, UidOne, UidTwo);
 
             // assert
             result.Value.ShouldNotBeNull();
@@ -1237,7 +1237,7 @@ namespace Translation.Tests.Client.Controllers
             MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Failed();
 
             // act
-            var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo, StringTwo);
+            var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo);
 
             // assert
             AssertView<JsonResult>(result);
@@ -1251,7 +1251,7 @@ namespace Translation.Tests.Client.Controllers
             MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Invalid();
 
             // act
-            var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo, StringTwo);
+            var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo);
 
             // assert
             AssertView<JsonResult>(result);
@@ -1266,7 +1266,7 @@ namespace Translation.Tests.Client.Controllers
             MockCloudTranslationService.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Failed();
 
             // act
-            var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo, StringTwo);
+            var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo);
 
             // assert
             AssertView<JsonResult>(result);
@@ -1282,7 +1282,7 @@ namespace Translation.Tests.Client.Controllers
             MockCloudTranslationService.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Invalid();
 
             // act
-            var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo, StringTwo);
+            var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo);
 
             // assert
             AssertView<JsonResult>(result);
@@ -1296,7 +1296,7 @@ namespace Translation.Tests.Client.Controllers
             // arrange
 
             // act
-            var result = await SystemUnderTest.Translate(EmptyString, UidOne, UidTwo, StringTwo);
+            var result = await SystemUnderTest.Translate(EmptyString, UidOne, UidTwo);
 
             // assert
             AssertView<JsonResult>(result);
