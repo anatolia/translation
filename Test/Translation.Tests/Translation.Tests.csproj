@@ -1,24 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Common\Requests\User\**" />
+    <EmbeddedResource Remove="Common\Requests\User\**" />
+    <None Remove="Common\Requests\User\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Client\Models\ViewModels\Integration\" />
-    <Folder Include="Client\Models\ViewModels\Journal\" />
-    <Folder Include="Client\Models\ViewModels\Label\" />
-    <Folder Include="Client\Models\ViewModels\Language\" />
-    <Folder Include="Client\Models\ViewModels\Project\" />
-    <Folder Include="Client\Models\ViewModels\Organization\" />
-    <Folder Include="Common\Requests\Admin\" />
-    <Folder Include="Common\Requests\Label\" />
-    <Folder Include="Common\Requests\LabelTranslation\" />
-    <Folder Include="Common\Requests\Language\" />
-    <Folder Include="Common\Requests\Integration\" />
-    <Folder Include="Common\Requests\Project\" />
-    <Folder Include="Common\Requests\User\" />
-    <Folder Include="Common\Requests\Organization\" />
     <Folder Include="Common\Responses\Admin\" />
     <Folder Include="Common\Responses\Integration\" />
     <Folder Include="Common\Responses\LabelTranslation\" />

@@ -12,6 +12,7 @@ namespace Translation.Client.Web.Models.LabelTranslation
 
         public Guid ProjectUid { get; set; }
         public string ProjectName { get; set; }
+        public Guid ProjectLanguageUid { get; set; }
 
         public Guid LabelUid { get; set; }
         public string LabelKey { get; set; }
@@ -19,10 +20,11 @@ namespace Translation.Client.Web.Models.LabelTranslation
         public Guid LanguageUid { get; set; }
         public string LabelTranslation { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; }
+        public HiddenInputModel OrganizationInput { get; }
 
         public HiddenInputModel ProjectInput { get; }
         public HiddenInputModel ProjectNameInput { get; }
+        public HiddenInputModel ProjectLanguageInput { get; }
 
         public HiddenInputModel LabelInput { get; }
         public HiddenInputModel LabelKeyInput { get; }
@@ -34,10 +36,11 @@ namespace Translation.Client.Web.Models.LabelTranslation
         {
             Title = "label_translation_create_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
 
             ProjectInput = new HiddenInputModel("ProjectUid");
             ProjectNameInput = new HiddenInputModel("ProjectName");
+            ProjectLanguageInput = new HiddenInputModel("ProjectLanguageUid");
 
             LabelInput = new HiddenInputModel("LabelUid");
             LabelKeyInput = new HiddenInputModel("LabelKey");
@@ -49,10 +52,11 @@ namespace Translation.Client.Web.Models.LabelTranslation
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
 
             ProjectInput.Value = ProjectUid.ToUidString();
             ProjectNameInput.Value = ProjectName;
+            ProjectLanguageInput.Value = ProjectLanguageUid.ToUidString();
 
             LabelInput.Value = LabelUid.ToUidString();
             LabelKeyInput.Value = LabelKey;

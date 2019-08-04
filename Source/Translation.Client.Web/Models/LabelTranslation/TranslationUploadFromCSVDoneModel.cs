@@ -10,6 +10,7 @@ namespace Translation.Client.Web.Models.LabelTranslation
         public string LabelKey { get; set; }
 
         public int AddedTranslationCount { get; set; }
+        public int UpdatedTranslationCount { get; set; }
         public int CanNotAddedTranslationCount { get; set; }
         public int TotalRowsProcessed { get; set; }
 

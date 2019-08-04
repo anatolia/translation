@@ -3,7 +3,6 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -26,18 +25,19 @@ namespace Translation.Tests.Client.Controllers
 {
     public class ControllerBaseTests : BaseTests
     {
-        public Mock<IHostingEnvironment> MockHostingEnvironment { get; }
-        public Mock<IOrganizationService> MockOrganizationService { get; }
-        public Mock<IIntegrationService> MockIntegrationService { get; }
-        public Mock<IAdminService> MockAdminService { get; }
-        public Mock<ILanguageService> MockLanguageService { get; }
-        public Mock<IProjectService> MockProjectService { get; }
-        public Mock<ILabelService> MockLabelService { get; }
-        public Mock<IJournalService> MockJournalService { get; }
+        public Mock<IOrganizationService> MockOrganizationService { get; set; }
+        public Mock<IIntegrationService> MockIntegrationService { get; set; }
+        public Mock<IAdminService> MockAdminService { get; set; }
+        public Mock<ILanguageService> MockLanguageService { get; set; }
+        public Mock<IProjectService> MockProjectService { get; set; }
+        public Mock<ILabelService> MockLabelService { get; set; }
+        public Mock<IJournalService> MockJournalService { get; set; }
+        public Mock<ITextTranslateIntegration> MockCloudTranslationService { get; set; }
 
-        public ControllerBaseTests()
+        protected new void Refresh()
         {
-            MockHostingEnvironment = new Mock<IHostingEnvironment>();
+            base.Refresh();
+
             MockOrganizationService = new Mock<IOrganizationService>();
             MockIntegrationService = new Mock<IIntegrationService>();
             MockAdminService = new Mock<IAdminService>();
@@ -45,10 +45,10 @@ namespace Translation.Tests.Client.Controllers
             MockProjectService = new Mock<IProjectService>();
             MockLabelService = new Mock<ILabelService>();
             MockJournalService = new Mock<IJournalService>();
+            MockCloudTranslationService = new Mock<ITextTranslateIntegration>();
 
             SetupCurrentUser();
 
-            Container.Register(Component.For<IHostingEnvironment>().Instance(MockHostingEnvironment.Object).LifestyleTransient());
             Container.Register(Component.For<IOrganizationService>().Instance(MockOrganizationService.Object).LifestyleTransient());
             Container.Register(Component.For<IIntegrationService>().Instance(MockIntegrationService.Object).LifestyleTransient());
             Container.Register(Component.For<ILanguageService>().Instance(MockLanguageService.Object).LifestyleTransient());
@@ -56,6 +56,8 @@ namespace Translation.Tests.Client.Controllers
             Container.Register(Component.For<IProjectService>().Instance(MockProjectService.Object).LifestyleTransient());
             Container.Register(Component.For<ILabelService>().Instance(MockLabelService.Object).LifestyleTransient());
             Container.Register(Component.For<IJournalService>().Instance(MockJournalService.Object).LifestyleTransient());
+
+            Container.Register(Component.For<ITextTranslateIntegration>().Instance(MockCloudTranslationService.Object).LifestyleTransient());
 
             Container.Register(Component.For<HomeController>().LifestyleTransient());
             Container.Register(Component.For<AdminController>().LifestyleTransient());

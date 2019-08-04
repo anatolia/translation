@@ -17,7 +17,7 @@ namespace Translation.Client.Web.Models.Language
         public IFormFile Icon { get; set; }
         public string Description { get; set; }
 
-        public HiddenInputModel LanguageUidInput { get; }
+        public HiddenInputModel LanguageInput { get; }
 
         public InputModel NameInput { get; }
         public InputModel OriginalNameInput { get; }
@@ -30,7 +30,7 @@ namespace Translation.Client.Web.Models.Language
         {
             Title = "language_edit_title";
 
-            LanguageUidInput = new HiddenInputModel("LanguageUid");
+            LanguageInput = new HiddenInputModel("LanguageUid");
 
             NameInput = new InputModel("Name", "name", true);
             OriginalNameInput = new InputModel("OriginalName", "original_name", true);
@@ -42,7 +42,7 @@ namespace Translation.Client.Web.Models.Language
 
         public override void SetInputModelValues()
         {
-            LanguageUidInput.Value = LanguageUid.ToUidString();
+            LanguageInput.Value = LanguageUid.ToUidString();
 
             NameInput.Value = Name;
             OriginalNameInput.Value = OriginalName;

@@ -5,6 +5,10 @@ function getElement(id) { return document.getElementById(id); }
 function getValue(id) { return document.getElementById(id).value; }
 function getAntiForgeryTokenFromLayout() { return document.getElementsByName('__RequestVerificationToken')[0].value; }
 
+function getLowerCase(text) {
+    return text.toLowerCase().replace(/ğ/gim, "g").replace(/ü/gim, "u").replace(/ş/gim, "s").replace(/ö/gim, "o").replace(/ç/gim, "c").replace(/ /gim, "_").replace(/-/gim, "_");
+}
+
 function createLink(text, href) {
     let a = createElement('a');
     a.innerText = text;

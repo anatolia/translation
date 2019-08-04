@@ -12,6 +12,7 @@ using Translation.Common.Helpers;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Responses.Language;
+using Translation.Data.Entities.Main;
 using Translation.Data.Entities.Parameter;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
@@ -40,7 +41,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -101,8 +102,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("language_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -136,7 +136,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedUser(request.CurrentUserId);
             if (!currentUser.IsSuperAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotSuperAdmin(nameof(User));
                 return response;
             }
 
@@ -146,8 +146,7 @@ namespace Translation.Service
                                                             || x.IsoCode3Char == request.IsoCode3);
             if (result)
             {
-                response.ErrorMessages.Add("language_name_must_be_unique");
-                response.Status = ResponseStatus.Invalid;
+                response.SetFailedBecauseNameMustBeUnique(nameof(Language));
                 return response;
             }
 
@@ -171,15 +170,15 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedUser(request.CurrentUserId);
             if (!currentUser.IsSuperAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotSuperAdmin(nameof(User));
+             
                 return response;
             }
 
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("language_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -188,7 +187,9 @@ namespace Translation.Service
                                                          || x.IsoCode2Char == request.IsoCode2
                                                          || x.IsoCode3Char == request.IsoCode3) && x.Uid != request.LanguageUid))
             {
-
+                response.SetFailed();
+                response.ErrorMessages.Add("language_already_exist");
+                return response;
             }
 
             var updatedEntity = _languageFactory.CreateEntityFromRequest(request, language);
@@ -211,15 +212,14 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedUser(request.CurrentUserId);
             if (!currentUser.IsSuperAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotSuperAdmin(nameof(User));
                 return response;
             }
 
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("language_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -243,16 +243,14 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalid();
-                response.InfoMessages.Add("language_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Language));
                 return response;
             }
 
             var revisions = await _languageRepository.SelectRevisions(language.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalid();
-                response.InfoMessages.Add("revision_not_found");
+                response.SetInvalidBecauseNotFound("language_revision");
                 return response;
             }
 

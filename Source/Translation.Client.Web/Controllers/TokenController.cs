@@ -87,7 +87,7 @@ namespace Translation.Client.Web.Controllers
             }
             
             var request = new TokenGetRequest(CurrentUser.Id);
-            var response = await _integrationService.CreateToken(request);
+            var response = await _integrationService.CreateTokenWhenUserAuthenticated(request);
             if (response.Status.IsNotSuccess)
             {
                 result.Messages = response.ErrorMessages;

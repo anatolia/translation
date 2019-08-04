@@ -16,8 +16,6 @@ using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
-using static Translation.Tests.TestHelpers.AssertModelTestHelper;
-using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Tests.Client.Controllers
 {
@@ -29,13 +27,14 @@ namespace Translation.Tests.Client.Controllers
         [SetUp]
         public void run_before_every_test()
         {
+            Refresh();
             SystemUnderTest = Container.Resolve<AdminController>();
             SetControllerContext(SystemUnderTest);
         }
 
-        [TestCase(InviteAction, new[] { typeof(Guid), typeof(string) })]
-        [TestCase(InviteAction, new[] { typeof(AdminAcceptInviteModel) })]
-        [TestCase(InviteDoneAction, new Type[] { })]
+        [TestCase(AcceptInviteAction, new[] { typeof(Guid), typeof(string) }),
+         TestCase(AcceptInviteAction, new[] { typeof(AdminAcceptInviteModel) }),
+         TestCase(AcceptInviteDoneAction, new Type[] { })]
         public void Methods_Has_AllowAnonymousAttribute(string actionMethod, Type[] parameters)
         {
             var type = SystemUnderTest.GetType();
@@ -44,31 +43,31 @@ namespace Translation.Tests.Client.Controllers
             Assert.AreEqual(attributes.Length, 1);
         }
 
-        [TestCase(DashboardAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(ListAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(ListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(OrganizationListAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(OrganizationListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(UserListAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(ListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(UserLoginLogListAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(UserLoginLogListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(JournalListAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(JournalListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(TokenRequestLogListAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(TokenRequestLogListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(SendEmailLogListAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(SendEmailLogListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(InviteAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(InviteAction, new Type[] { typeof(AdminInviteModel) }, typeof(HttpPostAttribute))]
-        [TestCase(InviteDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(ChangeActivationAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute))]
-        [TestCase(OrganizationChangeActivationAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute))]
-        [TestCase(DegradeToUserAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute))]
-        [TestCase(UserUpgradeToAdminAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute))]
-        [TestCase(AcceptInviteAction, new[] { typeof(Guid), typeof(string) }, typeof(HttpGetAttribute))]
-        [TestCase(AcceptInviteAction, new[] { typeof(AdminAcceptInviteModel) }, typeof(HttpPostAttribute))]
-        [TestCase(AcceptInviteDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
+        [TestCase(DashboardAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(ListAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(ListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(OrganizationListAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(OrganizationListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(UserListAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(UserListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(UserLoginLogListAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(UserLoginLogListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(JournalListAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(JournalListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(TokenRequestLogListAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(TokenRequestLogListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(SendEmailLogListAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(SendEmailLogListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(InviteAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(InviteAction, new Type[] { typeof(AdminInviteModel) }, typeof(HttpPostAttribute)),
+         TestCase(InviteDoneAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(ChangeActivationAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
+         TestCase(OrganizationChangeActivationAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
+         TestCase(DegradeToUserAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
+         TestCase(UserUpgradeToAdminAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
+         TestCase(AcceptInviteAction, new[] { typeof(Guid), typeof(string) }, typeof(HttpGetAttribute)),
+         TestCase(AcceptInviteAction, new[] { typeof(AdminAcceptInviteModel) }, typeof(HttpPostAttribute)),
+         TestCase(AcceptInviteDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
         public void Methods_Has_Http_Verb_Attributes(string actionMethod, Type[] parameters, Type httpVerbAttribute)
         {
             var type = SystemUnderTest.GetType();
@@ -94,14 +93,6 @@ namespace Translation.Tests.Client.Controllers
         {
             var type = SystemUnderTest.GetType();
             type.BaseType.Name.StartsWith("BaseController").ShouldBeTrue();
-        }
-
-        [Test]
-        public void Controller_Has_Authorize_Attribute()
-        {
-            var type = SystemUnderTest.GetType();
-            var attributes = type.BaseType.BaseType.CustomAttributes.ToList();
-            attributes.Any(x => x.AttributeType == typeof(AuthorizeAttribute)).ShouldBeTrue();
         }
 
         [Test]
@@ -262,7 +253,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task OrganizationListData_GET_SetPaging(int skip, int take)
         {
             // arrange
-            MockAdminService.Setup_GetOrganizations_Returns_OrganizationReadListResponse_Success();
+            MockOrganizationService.Setup_GetOrganizations_Returns_OrganizationReadListResponse_Success();
 
             // act
             var result = (JsonResult)await SystemUnderTest.OrganizationListData(skip, take);
@@ -270,6 +261,7 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertView<DataResult>(result);
             AssertPagingInfo(result);
+            MockOrganizationService.Verify_GetOrganizations();
         }
 
         [Test]

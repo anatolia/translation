@@ -12,7 +12,6 @@ using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
-using static Translation.Tests.TestHelpers.AssertModelTestHelper;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Tests.Client.Controllers
@@ -25,21 +24,22 @@ namespace Translation.Tests.Client.Controllers
         [SetUp]
         public void run_before_every_test()
         {
+            Refresh();
             SystemUnderTest = Container.Resolve<LanguageController>();
             SetControllerContext(SystemUnderTest);
         }
 
-        [TestCase(CreateAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(CreateAction, new Type[] { typeof(LanguageCreateModel) }, typeof(HttpPostAttribute))]
-        [TestCase(DetailAction, new Type[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(EditAction, new Type[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(EditAction, new Type[] { typeof(LanguageEditModel) }, typeof(HttpPostAttribute))]
-        [TestCase(ListAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(ListDataAction, new Type[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(SelectDataAction, new Type[] { typeof(Guid), typeof(int), typeof(string) }, typeof(HttpGetAttribute))]
-        [TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute))]
+        [TestCase(CreateAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(CreateAction, new Type[] { typeof(LanguageCreateModel) }, typeof(HttpPostAttribute)),
+         TestCase(DetailAction, new Type[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new Type[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new Type[] { typeof(LanguageEditModel) }, typeof(HttpPostAttribute)),
+         TestCase(ListAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(ListDataAction, new Type[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(SelectDataAction, new Type[] { typeof(Guid), typeof(int), typeof(string) }, typeof(HttpGetAttribute)),
+         TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute))]
         public void Methods_Has_Http_Verb_Attributes(string actionMethod, Type[] parameters, Type httpVerbAttribute)
         {
             var type = SystemUnderTest.GetType();
@@ -66,7 +66,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task Create_POST()
         {
             // arrange
-            MockHostingEnvironment.Setup(x => x.WebRootPath).Returns("");
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
             MockLanguageService.Setup_CreateLanguage_Returns_LanguageCreateResponse_Success();
             var model = GetLanguageOneCreateModel();
 
@@ -75,6 +75,7 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             ((RedirectResult)result).Url.ShouldBe("/Language/List/");
+            MockHostingEnvironment.Verify_WebRootPath();
             MockLanguageService.Verify_CreateLanguage();
         }
 
@@ -82,7 +83,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task Create_POST_FailedResponse()
         {
             // arrange
-            MockHostingEnvironment.Setup(x => x.WebRootPath).Returns("");
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
             MockLanguageService.Setup_CreateLanguage_Returns_LanguageCreateResponse_Failed();
             var model = GetLanguageOneCreateModel();
 
@@ -92,13 +93,14 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertErrorMessagesForInvalidOrFailedResponse<LanguageCreateModel>(result);
             MockLanguageService.Verify_CreateLanguage();
+            MockLanguageService.Verify_CreateLanguage();
         }
 
         [Test]
         public async Task Create_POST_InvalidResponse()
         {
             // arrange
-            MockHostingEnvironment.Setup(x => x.WebRootPath).Returns("");
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
             MockLanguageService.Setup_CreateLanguage_Returns_LanguageCreateResponse_Invalid();
             var model = GetLanguageOneCreateModel();
 
@@ -107,6 +109,7 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertErrorMessagesForInvalidOrFailedResponse<LanguageCreateModel>(result);
+            MockHostingEnvironment.Verify_WebRootPath();
             MockLanguageService.Verify_CreateLanguage();
         }
 
@@ -170,8 +173,9 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
 
+
             // act
-            var result = await SystemUnderTest.Edit(UidOne);
+            var result = await SystemUnderTest.Edit(EmptyUid);
 
             // assert
             AssertViewAccessDenied(result);
@@ -181,7 +185,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task Edit_POST()
         {
             // arrange
-            MockHostingEnvironment.Setup(x => x.WebRootPath).Returns("");
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
             MockLanguageService.Setup_EditLanguage_Returns_LanguageEditResponse_Success();
             var model = GetLanguageOneEditModel();
 
@@ -190,6 +194,7 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             ((RedirectResult)result).Url.ShouldBe("/Language/List/");
+            MockHostingEnvironment.Verify_WebRootPath();
             MockLanguageService.Verify_EditLanguage();
         }
 
@@ -197,6 +202,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task Edit_POST_FailedResponse()
         {
             // arrange
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
             MockLanguageService.Setup_EditLanguage_Returns_LanguageEditResponse_Failed();
             var model = GetLanguageOneEditModel();
 
@@ -205,6 +211,7 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertErrorMessagesForInvalidOrFailedResponse<LanguageEditModel>(result);
+            MockHostingEnvironment.Verify_WebRootPath();
             MockLanguageService.Verify_EditLanguage();
         }
 
@@ -212,6 +219,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task Edit_POST_InvalidResponse()
         {
             // arrange
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
             MockLanguageService.Setup_EditLanguage_Returns_LanguageEditResponse_Invalid();
             var model = GetLanguageOneEditModel();
 
@@ -220,6 +228,7 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertErrorMessagesForInvalidOrFailedResponse<LanguageEditModel>(result);
+            MockHostingEnvironment.Verify_WebRootPath();
             MockLanguageService.Verify_EditLanguage();
         }
 
@@ -368,14 +377,12 @@ namespace Translation.Tests.Client.Controllers
         public async Task Revisions_GET_InvalidParameter()
         {
             // arrange
-            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
 
             // act
             var result = await SystemUnderTest.Revisions(EmptyUid);
 
             // assert
             AssertViewRedirectToHome(result);
-            MockLanguageService.Verify_GetLanguage();
         }
 
         [Test]

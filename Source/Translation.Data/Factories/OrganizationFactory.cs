@@ -38,10 +38,13 @@ namespace Translation.Data.Factories
             dto.CreatedAt = entity.CreatedAt;
             dto.UpdatedAt = entity.UpdatedAt;
             dto.IsActive = entity.IsActive;
-
+ 
             dto.Description = entity.Description;
             dto.IsActive = entity.IsActive;
             dto.UserCount = entity.UserCount;
+            dto.ProjectCount = entity.ProjectCount;
+            dto.LabelCount = entity.LabelCount;
+            dto.LabelTranslationCount = entity.LabelTranslationCount;
 
             return dto;
         }
@@ -56,20 +59,5 @@ namespace Translation.Data.Factories
             return currentOrganization;
         }
 
-        public Organization MapCurrentOrganization(CurrentOrganization currentOrganization)
-        {
-            var organizationEntity = new Organization();
-            organizationEntity.Id = currentOrganization.Id;
-            organizationEntity.Uid = currentOrganization.Uid;
-            organizationEntity.Name = currentOrganization.Name;
-
-            return organizationEntity;
-        }
-
-        public Organization UpdateEntityForChangeActivation(Organization entity)
-        {
-            entity.IsActive = !entity.IsActive;
-            return entity;
-        }
     }
 }

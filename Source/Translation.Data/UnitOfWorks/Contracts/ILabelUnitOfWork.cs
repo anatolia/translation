@@ -13,7 +13,8 @@ namespace Translation.Data.UnitOfWorks.Contracts
         Task<bool> DoCloneWork(long currentUserId, long labelId, Label newLabel);
 
         Task<bool> DoCreateTranslationWork(long currentUserId, LabelTranslation labelTranslation);
-        Task<bool> DoCreateTranslationWorkBulk(long currentUserId, List<LabelTranslation> labelTranslations);
+        Task<bool> DoCreateTranslationWorkBulk(long currentUserId, List<LabelTranslation> translationsToInsert,
+                                               List<LabelTranslation> translationsToUpdate);
         Task<bool> DoDeleteTranslationWork(long currentUserId, LabelTranslation labelTranslation);
     }
 }

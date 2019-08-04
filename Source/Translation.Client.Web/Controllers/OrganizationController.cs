@@ -201,7 +201,7 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> PendingTranslations()
+        public IActionResult PendingTranslations()
         {
             var model = new OrganizationPendingTranslationReadListModel();
             model.OrganizationUid = CurrentUser.OrganizationUid;

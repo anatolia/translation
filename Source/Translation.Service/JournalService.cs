@@ -44,7 +44,7 @@ namespace Translation.Service
             var organization = _cacheManager.GetCachedOrganization(request.OrganizationUid);
             if (organization == null)
             {
-                response.SetInvalidBecauseNotFound("organization");
+                response.SetInvalidBecauseNotFound(nameof(Organization));
                 return response;
             }
 
@@ -79,7 +79,7 @@ namespace Translation.Service
             var user = _cacheManager.GetCachedUser(request.UserUid);
             if (user == null)
             {
-                response.SetInvalidBecauseNotFound("user");
+                response.SetInvalidBecauseNotFound(nameof(User));
                 return response;
             }
 

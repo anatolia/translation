@@ -1,14 +1,13 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using NUnit.Framework;
-using Shouldly;
 
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Models.Responses.Project;
 using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
+using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
 using static Translation.Tests.TestHelpers.AssertResponseTestHelper;
 
@@ -22,11 +21,12 @@ namespace Translation.Tests.Server.Services
         [SetUp]
         public void run_before_every_test()
         {
+            Refresh();
             SystemUnderTest = Container.Resolve<IProjectService>();
         }
 
         [Test]
-        public async Task ProjectService_GetProjects_InvalidOrganizationEntity()
+        public async Task ProjectService_GetProjects_Invalid_OrganizationNotMatch()
         {
             // arrange
             var request = GetProjectReadListRequest();
@@ -42,11 +42,13 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task ProjectService_GetProjects_Success()
+        public async Task ProjectService_GetProjects_Success_SelectAfter()
         {
             // arrange
-            var request = GetProjectReadListRequest();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            var request = GetProjectReadListRequestForSelectAfter();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+            MockProjectRepository.Setup_SelectAfter_Returns_Projects();
+            MockProjectRepository.Setup_Count_Returns_Ten();
 
             // act
             var result = await SystemUnderTest.GetProjects(request);
@@ -54,21 +56,45 @@ namespace Translation.Tests.Server.Services
             // assert
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectReadListResponse>(result);
+            AssertPagingInfoForSelectAfter(request.PagingInfo, Ten);
             MockUserRepository.Verify_SelectById();
+            MockProjectRepository.Verify_SelectAfter();
+            MockProjectRepository.Verify_Count();
         }
 
         [Test]
-        public async Task ProjectService_GetProjectRevisions_InvalidProjectEntity()
+        public async Task ProjectService_GetProjects_Success_SelectMany()
+        {
+            // arrange
+            var request = GetProjectReadListRequestForSelectMany();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+            MockProjectRepository.Setup_SelectMany_Returns_Projects();
+            MockProjectRepository.Setup_Count_Returns_Ten();
+
+            // act
+            var result = await SystemUnderTest.GetProjects(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<ProjectReadListResponse>(result);
+            AssertPagingInfoForSelectMany(request.PagingInfo, Ten);
+            MockUserRepository.Verify_SelectById();
+            MockProjectRepository.Verify_SelectMany();
+            MockProjectRepository.Verify_Count();
+        }
+
+        [Test]
+        public async Task ProjectService_GetProjectRevisions_Invalid_ProjectNotFound()
         {
             // arrange
             var request = GetProjectRevisionReadListRequest();
-            MockProjectRepository.Setup_Select_Returns_InvalidProject();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOneNotExist();
 
             // act
             var result = await SystemUnderTest.GetProjectRevisions(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
             AssertReturnType<ProjectRevisionReadListResponse>(result);
             MockProjectRepository.Verify_Select();
         }
@@ -126,7 +152,41 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task ProjectService_CreateProject_ProjectAlreadyExist()
+        public async Task ProjectService_GetProjectBySlug_Invalid_ProjectNotFound()
+        {
+            // arrange
+            var request = GetProjectReadBySlugRequest();
+            MockProjectRepository.Setup_Select_Returns_InvalidProject();
+
+            // act
+            var result = await SystemUnderTest.GetProjectBySlug(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
+            AssertReturnType<ProjectReadBySlugResponse>(result);
+            MockProjectRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task ProjectService_GetProjectBySlug_Success()
+        {
+            // arrange
+            var request = GetProjectReadBySlugRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
+
+            // act
+            var result = await SystemUnderTest.GetProjectBySlug(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<ProjectReadBySlugResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockProjectRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task ProjectService_CreateProject_Failed_ProjectNameAndSlugMustBeUnique()
         {
             // arrange
             var request = GetProjectCreateRequest();
@@ -138,7 +198,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateProject(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNameMustBeUnique);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, "project_name_and_slug_must_be_unique");
             AssertReturnType<ProjectCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -168,15 +228,18 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetProjectCreateRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
             MockProjectRepository.Setup_Any_Returns_True();
 
             // act
             var result = await SystemUnderTest.CreateProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.Failed);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<ProjectCreateResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
             MockProjectRepository.Verify_Any();
         }
 
@@ -187,6 +250,7 @@ namespace Translation.Tests.Server.Services
             var request = GetProjectCreateRequest();
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockProjectRepository.Setup_Any_Returns_False();
+            MockLanguageRepository.Setup_Select_Returns_Language();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockProjectUnitOfWork.Setup_DoCreateWork_Returns_True();
 
@@ -194,12 +258,11 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateProject(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectCreateResponse>(result);
             MockOrganizationRepository.Verify_Any();
             MockProjectRepository.Verify_Any();
+            MockLanguageRepository.Verify_Select();
             MockUserRepository.Verify_SelectById();
             MockProjectUnitOfWork.Verify_DoCreateWork();
         }
@@ -243,7 +306,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task ProjectService_EditProject_Failed_ProjectNameMustBeUniquie()
+        public async Task ProjectService_EditProject_Failed_ProjectNameMustBeUnique()
         {
             // arrange
             var request = GetProjectEditRequest();
@@ -269,22 +332,24 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetProjectEditRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockProjectRepository.Setup_Update_Success();
             MockProjectRepository.Setup_Any_Returns_False();
+            MockLanguageRepository.Setup_Select_Returns_Language();
             MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
 
             // act
             var result = await SystemUnderTest.EditProject(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectEditResponse>(result);
+            MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
             MockProjectRepository.Verify_Update();
             MockProjectRepository.Verify_Any();
+            MockLanguageRepository.Verify_Select();
             MockProjectRepository.Verify_Select();
         }
 
@@ -293,7 +358,9 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetProjectEditRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
             MockProjectRepository.Setup_Any_Returns_True();
 
 
@@ -301,11 +368,11 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.EditProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.Failed);
-            result.ErrorMessages.Any(x => x == "project_name_must_be_unique").ShouldBeTrue();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNameMustBeUnique);
             AssertReturnType<ProjectEditResponse>(result);
+            MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
+            MockProjectRepository.Verify_Select();
             MockProjectRepository.Verify_Any();
         }
 
@@ -314,6 +381,7 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetProjectCloneRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockProjectRepository.Setup_Select_Returns_InvalidProject();
 
             // act
@@ -322,33 +390,35 @@ namespace Translation.Tests.Server.Services
             // assert
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
             AssertReturnType<ProjectCloneResponse>(result);
+            MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
         }
 
         [Test]
-        public async Task ProjectService_CloneProject_OrganizationNotExist()
+        public async Task ProjectService_CloneProject_Failed_OrganizationNotMatch()
         {
             // arrange
             var request = GetProjectCloneRequest();
-            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
-            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockProjectRepository.Setup_Select_Returns_OrganizationTwoProjectOne();
 
             // act
             var result = await SystemUnderTest.CloneProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.Failed);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<ProjectCloneResponse>(result);
+            MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
-            MockOrganizationRepository.Verify_Any();
         }
 
         [Test]
-        public async Task ProjectService_CloneProject_ProjectAlreadyExist()
+        public async Task ProjectService_CloneProject_Failed_ProjectNameMustBeUnique()
         {
             // arrange
             var request = GetProjectCloneRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockProjectRepository.Setup_Any_Returns_True();
 
@@ -356,10 +426,10 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CloneProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.Failed);
-            result.ErrorMessages.Any(x => x == "project_name_must_be_unique").ShouldBeTrue();
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNameMustBeUnique);
             AssertReturnType<ProjectCloneResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockProjectRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
             MockProjectRepository.Verify_Any();
         }
@@ -372,19 +442,19 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
             MockProjectRepository.Setup_Any_Returns_False();
+            MockLanguageRepository.Setup_Select_Returns_Language();
             MockProjectUnitOfWork.Setup_DoCloneWork_Returns_True();
 
             // act
             var result = await SystemUnderTest.CloneProject(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectCloneResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
             MockProjectRepository.Verify_Any();
+            MockLanguageRepository.Verify_Select();
             MockProjectUnitOfWork.Verify_DoCloneWork();
         }
 
@@ -419,8 +489,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<ProjectDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
@@ -432,6 +501,8 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetProjectDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockProjectRepository.Setup_Delete_Success();
 
@@ -439,10 +510,10 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteProject(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockProjectRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
             MockProjectRepository.Verify_Delete();
         }
@@ -452,6 +523,8 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetProjectDeleteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockProjectRepository.Setup_Delete_Failed();
 
@@ -459,9 +532,10 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.Failed);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<ProjectDeleteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockProjectRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
             MockProjectRepository.Verify_Delete();
         }
@@ -497,8 +571,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForProject(request);
 
             // assert
-            result.ErrorMessages.ShouldNotBeNull();
-            result.Status.ShouldBe(ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
             AssertReturnType<ProjectChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
@@ -519,9 +592,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForProject(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
@@ -581,9 +652,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.RestoreProject(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectRestoreResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
@@ -618,9 +687,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetPendingTranslations(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectPendingTranslationReadListResponse>(result);
             MockProjectRepository.Verify_Select();
         }

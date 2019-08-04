@@ -65,11 +65,13 @@ namespace Translation.Client.Web
 
             app.UseAuthentication();
             app.UseMvc(x => { x.MapRoute("default", "{controller=Home}/{action=Index}/{id?}"); });
+            app.UseMvc(x => { x.MapRoute("label", "{controller=Home}/{action=Index}/{project?}/{label?}"); });
 
             Container.Install(new SettingAndHelperInstaller());
             Container.Install(new FactoryAndMapperInstaller());
             Container.Install(new RepositoryAndUnitOfWorkInstaller());
             Container.Install(new ServiceInstaller());
+            Container.Install(new IntegrationsInstaller());
 
             DbGeneratorHelper.Generate(Container, env.WebRootPath);
         }

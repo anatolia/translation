@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-
 using StandardRepository.Helpers;
 
 using Translation.Common.Contracts;
@@ -20,6 +19,7 @@ using Translation.Common.Models.Responses.User.LoginLog;
 using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
+using Translation.Data.Entities.Parameter;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
 using Translation.Data.UnitOfWorks.Contracts;
@@ -95,8 +95,7 @@ namespace Translation.Service
             var organization = await _organizationRepository.Select(x => x.Name == request.OrganizationName);
             if (organization.IsExist())
             {
-                response.ErrorMessages.Add("organization_name_already_exist");
-                response.Status = ResponseStatus.Invalid;
+                response.SetFailedBecauseNameMustBeUnique(nameof(Organization));
                 return response;
             }
 
@@ -106,16 +105,16 @@ namespace Translation.Service
             var passwordHash = _cryptoHelper.Hash(request.Password, salt);
             user = _userFactory.CreateEntityFromRequest(request, organization, salt, passwordHash);
 
-            var english = await _languageRepository.Select(x => x.IsoCode2Char == "en");
-            user.LanguageId = english.Id;
-            user.LanguageUid = english.Uid;
-            user.LanguageName = english.Name;
-            user.LanguageIconUrl = english.IconUrl;
+            var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
+            user.LanguageId = language.Id;
+            user.LanguageUid = language.Uid;
+            user.LanguageName = language.Name;
+            user.LanguageIconUrl = language.IconUrl;
 
             var loginLog = _userLoginLogFactory.CreateEntityFromRequest(request, user);
             var integration = _integrationFactory.CreateDefault(organization);
             var integrationClient = _integrationClientFactory.CreateEntity(integration);
-            var project = _projectFactory.CreateDefault(organization);
+            var project = _projectFactory.CreateDefault(organization, language);
 
             var (uowResult,
                  insertedOrganization,
@@ -193,13 +192,10 @@ namespace Translation.Service
         {
             var response = new OrganizationRevisionReadListResponse();
 
-            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-
             var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
             if (organization.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("organization_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Organization));
                 return response;
             }
 
@@ -239,8 +235,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("organization_not_found");
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
@@ -253,8 +248,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Name == request.Name && x.Id != currentUser.OrganizationId))
             {
-                response.ErrorMessages.Add("organization_name_already_exist");
-                response.Status = ResponseStatus.Invalid;
+                response.SetFailedBecauseNameMustBeUnique(nameof(Organization));
             }
 
             var updatedEntity = _organizationFactory.CreateEntityFromRequest(request, entity);
@@ -279,23 +273,21 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
             var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
             if (organization.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("organization_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Organization));
                 return response;
             }
 
             var revisions = await _organizationRepository.SelectRevisions(organization.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("revision_not_found");
+                response.SetInvalidBecauseRevisionNotFound(nameof(Organization));
                 return response;
             }
 
@@ -314,14 +306,6 @@ namespace Translation.Service
         {
             var response = new OrganizationPendingTranslationReadListResponse();
 
-            var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
-            if (organization.IsNotExist())
-            {
-                response.SetInvalid();
-                response.ErrorMessages.Add("organization_not_found");
-                return response;
-            }
-
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (request.OrganizationUid != currentUser.OrganizationUid)
             {
@@ -329,12 +313,19 @@ namespace Translation.Service
                 return response;
             }
 
-            Expression<Func<Label, bool>> filter = x => x.OrganizationId == organization.Id 
+            var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
+            if (organization.IsNotExist())
+            {
+                response.SetInvalidBecauseNotFound(nameof(Organization));
+                return response;
+            }
+
+            Expression<Func<Label, bool>> filter = x => x.OrganizationId == organization.Id
                                                         && x.LabelTranslationCount == 0;
 
             if (request.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm) 
+                filter = x => x.Name.Contains(request.SearchTerm)
                               && x.OrganizationId == organization.Id
                               && x.LabelTranslationCount == 0;
             }
@@ -398,11 +389,15 @@ namespace Translation.Service
             var response = new LogOnResponse();
 
             var user = await _userRepository.Select(x => x.Email == request.Email);
-            if (user.IsNotExist()
-                || !user.IsActive)
+            if (user.IsNotExist())
             {
-                response.ErrorMessages.Add("user_not_found_or_not_active");
-                response.Status = ResponseStatus.Invalid;
+                response.SetInvalidBecauseNotFound(nameof(User));
+                return response;
+            }
+
+            if (!user.IsActive)
+            {
+                response.SetInvalidBecauseNotActive(nameof(User));
                 return response;
             }
 
@@ -447,20 +442,18 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Email == request.Email);
             if (!user.IsExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("user_not_found");
+                response.SetInvalidBecauseNotFound(nameof(User));
                 return response;
             }
 
             if (!user.IsActive)
             {
-                response.ErrorMessages.Add("user_is_not_active");
-                response.Status = ResponseStatus.Invalid;
+                response.SetInvalidBecauseNotActive(nameof(User));
                 return response;
             }
 
             if (user.PasswordResetRequestedAt.HasValue
-                && user.PasswordResetRequestedAt.Value.AddMinutes(2) < DateTime.UtcNow)
+                && user.PasswordResetRequestedAt.Value.AddMinutes(2) > DateTime.UtcNow)
             {
                 response.ErrorMessages.Add("already_requested_password_reset_in_last_two_minutes");
                 response.Status = ResponseStatus.Invalid;
@@ -536,15 +529,13 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Id == request.CurrentUserId);
             if (user.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("user_not_found");
+                response.SetInvalidBecauseNotFound(nameof(User));
                 return response;
             }
 
             if (!user.IsActive)
             {
-                response.ErrorMessages.Add("user_is_not_active");
-                response.Status = ResponseStatus.Invalid;
+                response.SetInvalidBecauseNotActive(nameof(User));
                 return response;
             }
 
@@ -597,8 +588,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("organization_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Organization));
                 return response;
             }
 
@@ -637,8 +627,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("organization_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Organization));
                 return response;
             }
 
@@ -652,8 +641,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("language_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -685,8 +673,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("organization_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Organization));
                 return response;
             }
 
@@ -723,8 +710,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("organization_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Organization));
                 return response;
             }
 
@@ -752,7 +738,7 @@ namespace Translation.Service
                 return response;
             }
 
-            response.Status = ResponseStatus.Failed;
+            response.SetFailed();
             return response;
         }
 
@@ -810,7 +796,7 @@ namespace Translation.Service
                 }
             }
 
-            response.Status = ResponseStatus.Failed;
+            response.SetFailed();
             return response;
         }
 
@@ -839,7 +825,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
             Expression<Func<User, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
-            
+
             if (request.SearchTerm.IsNotEmpty())
             {
                 filter = x => x.OrganizationId == currentUser.OrganizationId && x.Name.Contains(request.SearchTerm);
@@ -879,13 +865,10 @@ namespace Translation.Service
         {
             var response = new UserRevisionReadListResponse();
 
-            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-
             var user = await _userRepository.Select(x => x.Uid == request.UserUid);
             if (user.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("user_not_found");
+                response.SetInvalidBecauseNotFound(nameof(User));
                 return response;
             }
 
@@ -1012,7 +995,6 @@ namespace Translation.Service
             return response;
         }
 
-
         public async Task<UserRestoreResponse> RestoreUser(UserRestoreRequest request)
         {
             var response = new UserRestoreResponse();
@@ -1020,23 +1002,21 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
             var user = await _userRepository.Select(x => x.Uid == request.UserUid);
             if (user.IsNotExist())
             {
-                response.SetInvalid();
-                response.InfoMessages.Add("user_not_found");
+                response.SetInvalidBecauseNotFound(nameof(User));
                 return response;
             }
 
             var revisions = await _userRepository.SelectRevisions(user.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalid();
-                response.InfoMessages.Add("revision_not_found");
+                response.SetInvalidBecauseRevisionNotFound(nameof(User));
                 return response;
             }
 

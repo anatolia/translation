@@ -8,12 +8,10 @@ using Shouldly;
 using Translation.Client.Web.Controllers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.Organization;
-using Translation.Client.Web.Models.Project;
 using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
-using static Translation.Tests.TestHelpers.AssertModelTestHelper;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Tests.Client.Controllers
@@ -26,27 +24,27 @@ namespace Translation.Tests.Client.Controllers
         [SetUp]
         public void run_before_every_test()
         {
+            Refresh();
             SystemUnderTest = Container.Resolve<OrganizationController>();
             SetControllerContext(SystemUnderTest);
         }
 
-        [TestCase(DetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(EditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(EditAction, new[] { typeof(OrganizationEditModel) }, typeof(HttpPostAttribute))]
-        [TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute))]
-        [TestCase(PendingTranslationsAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(PendingTranslationsDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(UserLoginLogListAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(IntegrationListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(UserListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(IntegrationListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(ProjectListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(TokenRequestLogListAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(TokenRequestLogListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(JournalListAction, new[] { typeof(Guid)}, typeof(HttpGetAttribute))]
-        [TestCase(JournalListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
+        [TestCase(DetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new[] { typeof(OrganizationEditModel) }, typeof(HttpPostAttribute)),
+         TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute)),
+         TestCase(PendingTranslationsAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(PendingTranslationsDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(UserLoginLogListAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(IntegrationListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(UserListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(IntegrationListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(ProjectListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(TokenRequestLogListAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(TokenRequestLogListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)), TestCase(JournalListAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(JournalListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
         public void Methods_Has_Http_Verb_Attributes(string actionMethod, Type[] parameters, Type httpVerbAttribute)
         {
             var type = SystemUnderTest.GetType();
@@ -243,63 +241,61 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertViewWithModel<OrganizationRevisionReadListModel>(result);
-            MockProjectService.Verify_GetProject();
+            MockOrganizationService.Verify_GetOrganization();
         }
 
         [Test]
         public void Revisions_GET_InvalidParameter()
         {
             // arrange
-            MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Success();
 
             // act
             var result = SystemUnderTest.Revisions(EmptyUid);
 
             // assert
             AssertViewRedirectToHome(result);
-            MockProjectService.Verify_GetProject();
         }
 
         [Test]
         public void RevisionsData_GET()
         {
             // arrange
-            MockProjectService.Setup_GetProjectRevisions_Returns_ProjectRevisionReadListResponse_Success();
+            MockOrganizationService.Setup_GetOrganizationRevisions_Returns_OrganizationRevisionReadListResponse_Success();
 
             // act
             var result = SystemUnderTest.RevisionsData(OrganizationOneProjectOneUid);
 
             // assert
-            AssertViewAndHeaders(result, new[] { "revision", "revisioned_by", "revisioned_at", "project_name", "is_active", "created_at", "" });
-            MockProjectService.Verify_GetProjectRevisions();
+            AssertViewAndHeaders(result, new[] { "revision", "revisioned_by", "revisioned_at", "organization_name", "is_active", "created_at", "" });
+            MockOrganizationService.Verify_GetOrganizationRevisions();
         }
 
         [Test]
         public void RevisionsData_GET_FailedResponse()
         {
             // arrange
-            MockProjectService.Setup_GetProjectRevisions_Returns_ProjectRevisionReadListResponse_Failed();
+            MockOrganizationService.Setup_GetOrganizationRevisions_Returns_OrganizationRevisionReadListResponse_Failed();
 
             // act
             var result = SystemUnderTest.RevisionsData(OrganizationOneProjectOneUid);
 
             // assert
             AssertView<NotFoundResult>(result);
-            MockProjectService.Verify_GetProjectRevisions();
+            MockOrganizationService.Verify_GetOrganizationRevisions();
         }
 
         [Test]
         public void RevisionsData_GET_InvalidResponse()
         {
             // arrange
-            MockProjectService.Setup_GetProjectRevisions_Returns_ProjectRevisionReadListResponse_Invalid();
+            MockOrganizationService.Setup_GetOrganizationRevisions_Returns_OrganizationRevisionReadListResponse_Invalid();
 
             // act
             var result = SystemUnderTest.RevisionsData(OrganizationOneProjectOneUid);
 
             // assert
             AssertView<NotFoundResult>(result);
-            MockProjectService.Verify_GetProjectRevisions();
+            MockOrganizationService.Verify_GetOrganizationRevisions();
         }
 
         [Test]
@@ -318,42 +314,42 @@ namespace Translation.Tests.Client.Controllers
         public async Task Restore_Post()
         {
             // arrange
-            MockProjectService.Setup_RestoreProject_Returns_ProjectRestoreResponse_Success();
+            MockOrganizationService.Setup_RestoreOrganization_Returns_OrganizationRestoreResponse_Success();
 
             // act
             var result = await SystemUnderTest.Restore(OrganizationOneProjectOneUid, One);
 
             // assert
             AssertView<JsonResult>(result);
-            MockProjectService.Verify_RestoreProject();
+            MockOrganizationService.Verify_RestoreOrganization();
         }
 
         [Test]
         public async Task Restore_Post_FailedResponse()
         {
             // arrange
-            MockProjectService.Setup_RestoreProject_Returns_ProjectRestoreResponse_Failed();
+            MockOrganizationService.Setup_RestoreOrganization_Returns_OrganizationRestoreResponse_Failed();
 
             // act
             var result = (JsonResult)await SystemUnderTest.Restore(OrganizationOneProjectOneUid, One);
 
             // assert
             ((CommonResult)result.Value).IsOk.ShouldBe(false);
-            MockProjectService.Verify_RestoreProject();
+            MockOrganizationService.Verify_RestoreOrganization();
         }
 
         [Test]
         public async Task Restore_Post_InvalidResponse()
         {
             // arrange
-            MockProjectService.Setup_RestoreProject_Returns_ProjectRestoreResponse_Invalid();
+            MockOrganizationService.Setup_RestoreOrganization_Returns_OrganizationRestoreResponse_Invalid();
 
             // act
             var result = (JsonResult)await SystemUnderTest.Restore(OrganizationOneProjectOneUid, One);
 
             // assert
             ((CommonResult)result.Value).IsOk.ShouldBe(false);
-            MockProjectService.Verify_RestoreProject();
+            MockOrganizationService.Verify_RestoreOrganization();
         }
 
         [Test]
@@ -369,17 +365,15 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task PendingTranslations_GET()
+        public void PendingTranslations_GET()
         {
             // arrange
-            MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Success();
-
+            
             // act
-            var result = await SystemUnderTest.PendingTranslations();
+            var result = SystemUnderTest.PendingTranslations();
 
             // assert
             AssertViewWithModel<OrganizationPendingTranslationReadListModel>(result);
-            MockProjectService.Verify_GetProject();
         }
 
         [Test]
@@ -393,7 +387,7 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertView<JsonResult>(result);
-            MockProjectService.Verify_GetPendingTranslations();
+            MockOrganizationService.Verify_GetPendingTranslations();
         }
 
         [Test]
@@ -407,7 +401,7 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertView<NotFoundResult>(result);
-            MockProjectService.Verify_GetPendingTranslations();
+            MockOrganizationService.Verify_GetPendingTranslations();
         }
 
         [Test]
@@ -421,7 +415,7 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertView<NotFoundResult>(result);
-            MockProjectService.Verify_GetPendingTranslations();
+            MockOrganizationService.Verify_GetPendingTranslations();
         }
 
         [Test]
@@ -874,7 +868,6 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertViewWithModel<OrganizationJournalListModel>(result);
-            MockProjectService.Verify_GetProject();
         }
 
         [Test]
@@ -886,22 +879,21 @@ namespace Translation.Tests.Client.Controllers
             var result = SystemUnderTest.JournalList(EmptyUid);
 
             // assert
-            AssertViewRedirectToHome(result);
-            MockProjectService.Verify_GetProject();
+            AssertViewWithModel<OrganizationJournalListModel>(result);
         }
 
         [Test]
-        public void JournalListData_GET()
+        public void JournalListData_GET_Success()
         {
             // arrange
-            MockJournalService.Setup_GetJournalsOfUser_Returns_UserJournalReadListResponse_Success();
+            MockJournalService.Setup_GetJournalsOfOrganization_Returns_OrganizationJournalReadListResponse_Success();
 
             // act
             var result = SystemUnderTest.JournalListData(OrganizationOneProjectOneUid, One, Two);
 
             // assert
             AssertViewAndHeaders(result, new[] { "user_name", "integration_name", "message", "created_at" });
-            MockJournalService.Verify_GetJournalsOfUser();
+            MockJournalService.Verify_GetJournalsOfOrganization();
         }
 
         [Test]

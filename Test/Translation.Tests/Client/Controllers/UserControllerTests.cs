@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using NUnit.Framework;
@@ -8,13 +7,11 @@ using Shouldly;
 
 using Translation.Client.Web.Controllers;
 using Translation.Client.Web.Models.Base;
-using Translation.Client.Web.Models.Project;
 using Translation.Client.Web.Models.User;
 using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
-using static Translation.Tests.TestHelpers.AssertModelTestHelper;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Tests.Client.Controllers
@@ -27,40 +24,40 @@ namespace Translation.Tests.Client.Controllers
         [SetUp]
         public void run_before_every_test()
         {
+            Refresh();
             SystemUnderTest = Container.Resolve<UserController>();
             SetControllerContext(SystemUnderTest);
         }
 
-        [TestCase(SignUpAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(SignUpAction, new[] { typeof(SignUpModel) }, typeof(HttpPostAttribute))]
-        [TestCase(ValidateEmailDoneAction, new[] { typeof(string), typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(LogOnAction, new Type[] { typeof(string) }, typeof(HttpGetAttribute))]
-        [TestCase(LogOnAction, new[] { typeof(LogOnModel) }, typeof(HttpPostAttribute))]
-        [TestCase(DemandPasswordResetAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(DemandPasswordResetDoneAction, new[] { typeof(DemandPasswordResetModel) }, typeof(HttpPostAttribute))]
-        [TestCase(DemandPasswordResetDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(ResetPasswordAction, new[] { typeof(string), typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(ResetPasswordAction, new[] { typeof(ResetPasswordModel) }, typeof(HttpPostAttribute))]
-        [TestCase(ResetPasswordDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(DetailAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(ChangePasswordAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(ChangePasswordAction, new [] { typeof(ChangePasswordModel) }, typeof(HttpPostAttribute))]
-        [TestCase(ChangePasswordDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(EditAction, new [] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(EditAction, new [] { typeof(UserEditModel) }, typeof(HttpPostAttribute))]
-        [TestCase(InviteAction, new [] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(InviteAction, new [] { typeof(InviteModel) }, typeof(HttpPostAttribute))]
-        [TestCase(InviteDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(AcceptInviteAction, new[] { typeof(string), typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(AcceptInviteAction, new[] { typeof(InviteAcceptModel) }, typeof(HttpPostAttribute))]
-        [TestCase(AcceptInviteDoneAction, new Type[] { }, typeof(HttpGetAttribute))]
-        [TestCase(ChangeActivationAction, new [] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(LogOffAction, new Type[] { }, typeof(HttpPostAttribute))]
-        [TestCase(JournalListAction, new[] { typeof(Guid)}, typeof(HttpGetAttribute))]
-        [TestCase(JournalListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
-        [TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute))]
-        [TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute))]
+        [TestCase(SignUpAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(SignUpAction, new[] { typeof(SignUpModel) }, typeof(HttpPostAttribute)),
+         TestCase(ValidateEmailDoneAction, new[] { typeof(string), typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(LogOnAction, new Type[] { typeof(string) }, typeof(HttpGetAttribute)),
+         TestCase(LogOnAction, new[] { typeof(LogOnModel) }, typeof(HttpPostAttribute)),
+         TestCase(DemandPasswordResetAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(DemandPasswordResetDoneAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(ResetPasswordAction, new[] { typeof(string), typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(ResetPasswordAction, new[] { typeof(ResetPasswordModel) }, typeof(HttpPostAttribute)),
+         TestCase(ResetPasswordDoneAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(DetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(ChangePasswordAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(ChangePasswordAction, new[] { typeof(ChangePasswordModel) }, typeof(HttpPostAttribute)),
+         TestCase(ChangePasswordDoneAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new[] { typeof(UserEditModel) }, typeof(HttpPostAttribute)),
+         TestCase(InviteAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(InviteAction, new[] { typeof(InviteModel) }, typeof(HttpPostAttribute)),
+         TestCase(InviteDoneAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(AcceptInviteAction, new[] { typeof(string), typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(AcceptInviteAction, new[] { typeof(InviteAcceptModel) }, typeof(HttpPostAttribute)),
+         TestCase(AcceptInviteDoneAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(ChangeActivationAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
+         TestCase(LogOffAction, new Type[] { }, typeof(HttpPostAttribute)),
+         TestCase(JournalListAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(JournalListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute))]
         public void Methods_Has_Http_Verb_Attributes(string actionMethod, Type[] parameters, Type httpVerbAttribute)
         {
             var type = SystemUnderTest.GetType();
@@ -413,6 +410,36 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public async Task ResetPassword_POST_InvalidResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_PasswordReset_Returns_PasswordResetResponse_Invalid();
+            var model = GetOrganizationOneUserOneResetPasswordModel();
+
+            // act
+            var result = await SystemUnderTest.ResetPassword(model);
+
+            // assert
+            AssertViewAccessDenied(result);
+            MockOrganizationService.Verify_PasswordReset();
+        }
+
+        [Test]
+        public async Task ResetPassword_POST_FailedResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_PasswordReset_Returns_PasswordResetResponse_Failed();
+            var model = GetOrganizationOneUserOneResetPasswordModel();
+
+            // act
+            var result = await SystemUnderTest.ResetPassword(model);
+
+            // assert
+            AssertViewAccessDenied(result);
+            MockOrganizationService.Verify_PasswordReset();
+        }
+
+        [Test]
         public async Task ResetPassword_POST_InvalidModel()
         {
             // arrange
@@ -425,19 +452,7 @@ namespace Translation.Tests.Client.Controllers
             AssertInputErrorMessagesOfView(result, model);
         }
 
-        [Test]
-        public async Task ResetPassword_POST_FailedResponse()
-        {
-            // arrange
-            MockOrganizationService.Setup_PasswordReset_Returns_PasswordResetResponse_Failed();
 
-            // act
-            var result = await SystemUnderTest.ResetPassword(EmailOne, UidOne);
-
-            // assert
-            AssertViewAccessDenied(result);
-            MockOrganizationService.Verify_PasswordReset();
-        }
 
         [Test]
         public void ResetPasswordDone_GET()
@@ -532,7 +547,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockOrganizationService.Setup_ChangePassword_Returns_PasswordChangeResponse_Invalid();
-            var model = new ChangePasswordModel();
+            var model = GetOrganizationOneUserOneChangePasswordModel();
 
             // act
             var result = await SystemUnderTest.ChangePassword(model);
@@ -548,7 +563,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockOrganizationService.Setup_ChangePassword_Returns_PasswordChangeResponse_Invalid();
-            var model = new ChangePasswordModel();
+            var model = GetOrganizationOneUserOneChangePasswordModel();
 
             // act
             var result = await SystemUnderTest.ChangePassword(model);
@@ -609,18 +624,6 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertViewAccessDenied(result);
             MockOrganizationService.Verify_GetUser();
-        }
-
-        [Test]
-        public void Edit_GET_InvalidParameter()
-        {
-            // arrange
-
-            // act
-            var result = SystemUnderTest.Edit(EmptyUid);
-
-            // assert
-            AssertViewAccessDenied(result);
         }
 
         [Test]
@@ -1014,6 +1017,141 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertView<DataResult>(result);
             AssertPagingInfo(result);
+        }
+
+
+        [Test]
+        public void Revisions_GET()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetUser_Returns_UserReadResponse_Success();
+
+            // act
+            var result = SystemUnderTest.Revisions(OrganizationOneUserOneUid);
+
+            // assert
+            AssertViewWithModel<UserRevisionReadListModel>(result);
+            MockOrganizationService.Verify_GetUser();
+        }
+
+        [Test]
+        public void Revisions_GET_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = SystemUnderTest.Revisions(EmptyUid);
+
+            // assert
+            AssertViewRedirectToHome(result);
+        }
+
+        [Test]
+        public void RevisionsData_GET()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetUserRevisions_Returns_UserRevisionReadListResponse_Success();
+
+            // act
+            var result = SystemUnderTest.RevisionsData(OrganizationOneUserOneUid);
+
+            // assert
+            AssertViewAndHeaders(result, new[] { "revision", "revisioned_by", "revisioned_at", "user_name", "email", "is_active", "created_at", "" });
+            MockOrganizationService.Verify_GetUserRevisions();
+        }
+
+        [Test]
+        public void RevisionsData_GET_FailedResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetUserRevisions_Returns_UserRevisionReadListResponse_Failed();
+
+            // act
+            var result = SystemUnderTest.RevisionsData(OrganizationOneUserOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockOrganizationService.Verify_GetUserRevisions();
+        }
+
+        [Test]
+        public void RevisionsData_GET_InvalidResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetUserRevisions_Returns_UserRevisionReadListResponse_Invalid();
+
+            // act
+            var result = SystemUnderTest.RevisionsData(OrganizationOneUserOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockOrganizationService.Verify_GetUserRevisions();
+        }
+
+        [Test]
+        public void RevisionsData_GET_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = SystemUnderTest.RevisionsData(EmptyUid);
+
+            // assert
+            AssertView<ForbidResult>(result);
+        }
+
+        [Test]
+        public async Task Restore_Post()
+        {
+            // arrange
+            MockOrganizationService.Setup_RestoreUser_Returns_UserRestoreResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.Restore(OrganizationOneUserOneUid, One);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockOrganizationService.Verify_RestoreUser();
+        }
+
+        [Test]
+        public async Task Restore_Post_FailedResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_RestoreUser_Returns_UserRestoreResponse_Failed();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(OrganizationOneUserOneUid, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
+            MockOrganizationService.Verify_RestoreUser();
+        }
+
+        [Test]
+        public async Task Restore_Post_InvalidResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_RestoreUser_Returns_UserRestoreResponse_Invalid();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(OrganizationOneUserOneUid, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
+            MockOrganizationService.Verify_RestoreUser();
+        }
+
+        [Test]
+        public async Task Restore_Post_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(EmptyUid, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
         }
     }
 }

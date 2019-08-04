@@ -14,16 +14,17 @@ namespace Translation.Client.Web.Models.Label
         public string CloningLabelDescription { get; set; }
 
         public Guid ProjectUid { get; set; }
+        public string ProjectName { get; set; }
         public string Key { get; set; }
         public string Description { get; set; }
 
         public int CloningLabelTranslationCount { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; }
-        public HiddenInputModel CloningLabelUidInput { get; }
+        public HiddenInputModel OrganizationInput { get; }
+        public HiddenInputModel CloningLabelInput { get; }
         public HiddenInputModel CloningLabelKeyInput { get; }
 
-        public SelectInputModel ProjectUidInput { get; }
+        public SelectInputModel ProjectInput { get; }
         public InputModel KeyInput { get; }
         public LongInputModel DescriptionInput { get; }
 
@@ -33,11 +34,11 @@ namespace Translation.Client.Web.Models.Label
         {
             Title = "label_clone_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
-            CloningLabelUidInput = new HiddenInputModel("CloningLabelUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
+            CloningLabelInput = new HiddenInputModel("CloningLabelUid");
             CloningLabelKeyInput = new HiddenInputModel("CloningLabelKey");
 
-            ProjectUidInput = new SelectInputModel("ProjectUid", "ProjectName", "project", "/Project/SelectData/");
+            ProjectInput = new SelectInputModel("ProjectUid", "ProjectName", "project", "/Project/SelectData/");
             KeyInput = new InputModel("Key", "key");
             DescriptionInput = new LongInputModel("Description", "description");
 
@@ -46,10 +47,10 @@ namespace Translation.Client.Web.Models.Label
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
-            CloningLabelUidInput.Value = CloningLabelUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
+            CloningLabelInput.Value = CloningLabelUid.ToUidString();
             CloningLabelKeyInput.Value = CloningLabelKey;
-            ProjectUidInput.Value = ProjectUid.ToUidString();
+            ProjectInput.Value = ProjectUid.ToUidString();
 
             KeyInput.Value = CloningLabelKey;
             DescriptionInput.Value = CloningLabelDescription;
@@ -76,8 +77,8 @@ namespace Translation.Client.Web.Models.Label
 
             if (ProjectUid.IsEmptyGuid())
             {
-                ProjectUidInput.ErrorMessage.Add("project_required_error_message");
-                InputErrorMessages.AddRange(ProjectUidInput.ErrorMessage);
+                ProjectInput.ErrorMessage.Add("project_required_error_message");
+                InputErrorMessages.AddRange(ProjectInput.ErrorMessage);
             }
 
             Key = Key.TrimOrDefault();

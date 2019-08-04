@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moq;
 
@@ -13,10 +14,33 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class ProjectServiceSetupHelper
     {
+        public static void Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Success(this Mock<IProjectService> service)
+        {
+            service.Setup(x => x.GetProjectBySlug(It.IsAny<ProjectReadBySlugRequest>()))
+                   .ReturnsAsync(new ProjectReadBySlugResponse() { Status = ResponseStatus.Success,Item = new  ProjectDto(){Name = StringOne}});
+        }
+
+        public static void Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Failed(this Mock<IProjectService> service)
+        {
+            service.Setup(x => x.GetProjectBySlug(It.IsAny<ProjectReadBySlugRequest>()))
+                   .ReturnsAsync(new ProjectReadBySlugResponse() { Status = ResponseStatus.Failed });
+        }
+
+        public static void Setup_GetProjectBySlug_Returns_ProjectReadBySlugResponse_Invalid(this Mock<IProjectService> service)
+        {
+            service.Setup(x => x.GetProjectBySlug(It.IsAny<ProjectReadBySlugRequest>()))
+                   .ReturnsAsync(new ProjectReadBySlugResponse() { Status = ResponseStatus.Invalid });
+        }
+
+        public static void Verify_GetProjectBySlug(this Mock<IProjectService> service)
+        {
+            service.Verify(x => x.GetProjectBySlug(It.IsAny<ProjectReadBySlugRequest>()));
+        }
+
         public static void Setup_GetProjectRevisions_Returns_ProjectRevisionReadListResponse_Success(this Mock<IProjectService> service)
         {
             var items = new List<RevisionDto<ProjectDto>>();
-            items.Add(new RevisionDto<ProjectDto>() { RevisionedByUid = UidOne, Revision = One, Item = new ProjectDto(){Uid = UidOne}});
+            items.Add(new RevisionDto<ProjectDto>() { RevisionedByUid = UidOne, Revision = One, Item = new ProjectDto() { Uid = UidOne } });
 
             service.Setup(x => x.GetProjectRevisions(It.IsAny<ProjectRevisionReadListRequest>()))
                    .Returns(Task.FromResult(new ProjectRevisionReadListResponse() { Status = ResponseStatus.Success, Items = items }));
@@ -39,8 +63,10 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetProject_Returns_ProjectReadResponse_Success(this Mock<IProjectService> service)
         {
+            var item = new ProjectDto(){Uid = UidOne};
+
             service.Setup(x => x.GetProject(It.IsAny<ProjectReadRequest>()))
-                   .ReturnsAsync(new ProjectReadResponse { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new ProjectReadResponse { Status = ResponseStatus.Success, Item = item });
         }
 
         public static void Setup_CreateProject_Returns_ProjectCreateResponse_Success(this Mock<IProjectService> service)
@@ -142,7 +168,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_RestoreProject_Returns_ProjectRestoreResponse_Invalid(this Mock<IProjectService> service)
         {
             service.Setup(x => x.RestoreProject(It.IsAny<ProjectRestoreRequest>()))
-                   .Returns(Task.FromResult(new ProjectRestoreResponse { Status = ResponseStatus.Invalid}));
+                   .Returns(Task.FromResult(new ProjectRestoreResponse { Status = ResponseStatus.Invalid }));
         }
 
         public static void Setup_GetProjectRevisions_Returns_ProjectRevisionReadListResponse_Invalid(this Mock<IProjectService> service)

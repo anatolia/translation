@@ -25,11 +25,14 @@ namespace Translation.Client.Web.Helpers.Mappers
 
             model.ProjectUid = dto.Uid;
             model.Name = dto.Name;
+            model.Slug = dto.Slug;
             model.Description = dto.Description;
             model.Url = dto.Url;
             model.LabelCount = dto.LabelCount;
             model.IsActive = dto.IsActive;
             model.IsActiveInput.Value = dto.IsActive;
+            model.LanguageName = dto.LanguageName;
+            model.LanguageIconUrl = dto.LanguageIconUrl;
 
             model.SetInputModelValues();
             return model;
@@ -43,8 +46,11 @@ namespace Translation.Client.Web.Helpers.Mappers
 
             model.ProjectUid = dto.Uid;
             model.Name = dto.Name;
+            model.Slug = dto.Slug;
             model.Description = dto.Description;
             model.Url = dto.Url;
+            model.LanguageUid = dto.LanguageUid;
+            model.LanguageName = dto.LanguageName;
 
             model.SetInputModelValues();
             return model;
@@ -63,6 +69,9 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.LabelCount = dto.LabelCount;
             model.LabelTranslationCount = dto.LabelTranslationCount;
             model.IsSuperProject = dto.IsSuperProject;
+
+            model.LanguageUid = dto.LanguageUid;
+            model.LanguageName = dto.LanguageName;
 
             model.SetInputModelValues();
             return model;

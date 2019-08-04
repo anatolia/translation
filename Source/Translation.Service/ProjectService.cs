@@ -13,6 +13,8 @@ using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Responses.Project;
 using Translation.Data.Entities.Domain;
+using Translation.Data.Entities.Main;
+using Translation.Data.Entities.Parameter;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
 using Translation.Data.UnitOfWorks.Contracts;
@@ -27,6 +29,7 @@ namespace Translation.Service
         private readonly IProjectRepository _projectRepository;
         private readonly ProjectFactory _projectFactory;
         private readonly IOrganizationRepository _organizationRepository;
+        private readonly ILanguageRepository _languageRepository;
         private readonly ILabelRepository _labelRepository;
         private readonly LabelFactory _labelFactory;
 
@@ -34,6 +37,7 @@ namespace Translation.Service
                               IProjectUnitOfWork projectUnitOfWork,
                               IProjectRepository projectRepository, ProjectFactory projectFactory,
                               IOrganizationRepository organizationRepository,
+                              ILanguageRepository languageRepository,
                               ILabelRepository labelRepository,
                               LabelFactory labelFactory)
         {
@@ -42,6 +46,7 @@ namespace Translation.Service
             _projectRepository = projectRepository;
             _projectFactory = projectFactory;
             _organizationRepository = organizationRepository;
+            _languageRepository = languageRepository;
             _labelRepository = labelRepository;
             _labelFactory = labelFactory;
         }
@@ -101,8 +106,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("organization_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -138,7 +142,31 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("project");
+                response.SetInvalidBecauseNotFound(nameof(Project));
+                return response;
+            }
+
+            if (project.OrganizationId != currentUser.OrganizationId)
+            {
+                response.SetFailed();
+                return response;
+            }
+
+            response.Item = _projectFactory.CreateDtoFromEntity(project);
+            response.Status = ResponseStatus.Success;
+            return response;
+        }
+
+        public async Task<ProjectReadBySlugResponse> GetProjectBySlug(ProjectReadBySlugRequest request)
+        {
+            var response = new ProjectReadBySlugResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            var project = await _projectRepository.Select(x => x.Slug == request.ProjectSlug);
+            if (project.IsNotExist())
+            {
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -166,18 +194,26 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotActive("organization");
-                return response;
-            }
-            
-            if (await _projectRepository.Any(x => x.Name == request.ProjectName
-                                                       && x.OrganizationId == currentUser.OrganizationId))
-            {
-                response.SetFailedBecauseNameMustBeUnique("project");
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
-            var entity = _projectFactory.CreateEntityFromRequest(request, currentUser.Organization);
+            if (await _projectRepository.Any(x => (x.Name == request.ProjectName
+                                                  || x.Slug == request.ProjectSlug)
+                                                  && x.OrganizationId == currentUser.OrganizationId))
+            {
+                response.SetFailed();
+                response.ErrorMessages.Add("project_name_and_slug_must_be_unique");
+                return response;
+            }
+
+            var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
+            if (language.IsNotExist())
+            {
+                response.SetInvalidBecauseNotFound(nameof(Language));
+            }
+
+            var entity = _projectFactory.CreateEntityFromRequest(request, currentUser.Organization, language);
             var uowResult = await _projectUnitOfWork.DoCreateWork(request.CurrentUserId, entity);
             if (uowResult)
             {
@@ -203,16 +239,14 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("organization_not_active");
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("project_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -226,12 +260,17 @@ namespace Translation.Service
                                                        && x.OrganizationId == project.OrganizationId
                                                        && x.Id != project.Id))
             {
-                response.ErrorMessages.Add("project_name_must_be_unique");
-                response.Status = ResponseStatus.Failed;
+                response.SetFailedBecauseNameMustBeUnique(nameof(Project));
                 return response;
             }
 
-            var updatedEntity = _projectFactory.CreateEntityFromRequest(request, project);
+            var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
+            if (language.IsNotExist())
+            {
+                response.SetInvalidBecauseNotFound(nameof(Language));
+            }
+
+            var updatedEntity = _projectFactory.CreateEntityFromRequest(request, project, language);
             var result = await _projectRepository.Update(request.CurrentUserId, updatedEntity);
             if (result)
             {
@@ -258,8 +297,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("project_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -277,8 +315,7 @@ namespace Translation.Service
 
             if (await _labelRepository.Any(x => x.ProjectId == project.Id))
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("has_children");
+                response.SetInvalidBecauseHasChildren(nameof(Project));
                 return response;
             }
 
@@ -288,7 +325,7 @@ namespace Translation.Service
                 response.Status = ResponseStatus.Success;
                 return response;
             }
-            
+
             var uowResult = await _projectUnitOfWork.DoDeleteWork(request.CurrentUserId, project);
             if (uowResult)
             {
@@ -310,12 +347,11 @@ namespace Translation.Service
                 response.SetInvalid();
                 return response;
             }
-            
+
             var project = await _projectRepository.Select(x => x.Uid == request.CloningProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("project_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -334,12 +370,24 @@ namespace Translation.Service
             if (await _projectRepository.Any(x => x.Name == request.Name
                                                   && x.OrganizationId == currentUser.OrganizationId))
             {
-                response.ErrorMessages.Add("project_name_must_be_unique");
-                response.Status = ResponseStatus.Failed;
+                response.SetFailedBecauseNameMustBeUnique(nameof(Project));
                 return response;
             }
 
-            var cloningEntity = _projectFactory.CreateEntityFromRequest(request, project);
+            if (await _projectRepository.Any(x =>  x.Slug == request.Slug
+                                                  && x.OrganizationId == currentUser.OrganizationId))
+            {
+                response.SetFailedBecauseSlugMustBeUnique(nameof(Project));
+                return response;
+            }
+
+            var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
+            if (language.IsNotExist())
+            {
+                response.SetInvalidBecauseNotFound(nameof(Language));
+            }
+
+            var cloningEntity = _projectFactory.CreateEntityFromRequest(request, project, language);
             var uowResult = await _projectUnitOfWork.DoCloneWork(request.CurrentUserId, project.Id, cloningEntity);
             if (uowResult)
             {
@@ -362,12 +410,11 @@ namespace Translation.Service
                 response.SetInvalid();
                 return response;
             }
-            
+
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("project_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -410,16 +457,14 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalid();
-                response.InfoMessages.Add("project_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
             var revisions = await _projectRepository.SelectRevisions(project.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalid();
-                response.InfoMessages.Add("revision_not_found");
+                response.SetInvalidBecauseRevisionNotFound(nameof(Project));
                 return response;
             }
 
@@ -441,8 +486,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalid();
-                response.ErrorMessages.Add("project_not_found");
+                response.SetInvalidBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -458,7 +502,7 @@ namespace Translation.Service
 
             if (request.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm) 
+                filter = x => x.Name.Contains(request.SearchTerm)
                               && x.ProjectId == project.Id
                               && x.LabelTranslationCount == 0;
             }

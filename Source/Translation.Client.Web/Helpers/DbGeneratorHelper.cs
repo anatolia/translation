@@ -53,7 +53,7 @@ namespace Translation.Client.Web.Helpers
                 var organizationRepository = container.Resolve<IOrganizationRepository>();
                 var userRepository = container.Resolve<IUserRepository>();
                 var projectRepository = container.Resolve<IProjectRepository>();
-                var organizationId = InsertAdmin(adminSettings, organizationService, organizationRepository, userRepository, projectRepository);
+                var organizationId = InsertAdmin(adminSettings, organizationService, organizationRepository, userRepository, projectRepository, languageRepository);
 
                 var project = projectRepository.Select(x => x.OrganizationId == organizationId).Result;
 
@@ -66,13 +66,19 @@ namespace Translation.Client.Web.Helpers
         }
 
         private static long InsertAdmin(AdminSettings adminSettings, IOrganizationService organizationService,
-                                        IOrganizationRepository organizationRepository, IUserRepository userRepository, IProjectRepository projectRepository)
+                                        IOrganizationRepository organizationRepository, IUserRepository userRepository, IProjectRepository projectRepository, ILanguageRepository languageRepository)
         {
             organizationService.CreateOrganizationWithAdmin(new SignUpRequest(ConstantHelper.ORGANIZATION_NAME, adminSettings.AdminFirstName, adminSettings.AdminLastName,
-                                                                              adminSettings.AdminEmail, adminSettings.AdminPassword, new ClientLogInfo())).Wait();
+                                                            adminSettings.AdminEmail, adminSettings.AdminPassword, new ClientLogInfo())).Wait();
 
             var superAdmin = userRepository.Select(x => x.Email == adminSettings.AdminEmail).Result;
             superAdmin.IsSuperAdmin = true;
+            
+            var english = languageRepository.Select(x => x.IsoCode2Char == "en").Result;
+            superAdmin.LanguageId = english.Id;
+            superAdmin.LanguageUid = english.Uid;
+            superAdmin.LanguageName = english.Name;
+            superAdmin.LanguageIconUrl = english.IconUrl;
             userRepository.Update(superAdmin.Id, superAdmin);
 
             var organization = organizationRepository.Select(x => x.Name == ConstantHelper.ORGANIZATION_NAME).Result;
@@ -93,7 +99,7 @@ namespace Translation.Client.Web.Helpers
             var english = languageFactory.CreateEntity("en", "eng", "English", "English");
             var hindi = languageFactory.CreateEntity("hi", "hin", "Hindi", "हिन्दी");
             var arabic = languageFactory.CreateEntity("ar", "ara", "Arabic", "العربية");
-            var portuguese = languageFactory.CreateEntity("po", "por", "Portuguese", "Português");
+            var portuguese = languageFactory.CreateEntity("pt", "por", "Portuguese", "Português");
             var russian = languageFactory.CreateEntity("ru", "rus", "Russian", "русский");
             var japanese = languageFactory.CreateEntity("ja", "jpn", "Japanese", "日本語");
             var turkish = languageFactory.CreateEntity("tr", "tur", "Turkish", "Türkçe");

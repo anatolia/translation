@@ -1,10 +1,10 @@
 ﻿@model OrganizationEditModel
 
-    <a href="/Organization/Detail/@Model.OrganizationUid" data-translation="organization_link">organization_link</a>
+<a href="/Organization/Detail/@Model.OrganizationUid" data-translation="organization_link">organization_link</a>
 <h1 data-translation="@Model.Title">@Model.Title</h1>
 
 <form method="post">
-    <partial name="Components/_Hidden" model="@Model.OrganizationUidInput" />
+    <partial name="Components/_Hidden" model="@Model.OrganizationInput" />
     <partial name="Components/_Input" model="@Model.NameInput" />
     <partial name="Components/_LongInput" model="@Model.DescriptionInput" />
 

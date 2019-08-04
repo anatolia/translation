@@ -1,4 +1,5 @@
-﻿using Translation.Client.Web.Models.Base;
+﻿using System;
+using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.InputModels;
 using Translation.Common.Helpers;
 
@@ -11,6 +12,8 @@ namespace Translation.Client.Web.Models.User
         public string LastName { get; set; }
         public string OrganizationName { get; set; }
         public string Password { get; set; }
+        public Guid LanguageUid { get; set; }
+        public string LanguageName { get; set; }
         public bool IsTermsAccepted { get; set; }
 
         public EmailInputModel EmailInput { get; set; }
@@ -18,6 +21,7 @@ namespace Translation.Client.Web.Models.User
         public InputModel LastNameInput { get; set; }
         public LongInputModel OrganizationNameInput { get; set; }
         public PasswordInputModel PasswordInput { get; set; }
+        public SelectInputModel LanguageInput { get; set; }
         public CheckboxInputModel IsTermsAcceptedInput { get; set; }
 
         public SignUpModel()
@@ -29,6 +33,8 @@ namespace Translation.Client.Web.Models.User
             LastNameInput = new InputModel("LastName", "last_name", true);
             OrganizationNameInput = new LongInputModel("OrganizationName", "organization_name", true);
             PasswordInput = new PasswordInputModel("Password", "password", true);
+            LanguageInput = new SelectInputModel("LanguageUid", "LanguageName", "language", "/Language/SelectData");
+            LanguageInput.IsOptionTypeContent = true;
             IsTermsAcceptedInput = new CheckboxInputModel("IsTermsAccepted", "accept_terms", true);
         }
 
@@ -40,6 +46,12 @@ namespace Translation.Client.Web.Models.User
             OrganizationNameInput.Value = OrganizationName;
             PasswordInput.Value = Password;
             IsTermsAcceptedInput.Value = IsTermsAccepted;
+
+            if (LanguageUid.IsNotEmptyGuid())
+            {
+                LanguageInput.Value = LanguageUid.ToUidString();
+                LanguageInput.Text = LanguageName;
+            }
         }
 
         public override void SetInputErrorMessages()
@@ -78,6 +90,12 @@ namespace Translation.Client.Web.Models.User
             {
                 OrganizationNameInput.ErrorMessage.Add("password_is_not_valid_error_message");
                 ErrorMessages.AddRange(OrganizationNameInput.ErrorMessage);
+            }
+
+            if (LanguageUid.IsEmptyGuid())
+            {
+                LanguageInput.ErrorMessage.Add("language_uid_not_valid");
+                InputErrorMessages.AddRange(LanguageInput.ErrorMessage);
             }
 
             if (!IsTermsAccepted)

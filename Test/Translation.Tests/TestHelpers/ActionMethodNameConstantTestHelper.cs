@@ -60,14 +60,18 @@
         public const string SearchListDataAction = "SearchListData";
 
         public const string UploadLabelFromCSVFileAction = "UploadLabelFromCSVFile";
+        public const string DownloadSampleCSVFileForBulkLabelUploadAction = "DownloadSampleCSVFileForBulkLabelUpload";
 
         public const string CreateBulkLabelAction = "CreateBulkLabel";
+        public const string TranslateAction = "Translate";
 
         public const string LabelTranslationCreateAction = "LabelTranslationCreate";
         public const string LabelTranslationDetailAction = "LabelTranslationDetail";
         public const string LabelTranslationEditAction = "LabelTranslationEdit";
+        public const string LabelTranslationDeleteAction = "LabelTranslationDelete";
         public const string LabelTranslationListDataAction = "LabelTranslationListData";
         public const string UploadLabelTranslationFromCSVFileAction = "UploadLabelTranslationFromCSVFile";
+        public const string DownloadSampleCSVFileForBulkLabelTranslationUploadAction = "DownloadSampleCSVFileForBulkLabelTranslationUpload";
         public const string DownloadTranslationsAction = "DownloadTranslations";
         public const string RestoreLabelTranslationAction = "RestoreLabelTranslation";
         public const string LabelTranslationRevisionsAction = "LabelTranslationRevisions";

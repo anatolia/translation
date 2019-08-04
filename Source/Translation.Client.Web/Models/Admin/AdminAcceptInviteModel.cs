@@ -17,7 +17,7 @@ namespace Translation.Client.Web.Models.Admin
         public string Password { get; set; }
         public string ReEnterPassword { get; set; }
 
-        public HiddenInputModel OrganizationUidInput { get; set; }
+        public HiddenInputModel OrganizationInput { get; set; }
         public HiddenInputModel TokenInput { get; }
         public HiddenInputModel EmailInput { get; }
 
@@ -30,7 +30,7 @@ namespace Translation.Client.Web.Models.Admin
         {
             Title = "admin_accept_title";
 
-            OrganizationUidInput = new HiddenInputModel("OrganizationUid");
+            OrganizationInput = new HiddenInputModel("OrganizationUid");
             TokenInput = new HiddenInputModel("Token");
             EmailInput = new HiddenInputModel("Email");
 
@@ -42,7 +42,7 @@ namespace Translation.Client.Web.Models.Admin
 
         public override void SetInputModelValues()
         {
-            OrganizationUidInput.Value = OrganizationUid.ToUidString();
+            OrganizationInput.Value = OrganizationUid.ToUidString();
             TokenInput.Value = Token.ToUidString();
             EmailInput.Value = Email;
 

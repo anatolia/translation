@@ -11,9 +11,12 @@ namespace Translation.Client.Web.Models.Label
 
         public int AddedLabelCount { get; set; }
         public int CanNotAddedLabelCount { get; set; }
+        public int TotalLabelCount { get; set; }
+
         
         public int CanNotAddedLabelTranslationCount { get; set; }
         public int AddedLabelTranslationCount { get; set; }
+        public int UpdatedLabelTranslationCount { get; set; }
         public int TotalRowsProcessed { get; set; }
 
         public LabelUploadFromCSVDoneModel()

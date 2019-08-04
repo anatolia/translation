@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translation.Client.Tool.Pus
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translation.Client.Tool.TakeScreenshotOfViewContainingKey", "Source\Translation.Client.Tool.TakeScreenshotOfViewContainingKey\Translation.Client.Tool.TakeScreenshotOfViewContainingKey.csproj", "{696219B3-EDE9-40B8-BC9D-5758CA2C6776}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translation.Integrations", "Source\Translation.Integrations\Translation.Integrations.csproj", "{30343FA4-ED12-4BAD-A016-0D421D28007F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{696219B3-EDE9-40B8-BC9D-5758CA2C6776}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{696219B3-EDE9-40B8-BC9D-5758CA2C6776}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{696219B3-EDE9-40B8-BC9D-5758CA2C6776}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30343FA4-ED12-4BAD-A016-0D421D28007F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30343FA4-ED12-4BAD-A016-0D421D28007F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30343FA4-ED12-4BAD-A016-0D421D28007F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30343FA4-ED12-4BAD-A016-0D421D28007F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{23C8F6BD-D73E-47E6-97B5-B627C5D43158} = {07DABBA1-4701-477A-9237-9FC4E70AA937}
 		{2960B4EA-3EC9-4303-B8C2-E92301558BE6} = {BA13D279-8AFC-4EEA-8650-5082E6495AAB}
 		{696219B3-EDE9-40B8-BC9D-5758CA2C6776} = {BA13D279-8AFC-4EEA-8650-5082E6495AAB}
+		{30343FA4-ED12-4BAD-A016-0D421D28007F} = {07DABBA1-4701-477A-9237-9FC4E70AA937}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0DF2FB4D-A2C4-45BF-BEF9-227039B063A2}

@@ -14,6 +14,58 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class ProjectRepositorySetupHelper
     {
+        public static void Setup_SelectAfter_Returns_Projects(this Mock<IProjectRepository> repository)
+        {
+            repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Project, bool>>>(),
+                                                It.IsAny<Guid>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<Expression<Func<Project, object>>>(),
+                                                It.IsAny<bool>(), false))
+                      .ReturnsAsync(new List<Project> { GetProject() });
+        }
+
+        public static void Setup_SelectMany_Returns_Projects(this Mock<IProjectRepository> repository)
+        {
+            repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<Project, bool>>>(),
+                                               It.IsAny<int>(),
+                                               It.IsAny<int>(),
+                                               It.IsAny<Expression<Func<Project, object>>>(),
+                                               It.IsAny<bool>(), false))
+                      .ReturnsAsync(new List<Project> { GetProject() });
+        }
+
+        public static void Setup_Count_Returns_Ten(this Mock<IProjectRepository> repository)
+        {
+            repository.Setup(x => x.Count(It.IsAny<Expression<Func<Project, bool>>>(),
+                                          It.IsAny<bool>()))
+                      .ReturnsAsync(Ten);
+        }
+
+        public static void Verify_SelectAfter(this Mock<IProjectRepository> repository)
+        {
+            repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<Project, bool>>>(),
+                                                 It.IsAny<Guid>(),
+                                                 It.IsAny<int>(),
+                                                 It.IsAny<Expression<Func<Project, object>>>(),
+                                                 It.IsAny<bool>(), false));
+        }
+
+        public static void Verify_SelectMany(this Mock<IProjectRepository> repository)
+        {
+            repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<Project, bool>>>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<Expression<Func<Project, object>>>(),
+                                                It.IsAny<bool>(), false));
+        }
+
+        public static void Verify_Count(this Mock<IProjectRepository> repository)
+        {
+            repository.Setup(x => x.Count(It.IsAny<Expression<Func<Project, bool>>>(),
+                                          It.IsAny<bool>()))
+                      .ReturnsAsync(Ten);
+        }
+
         public static void Setup_RestoreRevision_Returns_True(this Mock<IProjectRepository> repository)
         {
             repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
@@ -36,6 +88,30 @@ namespace Translation.Tests.SetupHelpers
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Project, bool>>>(), false))
                       .ReturnsAsync(GetOrganizationOneProjectOne());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneSuperProjectOne(this Mock<IProjectRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Project, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneSuperProjectOne());
+        }
+
+        public static void Setup_Select_Returns_OrganizationTwoProjectOne(this Mock<IProjectRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Project, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationTwoProjectOne());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneProjectOneNotExist(this Mock<IProjectRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Project, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneProjectOneNotExist());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneProjectOneNotActive(this Mock<IProjectRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Project, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneProjectOneNotActive());
         }
 
         public static void Setup_Select_Returns_InvalidProject(this Mock<IProjectRepository> repository)

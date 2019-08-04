@@ -7,11 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Translation-99b9688ce4dd.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Castle.Facilities.AspNetCore" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCaching" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.11" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="StandardCache" Version="1.0.1" />
     <PackageReference Include="StandardRepository" Version="1.0.1.9" />
     <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.1.9" />
@@ -19,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Translation-99b9688ce4dd.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Views\Home\AccessDenied.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\Integration\Create.cshtml" />
@@ -51,6 +59,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Translation.Common\Translation.Common.csproj" />
     <ProjectReference Include="..\Translation.Data\Translation.Data.csproj" />
+    <ProjectReference Include="..\Translation.Integrations\Translation.Integrations.csproj" />
     <ProjectReference Include="..\Translation.Service\Translation.Service.csproj" />
   </ItemGroup>
 

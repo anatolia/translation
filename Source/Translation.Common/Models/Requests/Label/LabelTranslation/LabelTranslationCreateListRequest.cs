@@ -12,8 +12,10 @@ namespace Translation.Common.Models.Requests.Label.LabelTranslation
         public Guid LabelUid { get; }
         public List<TranslationListInfo> LabelTranslations { get;}
 
+        public bool UpdateExistedTranslations { get; set; }
+
         public LabelTranslationCreateListRequest(long currentUserId, Guid organizationUid, Guid labelUid,
-                                                 List<TranslationListInfo> labelTranslations) : base(currentUserId)
+                                                 bool updateExistedTranslations, List<TranslationListInfo> labelTranslations) : base(currentUserId)
         {
             if (organizationUid.IsEmptyGuid())
             {
@@ -28,6 +30,7 @@ namespace Translation.Common.Models.Requests.Label.LabelTranslation
             OrganizationUid = organizationUid;
             LabelUid = labelUid;
             LabelTranslations = labelTranslations;
+            UpdateExistedTranslations = updateExistedTranslations;
         }
     }
 }

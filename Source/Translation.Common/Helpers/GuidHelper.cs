@@ -12,9 +12,22 @@ namespace Translation.Common.Helpers
                    && IsNotEmptyGuid(uid);
         }
 
+
         public static bool IsNotUid(this string text)
         {
             return !IsUid(text);
+        }
+
+        public static bool IsAnyUid(this string text)
+        {
+            var isValid = Guid.TryParse(text, out var uid);
+
+            return isValid;
+        }
+
+        public static bool IsNotAnyUid(this string text)
+        {
+            return !IsAnyUid(text);
         }
 
         public static void ValidateUid(this string text)

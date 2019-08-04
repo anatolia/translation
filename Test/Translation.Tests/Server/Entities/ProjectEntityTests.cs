@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+
 using Shouldly;
 
 using StandardRepository.Models.Entities;
@@ -32,7 +33,7 @@ namespace Translation.Tests.Server.Entities
             AssertIntegerProperty(properties,"LabelCount",entity.LabelCount);
             AssertIntegerProperty(properties, "LabelTranslationCount", entity.LabelTranslationCount);
             AssertBooleanProperty(properties, "IsSuperProject", entity.IsSuperProject);
-
+            AssertStringProperty(properties, "Slug", entity.Slug);
         }
     }
 }

@@ -13,10 +13,11 @@
 </div>
 
 <form method="post">
-    <partial name="Components/_Hidden" model="@Model.OrganizationUidInput" />
+    <partial name="Components/_Hidden" model="@Model.OrganizationInput" />
 
     <partial name="Components/_Hidden" model="@Model.ProjectInput" />
     <partial name="Components/_Hidden" model="@Model.ProjectNameInput" />
+    <partial name="Components/_Hidden" model="@Model.ProjectLanguageInput" />
 
     <partial name="Components/_Hidden" model="@Model.LabelInput" />
     <partial name="Components/_Hidden" model="@Model.LabelKeyInput" />
@@ -28,3 +29,29 @@
 
     <button type="submit" data-translation="create_label_translation_button">create_label_translation_button</button>
 </form>
+
+@section Scripts
+{
+    <script>
+        let languageInput = getElement('@Model.LanguageInput.Name');
+        let projectLanguageInput = getElement('@Model.ProjectLanguageInput.Name');
+        let labelKeyInput = getElement('@Model.LabelKeyInput.Name');
+        let labelTranslationInput = getElement('@Model.LabelTranslationInput.Name');
+        let textToTranslate = labelKeyInput.value;
+        let lastLabelTranslation = '';
+
+        onSelectChange('@Model.LanguageInput.Name', function () {
+            var targetLanguageUid = languageInput.value;
+            var sourceLanguageUid = projectLanguageInput.value;
+            doGet('/Label/Translate?text=' + textToTranslate + '&target=' + targetLanguageUid + '&source=' + sourceLanguageUid, function (req) {
+                if (199 < req.status && req.status < 300) {
+                    if (labelTranslationInput.value === ''
+                        || labelTranslationInput.value === lastLabelTranslation) {
+                        labelTranslationInput.value = req.responseText.replace(new RegExp("\"", "g"), "");
+                        lastLabelTranslation = labelTranslationInput.value;
+                    }
+                }
+            });
+        });
+    </script>
+}

@@ -25,7 +25,7 @@ namespace Translation.Common.Contracts
         Task<LabelRestoreResponse> RestoreLabel(LabelRestoreRequest request);
         Task<LabelTranslationCreateResponse> CreateTranslation(LabelTranslationCreateRequest request);
         Task<LabelTranslationCreateListResponse> CreateTranslationFromList(LabelTranslationCreateListRequest request);
-        Task<LabelTranslationReadListResponse> GetTranslation(LabelTranslationReadRequest request);
+        Task<LabelTranslationReadResponse> GetTranslation(LabelTranslationReadRequest request);
         Task<LabelTranslationReadListResponse> GetTranslations(LabelTranslationReadListRequest request);
         Task<LabelTranslationRevisionReadListResponse> GetLabelTranslationRevisions(
             LabelTranslationRevisionReadListRequest request);

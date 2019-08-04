@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.InputModels;
 using Translation.Common.Helpers;
@@ -12,7 +13,7 @@ namespace Translation.Client.Web.Models.Integration
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public HiddenInputModel IntegrationUidInput { get; }
+        public HiddenInputModel IntegrationInput { get; }
 
         public InputModel IntegrationNameInput { get; }
         public LongInputModel DescriptionInput { get; }
@@ -21,7 +22,7 @@ namespace Translation.Client.Web.Models.Integration
         {
             Title = "integration_edit_title";
 
-            IntegrationUidInput = new HiddenInputModel("IntegrationUid");
+            IntegrationInput = new HiddenInputModel("IntegrationUid");
 
             IntegrationNameInput = new InputModel("Name", "name", true);
             DescriptionInput = new LongInputModel("Description", "description");
@@ -29,7 +30,7 @@ namespace Translation.Client.Web.Models.Integration
 
         public override void SetInputModelValues()
         {
-            IntegrationUidInput.Value = IntegrationUid.ToUidString();
+            IntegrationInput.Value = IntegrationUid.ToUidString();
 
             IntegrationNameInput.Value = Name;
             DescriptionInput.Value = Description;

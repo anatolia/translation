@@ -13,7 +13,7 @@ namespace Translation.Common.Models.Requests.Label
         public string LabelKey { get; }
         public string Description { get; }
 
-        public LabelCloneRequest(long currentUserId, Guid organizationUid, Guid cloningLabelUid,Guid projectUid,
+        public LabelCloneRequest(long currentUserId, Guid organizationUid, Guid cloningLabelUid, Guid projectUid,
                                  string labelKey, string description) : base(currentUserId)
         {
             if (organizationUid.IsEmptyGuid())
