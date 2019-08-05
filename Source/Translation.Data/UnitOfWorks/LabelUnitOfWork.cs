@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using StandardRepository.PostgreSQL;
-
+using Translation.Common.Contracts;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Repositories.Contracts;
 using Translation.Data.UnitOfWorks.Contracts;
@@ -68,67 +68,76 @@ namespace Translation.Data.UnitOfWorks
                                                  List<LabelTranslation> labelTranslationsToUpdate)
         {
             var result = await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
-             {
-                 _organizationRepository.SetSqlExecutorForTransaction(connection);
-                 _userRepository.SetSqlExecutorForTransaction(connection);
-                 _projectRepository.SetSqlExecutorForTransaction(connection);
-                 _labelRepository.SetSqlExecutorForTransaction(connection);
-                 _labelTranslationRepository.SetSqlExecutorForTransaction(connection);
+            {
+                _organizationRepository.SetSqlExecutorForTransaction(connection);
+                _userRepository.SetSqlExecutorForTransaction(connection);
+                _projectRepository.SetSqlExecutorForTransaction(connection);
+                _labelRepository.SetSqlExecutorForTransaction(connection);
+                _labelTranslationRepository.SetSqlExecutorForTransaction(connection);
 
-                 var first = labelTranslationsToInsert.FirstOrDefault();
-                 if (first == null)
-                 {
-                     first = labelTranslationsToUpdate.FirstOrDefault();
-                     if (first == null)
-                     {
-                         return false;
-                     }
-                 }
+                var first = labelTranslationsToInsert.FirstOrDefault();
+                if (first == null)
+                {
+                    first = labelTranslationsToUpdate.FirstOrDefault();
+                    if (first == null)
+                    {
+                        return false;
+                    }
+                }
 
-                 var organizationId = first.OrganizationId;
-                 var projectId = first.ProjectId;
+                var organizationId = first.OrganizationId;
+                var projectId = first.ProjectId;
 
-                 var organization = await _organizationRepository.SelectById(organizationId);
-                 var project = await _projectRepository.SelectById(projectId);
-                 var user = await _userRepository.SelectById(currentUserId);
+                var organization = await _organizationRepository.SelectById(organizationId);
+                var project = await _projectRepository.SelectById(projectId);
+                var user = await _userRepository.SelectById(currentUserId);
 
-                 for (var i = 0; i < labels.Count; i++)
-                 {
-                     var label = labels[i];
-                     var labelsTranslations = labelTranslationsToInsert.Where(x => x.LabelName == label.Key).ToList();
+                for (var i = 0; i < labels.Count; i++)
+                {
+                    var label = labels[i];
 
-                     label.LabelTranslationCount = labelsTranslations.Count;
-                     var labelId = await _labelRepository.Insert(currentUserId, label);
+                    await _labelRepository.Insert(currentUserId, label);
+                    organization.LabelCount++;
+                    project.LabelCount++;
+                    user.LabelCount++;
 
-                     for (var j = 0; j < labelsTranslations.Count; j++)
-                     {
-                         var labelTranslation = labelsTranslations[j];
-                         labelTranslation.LabelId = labelId;
+                }
 
-                         await _labelTranslationRepository.Insert(currentUserId, labelTranslation);
-                         organization.LabelTranslationCount++;
-                         project.LabelTranslationCount++;
-                         user.LabelTranslationCount++;
-                     }
-                 }
+                var labelList = await _labelRepository.SelectAll(x => x.ProjectId == project.Id);
 
-                 for (var j = 0; j < labelTranslationsToUpdate.Count; j++)
-                 {
-                     var labelTranslation = labelTranslationsToUpdate[j];
-                     await _labelTranslationRepository.Update(currentUserId, labelTranslation);
-                 }
+                for (var i = 0; i < labelList.Count; i++)
+                {
+                    var label = labelList[i];
+                    var labelsTranslations = labelTranslationsToInsert.Where(x => x.LabelName == label.Key).ToList();
+                    var labelId = label.Id;
 
-                 organization.LabelCount = organization.LabelCount + labels.Count;
-                 await _organizationRepository.Update(currentUserId, organization);
+                    for (var j = 0; j < labelsTranslations.Count; j++)
+                    {
+                        var labelTranslation = labelsTranslations[j];
+                        labelTranslation.LabelId = labelId;
 
-                 project.LabelCount = project.LabelCount + labels.Count;
-                 await _projectRepository.Update(currentUserId, project);
+                        await _labelTranslationRepository.Insert(currentUserId, labelTranslation);
+                        organization.LabelTranslationCount++;
+                        project.LabelTranslationCount++;
+                        user.LabelTranslationCount++;
+                        label.LabelTranslationCount++;
+                    }
 
-                 user.LabelCount = user.LabelCount + labels.Count;
-                 await _userRepository.Update(currentUserId, user);
+                    await _labelRepository.Update(currentUserId, label);
+                }
 
-                 return true;
-             });
+                for (var j = 0; j < labelTranslationsToUpdate.Count; j++)
+                {
+                    var labelTranslation = labelTranslationsToUpdate[j];
+                    await _labelTranslationRepository.Update(currentUserId, labelTranslation);
+                }
+
+                await _organizationRepository.Update(currentUserId, organization);
+                await _projectRepository.Update(currentUserId, project);
+                await _userRepository.Update(currentUserId, user);
+
+                return true;
+            });
 
             return result;
         }
