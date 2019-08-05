@@ -13,12 +13,14 @@ namespace Translation.Client.Web.Models.Label
         public Guid ProjectUid { get; set; }
         public string ProjectName { get; set; }
         public string BulkLabelData { get; set; }
+        public bool UpdateExistedTranslations { get; set; }
 
         public HiddenInputModel OrganizationInput { get; }
         public HiddenInputModel ProjectNameInput { get; }
 
         public HiddenInputModel ProjectInput { get; }
         public TextareaInputModel BulkLabelInput { get; }
+        public CheckboxInputModel UpdateExistedTranslationsInput { get; set; }
 
         public CreateBulkLabelModel()
         {
@@ -29,6 +31,7 @@ namespace Translation.Client.Web.Models.Label
             ProjectNameInput = new HiddenInputModel("ProjectName");
 
             BulkLabelInput = new TextareaInputModel("BulkLabelData", "bulk_label_data");
+            UpdateExistedTranslationsInput = new CheckboxInputModel("UpdateExistedTranslations", "update_existed_translations");
         }
 
         public override void SetInputModelValues()
@@ -39,6 +42,11 @@ namespace Translation.Client.Web.Models.Label
             ProjectNameInput.Value = ProjectName;
 
             BulkLabelInput.Value = BulkLabelData;
+            UpdateExistedTranslationsInput.Value = UpdateExistedTranslations;
+
+            InfoMessages.Clear();
+            InfoMessages.Add("you_update_label_translation_previously_added_that_have_same_language");
+            InfoMessages.Add("if_you_add_multiple_translation_for_same_language_accepts_the_first_one");
         }
 
         public override void SetInputErrorMessages()

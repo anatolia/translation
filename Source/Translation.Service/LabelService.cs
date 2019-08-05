@@ -336,15 +336,15 @@ namespace Translation.Service
 
                 var oldLabel = oldLabels.FirstOrDefault(x => x.Key == translationInfo.LabelKey);
 
-                if (translationsToInsert.Any(x => x.LanguageId == language.Id
-                                                  && x.LabelUid == label.Uid))
-                {
-                    response.CanNotAddedLabelTranslationCount++;
-                    continue;
-                }
-
                 if (label != null)
                 {
+                    if (translationsToInsert.Any(x => x.LanguageId == language.Id
+                                                      && x.LabelUid == label.Uid))
+                    {
+                        response.CanNotAddedLabelTranslationCount++;
+                        continue;
+                    }
+
                     var translationToInsert = _labelTranslationFactory.CreateEntity(translationInfo.Translation, label, language);
                     translationsToInsert.Add(translationToInsert);
                     response.AddedLabelTranslationCount++;
@@ -360,6 +360,7 @@ namespace Translation.Service
                     }
                     else
                     {
+
                         var translationForExistingLabel = oldTranslations.FirstOrDefault(x => x.LabelId == oldLabel.Id && x.LanguageId == language.Id);
                         if (translationForExistingLabel == null)
                         {
