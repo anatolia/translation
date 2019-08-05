@@ -298,6 +298,7 @@ namespace Translation.Client.Web.Controllers
             model.LastName = response.Item.LastName;
             model.LanguageUid = response.Item.LanguageUid;
             model.LanguageName = response.Item.LanguageName;
+            model.SetInputModelValues();
 
             return View(model);
         }

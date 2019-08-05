@@ -49,7 +49,7 @@ namespace Translation.Client.Web.Models.User
         {
             if (UserUid.IsEmptyGuid())
             {
-                ErrorMessages.Add("organization_uid_not_valid");
+                ErrorMessages.Add("user_uid_not_valid");
             }
 
             FirstName = FirstName.TrimOrDefault();
