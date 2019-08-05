@@ -4,7 +4,7 @@ namespace Translation.Client.Web.Controllers
 {
     public class WordController : BaseController
     {
-        public WordController(IOrganizationService organizationService, IJournalService journalService) : base(organizationService, journalService)
+        public WordController()
         {
         }
     }

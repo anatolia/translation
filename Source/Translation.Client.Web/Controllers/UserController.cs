@@ -10,7 +10,6 @@ using Translation.Client.Web.Helpers.ActionFilters;
 using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.User;
-using Translation.Common.Contracts;
 using Translation.Common.Helpers;
 using Translation.Common.Models.Requests.Journal;
 using Translation.Common.Models.Requests.Organization;
@@ -21,12 +20,8 @@ namespace Translation.Client.Web.Controllers
 {
     public class UserController : BaseController
     {
-        private readonly IOrganizationService _organizationService;
-
-        public UserController(IOrganizationService organizationService,
-                              IJournalService journalService) : base(organizationService, journalService)
+        public UserController()
         {
-            _organizationService = organizationService;
         }
 
         [HttpGet, AllowAnonymous]
@@ -529,7 +524,7 @@ namespace Translation.Client.Web.Controllers
             if (userUid.IsNotEmptyGuid())
             {
                 var request = new UserReadRequest(CurrentUser.Id, userUid);
-                var response = _organizationService.GetUser(request);
+                var response = OrganizationService.GetUser(request);
                 if (response.Status.IsNotSuccess)
                 {
                     return NotFound();
@@ -554,7 +549,7 @@ namespace Translation.Client.Web.Controllers
 
             var request = new UserRevisionReadListRequest(CurrentUser.Id, userUid);
 
-            var response = await _organizationService.GetUserRevisions(request);
+            var response = await OrganizationService.GetUserRevisions(request);
             if (response.Status.IsNotSuccess)
             {
                 return NotFound();
@@ -602,7 +597,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new UserRestoreRequest(CurrentUser.Id, userUid, revision);
-            var response = await _organizationService.RestoreUser(request);
+            var response = await OrganizationService.RestoreUser(request);
             if (response.Status.IsNotSuccess)
             {
                 model.Messages = response.ErrorMessages;

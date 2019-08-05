@@ -23,9 +23,7 @@ namespace Translation.Client.Web.Controllers
     {
         private readonly IIntegrationService _integrationService;
 
-        public IntegrationController(IIntegrationService integrationService,
-                                     IOrganizationService organizationService,
-                                     IJournalService journalService) : base(organizationService, journalService)
+        public IntegrationController(IIntegrationService integrationService)
         {
             _integrationService = integrationService;
         }

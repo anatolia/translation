@@ -34,9 +34,7 @@ namespace Translation.Client.Web.Controllers
                                ILanguageService languageService,
                                ITextTranslateIntegration textTranslateIntegration,
                                IProjectService projectService,
-                               ILabelService labelService,
-                               IOrganizationService organizationService,
-                               IJournalService journalService) : base(organizationService, journalService)
+                               ILabelService labelService)
         {
             _environment = environment;
             _languageService = languageService;
