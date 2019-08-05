@@ -11,12 +11,15 @@ using Translation.Common.Models.Requests.Label;
 
 namespace Translation.Client.Web.Controllers
 {
-    public class DataController : Controller
+    public class DataController : BaseController
     {
         private readonly IIntegrationService _integrationService;
         private readonly ILabelService _labelService;
 
-        public DataController(IIntegrationService integrationService, ILabelService labelService)
+        public DataController(IOrganizationService organizationService, 
+                              IJournalService journalService, 
+                              IIntegrationService integrationService,
+                              ILabelService labelService) : base(organizationService, journalService)
         {
             _integrationService = integrationService;
             _labelService = labelService;
@@ -72,6 +75,17 @@ namespace Translation.Client.Web.Controllers
             }
 
             return Json(labelsResponse.Labels);
+        }
+
+        [HttpGet]
+        public IActionResult GetCurrentUser()
+        {
+            if (CurrentUser == null)
+            {
+                return Json(null);
+            }
+
+            return Json(new { CurrentUser.Name, CurrentUser.LanguageIsoCode2Char });
         }
 
         [HttpPost,

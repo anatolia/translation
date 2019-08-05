@@ -126,7 +126,7 @@ namespace Translation.Service
 
                 // todo:send email log
 
-                _cacheManager.UpsertUserCache(insertedUser, _userFactory.MapCurrentUser(insertedUser));
+                _cacheManager.UpsertUserCache(insertedUser, _userFactory.MapCurrentUser(insertedUser, _cacheManager.GetLanguageIsoCode2Char(insertedUser.LanguageId)));
                 _cacheManager.UpsertOrganizationCache(insertedOrganization, _organizationFactory.MapCurrentOrganization(insertedOrganization));
 
                 response.Status = ResponseStatus.Success;
@@ -413,7 +413,7 @@ namespace Translation.Service
                     var uowResult = await _logOnUnitOfWork.DoWork(user, loginLog);
                     if (uowResult)
                     {
-                        _cacheManager.UpsertUserCache(user, _userFactory.MapCurrentUser(user));
+                        _cacheManager.UpsertUserCache(user, _userFactory.MapCurrentUser(user, _cacheManager.GetLanguageIsoCode2Char(user.LanguageId)));
 
                         response.Status = ResponseStatus.Success;
                         response.Item.OrganizationUid = user.OrganizationUid;
@@ -649,7 +649,7 @@ namespace Translation.Service
             var result = await _userRepository.Update(request.CurrentUserId, updatedEntity);
             if (result)
             {
-                _cacheManager.UpsertUserCache(entity, _userFactory.MapCurrentUser(entity));
+                _cacheManager.UpsertUserCache(entity, _userFactory.MapCurrentUser(entity, _cacheManager.GetLanguageIsoCode2Char(entity.LanguageId)));
 
                 response.Item = _userFactory.CreateDtoFromEntity(entity);
                 response.Status = ResponseStatus.Success;
@@ -1062,7 +1062,7 @@ namespace Translation.Service
             for (var i = 0; i < users.Count; i++)
             {
                 var user = users[i];
-                _cacheManager.UpsertUserCache(user, _userFactory.MapCurrentUser(user));
+                _cacheManager.UpsertUserCache(user, _userFactory.MapCurrentUser(user, _cacheManager.GetLanguageIsoCode2Char(user.LanguageId)));
             }
 
             return true;

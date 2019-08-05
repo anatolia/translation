@@ -103,8 +103,13 @@ function translateScreen() {
     var items = document.querySelectorAll('[data-translation]');
     var labels = JSON.parse(localStorage.getItem('labels'));
     var userLanguage = localStorage.getItem('userLanguage');
+    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (userLanguage === null) {
-        userLanguage = 'en';
+        if (currentUser === null) {
+            userLanguage = 'en';
+        } else {
+            userLanguage = currentUser.LanguageIsoCode2Char;
+        }
     }
 
     items.forEach(function (item) {
@@ -124,6 +129,20 @@ function translateScreen() {
         }
     });
 }
+
+doGet('/Data/GetCurrentUser', function (req) {
+
+    console.log("req.responseText: ", req.responseText);
+    if (199 < req.status && req.status < 300) {
+        if (req.status === 200
+            && req.responseText !== null) {
+            localStorage.setItem('currentUser', req.responseText);
+        } else if (req.status === 200
+            && req.responseText === null) {
+            window.redirect('/Login');
+        }
+    }
+});
 
 if (localStorage.getItem('labels') == undefined) {
     doGet('/Data/GetMainLabels', function (req) {
