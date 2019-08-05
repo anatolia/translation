@@ -3,7 +3,7 @@
 using Moq;
 using Castle.Windsor;
 using Castle.MicroKernel.Registration;
-
+using Translation.Common.Contracts;
 using Translation.Common.Helpers;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
@@ -33,6 +33,7 @@ namespace Translation.Tests.Common
         protected Mock<ITokenRequestLogRepository> MockTokenRequestLogRepository { get; set; }
         protected Mock<IUserLoginLogRepository> MockUserLoginLogRepository { get; set; }
         protected Mock<IUserRepository> MockUserRepository { get; set; }
+        protected Mock<ITextTranslateIntegration> MockTextTranslateIntegrationRepository { get; set; }
 
         protected Mock<ILabelUnitOfWork> MockLabelUnitOfWork { get; set; }
         protected Mock<ILogOnUnitOfWork> MockLogOnUnitOfWork { get; set; }
