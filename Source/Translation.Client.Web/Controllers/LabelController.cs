@@ -512,7 +512,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new LabelCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
-                                                     model.UpdateExistedTranslations,labelListInfos);
+                                                     model.UpdateExistedTranslations, labelListInfos);
             var response = await _labelService.CreateLabelFromList(request);
             if (response.Status.IsNotSuccess)
             {
@@ -606,7 +606,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new LabelCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
-                                                     true, labelListInfos);
+                                                     model.UpdateExistedTranslations, labelListInfos);
             var response = await _labelService.CreateLabelFromList(request);
             if (response.Status.IsNotSuccess)
             {
@@ -621,8 +621,10 @@ namespace Translation.Client.Web.Controllers
             doneModel.ProjectName = model.ProjectName;
             doneModel.AddedLabelCount = response.AddedLabelCount;
             doneModel.CanNotAddedLabelCount = response.CanNotAddedLabelCount;
+            doneModel.TotalLabelCount = response.TotalLabelCount;
             doneModel.AddedLabelTranslationCount = response.AddedLabelTranslationCount;
             doneModel.CanNotAddedLabelTranslationCount = response.CanNotAddedLabelTranslationCount;
+            doneModel.UpdatedLabelTranslationCount = response.UpdatedLabelTranslationCount;
             doneModel.TotalRowsProcessed = lines.Length - 1;
 
             CurrentUser.IsActionSucceed = true;
@@ -932,7 +934,7 @@ namespace Translation.Client.Web.Controllers
                 });
             }
 
-            var request = new LabelTranslationCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.LabelUid,model.UpdateExistedTranslations,
+            var request = new LabelTranslationCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.LabelUid, model.UpdateExistedTranslations,
                 translationListInfos);
             var response = await _labelService.CreateTranslationFromList(request);
             if (response.Status.IsNotSuccess)
