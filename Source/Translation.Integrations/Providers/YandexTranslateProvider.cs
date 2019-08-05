@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
-using System.Collections.Specialized;
-using System.Net;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
@@ -11,40 +9,34 @@ using Translation.Common.Contracts;
 
 namespace Translation.Integrations.Providers
 {
-    public class YandexTranslateProvider : IYandexTranslateProvider
+    public class YandexTranslateProvider : ITextTranslateProvider
     {
         public string YandexTranslationApiKey { get;}
-        private string BaseUrl { get;}
-        public WebClient Client { get;}
+        private string RequestUrl { get;}
 
         public YandexTranslateProvider()
         {
             YandexTranslationApiKey = ConfigurationManager.AppSettings["YANDEX_TRANSLATE_API_KEY"];
-            BaseUrl = "https://translate.yandex.net/api/v1.5/tr.json/translate";
-            Client = new WebClient();
+            RequestUrl = "https://translate.yandex.net/api/v1.5/tr.json/translate";
         }
 
-        public async Task<string> TranslateText(string textToTranslate, string targetLanguageIsoCode2)
+        public async Task<string> TranslateText(string textToTranslate, string sourceLanguageIsoCode2, string targetLanguageIsoCode2)
         {
-            var data = new NameValueCollection();
-            data["text"] = textToTranslate;
-            data["lang"] = targetLanguageIsoCode2;
-            data["key"] = YandexTranslationApiKey;
+            var requestBody = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("text", textToTranslate),
+                new KeyValuePair<string, string>("lang", sourceLanguageIsoCode2 + "-" + targetLanguageIsoCode2),
+                new KeyValuePair<string, string>("key", YandexTranslationApiKey),
+            });
 
-            var response = await Client.UploadValuesTaskAsync(BaseUrl, "POST", data);
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.PostAsync(RequestUrl, requestBody);
+                var responseBody = await response.Content.ReadAsStringAsync();
+                var yandexTranslateResponse = JsonConvert.DeserializeObject<YandexTranslateResponse>(responseBody);
 
-            var responseString = Encoding.UTF8.GetString(response);
-
-            var rootObject = JsonConvert.DeserializeObject<YandexTranslation>(responseString);
-
-            return rootObject.Text[0];
-        }
-
-        public class YandexTranslation
-        {
-            public int Code { get; set; }
-            public string Lang { get; set; }
-            public List<string> Text { get; set; }
+                return yandexTranslateResponse.Text[0];
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ using Translation.Common.Contracts;
 
 namespace Translation.Integrations.Providers
 {
-    public class GoogleTranslateProvider : IGoogleTranslateProvider
+    public class GoogleTranslateProvider : ITextTranslateProvider
     {
         public string GoogleApplicationCredentialsFile { get;}
         public TranslationClient Client { get;}
