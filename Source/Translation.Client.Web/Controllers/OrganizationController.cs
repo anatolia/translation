@@ -25,16 +25,12 @@ namespace Translation.Client.Web.Controllers
     {
         private readonly IIntegrationService _integrationService;
         private readonly IProjectService _projectService;
-        private readonly IOrganizationService _organizationService;
 
         public OrganizationController(IIntegrationService integrationService,
-                                      IProjectService projectService,
-                                      IOrganizationService organizationService,
-                                      IJournalService journalService) : base(organizationService, journalService)
+                                      IProjectService projectService)
         {
             _integrationService = integrationService;
             _projectService = projectService;
-            _organizationService = organizationService;
         }
 
         [HttpGet]
@@ -116,7 +112,7 @@ namespace Translation.Client.Web.Controllers
             if (organizationUid.IsNotEmptyGuid())
             {
                 var request = new OrganizationReadRequest(CurrentUser.Id, organizationUid);
-                var response = _organizationService.GetOrganization(request);
+                var response = OrganizationService.GetOrganization(request);
                 if (response.Status.IsNotSuccess)
                 {
                     return NotFound();
@@ -141,7 +137,7 @@ namespace Translation.Client.Web.Controllers
 
             var request = new OrganizationRevisionReadListRequest(CurrentUser.Id, organizationUid);
 
-            var response = await _organizationService.GetOrganizationRevisions(request);
+            var response = await OrganizationService.GetOrganizationRevisions(request);
             if (response.Status.IsNotSuccess)
             {
                 return NotFound();
@@ -188,7 +184,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new OrganizationRestoreRequest(CurrentUser.Id, organizationUid, revision);
-            var response = await _organizationService.RestoreOrganization(request);
+            var response = await OrganizationService.RestoreOrganization(request);
             if (response.Status.IsNotSuccess)
             {
                 model.Messages = response.ErrorMessages;
@@ -222,7 +218,7 @@ namespace Translation.Client.Web.Controllers
             var request = new OrganizationPendingTranslationReadListRequest(CurrentUser.Id, organizationUid);
             SetPaging(skip, take, request);
 
-            var response = await _organizationService.GetPendingTranslations(request);
+            var response = await OrganizationService.GetPendingTranslations(request);
             if (response.Status.IsNotSuccess)
             {
                 return NotFound();

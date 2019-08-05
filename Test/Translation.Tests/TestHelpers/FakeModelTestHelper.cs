@@ -29,6 +29,25 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static ChangePasswordModel GetChangePasswordModel()
+        {
+            var model = new ChangePasswordModel();
+
+            return model;
+        }
+
+        public static ChangePasswordModel GetChangePasswordModel(Guid userUid, string oldPassword, string newPassword, 
+                                                                 string reEnterNewPassword)
+        {
+            var model = new ChangePasswordModel();
+            model.UserUid = userUid;
+            model.OldPassword = oldPassword;
+            model.NewPassword = newPassword;
+            model.ReEnterNewPassword = reEnterNewPassword;
+
+            return model;
+        }
+
         public static AdminAcceptInviteModel GetAdminAcceptInviteModel()
         {
             var model = new AdminAcceptInviteModel();
@@ -131,6 +150,20 @@ namespace Translation.Tests.TestHelpers
         public static JournalListModel GetJournalListModel()
         {
             var model = new JournalListModel();
+
+            return model;
+        }
+
+        public static AllUserListModel GetAllUserListModel()
+        {
+            var model = new AllUserListModel();
+
+            return model;
+        }
+
+        public static ChangePasswordDoneModel GetChangePasswordDoneModel()
+        {
+            var model = new ChangePasswordDoneModel();
 
             return model;
         }

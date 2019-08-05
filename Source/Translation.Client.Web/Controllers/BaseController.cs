@@ -20,7 +20,13 @@ namespace Translation.Client.Web.Controllers
         public IOrganizationService OrganizationService { get; set; }
         public IJournalService JournalService { get; set; }
 
-        public BaseController(IOrganizationService organizationService, IJournalService journalService)
+        public BaseController()
+        {
+            
+        }
+
+        public BaseController(IOrganizationService organizationService, 
+                              IJournalService journalService)
         {
             OrganizationService = organizationService;
             JournalService = journalService;

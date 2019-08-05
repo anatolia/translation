@@ -25,9 +25,7 @@ namespace Translation.Client.Web.Controllers
         private readonly ILabelService _labelService;
 
         public ProjectController(IProjectService projectService,
-                                 ILabelService labelService,
-                                 IOrganizationService organizationService,
-                                 IJournalService journalService) : base(organizationService, journalService)
+                                 ILabelService labelService)
         {
             _projectService = projectService;
             _labelService = labelService;

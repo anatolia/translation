@@ -29,9 +29,7 @@ namespace Translation.Client.Web.Controllers
     {
         private readonly IAdminService _adminService;
 
-        public AdminController(IAdminService adminService,
-                               IOrganizationService organizationService,
-                               IJournalService journalService) : base(organizationService, journalService)
+        public AdminController(IAdminService adminService)
         {
             _adminService = adminService;
         }
