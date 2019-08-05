@@ -19,5 +19,7 @@ namespace Translation.Common.Models.Shared
         public bool IsActive { get; set; }
 
         public bool IsActionSucceed { get; set; }
+
+        public string LanguageIsoCode2Char { get; set; }
     }
 }
