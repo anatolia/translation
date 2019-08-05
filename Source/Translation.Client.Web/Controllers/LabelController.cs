@@ -512,7 +512,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new LabelCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
-                labelListInfos);
+                                                     model.UpdateExistedTranslations,labelListInfos);
             var response = await _labelService.CreateLabelFromList(request);
             if (response.Status.IsNotSuccess)
             {
@@ -606,7 +606,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new LabelCreateListRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
-                labelListInfos);
+                                                     true, labelListInfos);
             var response = await _labelService.CreateLabelFromList(request);
             if (response.Status.IsNotSuccess)
             {

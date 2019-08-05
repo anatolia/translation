@@ -145,7 +145,9 @@ namespace Translation.Client.Web.Helpers
                 });
             }
 
-            var request = new LabelCreateListRequest(project.CreatedBy, project.OrganizationUid, project.Uid, labelListInfos);
+            var updateExistedTranslations = true;
+
+            var request = new LabelCreateListRequest(project.CreatedBy, project.OrganizationUid, project.Uid, updateExistedTranslations, labelListInfos);
             var response = labelService.CreateLabelFromList(request).Result;
             if (response.Status.IsNotSuccess)
             {

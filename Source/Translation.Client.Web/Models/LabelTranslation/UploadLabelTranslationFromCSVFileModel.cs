@@ -13,9 +13,7 @@ namespace Translation.Client.Web.Models.LabelTranslation
         public Guid OrganizationUid { get; set; }
         public Guid LabelUid { get; set; }
         public string LabelKey { get; set; }
-
         public IFormFile CSVFile { get; set; }
-
         public bool UpdateExistedTranslations { get; set; }
 
         public HiddenInputModel OrganizationInput { get; }
