@@ -100,25 +100,20 @@ function doRedirectIfConfirmedSuccess(btn, redirectUrl) {
 
 
 function translateScreen() {
+
     var items = document.querySelectorAll('[data-translation]');
     var labels = JSON.parse(localStorage.getItem('labels'));
-    var userLanguage = localStorage.getItem('userLanguage');
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (userLanguage === null) {
-        if (currentUser === null) {
-            userLanguage = 'en';
-        } else {
-            userLanguage = currentUser.LanguageIsoCode2Char;
-        }
-    }
 
+    if (currentUser == null) {
+        currentUser.languageIsoCode2Char = "en";
+    }
     items.forEach(function (item) {
         for (var i = 0; i < labels.length; i++) {
             var label = labels[i];
             if (label.key === item.dataset.translation) {
-
                 label.translations.forEach(function (translation) {
-                    if (translation.languageIsoCode2 === userLanguage) {
+                    if (translation.languageIsoCode2 === currentUser.languageIsoCode2Char) {
                         item.innerHTML = translation.translation;
                         return;
                     }
@@ -144,7 +139,8 @@ doGet('/Data/GetCurrentUser', function (req) {
     }
 });
 
-if (localStorage.getItem('labels') == undefined) {
+if (localStorage.getItem('labels') === undefined
+    || localStorage.getItem('labels') === "[]") {
     doGet('/Data/GetMainLabels', function (req) {
         if (199 < req.status && req.status < 300) {
             localStorage.setItem('labels', req.responseText);
