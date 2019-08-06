@@ -3,7 +3,7 @@
 using Moq;
 using Castle.Windsor;
 using Castle.MicroKernel.Registration;
-
+using Translation.Common.Contracts;
 using Translation.Common.Helpers;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
@@ -18,7 +18,6 @@ namespace Translation.Tests.Common
         public IWindsorContainer Container { get; set; }
 
         protected Mock<IHostingEnvironment> MockHostingEnvironment { get; set; }
-
 
         protected Mock<IIntegrationClientRepository> MockIntegrationClientRepository { get; set; }
         protected Mock<IIntegrationRepository> MockIntegrationRepository { get; set; }
@@ -39,6 +38,8 @@ namespace Translation.Tests.Common
         protected Mock<IProjectUnitOfWork> MockProjectUnitOfWork { get; set; }
         protected Mock<ISignUpUnitOfWork> MockSignUpUnitOfWork { get; set; }
 
+        protected Mock<ITextTranslateIntegration> MockTextTranslateIntegration { get; set; }
+
         protected void Refresh()
         {
             InitializeComponents();
@@ -56,7 +57,7 @@ namespace Translation.Tests.Common
             MockIntegrationClientRepository = new Mock<IIntegrationClientRepository>();
             MockIntegrationRepository = new Mock<IIntegrationRepository>();
             MockJournalRepository = new Mock<IJournalRepository>();
-            MockLabelRepository= new Mock<ILabelRepository>();
+            MockLabelRepository = new Mock<ILabelRepository>();
             MockLabelTranslationRepository = new Mock<ILabelTranslationRepository>();
             MockLanguageRepository = new Mock<ILanguageRepository>();
             MockOrganizationRepository = new Mock<IOrganizationRepository>();
@@ -79,11 +80,13 @@ namespace Translation.Tests.Common
             #region Services
 
             #endregion
+
+            MockTextTranslateIntegration = new Mock<ITextTranslateIntegration>();
         }
 
         public void ConfigureIocContainer()
         {
-            
+
             Container.Register(Component.For<IHostingEnvironment>().Instance(MockHostingEnvironment.Object).LifestyleTransient());
 
             Container.Register(Component.For<CryptoHelper>());
@@ -121,7 +124,6 @@ namespace Translation.Tests.Common
             Container.Register(Component.For<ITokenRequestLogRepository>().Instance(MockTokenRequestLogRepository.Object));
             Container.Register(Component.For<IUserLoginLogRepository>().Instance(MockUserLoginLogRepository.Object));
             Container.Register(Component.For<IUserRepository>().Instance(MockUserRepository.Object));
-            
             #endregion
 
             #region UnitOfWork
@@ -139,6 +141,8 @@ namespace Translation.Tests.Common
             MockOrganizationRepository.Setup_SelectById_Returns_OrganizationOne();
             MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
             #endregion
+
+            Container.Register(Component.For<ITextTranslateIntegration>().Instance(MockTextTranslateIntegration.Object));
         }
     }
 }

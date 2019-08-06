@@ -1217,7 +1217,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
-            MockCloudTranslationService.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Success();
+            MockTextTranslateIntegration.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Success();
 
             // act
             var result = (JsonResult)await SystemUnderTest.Translate(StringOne, UidOne, UidTwo);
@@ -1227,7 +1227,7 @@ namespace Translation.Tests.Client.Controllers
             var name = (string)result.Value;
             name.ShouldBe(StringTwo);
             MockLanguageService.Verify_GetLanguage();
-            MockCloudTranslationService.Verify_GetTranslatedText();
+            MockTextTranslateIntegration.Verify_GetTranslatedText();
         }
 
         [Test]
@@ -1263,7 +1263,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
-            MockCloudTranslationService.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Failed();
+            MockTextTranslateIntegration.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Failed();
 
             // act
             var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo);
@@ -1271,7 +1271,8 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertView<JsonResult>(result);
             MockLanguageService.Verify_GetLanguage();
-            MockCloudTranslationService.Verify_GetTranslatedText();
+            MockTextTranslateIntegration.Verify_GetTranslatedText();
+
         }
 
         [Test]
@@ -1279,7 +1280,7 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
-            MockCloudTranslationService.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Invalid();
+            MockTextTranslateIntegration.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Invalid();
 
             // act
             var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo);
@@ -1287,7 +1288,7 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertView<JsonResult>(result);
             MockLanguageService.Verify_GetLanguage();
-            MockCloudTranslationService.Verify_GetTranslatedText();
+            MockTextTranslateIntegration.Verify_GetTranslatedText();
         }
 
         [Test]

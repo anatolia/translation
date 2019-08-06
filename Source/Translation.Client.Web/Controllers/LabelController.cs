@@ -660,7 +660,7 @@ namespace Translation.Client.Web.Controllers
 
             var sourceLanguageIsoCode2 = sourceLanguageReadResponse.Item.IsoCode2;
 
-            var request = new LabelGetTranslatedTextRequest(CurrentUser.Id, textToTranslate, targetLanguageIsoCode2,
+            var request = new LabelGetTranslatedTextRequest(CurrentUser.Id,textToTranslate, targetLanguageIsoCode2,
                                                             sourceLanguageIsoCode2);
 
             var response = await _textTranslateIntegration.GetTranslatedText(request);
