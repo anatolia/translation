@@ -20,10 +20,7 @@ namespace Translation.Client.Web.Controllers
 {
     public class UserController : BaseController
     {
-        public UserController()
-        {
-        }
-
+        
         [HttpGet, AllowAnonymous]
         public IActionResult SignUp()
         {

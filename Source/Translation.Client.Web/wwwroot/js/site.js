@@ -105,15 +105,22 @@ function translateScreen() {
     var labels = JSON.parse(localStorage.getItem('labels'));
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    if (currentUser == null) {
-        currentUser.languageIsoCode2Char = "en";
+    var isoCode2Char = "en";
+    if (currentUser != null) {
+        isoCode2Char = currentUser.languageIsoCode2Char;
     }
+    if (labels === null) {
+        return;
+    }
+
     items.forEach(function (item) {
         for (var i = 0; i < labels.length; i++) {
             var label = labels[i];
             if (label.key === item.dataset.translation) {
+                console.log(label.key);
                 label.translations.forEach(function (translation) {
-                    if (translation.languageIsoCode2 === currentUser.languageIsoCode2Char) {
+                    if (translation.languageIsoCode2 === isoCode2Char) {
+
                         item.innerHTML = translation.translation;
                         return;
                     }
@@ -139,7 +146,8 @@ doGet('/Data/GetCurrentUser', function (req) {
     }
 });
 
-if (localStorage.getItem('labels') === undefined
+if (localStorage.getItem('labels') === null
+    || localStorage.getItem('labels') === undefined
     || localStorage.getItem('labels') === "[]") {
     doGet('/Data/GetMainLabels', function (req) {
         if (199 < req.status && req.status < 300) {

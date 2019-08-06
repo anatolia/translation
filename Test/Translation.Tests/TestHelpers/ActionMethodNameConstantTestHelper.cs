@@ -98,5 +98,12 @@
         public const string ChangePasswordDoneAction = "ChangePasswordDone";
 
         public const string LogOffAction = "LogOff";
+
+        public const string GetLabelsAction = "GetLabels";
+        public const string GetMainLabelsAction = "GetMainLabels";
+        public const string GetCurrentUserAction = "GetCurrentUser";
+        public const string AddLabelAction = "AddLabel";
+
+
     }
 }

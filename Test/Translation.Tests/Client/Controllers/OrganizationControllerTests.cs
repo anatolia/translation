@@ -38,12 +38,13 @@ namespace Translation.Tests.Client.Controllers
          TestCase(PendingTranslationsAction, new Type[] { }, typeof(HttpGetAttribute)),
          TestCase(PendingTranslationsDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
          TestCase(UserLoginLogListAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
-         TestCase(IntegrationListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(UserLoginLogListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
          TestCase(UserListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
          TestCase(IntegrationListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
          TestCase(ProjectListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
          TestCase(TokenRequestLogListAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
-         TestCase(TokenRequestLogListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)), TestCase(JournalListAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+         TestCase(TokenRequestLogListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(JournalListAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(JournalListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
         public void Methods_Has_Http_Verb_Attributes(string actionMethod, Type[] parameters, Type httpVerbAttribute)
         {

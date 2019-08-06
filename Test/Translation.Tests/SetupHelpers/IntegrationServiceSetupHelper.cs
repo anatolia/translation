@@ -19,6 +19,30 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class IntegrationServiceSetupHelper
     {
+
+        public static void Setup_ValidateToken_Returns_TokenValidateResponse_Success(this Mock<IIntegrationService> service)
+        {
+            service.Setup(x => x.ValidateToken(It.IsAny<TokenValidateRequest>()))
+                .ReturnsAsync(new TokenValidateResponse() { Status = ResponseStatus.Success });
+        }
+
+        public static void Setup_ValidateToken_Returns_TokenValidateResponse_Failed(this Mock<IIntegrationService> service)
+        {
+            service.Setup(x => x.ValidateToken(It.IsAny<TokenValidateRequest>()))
+                .ReturnsAsync(new TokenValidateResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } });
+        }
+
+        public static void Setup_ValidateToken_Returns_TokenValidateResponse_Invalid(this Mock<IIntegrationService> service)
+        {
+            service.Setup(x => x.ValidateToken(It.IsAny<TokenValidateRequest>()))
+                .ReturnsAsync(new TokenValidateResponse() { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } });
+        }
+
+        public static void Verify_ValidateToken(this Mock<IIntegrationService> service)
+        {
+            service.Verify(x => x.ValidateToken(It.IsAny<TokenValidateRequest>()));
+        }
+
         public static void Setup_GetIntegrationRevisions_Returns_IntegrationRevisionReadListResponse_Failed(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.GetIntegrationRevisions(It.IsAny<IntegrationRevisionReadListRequest>()))
