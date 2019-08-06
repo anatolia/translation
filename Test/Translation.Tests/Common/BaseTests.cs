@@ -19,7 +19,6 @@ namespace Translation.Tests.Common
 
         protected Mock<IHostingEnvironment> MockHostingEnvironment { get; set; }
 
-
         protected Mock<IIntegrationClientRepository> MockIntegrationClientRepository { get; set; }
         protected Mock<IIntegrationRepository> MockIntegrationRepository { get; set; }
         protected Mock<IJournalRepository> MockJournalRepository { get; set; }
@@ -33,12 +32,13 @@ namespace Translation.Tests.Common
         protected Mock<ITokenRequestLogRepository> MockTokenRequestLogRepository { get; set; }
         protected Mock<IUserLoginLogRepository> MockUserLoginLogRepository { get; set; }
         protected Mock<IUserRepository> MockUserRepository { get; set; }
-        protected Mock<ITextTranslateIntegration> MockTextTranslateIntegrationRepository { get; set; }
 
         protected Mock<ILabelUnitOfWork> MockLabelUnitOfWork { get; set; }
         protected Mock<ILogOnUnitOfWork> MockLogOnUnitOfWork { get; set; }
         protected Mock<IProjectUnitOfWork> MockProjectUnitOfWork { get; set; }
         protected Mock<ISignUpUnitOfWork> MockSignUpUnitOfWork { get; set; }
+
+        protected Mock<ITextTranslateIntegration> MockTextTranslateIntegration { get; set; }
 
         protected void Refresh()
         {
@@ -57,7 +57,7 @@ namespace Translation.Tests.Common
             MockIntegrationClientRepository = new Mock<IIntegrationClientRepository>();
             MockIntegrationRepository = new Mock<IIntegrationRepository>();
             MockJournalRepository = new Mock<IJournalRepository>();
-            MockLabelRepository= new Mock<ILabelRepository>();
+            MockLabelRepository = new Mock<ILabelRepository>();
             MockLabelTranslationRepository = new Mock<ILabelTranslationRepository>();
             MockLanguageRepository = new Mock<ILanguageRepository>();
             MockOrganizationRepository = new Mock<IOrganizationRepository>();
@@ -80,11 +80,13 @@ namespace Translation.Tests.Common
             #region Services
 
             #endregion
+
+            MockTextTranslateIntegration = new Mock<ITextTranslateIntegration>();
         }
 
         public void ConfigureIocContainer()
         {
-            
+
             Container.Register(Component.For<IHostingEnvironment>().Instance(MockHostingEnvironment.Object).LifestyleTransient());
 
             Container.Register(Component.For<CryptoHelper>());
@@ -122,7 +124,6 @@ namespace Translation.Tests.Common
             Container.Register(Component.For<ITokenRequestLogRepository>().Instance(MockTokenRequestLogRepository.Object));
             Container.Register(Component.For<IUserLoginLogRepository>().Instance(MockUserLoginLogRepository.Object));
             Container.Register(Component.For<IUserRepository>().Instance(MockUserRepository.Object));
-            
             #endregion
 
             #region UnitOfWork
@@ -140,6 +141,8 @@ namespace Translation.Tests.Common
             MockOrganizationRepository.Setup_SelectById_Returns_OrganizationOne();
             MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
             #endregion
+
+            Container.Register(Component.For<ITextTranslateIntegration>().Instance(MockTextTranslateIntegration.Object));
         }
     }
 }
