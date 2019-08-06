@@ -36,6 +36,30 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static InviteAcceptModel GetInviteAcceptModel()
+        {
+            var model = new InviteAcceptModel();
+
+            return model;
+        }
+
+        public static InviteAcceptModel GetInviteAcceptModel(Guid token, string email, string firstName, 
+                                                             string lastName, string password, string reEnterPassword,
+                                                             Guid languageUid, string languageName)
+        {
+            var model = new InviteAcceptModel();
+            model.Token = token;
+            model.Email = email;
+            model.FirstName = firstName;
+            model.LastName = lastName;
+            model.Password = password;
+            model.ReEnterPassword = reEnterPassword;
+            model.LanguageUid = languageUid;
+            model.LanguageName = languageName;
+
+            return model;
+        }
+
         public static DemandPasswordResetModel GetDemandPasswordResetModel()
         {
             var model = new DemandPasswordResetModel();
@@ -172,6 +196,13 @@ namespace Translation.Tests.TestHelpers
         public static AllUserListModel GetAllUserListModel()
         {
             var model = new AllUserListModel();
+
+            return model;
+        }
+
+        public static InviteAcceptDoneModel GetInviteAcceptDoneModel()
+        {
+            var model = new InviteAcceptDoneModel();
 
             return model;
         }
