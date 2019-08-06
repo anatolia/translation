@@ -11,16 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="App.config" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="App.config">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Client\Models\ViewModels\Integration\" />
     <Folder Include="Common\Responses\Admin\" />
     <Folder Include="Common\Responses\Integration\" />
