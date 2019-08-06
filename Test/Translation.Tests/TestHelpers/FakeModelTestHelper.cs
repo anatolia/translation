@@ -36,6 +36,21 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static DemandPasswordResetModel GetDemandPasswordResetModel()
+        {
+            var model = new DemandPasswordResetModel();
+
+            return model;
+        }
+
+        public static DemandPasswordResetModel GetDemandPasswordResetModel(string email)
+        {
+            var model = new DemandPasswordResetModel();
+            model.Email = email;
+
+            return model;
+        }
+
         public static ChangePasswordModel GetChangePasswordModel(Guid userUid, string oldPassword, string newPassword, 
                                                                  string reEnterNewPassword)
         {
@@ -164,6 +179,13 @@ namespace Translation.Tests.TestHelpers
         public static ChangePasswordDoneModel GetChangePasswordDoneModel()
         {
             var model = new ChangePasswordDoneModel();
+
+            return model;
+        }
+
+        public static DemandPasswordResetDoneModel GetDemandPasswordResetDoneModel()
+        {
+            var model = new DemandPasswordResetDoneModel();
 
             return model;
         }
