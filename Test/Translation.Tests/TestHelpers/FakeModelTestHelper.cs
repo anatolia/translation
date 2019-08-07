@@ -645,7 +645,7 @@ namespace Translation.Tests.TestHelpers
             model.Key = StringOne;
             model.ProjectName = StringOne;
             model.Description = StringOne;
-
+            model.SelectLanguages = IsoCode2One;
 
             return model;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.InputModels;
 using Translation.Common.Helpers;
@@ -13,13 +14,15 @@ namespace Translation.Client.Web.Models.Label
         public string ProjectName { get; set; }
         public string Key { get; set; }
         public string Description { get; set; }
+        public string SelectLanguages { get; set; }
+        
 
         public HiddenInputModel OrganizationInput { get; }
         public HiddenInputModel ProjectInput { get; }
 
         public InputModel KeyInput { get; }
         public LongInputModel DescriptionInput { get; }
-
+        public SelectInputModel LanguagesInput { get; }
         public LabelCreateModel()
         {
             Title = "label_create_title";
@@ -29,6 +32,8 @@ namespace Translation.Client.Web.Models.Label
             ProjectInput = new HiddenInputModel("ProjectUid");
             KeyInput = new InputModel("Key", "key", true);
             DescriptionInput = new LongInputModel("Description", "description");
+            LanguagesInput = new SelectInputModel("LanguageName", "language", "/Language/SelectData");
+          //  LanguagesInput.IsMultiple = true;
         }
 
         public override void SetInputModelValues()
@@ -38,6 +43,7 @@ namespace Translation.Client.Web.Models.Label
 
             KeyInput.Value = Key;
             DescriptionInput.Value = Description;
+            LanguagesInput.Value = SelectLanguages;
         }
 
         public override void SetInputErrorMessages()

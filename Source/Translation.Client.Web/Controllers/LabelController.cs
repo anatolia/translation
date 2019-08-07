@@ -76,8 +76,16 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            var request = new LabelCreateRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid, model.Key,
-                model.Description);
+            var languageList = model.SelectLanguages.Split(Environment.NewLine);
+            List<string> languages=new List<string>();
+
+            for (int i = 0; i <languageList.Length; i++)
+            {
+                languages.Add( languageList[i]);
+            }
+
+            var request = new LabelCreateRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
+                                                 model.Key, model.Description,languages);
             var response = await _labelService.CreateLabel(request);
             if (response.Status.IsNotSuccess)
             {

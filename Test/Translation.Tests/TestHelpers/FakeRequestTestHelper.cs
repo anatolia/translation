@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-
+using Castle.Components.DictionaryAdapter;
 using Translation.Common.Models.Requests.Admin;
 using Translation.Common.Models.Requests.Integration;
 using Translation.Common.Models.Requests.Journal;
@@ -988,16 +988,16 @@ namespace Translation.Tests.TestHelpers
         public static LabelCreateRequest GetLabelCreateRequest()
         {
             var request = new LabelCreateRequest(CurrentUserId, UidOne, UidOne,
-                                                 StringOne, StringOne);
+                                                 StringOne, StringOne, new List<string>(){ IsoCode2One });
 
             return request;
         }
 
         public static LabelCreateRequest GetLabelCreateRequest(long currentUserId, Guid organizationUid, Guid projectUid,
-                                                               string labelKey, string description)
+                                                               string labelKey, string description, List<string> languages)
         {
             var request = new LabelCreateRequest(currentUserId, organizationUid, projectUid,
-                labelKey, description);
+                labelKey, description,languages);
 
             return request;
         }
@@ -1005,7 +1005,7 @@ namespace Translation.Tests.TestHelpers
         public static LabelCreateRequest GetLabelCreateRequest(Label label, Project project)
         {
             var request = new LabelCreateRequest(CurrentUserId, label.OrganizationUid, project.Uid,
-                                                 label.Key, label.Description);
+                                                 label.Key, label.Description,new List<string>(){IsoCode2One});
 
             return request;
         }
