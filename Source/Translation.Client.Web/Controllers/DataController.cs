@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Translation.Client.Web.Models.Base;
+using Translation.Client.Web.Models.Data;
 using Translation.Common.Contracts;
 using Translation.Common.Helpers;
 using Translation.Common.Models.Requests.Integration.Token;
@@ -89,19 +90,20 @@ namespace Translation.Client.Web.Controllers
         [HttpPost,
          AllowAnonymous,
          IgnoreAntiforgeryToken]
-        public async Task<IActionResult> AddLabel(Guid token, Guid projectUid, string labelKey)
+        public async Task<IActionResult> AddLabel(DataAddLabelModel model)
         {
             var result = new CommonResult();
 
-            if (token.IsEmptyGuid()
-                || projectUid.IsEmptyGuid()
-                || labelKey.IsEmpty())
+            if (model.Token.IsEmptyGuid()
+                || model.ProjectUid.IsEmptyGuid()
+                || model.LabelKey.IsEmpty()
+                || model.LanguagesIsoCode2Char.IsEmpty())
             {
-                result.Messages.Add("some parameters are missing! (token, projectUid, labelKey)");
+                result.Messages.Add("some parameters are missing! (token, projectUid, labelKey, languagesIsoCode2Char)");
                 return Json(result);
             }
 
-            var request = new TokenValidateRequest(projectUid, token);
+            var request = new TokenValidateRequest(model.ProjectUid, model.Token);
             var response = await _integrationService.ValidateToken(request);
             if (response.Status.IsNotSuccess)
             {
@@ -110,7 +112,7 @@ namespace Translation.Client.Web.Controllers
                 return StatusCode(401, result);
             }
 
-            var labelCreateWithTokenRequest = new LabelCreateWithTokenRequest(token, projectUid, labelKey);
+            var labelCreateWithTokenRequest = new LabelCreateWithTokenRequest(model.Token, model.ProjectUid, model.LabelKey, model.LanguagesIsoCode2Char);
             var labelsResponse = await _labelService.CreateLabel(labelCreateWithTokenRequest);
             if (labelsResponse.Status.IsNotSuccess)
             {

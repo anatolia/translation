@@ -7,6 +7,7 @@ using NUnit.Framework;
 using Shouldly;
 
 using Translation.Client.Web.Controllers;
+using Translation.Client.Web.Models.Data;
 using Translation.Client.Web.Models.Label;
 
 using Translation.Tests.SetupHelpers;
@@ -33,7 +34,7 @@ namespace Translation.Tests.Client.Controllers
         [TestCase(GetLabelsAction, new[] { typeof(Guid), typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(GetMainLabelsAction, new Type[] { }, typeof(HttpGetAttribute)),
          TestCase(GetCurrentUserAction, new Type[] { }, typeof(HttpGetAttribute)),
-         TestCase(AddLabelAction, new[] { typeof(Guid), typeof(Guid), typeof(string) }, typeof(HttpPostAttribute))]
+         TestCase(AddLabelAction, new[] { typeof(DataAddLabelModel) }, typeof(HttpPostAttribute))]
         public void Methods_Has_Http_Verb_Attributes(string actionMethod, Type[] parameters, Type httpVerbAttribute)
         {
             var type = SystemUnderTest.GetType();
@@ -194,12 +195,15 @@ namespace Translation.Tests.Client.Controllers
         public void GetCurrentUser_GET_Null()
         {
             // arrange
-            
+            MockOrganizationService.Setup_GetCurrentUser_Returns_CurrentUserResponse_Null_Success();
+          
             // act
-            var result = SystemUnderTest.GetCurrentUser();
+            var result = (JsonResult) SystemUnderTest.GetCurrentUser();
 
             // assert
             AssertView<JsonResult>(result);
+            result.Value.ShouldBe(null);
+            MockOrganizationService.Verify_GetCurrentUser();
         }
 
         [Test]
@@ -208,9 +212,10 @@ namespace Translation.Tests.Client.Controllers
             // arrange
             MockIntegrationService.Setup_ValidateToken_Returns_TokenValidateResponse_Success();
             MockLabelService.Setup_LabelCreateWithToken_Returns_LabelCreateResponse_Success();
+            var model = GetMDataAddLabelModel();
 
             // act
-            var result = await SystemUnderTest.AddLabel(UidOne, UidTwo, StringOne);
+            var result = await SystemUnderTest.AddLabel(model);
 
             // assert
             AssertView<JsonResult>(result);
@@ -224,9 +229,10 @@ namespace Translation.Tests.Client.Controllers
             // arrange
             MockIntegrationService.Setup_ValidateToken_Returns_TokenValidateResponse_Success();
             MockLabelService.Setup_LabelCreateWithToken_Returns_LabelCreateResponse_Failed();
+            var model = GetMDataAddLabelModel();
 
             // act
-            var result = await SystemUnderTest.AddLabel(UidOne, UidTwo, StringOne);
+            var result = await SystemUnderTest.AddLabel(model);
 
             // assert
             AssertView<JsonResult>(result);
@@ -240,9 +246,10 @@ namespace Translation.Tests.Client.Controllers
             // arrange
             MockIntegrationService.Setup_ValidateToken_Returns_TokenValidateResponse_Success();
             MockLabelService.Setup_LabelCreateWithToken_Returns_LabelCreateResponse_Invalid();
+            var model = GetMDataAddLabelModel();
 
             // act
-            var result = await SystemUnderTest.AddLabel(UidOne, UidTwo, StringOne);
+            var result = await SystemUnderTest.AddLabel(model);
 
             // assert
             MockIntegrationService.Verify_ValidateToken();
@@ -254,9 +261,10 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockIntegrationService.Setup_ValidateToken_Returns_TokenValidateResponse_Failed();
+            var model = GetMDataAddLabelModel();
 
             // act
-            var result = await SystemUnderTest.AddLabel(UidOne, UidTwo, StringOne);
+            var result = await SystemUnderTest.AddLabel(model);
 
             // assert
             AssertView<JsonResult>(result);
@@ -268,9 +276,10 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockIntegrationService.Setup_ValidateToken_Returns_TokenValidateResponse_Invalid();
+            var model = GetMDataAddLabelModel();
 
             // act
-            var result = await SystemUnderTest.AddLabel(UidOne, UidTwo, StringOne);
+            var result = await SystemUnderTest.AddLabel(model);
 
             // assert
             MockIntegrationService.Verify_ValidateToken();
