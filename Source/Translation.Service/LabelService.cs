@@ -158,21 +158,17 @@ namespace Translation.Service
                 return response;
             }
 
-            var languageConfig = ConfigurationManager.AppSettings["Languages"];
-            if (string.IsNullOrWhiteSpace(languageConfig))
-            {
-                response.SetFailed();
-                return response;
-            }
-
-            var languageList = languageConfig.Split(",");
+            var languageList = request.LanguagesIsoCode2Char.Split(",");
             var languages = new List<Language>();
             for (int i = 0; i < languageList.Length; i++)
             {
                 var isoCode2Char = languageList[i];
                 var language = await _languageRepository.Select(x => x.IsoCode2Char == isoCode2Char);
+                if (language != null)
+                {
+                    languages.Add(language);
+                }
 
-                languages.Add(language);
             }
 
             var label = _labelFactory.CreateEntity(request.LabelKey, project);

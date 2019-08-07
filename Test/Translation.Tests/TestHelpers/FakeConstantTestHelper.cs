@@ -195,6 +195,8 @@ namespace Translation.Tests.TestHelpers
         public const string CaseTwelve = "Case Twelve";
         public const string CaseThirteen = "Case Thirten";
 
+        public const string LanguagesIsoCode2Char = "tr";
+
         public static string GetNewEmail()
         {
             return Guid.NewGuid().ToUidString() + "@email.com";

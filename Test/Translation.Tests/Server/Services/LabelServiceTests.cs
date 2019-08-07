@@ -142,7 +142,6 @@ namespace Translation.Tests.Server.Services
             MockLabelUnitOfWork.Verify_DoCreateWork();
         }
 
-        [Ignore("How to mock ConfigurationManager")]
         [Test]
         public async Task LabelService_CreateLabel_LabelCreateWithTokenRequest_Success()
         {
@@ -153,7 +152,12 @@ namespace Translation.Tests.Server.Services
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockLabelRepository.Setup_Any_Returns_False();
             MockLabelUnitOfWork.Setup_DoCreateWork_Returns_True();
-
+            MockLanguageRepository.Setup_Select_Returns_Language();
+            MockLanguageRepository.Setup_SelectById_Returns_Language();
+            MockLabelRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOne();
+            MockTextTranslateIntegration.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Success();
+            MockLabelUnitOfWork.Setup_DoCreateTranslationWork_Returns_True();
+         
             // act
             var result = await SystemUnderTest.CreateLabel(request);
 
@@ -165,6 +169,11 @@ namespace Translation.Tests.Server.Services
             MockOrganizationRepository.Verify_Any();
             MockLabelRepository.Verify_Any();
             MockLabelUnitOfWork.Verify_DoCreateWork();
+            MockLanguageRepository.Verify_Select();
+            MockLanguageRepository.Verify_SelectById();
+            MockLabelRepository.Verify_Select();
+          //  MockTextTranslateIntegration.Verify_GetTranslatedText();
+            MockLabelUnitOfWork.Verify_DoCreateTranslationWork();
         }
 
         [Test]
@@ -261,7 +270,6 @@ namespace Translation.Tests.Server.Services
             MockLabelRepository.Verify_Any();
         }
 
-        [Ignore("How to mock ConfigurationManager")]
         [Test]
         public async Task LabelService_CreateLabel_LabelCreateWithTokenRequest_Failed()
         {

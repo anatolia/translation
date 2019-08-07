@@ -1012,14 +1012,14 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequest()
         {
-            var request = new LabelCreateWithTokenRequest(UidOne, UidOne, StringOne);
+            var request = new LabelCreateWithTokenRequest(UidOne, UidOne, StringOne,LanguagesIsoCode2Char);
 
             return request;
         }
 
-        public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequest(Guid token, Guid projectUid, string labelKey)
+        public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequest(Guid token, Guid projectUid, string labelKey, string LanguagesIsoCode2Char)
         {
-            var request = new LabelCreateWithTokenRequest(token, projectUid, labelKey);
+            var request = new LabelCreateWithTokenRequest(token, projectUid, labelKey, LanguagesIsoCode2Char);
 
             return request;
         }
