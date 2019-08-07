@@ -106,9 +106,9 @@ namespace Translation.Client.Web.Helpers
 
         private static (Language, Language) InsertLanguages(ILanguageRepository languageRepository, LanguageFactory languageFactory)
         {
+            var english = languageFactory.CreateEntity("en", "eng", "English", "English");
             var chinese = languageFactory.CreateEntity("zh", "zho", "Simplified Chinese", "简化字");
             var spanish = languageFactory.CreateEntity("es", "spa", "Spanish", "Español");
-            var english = languageFactory.CreateEntity("en", "eng", "English", "English");
             var hindi = languageFactory.CreateEntity("hi", "hin", "Hindi", "हिन्दी");
             var arabic = languageFactory.CreateEntity("ar", "ara", "Arabic", "العربية");
             var portuguese = languageFactory.CreateEntity("pt", "por", "Portuguese", "Português");
@@ -116,10 +116,10 @@ namespace Translation.Client.Web.Helpers
             var japanese = languageFactory.CreateEntity("ja", "jpn", "Japanese", "日本語");
             var turkish = languageFactory.CreateEntity("tr", "tur", "Turkish", "Türkçe");
 
-            languageRepository.Insert(0, chinese).Wait();
-            languageRepository.Insert(0, spanish).Wait();
             var englishId = languageRepository.Insert(0, english).Result;
             english.Id = englishId;
+            languageRepository.Insert(0, chinese).Wait();
+            languageRepository.Insert(0, spanish).Wait();
             languageRepository.Insert(0, hindi).Wait();
             languageRepository.Insert(0, arabic).Wait();
             languageRepository.Insert(0, portuguese).Wait();

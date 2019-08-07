@@ -53,7 +53,7 @@ namespace Translation.Client.Web.Models.Project
             LabelCountInput = new HiddenInputModel("LabelCount");
             LabelTranslationCountInput = new HiddenInputModel("LabelTranslationCount");
             IsSuperProjectInput = new CheckboxInputModel("IsSuperProject", "is_super_project");
-            LanguageInput = new SelectInputModel("LanguageUid", "LanguageName", "language", "/Language/SelectData");
+            LanguageInput = new SelectInputModel("Language", "language", "/Language/SelectData");
             LanguageInput.IsOptionTypeContent = true;
         }
 

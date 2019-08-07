@@ -67,7 +67,6 @@ input {
   font-size: 13px;
   line-height: 21px;
   padding: 5px;
-  margin-top: 13px;
   font-style: italic;
   border: 1px solid #999;
   width: 34%; }
@@ -116,14 +115,6 @@ input[type=checkbox] {
   margin-left: 0; }
   .error-messages li {
     color: red;
-    list-style-type: square; }
-
-.ınfo-messages {
-    margin: 7px;
-    padding-left: 21px;
-    margin-left: 0; }
-.ınfo-messages li {
-    color: green;
     list-style-type: square; }
 
 .bottom-links {

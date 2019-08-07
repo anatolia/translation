@@ -16,7 +16,8 @@
   position: relative;
   width: calc(34% + 10px);
   min-height: 31px;
-  border: 1px solid grey; }
+  border: 1px solid grey;
+  margin-top: 8px; }
   .select div {
     min-height: unset; }
   .select .select-button {
@@ -94,7 +95,7 @@
     z-index: 100;
     width: 100%;
     border: 1px solid grey;
-    max-height: 100px;
+    max-height: 120px;
     overflow-y: auto;
     animation: fadeIn 1s;
     scrollbar-color: #999 #f1f1f1;

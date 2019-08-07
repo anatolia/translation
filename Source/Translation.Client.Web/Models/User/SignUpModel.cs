@@ -33,7 +33,7 @@ namespace Translation.Client.Web.Models.User
             LastNameInput = new InputModel("LastName", "last_name", true);
             OrganizationNameInput = new LongInputModel("OrganizationName", "organization_name", true);
             PasswordInput = new PasswordInputModel("Password", "password", true);
-            LanguageInput = new SelectInputModel("LanguageUid", "LanguageName", "language", "/Language/SelectData");
+            LanguageInput = new SelectInputModel("Language", "language", "/Language/SelectData");
             LanguageInput.IsOptionTypeContent = true;
             IsTermsAcceptedInput = new CheckboxInputModel("IsTermsAccepted", "accept_terms", true);
         }

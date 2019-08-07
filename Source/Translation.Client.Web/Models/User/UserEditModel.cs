@@ -27,7 +27,7 @@ namespace Translation.Client.Web.Models.User
 
             FirstNameInput = new InputModel("FirstName", "first_name", true);
             LastNameInput = new InputModel("LastName", "last_name", true);
-            LanguageInput = new SelectInputModel("LanguageUid", "LanguageName", "language", "/Language/SelectData");
+            LanguageInput = new SelectInputModel("Language", "language", "/Language/SelectData");
             LanguageInput.IsOptionTypeContent = true;
         }
 

@@ -19,38 +19,26 @@ namespace Translation.Client.Web.Models.InputModels
 
         public bool IsAddNewEnabled { get; set; }
         public string AddNewUrl { get; set; }
-
-        public SelectInputModel(string name, string labelKey, string dataUrl,
-                                bool isRequired = false, string parentId = "", bool isOptionTypeContent = false,
-                                bool isSetFirstItem = true, bool isAllOptionsVisible = false, bool isMultiple = false, bool isHavingDetailInfo = false,
-                                string detailInfoDataUrl = "") : base(name, labelKey, isRequired)
+        
+        public SelectInputModel(string name) : base(name + "Uid", name.ToLowerInvariant(), true)
         {
-            DataUrl = dataUrl;
-            Parent = parentId;
-            DetailInfoDataUrl = detailInfoDataUrl;
-            IsOptionTypeContent = isOptionTypeContent;
-            IsAllOptionsVisible = isAllOptionsVisible;
-            IsMultiple = isMultiple;
-            IsHavingDetailInfo = isHavingDetailInfo;
-            IsSetFirstItem = isSetFirstItem;
-
-            if (IsMultiple && IsHavingDetailInfo)
-            {
-                throw new ArgumentException("multiple selects can not have detail info panel!");
-            }
+            TextFieldName = $"{name}Name";
+            DataUrl = $"/{name}/SelectData";
         }
 
-        public SelectInputModel(string name, string textFieldName, string labelKey,
-                                string dataUrl, string parentId = "", bool isRequired = true,
-                                bool isMultiple = false, bool isAddNewEnabled = false, string addNewUrl = "") : base(name, labelKey, isRequired)
+        public SelectInputModel(string name, string dataUrl) : base(name + "Uid", name.ToLowerInvariant(), true)
         {
-            TextFieldName = textFieldName;
+            TextFieldName = $"{name}Name";
             DataUrl = dataUrl;
-            Parent = parentId;
-            IsMultiple = isMultiple;
-            IsSetFirstItem = true;
-            IsAddNewEnabled = isAddNewEnabled;
+        }
+
+        public SelectInputModel(string name, string labelKey, string dataUrl, bool required = false, string addNewUrl = "") : base(name + "Uid", labelKey, required)
+        {
+            TextFieldName = $"{name}Name";
+            DataUrl = dataUrl;
             AddNewUrl = addNewUrl;
+            IsAddNewEnabled = !string.IsNullOrEmpty(addNewUrl);
+            IsSetFirstItem = true;
         }
     }
 }
