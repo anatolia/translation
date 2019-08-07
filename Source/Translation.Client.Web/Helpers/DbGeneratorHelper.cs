@@ -94,6 +94,7 @@ namespace Translation.Client.Web.Helpers
 
             var organization = organizationRepository.Select(x => x.Name == ConstantHelper.ORGANIZATION_NAME).Result;
             organization.IsSuperOrganization = true;
+            organization.ProjectCount = 1;
             organizationRepository.Update(superAdmin.Id, organization);
 
             var superProject = projectRepository.Select(x => x.OrganizationId == organization.Id).Result;
