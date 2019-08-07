@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-
+using Castle.Components.DictionaryAdapter;
 using Translation.Common.Models.Requests.Admin;
 using Translation.Common.Models.Requests.Integration;
 using Translation.Common.Models.Requests.Journal;
@@ -988,16 +988,16 @@ namespace Translation.Tests.TestHelpers
         public static LabelCreateRequest GetLabelCreateRequest()
         {
             var request = new LabelCreateRequest(CurrentUserId, UidOne, UidOne,
-                                                 StringOne, StringOne);
+                                                 StringOne, StringOne, new List<string>(){ IsoCode2One });
 
             return request;
         }
 
         public static LabelCreateRequest GetLabelCreateRequest(long currentUserId, Guid organizationUid, Guid projectUid,
-                                                               string labelKey, string description)
+                                                               string labelKey, string description, List<string> languages)
         {
             var request = new LabelCreateRequest(currentUserId, organizationUid, projectUid,
-                labelKey, description);
+                labelKey, description,languages);
 
             return request;
         }
@@ -1005,28 +1005,28 @@ namespace Translation.Tests.TestHelpers
         public static LabelCreateRequest GetLabelCreateRequest(Label label, Project project)
         {
             var request = new LabelCreateRequest(CurrentUserId, label.OrganizationUid, project.Uid,
-                                                 label.Key, label.Description);
+                                                 label.Key, label.Description,new List<string>(){IsoCode2One});
 
             return request;
         }
 
         public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequest()
         {
-            var request = new LabelCreateWithTokenRequest(UidOne, UidOne, StringOne);
+            var request = new LabelCreateWithTokenRequest(UidOne, UidOne, StringOne,LanguagesIsoCode2Char);
 
             return request;
         }
 
-        public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequest(Guid token, Guid projectUid, string labelKey)
+        public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequest(Guid token, Guid projectUid, string labelKey, string LanguagesIsoCode2Char)
         {
-            var request = new LabelCreateWithTokenRequest(token, projectUid, labelKey);
+            var request = new LabelCreateWithTokenRequest(token, projectUid, labelKey, LanguagesIsoCode2Char);
 
             return request;
         }
 
         public static LabelGetTranslatedTextRequest GetLabelGetTranslatedTextRequest(string textToTranslate, string targetLanguageIsoCode2, string sourceLanguageIsoCode2)
         {
-            var request = new LabelGetTranslatedTextRequest(CurrentUserId, textToTranslate, targetLanguageIsoCode2, 
+            var request = new LabelGetTranslatedTextRequest(CurrentUserId, textToTranslate, targetLanguageIsoCode2,
                                                             sourceLanguageIsoCode2);
 
             return request;
@@ -1035,15 +1035,15 @@ namespace Translation.Tests.TestHelpers
         public static LabelCreateListRequest GetLabelCreateListRequest()
         {
             var request = new LabelCreateListRequest(CurrentUserId, UidOne, UidOne,
-                                                     new List<LabelListInfo>() { GetLabelListInfo() });
+                                                     BooleanTrue, new List<LabelListInfo>() { GetLabelListInfo() });
 
             return request;
         }
 
         public static LabelCreateListRequest GetLabelCreateListRequest(long currentUserId, Guid organizationUid, Guid projectUid,
-                                                                        List<LabelListInfo> labels)
+                                                                       bool updateExistedTranslations, List<LabelListInfo> labels)
         {
-            var request = new LabelCreateListRequest(currentUserId, organizationUid, projectUid, labels);
+            var request = new LabelCreateListRequest(currentUserId, organizationUid, projectUid, updateExistedTranslations, labels);
 
             return request;
         }

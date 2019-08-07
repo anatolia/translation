@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using Translation.Common.Helpers;
 using Translation.Common.Models.Base;
 
@@ -11,9 +11,11 @@ namespace Translation.Common.Models.Requests.Label
         public Guid ProjectUid { get; }
         public string LabelKey { get; }
         public string Description { get; }
+        public List<string> Languages { get; }
+        
 
         public LabelCreateRequest(long currentUserId, Guid organizationUid, Guid projectUid,
-                                  string labelKey, string description) : base(currentUserId)
+                                  string labelKey, string description, List<string> languages) : base(currentUserId)
         {
             if (organizationUid.IsEmptyGuid())
             {
@@ -34,6 +36,7 @@ namespace Translation.Common.Models.Requests.Label
             ProjectUid = projectUid;
             LabelKey = labelKey;
             Description = description;
+            Languages = languages;
         }
     }
 }

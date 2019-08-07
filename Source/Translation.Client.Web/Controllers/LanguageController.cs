@@ -24,9 +24,7 @@ namespace Translation.Client.Web.Controllers
         private readonly ILanguageService _languageService;
 
         public LanguageController(IHostingEnvironment environment,
-                                  ILanguageService languageService,
-                                  IOrganizationService organizationService,
-                                  IJournalService journalService) : base(organizationService, journalService)
+                                  ILanguageService languageService)
         {
             _environment = environment;
             _languageService = languageService;

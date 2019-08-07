@@ -354,7 +354,7 @@ namespace Translation.Service
             var result = await _userRepository.Update(request.CurrentUserId, user);
             if (result)
             {
-                _cacheManager.UpsertUserCache(user, _userFactory.MapCurrentUser(user));
+                _cacheManager.UpsertUserCache(user, _userFactory.MapCurrentUser(user, _cacheManager.GetLanguageIsoCode2Char(user.LanguageId)));
 
                 response.Status = ResponseStatus.Success;
                 return response;
@@ -418,7 +418,7 @@ namespace Translation.Service
             var result = await _userRepository.Update(request.CurrentUserId, user);
             if (result)
             {
-                _cacheManager.UpsertUserCache(user, _userFactory.MapCurrentUser(user));
+                _cacheManager.UpsertUserCache(user, _userFactory.MapCurrentUser(user, _cacheManager.GetLanguageIsoCode2Char(user.LanguageId)));
 
                 response.Item = _userFactory.CreateDtoFromEntity(user);
                 response.Status = ResponseStatus.Success;
@@ -451,7 +451,7 @@ namespace Translation.Service
             var result = await _userRepository.Update(request.CurrentUserId, user);
             if (result)
             {
-                _cacheManager.UpsertUserCache(user, _userFactory.MapCurrentUser(user));
+                _cacheManager.UpsertUserCache(user, _userFactory.MapCurrentUser(user, _cacheManager.GetLanguageIsoCode2Char(user.LanguageId)));
 
                 response.Item = _userFactory.CreateDtoFromEntity(user);
                 response.Status = ResponseStatus.Success;

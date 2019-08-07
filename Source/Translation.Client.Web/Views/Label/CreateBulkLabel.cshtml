@@ -1,7 +1,9 @@
 ﻿@model CreateBulkLabelModel
 
 <h1 data-translation="@Model.Title">@Model.Title</h1>
-<p data-translation="be_careful_it_overwrites_existing_translations">be_careful_it_overwrites_existing_translations</p>
+<div>
+    <partial name="Components/_InfoMessages" model="@Model.InfoMessages" />
+</div>
 
 <div>
     <label data-translation="project">project</label>
@@ -14,6 +16,7 @@
     <partial name="Components/_Hidden" model="@Model.ProjectNameInput" />
 
     <partial name="Components/_Textarea" model="@Model.BulkLabelInput" />
+    <partial name="Components/_Checkbox" model="@Model.UpdateExistedTranslationsInput" />
 
     <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
     <partial name="Components/_ErrorMessages" model="@Model.WarningMessages" />

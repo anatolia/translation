@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using StandardCache;
 using StandardRepository.Helpers;
 using Translation.Common.Helpers;
 using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Main;
+using Translation.Data.Entities.Parameter;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
 
@@ -15,17 +17,21 @@ namespace Translation.Service.Managers
         private const string CACHE_NAME_CURRENT_USER = nameof(CurrentUser);
         private const string CACHE_NAME_ORGANIZATION = nameof(Organization);
         private const string CACHE_NAME_CURRENT_ORGANIZATION = nameof(CurrentOrganization);
+        private const string CACHE_NAME_CURRENT_USER_LANGUAGE_ISO_CODE2_CHAR = nameof(CurrentUser.LanguageIsoCode2Char);
 
+        private readonly ILanguageRepository _languageRepository;
         private readonly IUserRepository _userRepository;
         private readonly UserFactory _userFactory;
         private readonly IOrganizationRepository _organizationRepository;
         private readonly OrganizationFactory _organizationFactory;
 
-        public CacheManager(IUserRepository userRepository,
+        public CacheManager(ILanguageRepository languageRepository,
+                            IUserRepository userRepository,
                             UserFactory userFactory,
                             IOrganizationRepository organizationRepository,
                             OrganizationFactory organizationFactory)
         {
+            _languageRepository = languageRepository;
             _userRepository = userRepository;
             _userFactory = userFactory;
             _organizationRepository = organizationRepository;
@@ -43,7 +49,7 @@ namespace Translation.Service.Managers
                     return null;
                 }
 
-                UpsertUserCache(user, _userFactory.MapCurrentUser(user));
+                UpsertUserCache(user, _userFactory.MapCurrentUser(user, GetLanguageIsoCode2Char(user.LanguageId)));
 
                 return user;
             }
@@ -62,7 +68,7 @@ namespace Translation.Service.Managers
                     return null;
                 }
 
-                UpsertUserCache(user, _userFactory.MapCurrentUser(user));
+                UpsertUserCache(user, _userFactory.MapCurrentUser(user, GetLanguageIsoCode2Char(user.LanguageId)));
 
                 return user;
             }
@@ -81,7 +87,7 @@ namespace Translation.Service.Managers
                     return null;
                 }
 
-                UpsertUserCache(user, _userFactory.MapCurrentUser(user));
+                UpsertUserCache(user, _userFactory.MapCurrentUser(user, GetLanguageIsoCode2Char(user.LanguageId)));
 
                 return user;
             }
@@ -100,7 +106,7 @@ namespace Translation.Service.Managers
                     return null;
                 }
 
-                var currentUser = _userFactory.MapCurrentUser(user);
+                var currentUser = _userFactory.MapCurrentUser(user, GetLanguageIsoCode2Char(user.LanguageId));
                 UpsertUserCache(user, currentUser);
 
                 return currentUser;
@@ -120,7 +126,7 @@ namespace Translation.Service.Managers
                     return null;
                 }
                 
-                var currentUser = _userFactory.MapCurrentUser(user);
+                var currentUser = _userFactory.MapCurrentUser(user, GetLanguageIsoCode2Char(user.LanguageId));
                 UpsertUserCache(user, currentUser);
 
                 return currentUser;
@@ -207,6 +213,30 @@ namespace Translation.Service.Managers
             Remove(CACHE_NAME_USER, user.Uid.ToUidString());
             Remove(CACHE_NAME_CURRENT_USER, user.Id.ToString());
             Remove(CACHE_NAME_CURRENT_USER, user.Uid.ToUidString());
+        }
+
+        public string GetLanguageIsoCode2Char(long languageId)
+        {
+            var item = Get(CACHE_NAME_CURRENT_USER_LANGUAGE_ISO_CODE2_CHAR, languageId.ToString());
+            if (item == null)
+            {
+                if (languageId < 1)
+                {
+                    return "en";
+                }
+
+                var language = _languageRepository.SelectById(languageId).Result;
+                if (language.IsNotExist())
+                {
+                    return null;
+                }
+
+                AddOrUpdate(CACHE_NAME_CURRENT_USER_LANGUAGE_ISO_CODE2_CHAR, new CacheItem(languageId.ToString(), language.IsoCode2Char));
+
+                return language.IsoCode2Char;
+            }
+
+            return (string)item.Item;
         }
     }
 }

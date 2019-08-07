@@ -32,7 +32,6 @@ namespace Translation.Tests.Client.Controllers
         public Mock<IProjectService> MockProjectService { get; set; }
         public Mock<ILabelService> MockLabelService { get; set; }
         public Mock<IJournalService> MockJournalService { get; set; }
-        public Mock<ITextTranslateIntegration> MockCloudTranslationService { get; set; }
 
         protected new void Refresh()
         {
@@ -45,8 +44,7 @@ namespace Translation.Tests.Client.Controllers
             MockProjectService = new Mock<IProjectService>();
             MockLabelService = new Mock<ILabelService>();
             MockJournalService = new Mock<IJournalService>();
-            MockCloudTranslationService = new Mock<ITextTranslateIntegration>();
-
+          
             SetupCurrentUser();
 
             Container.Register(Component.For<IOrganizationService>().Instance(MockOrganizationService.Object).LifestyleTransient());
@@ -57,17 +55,19 @@ namespace Translation.Tests.Client.Controllers
             Container.Register(Component.For<ILabelService>().Instance(MockLabelService.Object).LifestyleTransient());
             Container.Register(Component.For<IJournalService>().Instance(MockJournalService.Object).LifestyleTransient());
 
-            Container.Register(Component.For<ITextTranslateIntegration>().Instance(MockCloudTranslationService.Object).LifestyleTransient());
 
-            Container.Register(Component.For<HomeController>().LifestyleTransient());
+          
             Container.Register(Component.For<AdminController>().LifestyleTransient());
-            Container.Register(Component.For<LanguageController>().LifestyleTransient());
-            Container.Register(Component.For<UserController>().LifestyleTransient());
+            Container.Register(Component.For<DataController>().LifestyleTransient());
+            Container.Register(Component.For<HomeController>().LifestyleTransient());
             Container.Register(Component.For<IntegrationController>().LifestyleTransient());
-            Container.Register(Component.For<TokenController>().LifestyleTransient());
+            Container.Register(Component.For<LabelController>().LifestyleTransient());
+            Container.Register(Component.For<LanguageController>().LifestyleTransient());
             Container.Register(Component.For<OrganizationController>().LifestyleTransient());
             Container.Register(Component.For<ProjectController>().LifestyleTransient());
-            Container.Register(Component.For<LabelController>().LifestyleTransient());
+            Container.Register(Component.For<TokenController>().LifestyleTransient());
+            Container.Register(Component.For<UserController>().LifestyleTransient());
+          
 
             Container.Register(Component.For<CacheManager>());
         }

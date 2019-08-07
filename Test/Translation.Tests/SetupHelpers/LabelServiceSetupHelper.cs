@@ -18,6 +18,30 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class LabelServiceSetupHelper
     {
+
+        public static void Setup_LabelCreateWithToken_Returns_LabelCreateResponse_Success(this Mock<ILabelService> service)
+        {
+            service.Setup(x => x.CreateLabel(It.IsAny<LabelCreateWithTokenRequest>()))
+                .ReturnsAsync(new LabelCreateResponse { Status = ResponseStatus.Success });
+        }
+
+        public static void Setup_LabelCreateWithToken_Returns_LabelCreateResponse_Failed(this Mock<ILabelService> service)
+        {
+            service.Setup(x => x.CreateLabel(It.IsAny<LabelCreateWithTokenRequest>()))
+                .ReturnsAsync(new LabelCreateResponse { Status = ResponseStatus.Failed });
+        }
+
+        public static void Setup_LabelCreateWithToken_Returns_LabelCreateResponse_Invalid(this Mock<ILabelService> service)
+        {
+            service.Setup(x => x.CreateLabel(It.IsAny<LabelCreateWithTokenRequest>()))
+                .ReturnsAsync(new LabelCreateResponse { Status = ResponseStatus.Invalid });
+        }
+
+        public static void Verify_LabelCreateWithToken(this Mock<ILabelService> service)
+        {
+            service.Verify(x => x.CreateLabel(It.IsAny<LabelCreateWithTokenRequest>()));
+        }
+
         public static void Setup_GetLabelByKey_Returns_LabelReadByKeyResponse_Success(this Mock<ILabelService> service)
         {
             service.Setup(x => x.GetLabelByKey(It.IsAny<LabelReadByKeyRequest>()))
@@ -139,7 +163,7 @@ namespace Translation.Tests.SetupHelpers
         {
             var item = new LabelDto() { ProjectUid = UidOne };
             service.Setup(x => x.GetLabel(It.IsAny<LabelReadRequest>()))
-                   .ReturnsAsync(new LabelReadResponse { Status = ResponseStatus.Success, Item = item});
+                   .ReturnsAsync(new LabelReadResponse { Status = ResponseStatus.Success, Item = item });
         }
 
         public static void Setup_CreateLabel_Returns_LabelCreateResponse_Success(this Mock<ILabelService> service)

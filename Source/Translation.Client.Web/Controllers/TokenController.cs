@@ -15,9 +15,7 @@ namespace Translation.Client.Web.Controllers
     {
         private readonly IIntegrationService _integrationService;
 
-        public TokenController(IIntegrationService integrationService,
-                               IOrganizationService organizationService,
-                               IJournalService journalService) : base(organizationService, journalService)
+        public TokenController(IIntegrationService integrationService)
         {
             _integrationService = integrationService;
         }

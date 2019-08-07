@@ -11,16 +11,18 @@ namespace Translation.Client.Web.Models.Label
     public sealed class LabelUploadFromCSVModel : BaseModel
     {
         public Guid OrganizationUid { get; set; }
-
         public Guid ProjectUid { get; set; }
         public string ProjectName { get; set; }
+
         public IFormFile CSVFile { get; set; }
+        public bool UpdateExistedTranslations { get; set; }
 
         public HiddenInputModel OrganizationInput { get; }
         public HiddenInputModel ProjectNameInput { get; }
-
         public HiddenInputModel ProjectInput { get; }
+
         public FileInputModel CSVFileInput { get; }
+        public CheckboxInputModel UpdateExistedTranslationsInput { get; set; }
 
         public LabelUploadFromCSVModel()
         {
@@ -31,6 +33,7 @@ namespace Translation.Client.Web.Models.Label
             ProjectNameInput = new HiddenInputModel("ProjectName");
 
             CSVFileInput = new FileInputModel("CSVFile", "csv_file", true);
+            UpdateExistedTranslationsInput = new CheckboxInputModel("UpdateExistedTranslations", "update_existed_translations");
         }
 
         public override void SetInputModelValues()
@@ -38,6 +41,8 @@ namespace Translation.Client.Web.Models.Label
             OrganizationInput.Value = OrganizationUid.ToUidString();
             ProjectInput.Value = ProjectUid.ToUidString();
             ProjectNameInput.Value = ProjectName;
+            UpdateExistedTranslationsInput.Value = UpdateExistedTranslations;
+
             InfoMessages.Clear();
             InfoMessages.Add("the_file_must_be_utf8_encoded");
             InfoMessages.Add("you_cannot_add_labels_and_same_label_translations_that_have_same_label_key");

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Translation.Client.Web.Models.Base;
+using Translation.Client.Web.Models.Data;
 using Translation.Common.Contracts;
 using Translation.Common.Helpers;
 using Translation.Common.Models.Requests.Integration.Token;
@@ -11,12 +12,13 @@ using Translation.Common.Models.Requests.Label;
 
 namespace Translation.Client.Web.Controllers
 {
-    public class DataController : Controller
+    public class DataController : BaseController
     {
         private readonly IIntegrationService _integrationService;
         private readonly ILabelService _labelService;
 
-        public DataController(IIntegrationService integrationService, ILabelService labelService)
+        public DataController(IIntegrationService integrationService,
+                              ILabelService labelService)
         {
             _integrationService = integrationService;
             _labelService = labelService;
@@ -74,22 +76,34 @@ namespace Translation.Client.Web.Controllers
             return Json(labelsResponse.Labels);
         }
 
+        [HttpGet]
+        public IActionResult GetCurrentUser()
+        {
+            if (CurrentUser == null)
+            {
+                return Json(null);
+            }
+
+            return Json(new { CurrentUser.Name, CurrentUser.LanguageIsoCode2Char });
+        }
+
         [HttpPost,
          AllowAnonymous,
          IgnoreAntiforgeryToken]
-        public async Task<IActionResult> AddLabel(Guid token, Guid projectUid, string labelKey)
+        public async Task<IActionResult> AddLabel(DataAddLabelModel model)
         {
             var result = new CommonResult();
 
-            if (token.IsEmptyGuid()
-                || projectUid.IsEmptyGuid()
-                || labelKey.IsEmpty())
+            if (model.Token.IsEmptyGuid()
+                || model.ProjectUid.IsEmptyGuid()
+                || model.LabelKey.IsEmpty()
+                || model.LanguagesIsoCode2Char.IsEmpty())
             {
-                result.Messages.Add("some parameters are missing! (token, projectUid, labelKey)");
+                result.Messages.Add("some parameters are missing! (token, projectUid, labelKey, languagesIsoCode2Char)");
                 return Json(result);
             }
 
-            var request = new TokenValidateRequest(projectUid, token);
+            var request = new TokenValidateRequest(model.ProjectUid, model.Token);
             var response = await _integrationService.ValidateToken(request);
             if (response.Status.IsNotSuccess)
             {
@@ -98,7 +112,7 @@ namespace Translation.Client.Web.Controllers
                 return StatusCode(401, result);
             }
 
-            var labelCreateWithTokenRequest = new LabelCreateWithTokenRequest(token, projectUid, labelKey);
+            var labelCreateWithTokenRequest = new LabelCreateWithTokenRequest(model.Token, model.ProjectUid, model.LabelKey, model.LanguagesIsoCode2Char);
             var labelsResponse = await _labelService.CreateLabel(labelCreateWithTokenRequest);
             if (labelsResponse.Status.IsNotSuccess)
             {

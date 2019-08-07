@@ -934,6 +934,7 @@ namespace Translation.Tests.Server.Services
             MockOrganizationRepository.Setup_Any_Returns_False();
             MockLanguageRepository.Setup_Select_Returns_Language();
             MockUserRepository.Setup_Update_Success();
+            MockLanguageRepository.Setup_SelectById_Returns_Language();
 
             // act
             var result = await SystemUnderTest.EditUser(request);
@@ -945,6 +946,7 @@ namespace Translation.Tests.Server.Services
             MockOrganizationRepository.Verify_Any();
             MockLanguageRepository.Verify_Select();
             MockUserRepository.Verify_Update();
+            MockLanguageRepository.Verify_Select();
         }
 
         [Test]

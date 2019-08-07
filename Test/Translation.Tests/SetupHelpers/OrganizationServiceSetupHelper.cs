@@ -12,6 +12,7 @@ using Translation.Common.Models.Requests.User.LoginLog;
 using Translation.Common.Models.Responses.Organization;
 using Translation.Common.Models.Responses.User;
 using Translation.Common.Models.Responses.User.LoginLog;
+using Translation.Common.Models.Shared;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
 namespace Translation.Tests.SetupHelpers
@@ -154,10 +155,22 @@ namespace Translation.Tests.SetupHelpers
                    .Returns(Task.FromResult(new OrganizationPendingTranslationReadListResponse { Status = ResponseStatus.Success, Items = items }));
         }
 
+        public static void Setup_GetCurrentUser_Returns_CurrentUserResponse_Null_Success(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.GetCurrentUser(It.IsAny<CurrentUserRequest>()))
+                .Returns(new CurrentUser());
+        }
+
+        public static void Verify_GetCurrentUser(this Mock<IOrganizationService> service)
+        {
+            service.Verify(x => x.GetCurrentUser(It.IsAny<CurrentUserRequest>()));
+               
+        }
+
         public static void Setup_GetOrganization_Returns_OrganizationReadResponse_Success(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.GetOrganization(It.IsAny<OrganizationReadRequest>()))
-                   .Returns(new OrganizationReadResponse { Status = ResponseStatus.Success });
+                .Returns(new OrganizationReadResponse { Status = ResponseStatus.Success });
         }
 
         public static void Verify_GetOrganization(this Mock<IOrganizationService> service)
@@ -488,7 +501,6 @@ namespace Translation.Tests.SetupHelpers
             service.Setup(x => x.GetUser(It.IsAny<UserReadRequest>()))
                    .Returns(new UserReadResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } });
         }
-
 
         public static void Verify_GetUsers(this Mock<IOrganizationService> service)
         {

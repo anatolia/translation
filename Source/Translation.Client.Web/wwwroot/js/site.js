@@ -100,20 +100,25 @@ function doRedirectIfConfirmedSuccess(btn, redirectUrl) {
 
 
 function translateScreen() {
+
     var items = document.querySelectorAll('[data-translation]');
     var labels = JSON.parse(localStorage.getItem('labels'));
-    var userLanguage = localStorage.getItem('userLanguage');
-    if (userLanguage === null) {
-        userLanguage = 'en';
+    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    var isoCode2Char = "en";
+    if (currentUser != null) {
+        isoCode2Char = currentUser.languageIsoCode2Char;
+    }
+    if (labels === null) {
+        return;
     }
 
     items.forEach(function (item) {
         for (var i = 0; i < labels.length; i++) {
             var label = labels[i];
             if (label.key === item.dataset.translation) {
-
                 label.translations.forEach(function (translation) {
-                    if (translation.languageIsoCode2 === userLanguage) {
+                    if (translation.languageIsoCode2 === isoCode2Char) {
                         item.innerHTML = translation.translation;
                         return;
                     }
@@ -125,7 +130,23 @@ function translateScreen() {
     });
 }
 
-if (localStorage.getItem('labels') == undefined) {
+doGet('/Data/GetCurrentUser', function (req) {
+
+    console.log("req.responseText: ", req.responseText);
+    if (199 < req.status && req.status < 300) {
+        if (req.status === 200
+            && req.responseText !== null) {
+            localStorage.setItem('currentUser', req.responseText);
+        } else if (req.status === 200
+            && req.responseText === null) {
+            window.redirect('/Login');
+        }
+    }
+});
+
+if (localStorage.getItem('labels') === null
+    || localStorage.getItem('labels') === undefined
+    || localStorage.getItem('labels') === "[]") {
     doGet('/Data/GetMainLabels', function (req) {
         if (199 < req.status && req.status < 300) {
             localStorage.setItem('labels', req.responseText);

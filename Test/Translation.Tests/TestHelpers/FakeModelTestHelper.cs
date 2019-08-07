@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Http;
 
 using Translation.Client.Web.Models.Admin;
+using Translation.Client.Web.Models.Data;
 using Translation.Client.Web.Models.Integration;
 using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.LabelTranslation;
@@ -29,6 +30,64 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static ChangePasswordModel GetChangePasswordModel()
+        {
+            var model = new ChangePasswordModel();
+
+            return model;
+        }
+
+        public static InviteAcceptModel GetInviteAcceptModel()
+        {
+            var model = new InviteAcceptModel();
+
+            return model;
+        }
+
+        public static InviteAcceptModel GetInviteAcceptModel(Guid token, string email, string firstName,
+                                                             string lastName, string password, string reEnterPassword,
+                                                             Guid languageUid, string languageName)
+        {
+            var model = new InviteAcceptModel();
+            model.Token = token;
+            model.Email = email;
+            model.FirstName = firstName;
+            model.LastName = lastName;
+            model.Password = password;
+            model.ReEnterPassword = reEnterPassword;
+            model.LanguageUid = languageUid;
+            model.LanguageName = languageName;
+
+            return model;
+        }
+
+        public static DemandPasswordResetModel GetDemandPasswordResetModel()
+        {
+            var model = new DemandPasswordResetModel();
+
+            return model;
+        }
+
+        public static DemandPasswordResetModel GetDemandPasswordResetModel(string email)
+        {
+            var model = new DemandPasswordResetModel();
+            model.Email = email;
+
+            return model;
+        }
+
+        public static ChangePasswordModel GetChangePasswordModel(Guid userUid, string oldPassword, string newPassword,
+                                                                 string reEnterNewPassword)
+        {
+            var model = new ChangePasswordModel();
+            model.UserUid = userUid;
+            model.OldPassword = oldPassword;
+            model.NewPassword = newPassword;
+            model.ReEnterNewPassword = reEnterNewPassword;
+
+            return model;
+        }
+
         public static AdminAcceptInviteModel GetAdminAcceptInviteModel()
         {
             var model = new AdminAcceptInviteModel();
@@ -43,12 +102,46 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
-        public static AdminAcceptInviteModel GetAdminAcceptInviteModel(Guid organizaitonUid, Guid token, string email,
+        public static AdminInviteModel GetAdminInviteModel()
+        {
+            var model = new AdminInviteModel();
+            model.OrganizationUid = UidOne;
+            model.Email = EmailOne;
+            model.FirstName = StringOne;
+            model.LastName = StringTwo;
+
+            return model;
+        }
+
+        public static DataAddLabelModel GetMDataAddLabelModel()
+        {
+            var model = new DataAddLabelModel();
+            model.Token = UidOne;
+            model.ProjectUid = UidTwo;
+            model.LabelKey = StringOne;
+            model.LanguagesIsoCode2Char = StringTwo;
+
+            return model;
+        }
+
+        public static AdminInviteModel GetAdminInviteModel(Guid organizationUid, string email,
+                                                           string firstName, string lastName)
+        {
+            var model = new AdminInviteModel();
+            model.OrganizationUid = organizationUid;
+            model.Email = email;
+            model.FirstName = firstName;
+            model.LastName = lastName;
+
+            return model;
+        }
+
+        public static AdminAcceptInviteModel GetAdminAcceptInviteModel(Guid organizationUid, Guid token, string email,
                                                                        string firstName, string lastName, string password,
                                                                        string reEnterPassword)
         {
             var model = new AdminAcceptInviteModel();
-            model.OrganizationUid = organizaitonUid;
+            model.OrganizationUid = organizationUid;
             model.Token = token;
             model.Email = email;
             model.FirstName = firstName;
@@ -131,6 +224,34 @@ namespace Translation.Tests.TestHelpers
         public static JournalListModel GetJournalListModel()
         {
             var model = new JournalListModel();
+
+            return model;
+        }
+
+        public static AllUserListModel GetAllUserListModel()
+        {
+            var model = new AllUserListModel();
+
+            return model;
+        }
+
+        public static InviteAcceptDoneModel GetInviteAcceptDoneModel()
+        {
+            var model = new InviteAcceptDoneModel();
+
+            return model;
+        }
+
+        public static ChangePasswordDoneModel GetChangePasswordDoneModel()
+        {
+            var model = new ChangePasswordDoneModel();
+
+            return model;
+        }
+
+        public static DemandPasswordResetDoneModel GetDemandPasswordResetDoneModel()
+        {
+            var model = new DemandPasswordResetDoneModel();
 
             return model;
         }
@@ -524,7 +645,7 @@ namespace Translation.Tests.TestHelpers
             model.Key = StringOne;
             model.ProjectName = StringOne;
             model.Description = StringOne;
-
+            model.SelectLanguages = IsoCode2One;
 
             return model;
         }

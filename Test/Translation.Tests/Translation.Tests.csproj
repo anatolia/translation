@@ -33,6 +33,7 @@
     <PackageReference Include="Shouldly" Version="3.0.2" />
     <PackageReference Include="StandardRepository" Version="1.0.1.9" />
     <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.1.9" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>

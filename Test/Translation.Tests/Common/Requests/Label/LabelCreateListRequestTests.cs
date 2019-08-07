@@ -19,11 +19,12 @@ namespace Translation.Tests.Common.Requests.Label
         public void LabelCreateListRequest_Constructor()
         {
             var labels = GetLabelListInfoList();
-            var request = GetLabelCreateListRequest(CurrentUserId, UidOne, UidTwo, labels);
+            var request = GetLabelCreateListRequest(CurrentUserId, UidOne, UidTwo, BooleanTrue, labels);
 
             request.CurrentUserId.ShouldBe(CurrentUserId);
             request.OrganizationUid.ShouldBe(UidOne);
             request.ProjectUid.ShouldBe(UidTwo);
+            request.UpdateExistedTranslations.ShouldBe(BooleanTrue);
             request.Labels.ShouldBe(labels);
         }
 
@@ -31,16 +32,16 @@ namespace Translation.Tests.Common.Requests.Label
         {
             get
             {
-                yield return new TestCaseData(CurrentUserId, EmptyUid, UidTwo, GetLabelListInfoList());
-                yield return new TestCaseData(CurrentUserId, UidOne, EmptyUid, GetLabelListInfoList());
+                yield return new TestCaseData(CurrentUserId, EmptyUid, UidTwo, BooleanTrue, GetLabelListInfoList());
+                yield return new TestCaseData(CurrentUserId, UidOne, EmptyUid, BooleanTrue, GetLabelListInfoList());
             }
         }
 
         [TestCaseSource(nameof(ArgumentTestCases))]
         public void LabelCreateListRequest_Argument_Validations(long currentUserId, Guid organizationUid, Guid projectUid,
-            List<LabelListInfo> labels)
+                                                                bool updateExistedTranslations, List<LabelListInfo> labels)
         {
-            Assert.Throws<ArgumentException>(() => { new LabelCreateListRequest(currentUserId, organizationUid, projectUid, labels); });
+            Assert.Throws<ArgumentException>(() => { new LabelCreateListRequest(currentUserId, organizationUid, projectUid, updateExistedTranslations, labels); });
         }
     }
 }

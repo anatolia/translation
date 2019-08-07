@@ -157,7 +157,7 @@ namespace Translation.Data.Factories
             return firstName + " " + lastName;
         }
 
-        public CurrentUser MapCurrentUser(User user)
+        public CurrentUser MapCurrentUser(User user, string isoCode2Char)
         {
             var currentUser = new CurrentUser();
             currentUser.Id = user.Id;
@@ -175,6 +175,8 @@ namespace Translation.Data.Factories
                 Name = user.OrganizationName
             };
             currentUser.Organization = currentOrganization;
+
+            currentUser.LanguageIsoCode2Char = isoCode2Char;
 
             return currentUser;
         }

@@ -57,6 +57,17 @@ namespace Translation.Client.Web.Helpers
 
                 var project = projectRepository.Select(x => x.OrganizationId == organizationId).Result;
 
+                var englishLanguage = languageRepository.Select(x => x.IsoCode2Char == "en").Result;
+                project.LanguageId = englishLanguage.Id;
+                project.LanguageUid = englishLanguage.Uid;
+                project.LanguageName = englishLanguage.Name;
+                project.LanguageIconUrl = englishLanguage.IconUrl;
+
+                var superAdmin = userRepository.Select(x => x.Email == adminSettings.AdminEmail).Result;
+                superAdmin.IsSuperAdmin = true;
+
+                projectRepository.Update(superAdmin.Id, project);
+
                 var labelService = container.Resolve<ILabelService>();
                 InsertLabels(labelService, project, webRootPath);
             }
@@ -73,7 +84,7 @@ namespace Translation.Client.Web.Helpers
 
             var superAdmin = userRepository.Select(x => x.Email == adminSettings.AdminEmail).Result;
             superAdmin.IsSuperAdmin = true;
-            
+
             var english = languageRepository.Select(x => x.IsoCode2Char == "en").Result;
             superAdmin.LanguageId = english.Id;
             superAdmin.LanguageUid = english.Uid;
@@ -83,6 +94,7 @@ namespace Translation.Client.Web.Helpers
 
             var organization = organizationRepository.Select(x => x.Name == ConstantHelper.ORGANIZATION_NAME).Result;
             organization.IsSuperOrganization = true;
+            organization.ProjectCount = 1;
             organizationRepository.Update(superAdmin.Id, organization);
 
             var superProject = projectRepository.Select(x => x.OrganizationId == organization.Id).Result;
@@ -145,7 +157,9 @@ namespace Translation.Client.Web.Helpers
                 });
             }
 
-            var request = new LabelCreateListRequest(project.CreatedBy, project.OrganizationUid, project.Uid, labelListInfos);
+            var updateExistedTranslations = true;
+
+            var request = new LabelCreateListRequest(project.CreatedBy, project.OrganizationUid, project.Uid, updateExistedTranslations, labelListInfos);
             var response = labelService.CreateLabelFromList(request).Result;
             if (response.Status.IsNotSuccess)
             {
