@@ -117,10 +117,8 @@ function translateScreen() {
         for (var i = 0; i < labels.length; i++) {
             var label = labels[i];
             if (label.key === item.dataset.translation) {
-                console.log(label.key);
                 label.translations.forEach(function (translation) {
                     if (translation.languageIsoCode2 === isoCode2Char) {
-
                         item.innerHTML = translation.translation;
                         return;
                     }
