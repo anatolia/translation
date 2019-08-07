@@ -49,6 +49,13 @@ namespace Translation.Client.Tool.PushKeysFromSource
                 return;
             }
 
+            var languagesIsoCode2Char = ConfigurationManager.AppSettings["LanguagesIsoCode2Char"];
+            if (string.IsNullOrWhiteSpace(languagesIsoCode2Char))
+            {
+                Console.WriteLine("please define languages Iso Code2 Char in app.config");
+                return;
+            }
+
             Console.WriteLine("collecting labels from source");
 
             var items = new List<string>();
@@ -111,7 +118,9 @@ namespace Translation.Client.Tool.PushKeysFromSource
                         new KeyValuePair<string, string>("token", token),
                         new KeyValuePair<string, string>("projectUid", projectUid),
                         new KeyValuePair<string, string>("labelKey", newItem),
+                        new KeyValuePair<string, string>("languagesIsoCode2Char",languagesIsoCode2Char),
                     });
+
                     var result = client.PostAsync("/Data/AddLabel", content).Result;
                     var resultContent = result.Content.ReadAsStringAsync().Result;
                     var response = JsonConvert.DeserializeObject<CommonResult>(resultContent);
