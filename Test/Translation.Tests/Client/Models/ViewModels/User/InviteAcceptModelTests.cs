@@ -98,7 +98,7 @@ namespace Translation.Tests.Client.Models.ViewModels.User
                 yield return new TestCaseData(CaseOne,
                                               UidOne, EmailOne, StringOne,
                                               StringTwo, PasswordOne, PasswordOne,
-                                              UidTwo, StringTwo,
+                                              UidOne, StringTwo,
                                               null,
                                               null,
                                               true);
@@ -114,15 +114,16 @@ namespace Translation.Tests.Client.Models.ViewModels.User
                                                       "last_name_required_error_message",
                                                       "password_required_error_message",
                                                       "re_enter_password_required_error_message",
-                                                      "re_entered_password_does_not_match_error_message",
+                                                      "password_is_not_valid_error_message",
+                                                      "re_enter_password_is_not_valid_error_message",
                                                       "language_uid_not_valid"
                                               },
                                               false);
 
 
                 yield return new TestCaseData(CaseThree,
-                                              EmptyUid, EmptyString, EmptyString,
-                                              EmptyString, StringOne, StringTwo,
+                                              EmptyUid, InvalidEmail, EmptyString,
+                                              EmptyString, InvalidPassword, StringTwo,
                                               EmptyUid, EmptyString,
                                               new[] { "token_is_not_valid",
                                                       "email_is_not_valid"
