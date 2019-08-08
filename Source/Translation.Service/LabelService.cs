@@ -105,8 +105,6 @@ namespace Translation.Service
                 return response;
             }
 
-
-
             var label = _labelFactory.CreateEntityFromRequest(request, project);
             var uowResult = await _labelUnitOfWork.DoCreateWork(request.CurrentUserId, label);
 
@@ -117,25 +115,24 @@ namespace Translation.Service
 
             }
 
-            var languages = new List<Language>();
-            for (int i = 0; i < request.Languages.Count; i++)
-            {
-                var isoCode2Char = request.Languages[i];
-                var language = await _languageRepository.Select(x => x.IsoCode2Char == isoCode2Char);
-                if (language != null)
-                {
-                    languages.Add(language);
-                }
-
-            }
-
             var uowResultLabelTranslation = true;
 
-            if (request.Languages.Count != 0)
+            if (request.LanguageNames.Length != 0)
             {
                 var projectLanguage = await _languageRepository.SelectById(project.LanguageId);
                 var addedLabel = await _labelRepository.Select(x => x.Name == label.Name);
-               
+
+                var languages = new List<Language>();
+                for (int i = 0; i < request.LanguageNames.Length; i++)
+                {
+                    var languageName = request.LanguageNames[i];
+                    var language = await _languageRepository.Select(x => x.OriginalName == languageName);
+                    if (language != null)
+                    {
+                        languages.Add(language);
+                    }
+                }
+
                 var labelTranslation = "";
 
                 for (int i = 0; i < languages.Count; i++)

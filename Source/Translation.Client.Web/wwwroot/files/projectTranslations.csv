@@ -1,7 +1,7 @@
-﻿label_key,language_char_code_2,translation
-welcome_to_translation_service,en,Welcome to the Translation service!
+﻿welcome_to_translation_service,en,Welcome to the Translation service!
 welcome_to_translation_service,tr,Çeviri servisine hoş geldiniz!
 welcome_to_translation_service,ru,Добро пожаловать в службу переводов!
+label_key,language,translation
 home_link,en,home link
 home_link,tr,ana link
 home_link,ru,домашняя ссылка
@@ -258,7 +258,7 @@ integrations,en,integrations
 integrations,tr,entegrasyonlar
 integrations,ru,интеграций
 integration_create_link,en,integration create link
-integration_create_link,tr,entegrasyon bağlantı oluşturmak
+integration_create_link,tr,entegrasyon bağlantı oluştur
 integration_create_link,ru,интеграция создать ссылку
 token_request_logs_link,en,token request logs link
 token_request_logs_link,tr,belirteç isteği günlükleri bağlantı
@@ -325,7 +325,7 @@ accept_invite_button,tr,davet düğmesini kabul et
 accept_invite_button,ru,кнопка принять приглашение
 change_password_button,en,change password button
 change_password_button,tr,şifre değiştir düğmesi
-change_password_button,ru,кнопка изменения пароля
+change_password_button,ru,кнопка смены пароля
 user_change_password_done_title,en,user change password done title
 user_change_password_done_title,tr,kullanıcı parolasını değiştirme unvanı
 user_change_password_done_title,ru,пользователь сменил пароль
@@ -444,7 +444,7 @@ integration_uid_is_not_valid,en,integration uid is not valid
 integration_uid_is_not_valid,tr,entegrasyon kullanıcı kimliği geçerli değil
 integration_uid_is_not_valid,ru,UID интеграции недействителен
 you_update_label_translation_previously_added_that_have_same_language,en,you update label translation previously added that have same language
-you_update_label_translation_previously_added_that_have_same_language,tr,Daha önce eklenmiş aynı dilden etiket çevirisini güncelle
+you_update_label_translation_previously_added_that_have_same_language,tr,Daha önce eklenmiş aynı dilden etiket çevirisini güncellerseniz
 you_update_label_translation_previously_added_that_have_same_language,ru,Вы обновляете перевод метки ранее добавленный на том же языке
 if_you_add_multiple_translation_for_same_language_accepts_the_first_one,en,if you add multiple translation for same language accepts the first one
 if_you_add_multiple_translation_for_same_language_accepts_the_first_one,tr,aynı dil için birden fazla çeviri eklerseniz ilkini kabul eder
