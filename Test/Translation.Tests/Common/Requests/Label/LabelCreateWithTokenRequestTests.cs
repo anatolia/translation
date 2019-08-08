@@ -7,7 +7,6 @@ using Shouldly;
 using Translation.Common.Models.Requests.Label;
 using static Translation.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
-using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Tests.Common.Requests.Label
 {
@@ -17,11 +16,11 @@ namespace Translation.Tests.Common.Requests.Label
         [Test]
         public void LabelCreateWithTokenRequest_Constructor()
         {
-            var request = GetLabelCreateWithTokenRequest(UidOne, UidTwo, StringOne, StringTwo);
+            var request = GetLabelCreateWithTokenRequest(UidOne, UidTwo, StringOne,StringArray);
             request.Token.ShouldBe(UidOne);
             request.ProjectUid.ShouldBe(UidTwo);
             request.LabelKey.ShouldBe(StringOne);
-            request.LanguagesIsoCode2Char.ShouldBe(StringTwo);
+            request.LanguageNames.ShouldBe(StringArray);
 
         }
 
@@ -29,17 +28,16 @@ namespace Translation.Tests.Common.Requests.Label
         {
             get
             {
-                yield return new TestCaseData(EmptyUid, UidOne, StringOne, StringTwo);
-                yield return new TestCaseData(UidOne, EmptyUid, StringOne, StringTwo);
-                yield return new TestCaseData(UidOne, UidOne, EmptyString, StringTwo);
-                yield return new TestCaseData(UidOne, UidOne, StringOne, EmptyString);
+                yield return new TestCaseData(EmptyUid, UidOne, StringOne, StringArray);
+                yield return new TestCaseData(UidOne, EmptyUid, StringOne, StringArray);
+                yield return new TestCaseData(UidOne, UidOne, EmptyString, StringArray);
             }
         }
 
         [TestCaseSource(nameof(ArgumentTestCases))]
-        public void LabelCreateWithTokenRequest_Argument_Validations(Guid token, Guid projectUid, string labelKey, string LanguagesIsoCode2Char)
+        public void LabelCreateWithTokenRequest_Argument_Validations(Guid token, Guid projectUid, string labelKey, string[] languageNames)
         {
-            Assert.Throws<ArgumentException>(() => { new LabelCreateWithTokenRequest(token, projectUid, labelKey, LanguagesIsoCode2Char); });
+            Assert.Throws<ArgumentException>(() => { new LabelCreateWithTokenRequest(token, projectUid, labelKey, languageNames); });
         }
     }
 }

@@ -113,6 +113,8 @@ namespace Translation.Tests.TestHelpers
         public const string StringNine = "String Nine";
         public const string StringTen = "String Ten";
 
+        public static string[] StringArray = { "Turkish", "English" };
+
         public const string StringSixtyFourOne = "bXk=";
         public const string StringSixtyFourTwo = "bXkx";
 
@@ -180,6 +182,10 @@ namespace Translation.Tests.TestHelpers
 
         public const string IsoCode2One = "TR";
         public const string IsoCode3One = "TUR";
+        public const string  LanguageNameOne = "Turkish";
+        public const string  LanguageNameTwo = "English";
+        public const string  LanguageNameThree = "Russian";
+       
 
         public const string CaseOne = "Case One";
         public const string CaseTwo = "Case Two";

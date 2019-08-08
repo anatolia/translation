@@ -126,7 +126,7 @@ namespace Translation.Service
                 for (int i = 0; i < request.LanguageNames.Length; i++)
                 {
                     var languageName = request.LanguageNames[i];
-                    var language = await _languageRepository.Select(x => x.OriginalName == languageName);
+                    var language = await _languageRepository.Select(x => x.Name == languageName);
                     if (language != null)
                     {
                         languages.Add(language);
@@ -216,26 +216,26 @@ namespace Translation.Service
                 return response;
             }
 
-            var languageList = request.LanguagesIsoCode2Char.Split(",");
-            var languages = new List<Language>();
-            for (int i = 0; i < languageList.Length; i++)
-            {
-                var isoCode2Char = languageList[i];
-                var language = await _languageRepository.Select(x => x.IsoCode2Char == isoCode2Char);
-                if (language != null)
-                {
-                    languages.Add(language);
-                }
-            }
 
-           
             var uowResultLabelTranslation = true;
-            
-            if (languages.Count!=0)
+
+            if (request.LanguageNames.Length != 0)
             {
                 var projectLanguage = await _languageRepository.SelectById(project.LanguageId);
                 var addedLabel = await _labelRepository.Select(x => x.Name == label.Name);
-                var labelTranslation = ""; 
+
+                var languages = new List<Language>();
+                for (int i = 0; i < request.LanguageNames.Length; i++)
+                {
+                    var languageName = request.LanguageNames[i];
+                    var language = await _languageRepository.Select(x => x.Name == languageName);
+                    if (language != null)
+                    {
+                        languages.Add(language);
+                    }
+                }
+
+                var labelTranslation = "";
 
                 for (int i = 0; i < languages.Count; i++)
                 {
@@ -259,7 +259,7 @@ namespace Translation.Service
                     }
                 }
             }
-           
+
 
             if (uowResultLabelTranslation)
             {

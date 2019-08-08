@@ -15,30 +15,30 @@ namespace Translation.Tests.Common.Requests.Label
         public void LabelCreateRequest_Constructor()
         {
             var request = GetLabelCreateRequest(CurrentUserId, UidOne, UidTwo,
-                                                StringOne, StringTwo, new List<string>() { IsoCode2One });
+                                                StringOne, StringTwo, StringArray);
 
             request.CurrentUserId.ShouldBe(CurrentUserId);
             request.OrganizationUid.ShouldBe(UidOne);
             request.ProjectUid.ShouldBe(UidTwo);
             request.LabelKey.ShouldBe(StringOne);
             request.Description.ShouldBe(StringTwo);
-            request.Languages.ShouldBe(new List<string>() { IsoCode2One });
+            request.LanguageNames.ShouldBe(StringArray);
         }
 
         public static IEnumerable ArgumentTestCases
         {
             get
             {
-                yield return new TestCaseData(CurrentUserId, EmptyUid, UidTwo, StringOne, StringTwo, new List<string>() { IsoCode2One });
-                yield return new TestCaseData(CurrentUserId, UidOne, EmptyUid, StringOne, StringTwo, new List<string>() { IsoCode2One });
+                yield return new TestCaseData(CurrentUserId, EmptyUid, UidTwo, StringOne, StringTwo, StringArray);
+                yield return new TestCaseData(CurrentUserId, UidOne, EmptyUid, StringOne, StringTwo, StringArray);
             }
         }
 
         [TestCaseSource(nameof(ArgumentTestCases))]
         public void LabelCreateRequest_Argument_Validations(long currentUserId, Guid organizationUid, Guid projectUid,
-                                                            string labelKey, string description, List<string> languages)
+                                                            string labelKey, string description, string[] languageNames)
         {
-            Assert.Throws<ArgumentException>(() => {new LabelCreateRequest(currentUserId, organizationUid, projectUid, labelKey, description, languages);
+            Assert.Throws<ArgumentException>(() => {new LabelCreateRequest(currentUserId, organizationUid, projectUid, labelKey, description, languageNames);
             });
         }
     }

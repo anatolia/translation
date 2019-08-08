@@ -119,7 +119,7 @@ namespace Translation.Tests.TestHelpers
             model.Token = UidOne;
             model.ProjectUid = UidTwo;
             model.LabelKey = StringOne;
-            model.LanguagesIsoCode2Char = StringTwo;
+            model.LanguageNames = IsoCode2One;
 
             return model;
         }
@@ -645,7 +645,7 @@ namespace Translation.Tests.TestHelpers
             model.Key = StringOne;
             model.ProjectName = StringOne;
             model.Description = StringOne;
-            model.SelectLanguages = IsoCode2One;
+            model.LanguageName = LanguageNameOne;
 
             return model;
         }

@@ -148,7 +148,7 @@ namespace Translation.Tests.TestHelpers
 
         public static void AssertViewAccessDenied<T>(RedirectResult result)
         {
-            var controller = new BaseController(null, null);
+            var controller = new BaseController(null, null, null);
             var redirectAccessDenied = controller.RedirectToAccessDenied();
 
             result.ShouldNotBeNull();
@@ -157,7 +157,7 @@ namespace Translation.Tests.TestHelpers
 
         public static void AssertViewAccessDenied(IActionResult result)
         {
-            var controller = new BaseController(null, null);
+            var controller = new BaseController(null, null, null);
             var redirectAccessDenied = controller.RedirectToAccessDenied();
 
             result.ShouldNotBeNull();
@@ -166,7 +166,7 @@ namespace Translation.Tests.TestHelpers
 
         public static void AssertViewRedirectToHome<T>(RedirectResult result)
         {
-            var controller = new BaseController(null, null);
+            var controller = new BaseController(null, null, null);
             var redirectToHome = controller.RedirectToHome();
 
             result.ShouldNotBeNull();
@@ -175,7 +175,7 @@ namespace Translation.Tests.TestHelpers
 
         public static void AssertViewRedirectToHome(IActionResult result)
         {
-            var controller = new BaseController(null, null);
+            var controller = new BaseController(null, null, null);
             var redirectToHome = controller.RedirectToHome();
 
             result.ShouldNotBeNull();
@@ -184,7 +184,7 @@ namespace Translation.Tests.TestHelpers
 
         public static void AssertViewForbid<T>(ForbidResult result)
         {
-            var controller = new BaseController(null, null);
+            var controller = new BaseController(null, null, null);
             var forbid = controller.Forbid();
 
             result.ShouldNotBeNull();
@@ -193,7 +193,7 @@ namespace Translation.Tests.TestHelpers
 
         public static void AssertViewNotFound<T>(NotFoundResult result)
         {
-            var controller = new BaseController(null, null);
+            var controller = new BaseController(null, null, null);
             var notFound = controller.NotFound();
 
             result.ShouldNotBeNull();

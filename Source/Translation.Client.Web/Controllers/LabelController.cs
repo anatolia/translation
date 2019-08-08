@@ -78,7 +78,7 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            var languageNameList = model.LanguageName.Split(",", StringSplitOptions.None);
+            var languageNameList = model.LanguageName.Split(",", StringSplitOptions.RemoveEmptyEntries);
 
             var request = new LabelCreateRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
                                                  model.Key, model.Description, languageNameList);
