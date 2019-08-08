@@ -27,6 +27,8 @@ function fillTable(dataPath, table) {
                 appendPaginationPanel(dataResult.pagingInfo, table);
             }
         }
+
+        translateElement(table);
     });
 }
 
@@ -52,7 +54,6 @@ function appendHeader(headers, table) {
 
         let th = createElement('th');
         th.className = "selectable";
-
         th.appendChild(chk);
         tr.appendChild(th);
     }
@@ -266,7 +267,6 @@ function handleSelectedRows(btn) {
                 function (req) {
 
                     let response = JSON.parse(req.response);
-                    console.log(response);
                     if (response.isOk === true) {
                         rows.forEach(function (r) {
                             let firstColumn = r.firstChild;
@@ -284,7 +284,6 @@ function handleSelectedRows(btn) {
                     }
                 },
                 function (req) {
-                    console.log(req.response);
                     let messages = JSON.parse(req.response).join('<br/>');
                     showPopupMessage(messages);
                 });

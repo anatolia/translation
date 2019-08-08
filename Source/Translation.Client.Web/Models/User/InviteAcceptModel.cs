@@ -37,7 +37,7 @@ namespace Translation.Client.Web.Models.User
             LastNameInput = new InputModel("LastName", "last_name", true);
             PasswordInput = new PasswordInputModel("Password", "password", true);
             ReEnterPasswordInput = new PasswordInputModel("ReEnterPassword", "re_enter_password", true);
-            LanguageInput = new SelectInputModel("LanguageUid", "LanguageName", "language", "/Language/SelectData");
+            LanguageInput = new SelectInputModel("Language", "language", "/Language/SelectData");
             LanguageInput.IsOptionTypeContent = true;
         }
 

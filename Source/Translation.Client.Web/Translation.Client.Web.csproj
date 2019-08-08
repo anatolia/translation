@@ -24,9 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Translation-99b9688ce4dd.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Views\Home\AccessDenied.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\Integration\Create.cshtml" />

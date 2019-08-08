@@ -15,7 +15,7 @@ namespace Translation.Client.Web.Models.Label
         public string Key { get; set; }
         public string Description { get; set; }
         public string SelectLanguages { get; set; }
-        
+
 
         public HiddenInputModel OrganizationInput { get; }
         public HiddenInputModel ProjectInput { get; }
@@ -32,7 +32,8 @@ namespace Translation.Client.Web.Models.Label
             ProjectInput = new HiddenInputModel("ProjectUid");
             KeyInput = new InputModel("Key", "key", true);
             DescriptionInput = new LongInputModel("Description", "description");
-            LanguagesInput = new SelectInputModel("LanguageName", "language", "/Language/SelectData");
+
+            LanguagesInput = new SelectInputModel("Language", "language", "/Language/SelectData");
             LanguagesInput.IsMultiple = true;
         }
 

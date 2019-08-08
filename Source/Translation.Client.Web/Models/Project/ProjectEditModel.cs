@@ -38,7 +38,7 @@ namespace Translation.Client.Web.Models.Project
             SlugInput = new InputModel("Slug", "slug", true);
             UrlInput = new UrlInputModel("Url", "url");
             DescriptionInput = new LongInputModel("Description", "description");
-            LanguageInput = new SelectInputModel("LanguageUid", "LanguageName", "language", "/Language/SelectData");
+            LanguageInput = new SelectInputModel("Language", "language", "/Language/SelectData");
             LanguageInput.IsOptionTypeContent = true;
         }
 
