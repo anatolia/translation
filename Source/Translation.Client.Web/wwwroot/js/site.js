@@ -169,13 +169,14 @@ doGet('/Data/GetCurrentUser', function (req) {
     }
 });
 
-if (localStorage.getItem('labels') === null
-    || localStorage.getItem('labels') === undefined
-    || localStorage.getItem('labels') === "[]") {
+if (!labels) {
     doGet('/Data/GetMainLabels', function (req) {
         if (199 < req.status && req.status < 300) {
-            localStorage.setItem('labels', req.responseText);
-            translateScreen();
+            if (result.isOk) {
+                labels = result.item;
+                localStorage.setItem('labels', req.responseText);
+                translateScreen();
+            }    
         }
     });
 } else {
