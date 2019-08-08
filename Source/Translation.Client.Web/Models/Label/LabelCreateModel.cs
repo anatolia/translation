@@ -33,7 +33,7 @@ namespace Translation.Client.Web.Models.Label
             KeyInput = new InputModel("Key", "key", true);
             DescriptionInput = new LongInputModel("Description", "description");
             LanguagesInput = new SelectInputModel("LanguageName", "language", "/Language/SelectData");
-          //  LanguagesInput.IsMultiple = true;
+            LanguagesInput.IsMultiple = true;
         }
 
         public override void SetInputModelValues()
