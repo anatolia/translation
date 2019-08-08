@@ -68,7 +68,7 @@ namespace Translation.Tests.Client.Models.ViewModels.User
         [Test]
         public void InviteAcceptModel_LanguageInput()
         {
-            AssertSelectInputModel(SystemUnderTest.LanguageInput, "LanguageUid", "LanguageName", "language", "/Language/SelectData");
+            AssertSelectInputModel(SystemUnderTest.LanguageInput, "Language", "language", "/Language/SelectData");
             SystemUnderTest.LanguageInput.IsOptionTypeContent.ShouldBeTrue();
         }
 

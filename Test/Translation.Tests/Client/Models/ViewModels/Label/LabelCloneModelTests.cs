@@ -50,7 +50,7 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
         [Test]
         public void LabelCloneModel_ProjectInput()
         {
-            AssertSelectInputModel(SystemUnderTest.ProjectInput, "ProjectUid", "ProjectName", "project", "/Project/SelectData/");
+            AssertSelectInputModel(SystemUnderTest.ProjectInput, "Project", "project", "/Project/SelectData/");
         }
 
         [Test]

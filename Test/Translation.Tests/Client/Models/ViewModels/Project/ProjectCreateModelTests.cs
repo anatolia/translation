@@ -56,8 +56,9 @@ namespace Translation.Tests.Client.Models.ViewModels.Project
         [Test]
         public void ProjectCreateModel_LanguageInput()
         {
-            AssertSelectInputModel(SystemUnderTest.LanguageInput, "LanguageUid", "LanguageName", "language", "/Language/SelectData");
+            AssertSelectInputModel(SystemUnderTest.LanguageInput, "Language" ,"language", "/Language/SelectData");
         }
+
 
         [Test]
         public void ProjectCreateModel_DescriptionInput()
