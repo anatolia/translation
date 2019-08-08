@@ -98,7 +98,7 @@ function doRedirectIfConfirmedSuccess(btn, redirectUrl) {
     });
 }
 
-let labels = JSON.parse(snappyStorage().getItem('translations'));
+let labels = JSON.parse(localStorage.getItem('translations'));
 
 function translateScreen() {
     translateElement(document.head);
