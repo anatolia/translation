@@ -302,19 +302,13 @@ namespace Translation.Tests.TestHelpers
             input.AddNewUrl.ShouldBe(addNewUrl);
         }
 
-        public static void AssertSelectInputModel(SelectInputModel input, string name,
-            string labelKey, string dataUrl, string parentId = "",
-            bool isRequired = true, bool isMultiple = false, bool isAddNewEnabled = false,
-            string addNewUrl = "")
+        public static void AssertSelectInputModel(SelectInputModel input, string name, string labelKey, string dataUrl, bool required = false, string addNewUrl = "")
         {
             input.ShouldNotBeNull();
-            input.Name.ShouldBe(name);
+            input.Name.ShouldBe(name + "Uid");
             input.LabelKey.ShouldBe(labelKey);
             input.DataUrl.ShouldBe(dataUrl);
-            input.Parent.ShouldBe(parentId);
-            input.IsRequired.ShouldBe(isRequired);
-            input.IsMultiple.ShouldBe(isMultiple);
-            input.IsAddNewEnabled.ShouldBe(isAddNewEnabled);
+            input.IsRequired.ShouldBe(required);
             input.AddNewUrl.ShouldBe(addNewUrl);
         }
 

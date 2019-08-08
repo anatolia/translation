@@ -247,7 +247,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new LabelCloneRequest(CurrentUser.Id, model.OrganizationUid, model.CloningLabelUid,
-                model.ProjectUid, model.Key, model.Description);
+                model.Project, model.Key, model.Description);
 
             var response = await _labelService.CloneLabel(request);
             if (response.Status.IsNotSuccess)

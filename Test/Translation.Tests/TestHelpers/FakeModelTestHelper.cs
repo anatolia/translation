@@ -175,7 +175,7 @@ namespace Translation.Tests.TestHelpers
             model.LabelTranslationCount = Two;
             model.Url = HttpsUrl;
             model.Slug = StringOne;
-            model.LanguageUid = UidOne;
+            model.Language = UidOne;
             model.LanguageName = StringOne;
 
             return model;
@@ -726,7 +726,7 @@ namespace Translation.Tests.TestHelpers
             var model = new LabelCloneModel();
 
             model.OrganizationUid = OrganizationOneUid;
-            model.ProjectUid = OrganizationOneProjectOneUid;
+            model.Project = OrganizationOneProjectOneUid;
             model.Description = StringOne;
             model.CloningLabelKey = StringOne;
             model.CloningLabelDescription = StringOne;
@@ -742,7 +742,7 @@ namespace Translation.Tests.TestHelpers
             var model = new LabelCloneModel();
 
             model.OrganizationUid = organizationUid;
-            model.ProjectUid = cloningLabelUid;
+            model.Project = cloningLabelUid;
             model.Description = StringOne;
             model.CloningLabelKey = cloningLabelKey;
             model.CloningLabelDescription = StringOne;
@@ -942,7 +942,7 @@ namespace Translation.Tests.TestHelpers
             model.Name = name;
             model.Slug = slug;
             model.Url = url;
-            model.LanguageUid = languageUid;
+            model.Language = languageUid;
             model.Description = description;
 
             return model;

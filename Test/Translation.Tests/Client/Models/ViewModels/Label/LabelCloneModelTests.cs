@@ -83,7 +83,7 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
             SystemUnderTest.OrganizationInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
             SystemUnderTest.CloningLabelInput.Value.ShouldBe(SystemUnderTest.CloningLabelUid.ToUidString());
             SystemUnderTest.CloningLabelKeyInput.Value.ShouldBe(SystemUnderTest.CloningLabelKey);
-            SystemUnderTest.ProjectInput.Value.ShouldBe(SystemUnderTest.ProjectUid.ToUidString());
+            SystemUnderTest.ProjectInput.Value.ShouldBe(SystemUnderTest.Project.ToUidString());
             SystemUnderTest.KeyInput.Value.ShouldBe(SystemUnderTest.CloningLabelKey);
             SystemUnderTest.DescriptionInput.Value.ShouldBe(SystemUnderTest.CloningLabelDescription);
             SystemUnderTest.CloningLabelTranslationCountInput.Value.ShouldBe(SystemUnderTest.CloningLabelTranslationCount.ToString());
