@@ -98,32 +98,57 @@ function doRedirectIfConfirmedSuccess(btn, redirectUrl) {
     });
 }
 
+let labels = JSON.parse(snappyStorage().getItem('translations'));
 
 function translateScreen() {
+    translateElement(document.head);
+    translateElement(document.body);
+}
 
-    var items = document.querySelectorAll('[data-translation]');
-    var labels = JSON.parse(localStorage.getItem('labels'));
-    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
-    var isoCode2Char = "en";
-    if (currentUser != null) {
-        isoCode2Char = currentUser.languageIsoCode2Char;
-    }
-    if (labels === null) {
+function translateElement(element) {
+    if (element === null || element === undefined) {
         return;
     }
-
+    
+    if (labels === null || labels === undefined) {
+        return;
+    }
+    
+    let defaultLang = 'en';
+    if (currentUser !== undefined && currentUser !== null) {
+        defaultLang = currentUser.language;
+    }
+    
+    let placeholders = element.querySelectorAll('[placeholder]');
+    placeholders.forEach(function (item) {
+        for (let i = 0; i < labels.length; i++) {
+            let label = labels[i];
+            
+            if (label.key === item.placeholder) {
+                label.translations.forEach(function (translation) {
+                    if (translation.languageIsoCode2 === defaultLang) {
+                        item.setAttribute('placeholder', translation.translation);
+                        return;
+                    }
+                });
+                
+                break;
+            }
+        }
+    });
+    
+    let items = element.querySelectorAll('[data-translation]');
     items.forEach(function (item) {
-        for (var i = 0; i < labels.length; i++) {
-            var label = labels[i];
+        for (let i = 0; i < labels.length; i++) {
+            let label = labels[i];
             if (label.key === item.dataset.translation) {
                 label.translations.forEach(function (translation) {
-                    if (translation.languageIsoCode2 === isoCode2Char) {
+                    if (translation.languageIsoCode2 === defaultLang) {
                         item.innerHTML = translation.translation;
                         return;
                     }
                 });
-
+                
                 break;
             }
         }
@@ -144,13 +169,14 @@ doGet('/Data/GetCurrentUser', function (req) {
     }
 });
 
-if (localStorage.getItem('labels') === null
-    || localStorage.getItem('labels') === undefined
-    || localStorage.getItem('labels') === "[]") {
+if (!labels) {
     doGet('/Data/GetMainLabels', function (req) {
         if (199 < req.status && req.status < 300) {
-            localStorage.setItem('labels', req.responseText);
-            translateScreen();
+            if (result.isOk) {
+                labels = result.item;
+                localStorage.setItem('labels', req.responseText);
+                translateScreen();
+            }    
         }
     });
 } else {
