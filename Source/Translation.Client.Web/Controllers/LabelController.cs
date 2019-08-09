@@ -78,14 +78,19 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            var languageUids = model.LanguageUid.ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
-            Guid[] languageUidArray= new Guid[languageUids.Length];
-            for (int i = 0; i < languageUids.Length; i++)
+            Guid[] languageUidArray = new Guid[] { };
+            if (model.LanguageUid.IsNotEmpty())
             {
-                languageUidArray[i]=Guid.Parse(languageUids[i]);
-                
+                var languageUids = model.LanguageUid.ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
+                languageUidArray = new Guid[languageUids.Length];
+                for (int i = 0; i < languageUids.Length; i++)
+                {
+                    languageUidArray[i] = Guid.Parse(languageUids[i]);
+
+                }
             }
-            
+
+
             var request = new LabelCreateRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
                                                  model.Key, model.Description, languageUidArray);
             var response = await _labelService.CreateLabel(request);

@@ -1,1 +1,515 @@
 ﻿labels,Isocode2,label translations
+welcome_to_translation_service,en,Welcome to the Translation service!
+welcome_to_translation_service,tr,Çeviri servisine hoş geldiniz!
+welcome_to_translation_service,ru,Добро пожаловать в службу переводов!
+label_key,language,translation
+home_link,en,home link
+home_link,tr,ana link
+home_link,ru,домашняя ссылка
+admin_list_link,en,admin list link
+admin_list_link,tr,yönetici listesi bağlantısı
+admin_list_link,ru,ссылка на список администраторов
+user_list_link,en,user list link
+user_list_link,tr,kullanıcı listesi bağlantısı
+user_list_link,ru,ссылка на список пользователей
+organization_list_link,en,organization list link
+organization_list_link,tr,organizasyon listesi bağlantısı
+organization_list_link,ru,ссылка на список организаций
+language_list_link,en,language list link
+language_list_link,tr,dil listesi bağlantısı
+language_list_link,ru,ссылка на список языков
+journal_list_link,en,journal list link
+journal_list_link,tr,günlük listesi bağlantısı
+journal_list_link,ru,ссылка на список журналов
+user_login_log_list_link,en,user login log list link
+user_login_log_list_link,tr,kullanıcı giriş günlüğü listesi bağlantısı
+user_login_log_list_link,ru,ссылка для входа в систему
+token_request_log_list_link,en,token request log list link
+token_request_log_list_link,tr,belirteç isteği günlük listesi bağlantısı
+token_request_log_list_link,ru,ссылка на список журналов запроса токена
+send_email_log_list_link,en,send email log list link
+send_email_log_list_link,tr,e-posta günlüğü listesi bağlantısını gönder
+send_email_log_list_link,ru,отправить ссылку на список рассылки
+admin_dashboard_link,en,admin dashboard link
+admin_dashboard_link,tr,yönetici panosu bağlantısı
+admin_dashboard_link,ru,ссылка на панель администратора
+invite_user_as_admin_button,en,invite user as admin button
+invite_user_as_admin_button,tr,kullanıcıyı admin butonu olarak davet et
+invite_user_as_admin_button,ru,пригласить пользователя в качестве кнопки администратора
+invite_new_admin,en,invite new admin
+invite_new_admin,tr,yeni yönetici davet et
+invite_new_admin,ru,пригласить нового администратора
+content_access_denied,en,content access denied
+content_access_denied,tr,içerik erişimi reddedildi
+content_access_denied,ru,доступ к контенту запрещен
+organization_link,en,organization link
+organization_link,tr,organizasyon bağlantısı
+organization_link,ru,ссылка организации
+pending_translations_link,en,pending translations link
+pending_translations_link,tr,bekleyen çeviriler bağlantısı
+pending_translations_link,ru,ссылка на ожидающий перевод
+search_list_link,en,search list link
+search_list_link,tr,arama listesi bağlantısı
+search_list_link,ru,ссылка на список поиска
+integration,en,integration
+integration,tr,bütünleşme
+integration,ru,интеграция
+client_id,en,client id
+client_id,tr,Müşteri Kimliği
+client_id,ru,ID клиента
+create_integration_button,en,create integration button
+create_integration_button,tr,entegrasyon düğmesi oluştur
+create_integration_button,ru,создать кнопку интеграции
+integration_name,en,integration name
+integration_name,tr,entegrasyon adı
+integration_name,ru,имя интеграции
+description,en,description
+description,tr,açıklama
+description,ru,описание
+organization,en,organization
+organization,tr,organizasyon
+organization,ru,организация
+edit_link,en,edit link
+edit_link,tr,bağlantıyı düzenle
+edit_link,ru,редактировать ссылку
+active_tokens_link,en,active tokens link
+active_tokens_link,tr,aktif belirteçler bağlantı
+active_tokens_link,ru,ссылка на активные токены
+revisions_link,en,revisions link
+revisions_link,tr,revizyonlar bağlantısı
+revisions_link,ru,ссылка на ревизии
+delete_button,en,delete button
+delete_button,tr,sil düğmesi
+delete_button,ru,кнопка удаления
+integration_clients,en,integration clients
+integration_clients,tr,entegrasyon müşterileri
+integration_clients,ru,клиенты интеграции
+create_integration_client_link,en,create integration client link
+create_integration_client_link,tr,entegrasyon istemcisi bağlantısı oluştur
+create_integration_client_link,ru,создать клиентскую ссылку интеграции
+update_integration_button,en,update integration button
+update_integration_button,tr,entegrasyon düğmesini güncelle
+update_integration_button,ru,обновить кнопку интеграции
+cloning_label_key,en,cloning label key
+cloning_label_key,tr,etiket anahtarı klonlama
+cloning_label_key,ru,ключ клонирования метки
+clone_label_button,en,clone label button
+clone_label_button,tr,klon etiket düğmesi
+clone_label_button,ru,кнопка метки клона
+project,en,project
+project,tr,proje
+project,ru,проект
+create_label_button,en,create label button
+create_label_button,tr,etiket düğmesi oluştur
+create_label_button,ru,кнопка создания метки
+create_bulk_button,en,create bulk button
+create_bulk_button,tr,toplu düğme oluştur
+create_bulk_button,ru,создать объемную кнопку
+added_label_count,en,added label count
+added_label_count,tr,eklenen etiket sayısı
+added_label_count,ru,добавлено количество меток
+can_not_added_label_count,en,can not added label count
+can_not_added_label_count,tr,etiket sayısı eklenemiyor
+can_not_added_label_count,ru,нельзя добавить количество меток
+total_label_count,en,total label count
+total_label_count,tr,toplam etiket sayısı
+total_label_count,ru,общее количество меток
+added_label_translation_count,en,added label translation count
+added_label_translation_count,tr,etiket çeviri sayısı eklendi
+added_label_translation_count,ru,добавлен счетчик перевода меток
+can_not_added_label_translation_count,en,can not added label translation count
+can_not_added_label_translation_count,tr,etiket çeviri sayısı eklenemiyor
+can_not_added_label_translation_count,ru,невозможно добавить перевод меток
+uploaded_label_translation_count,en,uploaded label translation count
+uploaded_label_translation_count,tr,yüklenen etiket çeviri sayısı
+uploaded_label_translation_count,ru,количество загруженных меток
+total_rows_processed,en,total rows processed
+total_rows_processed,tr,işlenen toplam satır
+total_rows_processed,ru,общее количество обработанных строк
+label_name,en,label name
+label_name,tr,etiket adı
+label_name,ru,название ярлыка
+label_translation_count,en,label translation count
+label_translation_count,tr,etiket çevirisi sayısı
+label_translation_count,ru,количество переводов меток
+edit_label_link,en,edit label link
+edit_label_link,tr,etiket bağlantısını düzenle
+edit_label_link,ru,изменить ссылку на ярлык
+clone_label_link,en,clone label link
+clone_label_link,tr,etiket bağlantısını klonla
+clone_label_link,ru,ссылка на метку клона
+change_activation_button,en,change activation button
+change_activation_button,tr,aktivasyon düğmesini değiştir
+change_activation_button,ru,изменить кнопку активации
+download_translations_button,en,download translations button
+download_translations_button,tr,çevirileri indir düğmesi
+download_translations_button,ru,кнопка загрузки переводов
+translations,en,translations
+translations,tr,çeviriler
+translations,ru,переводы
+create_label_translation_link,en,create label translation link
+create_label_translation_link,tr,etiket çeviri bağlantısı oluştur
+create_label_translation_link,ru,создать ссылку на перевод метки
+upload_translations_from_csv_link,en,upload translations from csv link
+upload_translations_from_csv_link,tr,csv bağlantısından çeviri yükle
+upload_translations_from_csv_link,ru,загрузить переводы из csv ссылки
+edit_label_button,en,edit label button
+edit_label_button,tr,etiket düğmesini düzenle
+edit_label_button,ru,кнопка редактирования метки
+label_key,en,label key
+label_key,tr,etiket anahtarı
+label_key,ru,ключ метки
+create_label_translation_button,en,create label translation button
+create_label_translation_button,tr,etiket çeviri düğmesi oluştur
+create_label_translation_button,ru,кнопка перевода метки
+language_name,en,language name
+language_name,tr,dil adı
+language_name,ru,Название языка
+translation,en,translation
+translation,tr,çeviri
+translation,ru,перевод
+edit,en,edit
+edit,tr,Düzenle
+edit,ru,редактировать
+label,en,label
+label,tr,etiket
+label,ru,этикетка
+language,en,language
+language,tr,dil
+language,ru,язык
+edit_translation_button,en,edit translation button
+edit_translation_button,tr,çeviri düğmesini düzenle
+edit_translation_button,ru,кнопка редактирования перевода
+labels,en,labels
+labels,tr,etiketler
+labels,ru,этикетки
+label_search_results_for,en,label search results for
+label_search_results_for,tr,için arama sonuçlarını etiketle
+label_search_results_for,ru,результаты поиска ярлыков для
+download_label_upload_template_sample_file,en,download label upload template sample file
+download_label_upload_template_sample_file,tr,etiket yükle şablon örnek dosyasını indir
+download_label_upload_template_sample_file,ru,загрузить образец файла шаблона загрузки метки
+upload_labels_from_csv_button,en,upload labels from csv button
+upload_labels_from_csv_button,tr,csv düğmesinden etiket yükleyin
+upload_labels_from_csv_button,ru,загрузить ярлыки с кнопки csv
+updated_label_translation_count,en,updated label translation count
+updated_label_translation_count,tr,güncellenmiş etiket çeviri sayısı
+updated_label_translation_count,ru,обновлен счетчик перевода меток
+download_translation_upload_template_file,en,download translation upload template file
+download_translation_upload_template_file,tr,çeviri yükleme şablonu dosyasını indir
+download_translation_upload_template_file,ru,скачать перевод загрузить файл шаблона
+upload_label_translations_from_csv_button,en,upload label translations from csv button
+upload_label_translations_from_csv_button,tr,csv düğmesinden etiket çevirileri yükle
+upload_label_translations_from_csv_button,ru,загрузить перевод метки с кнопки csv
+added_translation_count,en,added translation count
+added_translation_count,tr,çeviri sayısı eklendi
+added_translation_count,ru,добавлено количество переводов
+updated_translation_count,en,updated translation count
+updated_translation_count,tr,güncellenmiş çeviri sayısı
+updated_translation_count,ru,обновленный счетчик переводов
+can_not_added_translation_count,en,can not added translation count
+can_not_added_translation_count,tr,çeviri sayısı eklenemiyor
+can_not_added_translation_count,ru,нельзя добавить счетчик переводов
+languages,en,languages
+languages,tr,duujjil
+languages,ru,языки
+create_language_button,en,create language button
+create_language_button,tr,dil oluştur düğmesi
+create_language_button,ru,кнопка создания языка
+original_name,en,original name
+original_name,tr,orjinal isim
+original_name,ru,оригинальное имя
+iso_code_2,en,iso code 2
+iso_code_2,tr,iso kodu 2
+iso_code_2,ru,ISO код 2
+iso_code_3,en,iso code 3
+iso_code_3,tr,iso kodu 3
+iso_code_3,ru,ISO код 3
+edit_language_button,en,edit language button
+edit_language_button,tr,dili düzenle düğmesi
+edit_language_button,ru,кнопка редактирования языка
+create_language,en,create language
+create_language,tr,dil oluştur
+create_language,ru,создать язык
+organization_name,en,organization name
+organization_name,tr,Kuruluş Adı
+organization_name,ru,Название организации
+organization_edit_link,en,organization edit link
+organization_edit_link,tr,organizasyon düzenleme bağlantısı
+organization_edit_link,ru,ссылка для редактирования организации
+journals_link,en,journals link
+journals_link,tr,dergiler bağlantısı
+journals_link,ru,ссылка на журналы
+projects,en,projects
+projects,tr,projeler
+projects,ru,проектов
+create_project_link,en,create project link
+create_project_link,tr,proje bağlantısı oluştur
+create_project_link,ru,создать ссылку на проект
+users,en,users
+users,tr,kullanıcılar
+users,ru,пользователи
+invite_user_link,en,invite user link
+invite_user_link,tr,kullanıcı bağlantısını davet et
+invite_user_link,ru,пригласить пользователя ссылку
+user_login_logs_link,en,user login logs link
+user_login_logs_link,tr,kullanıcı girişi günlükleri bağlantısı
+user_login_logs_link,ru,ссылка на логин пользователя
+integrations,en,integrations
+integrations,tr,entegrasyonlar
+integrations,ru,интеграций
+integration_create_link,en,integration create link
+integration_create_link,tr,entegrasyon bağlantı oluştur
+integration_create_link,ru,интеграция создать ссылку
+token_request_logs_link,en,token request logs link
+token_request_logs_link,tr,belirteç isteği günlükleri bağlantı
+token_request_logs_link,ru,ссылка на логи запроса токена
+update_organization_button,en,update organization button
+update_organization_button,tr,kuruluş düğmesini güncelle
+update_organization_button,ru,кнопка обновления организации
+cloning_project_name,en,cloning project name
+cloning_project_name,tr,proje adı klonlama
+cloning_project_name,ru,клонирование имени проекта
+clone_project_button,en,clone project button
+clone_project_button,tr,proje klonla düğmesi
+clone_project_button,ru,кнопка клонирования проекта
+create_project_button,en,create project button
+create_project_button,tr,proje oluştur düğmesi
+create_project_button,ru,кнопка создания проекта
+project_name,en,project name
+project_name,tr,proje Adı
+project_name,ru,название проекта
+project_slug,en,project slug
+project_slug,tr,proje haberi
+project_slug,ru,слизняк проекта
+url,en,url
+url,tr,url
+url,ru,URL
+label_count,en,label count
+label_count,tr,etiket sayısı
+label_count,ru,количество меток
+edit_project_link,en,edit project link
+edit_project_link,tr,proje bağlantısını düzenle
+edit_project_link,ru,редактировать ссылку на проект
+clone_project_link,en,clone project link
+clone_project_link,tr,proje bağlantısını klonla
+clone_project_link,ru,ссылка на проект клона
+download_labels_button,en,download labels button
+download_labels_button,tr,etiketleri indir düğmesi
+download_labels_button,ru,кнопка загрузки ярлыков
+create_label_link,en,create label link
+create_label_link,tr,etiket bağlantısı oluştur
+create_label_link,ru,создать ссылку на ярлык
+create_bulk_label_link,en,create bulk label link
+create_bulk_label_link,tr,toplu etiket bağlantısı oluştur
+create_bulk_label_link,ru,создать массовую ссылку на ярлык
+upload_labels_from_csv_link,en,upload labels from csv link
+upload_labels_from_csv_link,tr,etiketleri csv bağlantısından yükleyin
+upload_labels_from_csv_link,ru,загрузить ярлыки из CSV-ссылки
+project_link,en,project link
+project_link,tr,proje bağlantısı
+project_link,ru,ссылка на проект
+edit_project_button,en,edit project button
+edit_project_button,tr,proje düzenle butonu
+edit_project_button,ru,кнопка редактирования проекта
+log_off,en,log off
+log_off,tr,oturumu Kapat
+log_off,ru,выйти
+log_on_link,en,log on link
+log_on_link,tr,bağlantıda oturum aç
+log_on_link,ru,войти по ссылке
+sign_up_link,en,sign up link
+sign_up_link,tr,kaydolma bağlantısı
+sign_up_link,ru,зарегистрироваться ссылку
+accept_invite_button,en,accept invite button
+accept_invite_button,tr,davet düğmesini kabul et
+accept_invite_button,ru,кнопка принять приглашение
+change_password_button,en,change password button
+change_password_button,tr,şifre değiştir düğmesi
+change_password_button,ru,кнопка смены пароля
+user_change_password_done_title,en,user change password done title
+user_change_password_done_title,tr,kullanıcı parolasını değiştirme unvanı
+user_change_password_done_title,ru,пользователь сменил пароль
+demand_password_reset_button,en,demand password reset button
+demand_password_reset_button,tr,talep parola sıfırlama düğmesi
+demand_password_reset_button,ru,кнопка сброса пароля по требованию
+user_demand_password_reset_done_title,en,user demand password reset done title
+user_demand_password_reset_done_title,tr,kullanıcı talebi parola sıfırlama işlemi yapıldı
+user_demand_password_reset_done_title,ru,сброс пароля по требованию пользователя
+user_name,en,user name
+user_name,tr,Kullanıcı adı
+user_name,ru,имя пользователя
+email,en,email
+email,tr,E-posta
+email,ru,Эл. адрес
+invited_by_user,en,invited by user
+invited_by_user,tr,kullanıcı tarafından davet edildi
+invited_by_user,ru,приглашен пользователем
+change_password_link,en,change password link
+change_password_link,tr,şifre bağlantısını değiştir
+change_password_link,ru,сменить пароль ссылка
+user_edit_link,en,user edit link
+user_edit_link,tr,kullanıcı düzenleme bağlantısı
+user_edit_link,ru,ссылка для редактирования пользователя
+user_detail_link,en,user detail link
+user_detail_link,tr,kullanıcı detay linki
+user_detail_link,ru,пользовательская ссылка
+update_user_button,en,update user button
+update_user_button,tr,kullanıcı düğmesini güncelle
+update_user_button,ru,обновить кнопку пользователя
+invite_translator_button,en,invite translator button
+invite_translator_button,tr,tercüman davet et düğmesi
+invite_translator_button,ru,кнопка пригласить переводчика
+user_invite_done_title,en,user invite done title
+user_invite_done_title,tr,kullanıcı davetini yaptı
+user_invite_done_title,ru,Приглашение пользователя готово название
+user_link,en,user link
+user_link,tr,kullanıcı bağlantısı
+user_link,ru,ссылка пользователя
+log_on_button,en,log on button
+log_on_button,tr,oturum açma düğmesi
+log_on_button,ru,кнопка входа
+password_reset_link,en,password reset link
+password_reset_link,tr,şifre sıfırlama bağlantısı
+password_reset_link,ru,ссылка для сброса пароля
+reset_password_button,en,reset password button
+reset_password_button,tr,parola sıfırlama düğmesi
+reset_password_button,ru,кнопка сброса пароля
+user_reset_password_done_title,en,user reset password done title
+user_reset_password_done_title,tr,kullanıcı sıfırlama parolasının başlığı
+user_reset_password_done_title,ru,сброс пароля пользователя
+sign_up_button,en,sign up button
+sign_up_button,tr,üye ol düğmesi
+sign_up_button,ru,кнопка регистрации
+user_validate_email_done_title,en,user validate email done title
+user_validate_email_done_title,tr,kullanıcı yapılan e-postayı tamamladı
+user_validate_email_done_title,ru,пользователь подтвердил адрес электронной почты
+reset_password_title,en,reset password title
+reset_password_title,tr,şifre başlığını sıfırla
+reset_password_title,ru,сбросить пароль
+user_already_invited,en,user already invited
+user_already_invited,tr,kullanıcı zaten davet edildi
+user_already_invited,ru,пользователь уже приглашен
+label_key_must_be_unique,en,label key must be unique
+label_key_must_be_unique,tr,etiket anahtarı benzersiz olmalı
+label_key_must_be_unique,ru,ключ метки должен быть уникальным
+label_key_already_exist_in_this_project,en,label key already exist in this project
+label_key_already_exist_in_this_project,tr,Bu projede zaten etiket anahtarı var
+label_key_already_exist_in_this_project,ru,ключ метки уже существует в этом проекте
+label_translation_must_be_unique,en,label translation must be unique
+label_translation_must_be_unique,tr,etiket çevirisi benzersiz olmalı
+label_translation_must_be_unique,ru,перевод метки должен быть уникальным
+language_already_exist,en,language already exist
+language_already_exist,tr,dil zaten var
+language_already_exist,ru,язык уже существует
+email_already_exist,en,email already exist
+email_already_exist,tr,e-posta zaten var
+email_already_exist,ru,электронная почта уже существует
+password_invalid,en,password invalid
+password_invalid,tr,şifre geçersiz
+password_invalid,ru,неверный пароль
+already_requested_password_reset_in_last_two_minutes,en,already requested password reset in last two minutes
+already_requested_password_reset_in_last_two_minutes,tr,Zaten iki dakika içinde zaten şifre sıfırlama istedi
+already_requested_password_reset_in_last_two_minutes,ru,уже запрошенный сброс пароля за последние две минуты
+old_password_is_not_right,en,old password is not right
+old_password_is_not_right,tr,eski şifre doğru değil
+old_password_is_not_right,ru,старый пароль не верный
+choose_other_password_different_then_last_2,en,choose other password different then last 2
+choose_other_password_different_then_last_2,tr,başka bir şifreyi seçtikten sonra son 2
+choose_other_password_different_then_last_2,ru,выберите другой пароль отличный от последнего 2
+email_already_invited,en,email already invited
+email_already_invited,tr,e-posta zaten davet edildi
+email_already_invited,ru,электронная почта уже приглашена
+project_name_and_slug_must_be_unique,en,project name and slug must be unique
+project_name_and_slug_must_be_unique,tr,proje adı ve sümüklü böcek benzersiz olmalı
+project_name_and_slug_must_be_unique,ru,Название проекта и слизняк должны быть уникальными
+unauthorized,en,unauthorized
+unauthorized,tr,yetkisiz
+unauthorized,ru,неразрешенный
+file_has_more_columns_than_expected,en,file has more columns than expected
+file_has_more_columns_than_expected,tr,dosya beklenenden daha fazla sütun içeriyor
+file_has_more_columns_than_expected,ru,файл имеет больше столбцов чем ожидалось
+please_upload_png_file,en,please upload png file
+please_upload_png_file,tr,lütfen png dosyasını yükleyin
+please_upload_png_file,ru,пожалуйста загрузите png файл
+organization_uid_is_not_valid,en,organization uid is not valid
+organization_uid_is_not_valid,tr,kuruluş kimliği geçerli değil
+organization_uid_is_not_valid,ru,UID организации недействителен
+token_uid_is_not_valid,en,token uid is not valid
+token_uid_is_not_valid,tr,belirteç kullanıcı kimliği geçerli değil
+token_uid_is_not_valid,ru,UID токена недействителен
+email_is_not_valid,en,email is not valid
+email_is_not_valid,tr,E-posta geçerli değil
+email_is_not_valid,ru,Email не является допустимым
+integration_uid_is_not_valid,en,integration uid is not valid
+integration_uid_is_not_valid,tr,entegrasyon kullanıcı kimliği geçerli değil
+integration_uid_is_not_valid,ru,UID интеграции недействителен
+you_update_label_translation_previously_added_that_have_same_language,en,you update label translation previously added that have same language
+you_update_label_translation_previously_added_that_have_same_language,tr,Daha önce eklenmiş aynı dilden etiket çevirisini güncellerseniz
+you_update_label_translation_previously_added_that_have_same_language,ru,Вы обновляете перевод метки ранее добавленный на том же языке
+if_you_add_multiple_translation_for_same_language_accepts_the_first_one,en,if you add multiple translation for same language accepts the first one
+if_you_add_multiple_translation_for_same_language_accepts_the_first_one,tr,aynı dil için birden fazla çeviri eklerseniz ilkini kabul eder
+if_you_add_multiple_translation_for_same_language_accepts_the_first_one,ru,если вы добавляете несколько переводов для одного языка принимается первый
+project_uid_is_not_valid,en,project uid is not valid
+project_uid_is_not_valid,tr,proje kimliği geçerli değil
+project_uid_is_not_valid,ru,UID проекта недействителен
+project_name_required,en,project name required
+project_name_required,tr,proje adı gerekli
+project_name_required,ru,требуется название проекта
+organization_uid_not_valid,en,organization uid not valid
+organization_uid_not_valid,tr,kuruluş kimliği geçerli değil
+organization_uid_not_valid,ru,UID организации не действителен
+cloning_label_uid_not_valid,en,cloning label uid not valid
+cloning_label_uid_not_valid,tr,klonlama etiketi kimliği geçerli değil
+cloning_label_uid_not_valid,ru,UID метки клонирования недействителен
+cloning_label_key_required,en,cloning label key required
+cloning_label_key_required,tr,klonlama etiket anahtarı gerekli
+cloning_label_key_required,ru,Требуется ключ метки клонирования
+project_uid_not_valid,en,project uid not valid
+project_uid_not_valid,tr,proje kimliği geçerli değil
+project_uid_not_valid,ru,UID проекта недействителен
+label_uid_is_not_valid,en,label uid is not valid
+label_uid_is_not_valid,tr,etiket kimliği geçerli değil
+label_uid_is_not_valid,ru,UID ярлыка недействителен
+the_file_must_be_utf8_encoded,en,the file must be utf8 encoded
+the_file_must_be_utf8_encoded,tr,dosya utf8 kodlanmış olmalıdır
+the_file_must_be_utf8_encoded,ru,файл должен быть в кодировке utf8
+you_cannot_add_labels_and_same_label_translations_that_have_same_label_key,en,you cannot add labels and same label translations that have same label key
+you_cannot_add_labels_and_same_label_translations_that_have_same_label_key,tr,aynı etiket anahtarına sahip etiketleri ve aynı etiket çevirilerini ekleyemezsiniz
+you_cannot_add_labels_and_same_label_translations_that_have_same_label_key,ru,Вы не можете добавлять метки и одинаковые переводы меток с одинаковым ключом метки
+you_update_label_translation_previously_added_that_have_same_label_key,en,you update label translation previously added that have same label key
+you_update_label_translation_previously_added_that_have_same_label_key,tr,Daha önce aynı etiket anahtarına sahip olan etiket çevirisini güncellediniz
+you_update_label_translation_previously_added_that_have_same_label_key,ru,Вы обновляете ранее добавленный перевод метки с тем же ключом метки
+project_name_not_valid,en,project name not valid
+project_name_not_valid,tr,proje adı geçerli değil
+project_name_not_valid,ru,название проекта недействительно
+label_uid_not_valid,en,label uid not valid
+label_uid_not_valid,tr,etiket kimliği geçerli değil
+label_uid_not_valid,ru,UID ярлыка недействителен
+label_key_not_valid,en,label key not valid
+label_key_not_valid,tr,etiket anahtarı geçerli değil
+label_key_not_valid,ru,Ключ метки недействителен
+label_translation_uid_not_valid,en,label translation uid not valid
+label_translation_uid_not_valid,tr,etiket çevirisi kullanıcı kimliği geçerli değil
+label_translation_uid_not_valid,ru,UID перевода метки недействителен
+language_uid_not_valid,en,language uid not valid
+language_uid_not_valid,tr,dil kimliği geçerli değil
+language_uid_not_valid,ru,неверный язык
+the_project_language_will_use_as_the_source_language_during_the_automatic_translation_of_the_labels,en,the project language will use as the source language during the automatic translation of the labels
+the_project_language_will_use_as_the_source_language_during_the_automatic_translation_of_the_labels,tr,Etiketlerin otomatik çevirisi sırasında proje dili kaynak dil olarak kullanılacaktır.
+the_project_language_will_use_as_the_source_language_during_the_automatic_translation_of_the_labels,ru,язык проекта будет использоваться в качестве исходного языка при автоматическом переводе меток
+cloning_project_uid_is_not_valid,en,cloning project uid is not valid
+cloning_project_uid_is_not_valid,tr,proje kimliği klonlama geçerli değil
+cloning_project_uid_is_not_valid,ru,UID клонирования проекта недействителен
+user_uid_is_not_valid_error_message,en,user uid is not valid error message
+user_uid_is_not_valid_error_message,tr,kullanıcı kimliği geçerli bir hata mesajı değil
+user_uid_is_not_valid_error_message,ru,Пользователь UID не является допустимым сообщением об ошибке
+token_is_not_valid,en,token is not valid
+token_is_not_valid,tr,belirteç geçerli değil
+token_is_not_valid,ru,токен недействителен
+user_uid_is_not_valid,en,user uid is not valid
+user_uid_is_not_valid,tr,kullanıcı kimliği geçerli değil
+user_uid_is_not_valid,ru,UID пользователя недействителен
+user_uid_not_valid,en,user uid not valid
+user_uid_not_valid,tr,kullanıcı kimliği geçerli değil
+user_uid_not_valid,ru,UID пользователя недействителен
