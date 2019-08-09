@@ -16,11 +16,11 @@ namespace Translation.Tests.Common.Requests.Label
         [Test]
         public void LabelCreateWithTokenRequest_Constructor()
         {
-            var request = GetLabelCreateWithTokenRequest(UidOne, UidTwo, StringOne,StringArray);
+            var request = GetLabelCreateWithTokenRequest(UidOne, UidTwo, StringOne,IsoCode2ArrayOne);
             request.Token.ShouldBe(UidOne);
             request.ProjectUid.ShouldBe(UidTwo);
             request.LabelKey.ShouldBe(StringOne);
-            request.LanguageNames.ShouldBe(StringArray);
+            request.LanguageIsoCode2s.ShouldBe(IsoCode2ArrayOne);
 
         }
 
@@ -28,9 +28,9 @@ namespace Translation.Tests.Common.Requests.Label
         {
             get
             {
-                yield return new TestCaseData(EmptyUid, UidOne, StringOne, StringArray);
-                yield return new TestCaseData(UidOne, EmptyUid, StringOne, StringArray);
-                yield return new TestCaseData(UidOne, UidOne, EmptyString, StringArray);
+                yield return new TestCaseData(EmptyUid, UidOne, StringOne, IsoCode2ArrayOne);
+                yield return new TestCaseData(UidOne, EmptyUid, StringOne, IsoCode2ArrayOne);
+                yield return new TestCaseData(UidOne, UidOne, EmptyString, IsoCode2ArrayOne);
             }
         }
 

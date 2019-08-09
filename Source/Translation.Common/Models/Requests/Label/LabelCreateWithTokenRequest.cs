@@ -9,9 +9,9 @@ namespace Translation.Common.Models.Requests.Label
         public Guid Token { get; set; }
         public Guid ProjectUid { get; }
         public string LabelKey { get; }
-        public string[] LanguageNames { get; }
+        public string[] LanguageIsoCode2s { get; }
 
-        public LabelCreateWithTokenRequest(Guid token, Guid projectUid, string labelKey, string[] languageNames)
+        public LabelCreateWithTokenRequest(Guid token, Guid projectUid, string labelKey, string[] isoCode2s)
         {
             if (token.IsEmptyGuid())
             {
@@ -32,7 +32,7 @@ namespace Translation.Common.Models.Requests.Label
             Token = token;
             ProjectUid = projectUid;
             LabelKey = labelKey;
-            LanguageNames = languageNames;
+            LanguageIsoCode2s = isoCode2s;
         }
     }
 }

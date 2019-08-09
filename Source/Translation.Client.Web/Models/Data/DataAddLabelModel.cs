@@ -9,6 +9,6 @@ namespace Translation.Client.Web.Models.Data
         public Guid Token { get; set; }
         public Guid ProjectUid { get; set; }
         public string LabelKey { get; set; }
-        public string LanguageNames { get; set; }
+        public string LanguageIsoCode2s { get; set; }
     }
 }

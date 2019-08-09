@@ -49,8 +49,8 @@ namespace Translation.Client.Tool.PushKeysFromSource
                 return;
             }
 
-            var languageNames = ConfigurationManager.AppSettings["LanguageNames"];
-            if (string.IsNullOrWhiteSpace(languageNames))
+            var languageIsoCodes = ConfigurationManager.AppSettings["LanguageIsoCode2"];
+            if (string.IsNullOrWhiteSpace(languageIsoCodes))
             {
                 Console.WriteLine("please define languages Iso Code2 Char in app.config");
                 return;
@@ -63,6 +63,7 @@ namespace Translation.Client.Tool.PushKeysFromSource
             GetLabelKeysFromViews(Directory.GetFiles(projectFolder, "*.cshtml", SearchOption.AllDirectories), items);
             GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Localize\\(\")(.*)(?=\")");
             GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Messages.Add\\(\")(.*)(?=\")");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.AddHeaders\\(\")(.*)(?=\")");
 
             Console.WriteLine("found " + items.Count + " label");
 
@@ -118,7 +119,7 @@ namespace Translation.Client.Tool.PushKeysFromSource
                         new KeyValuePair<string, string>("token", token),
                         new KeyValuePair<string, string>("projectUid", projectUid),
                         new KeyValuePair<string, string>("labelKey", newItem),
-                        new KeyValuePair<string, string>("languageNames",languageNames),
+                        new KeyValuePair<string, string>("languageIsoCode2s",languageIsoCodes),
                     });
 
                     var result = client.PostAsync("/Data/AddLabel", content).Result;
@@ -191,9 +192,9 @@ namespace Translation.Client.Tool.PushKeysFromSource
 
                 foreach (var match in matches)
                 {
+                   
                     var value = match.ToString().Trim();
-                    if (string.IsNullOrWhiteSpace(value)
-                        || !isAlphabetical.IsMatch(value))
+                    if (!isAlphabetical.IsMatch(value))
                     {
                         continue;
                     }

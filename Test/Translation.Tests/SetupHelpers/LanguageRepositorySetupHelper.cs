@@ -17,7 +17,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_SelectRevisions_Returns_LanguageRevisionsRevisionOneInIt(this Mock<ILanguageRepository> repository)
         {
             repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
-                      .ReturnsAsync(new List<EntityRevision<Language>>() {GetLanguageRevisionOne()});
+                      .ReturnsAsync(new List<EntityRevision<Language>>() { GetLanguageRevisionOne() });
         }
 
         public static void Setup_SelectRevisions_Returns_LanguageRevisionsRevisionTwoInIt(this Mock<ILanguageRepository> repository)
@@ -28,7 +28,7 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_RestoreRevision_Returns_True(this Mock<ILanguageRepository> repository)
         {
-            repository.Setup(x=>x.RestoreRevision(It.IsAny<long>(),It.IsAny<long>(),It.IsAny<int>())) 
+            repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
                       .ReturnsAsync(BooleanTrue);
         }
 
@@ -79,7 +79,7 @@ namespace Translation.Tests.SetupHelpers
         {
             repository.Setup(x => x.SelectAll(It.IsAny<Expression<Func<Language, bool>>>(),
                                               It.IsAny<Expression<Func<Language, object>>>(),
-                                              It.IsAny<bool>(), 
+                                              It.IsAny<bool>(),
                                               It.IsAny<bool>()))
                       .ReturnsAsync(new List<Language> { GetLanguageOne() });
         }
@@ -146,7 +146,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_Select_Returns_Language(this Mock<ILanguageRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Language, bool>>>(), false))
-                      .ReturnsAsync(GetLanguageOne());
+                      .ReturnsAsync(GetLanguageTwo());
         }
 
         public static void Setup_Select_Returns_LanguageNotExist(this Mock<ILanguageRepository> repository)

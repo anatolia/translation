@@ -988,16 +988,24 @@ namespace Translation.Tests.TestHelpers
         public static LabelCreateRequest GetLabelCreateRequest()
         {
             var request = new LabelCreateRequest(CurrentUserId, UidOne, UidOne,
-                                                 StringOne, StringOne,StringArray);
+                                                 StringOne, StringOne, GuidArrayOne);
+
+            return request;
+        }
+
+        public static LabelCreateRequest GetLabelCreateRequestLanguagesNamesZero()
+        {
+            var request = new LabelCreateRequest(CurrentUserId, UidOne, UidOne,
+                StringOne, StringOne, GuidArrayZero);
 
             return request;
         }
 
         public static LabelCreateRequest GetLabelCreateRequest(long currentUserId, Guid organizationUid, Guid projectUid,
-                                                               string labelKey, string description, string[] languageNames)
+                                                               string labelKey, string description, Guid[] languageGuids)
         {
             var request = new LabelCreateRequest(currentUserId, organizationUid, projectUid,
-                labelKey, description, languageNames);
+                labelKey, description, languageGuids);
 
             return request;
         }
@@ -1005,14 +1013,14 @@ namespace Translation.Tests.TestHelpers
         public static LabelCreateRequest GetLabelCreateRequest(Label label, Project project)
         {
             var request = new LabelCreateRequest(CurrentUserId, label.OrganizationUid, project.Uid,
-                                                 label.Key, label.Description, StringArray);
+                                                 label.Key, label.Description, GuidArrayOne);
 
             return request;
         }
 
         public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequest()
         {
-            var request = new LabelCreateWithTokenRequest(UidOne, UidOne, StringOne, StringArray);
+            var request = new LabelCreateWithTokenRequest(UidOne, UidOne, StringOne,IsoCode2ArrayOne);
 
             return request;
         }

@@ -117,16 +117,16 @@ namespace Translation.Service
 
             var uowResultLabelTranslation = true;
 
-            if (request.LanguageNames.Length != 0)
+            if (request.LanguageUids.Length != 0)
             {
                 var projectLanguage = await _languageRepository.SelectById(project.LanguageId);
                 var addedLabel = await _labelRepository.Select(x => x.Name == label.Name);
 
                 var languages = new List<Language>();
-                for (int i = 0; i < request.LanguageNames.Length; i++)
+                for (int i = 0; i < request.LanguageUids.Length; i++)
                 {
-                    var languageName = request.LanguageNames[i];
-                    var language = await _languageRepository.Select(x => x.Name == languageName);
+                    var languageUid = request.LanguageUids[i];
+                    var language = await _languageRepository.Select(x => x.Uid == languageUid);
                     if (language != null)
                     {
                         languages.Add(language);
@@ -184,7 +184,7 @@ namespace Translation.Service
             var token = await _tokenRepository.Select(x => x.AccessToken == request.Token && x.ExpiresAt > now);
             if (token.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound("token");
+                response.SetInvalidBecauseNotFound(nameof(Token));
                 return response;
             }
 
@@ -219,15 +219,15 @@ namespace Translation.Service
 
             var uowResultLabelTranslation = true;
 
-            if (request.LanguageNames.Length != 0)
+            if (request.LanguageIsoCode2s.Length != 0)
             {
                 var projectLanguage = await _languageRepository.SelectById(project.LanguageId);
                 var addedLabel = await _labelRepository.Select(x => x.Name == label.Name);
 
                 var languages = new List<Language>();
-                for (int i = 0; i < request.LanguageNames.Length; i++)
+                for (int i = 0; i < request.LanguageIsoCode2s.Length; i++)
                 {
-                    var languageName = request.LanguageNames[i];
+                    var languageName = request.LanguageIsoCode2s[i];
                     var language = await _languageRepository.Select(x => x.Name == languageName);
                     if (language != null)
                     {
@@ -259,7 +259,6 @@ namespace Translation.Service
                     }
                 }
             }
-
 
             if (uowResultLabelTranslation)
             {

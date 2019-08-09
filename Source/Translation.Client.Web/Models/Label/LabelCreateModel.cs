@@ -14,7 +14,7 @@ namespace Translation.Client.Web.Models.Label
         public string ProjectName { get; set; }
         public string Key { get; set; }
         public string Description { get; set; }
-        public string LanguageName { get; set; }
+        public string LanguageUid { get; set; }
      
 
         public HiddenInputModel OrganizationInput { get; }
@@ -44,7 +44,7 @@ namespace Translation.Client.Web.Models.Label
 
             KeyInput.Value = Key;
             DescriptionInput.Value = Description;
-            LanguagesInput.Value = LanguageName;
+            LanguagesInput.Value = LanguageUid;
         }
 
         public override void SetInputErrorMessages()
