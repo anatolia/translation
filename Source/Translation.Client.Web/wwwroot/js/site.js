@@ -124,7 +124,6 @@ function translateElement(element) {
     placeholders.forEach(function (item) {
         for (let i = 0; i < labels.length; i++) {
             let label = labels[i];
-
             if (label.key === item.placeholder) {
                 label.translations.forEach(function (translation) {
                     if (translation.languageIsoCode2 === defaultLang) {
@@ -158,7 +157,6 @@ function translateElement(element) {
 
 let currentUser = null;
 doGet('/Data/GetCurrentUser', function (req) {
-
     if (199 < req.status && req.status < 300) {
         if (req.status === 200
             && req.responseText !== null) {
@@ -173,10 +171,10 @@ doGet('/Data/GetCurrentUser', function (req) {
 });
 
 let labels = JSON.parse(localStorage.getItem('labels'));
-if (labels === null) {
+if (labels.length === 0) {
     doGet('/Data/GetMainLabels', function (req) {
         if (199 < req.status && req.status < 300) {        
-            labels = localStorage.setItem('labels', req.responseText);         
+            labels = localStorage.setItem('labels', req.responseText);
             translateScreen();
         }
     });
