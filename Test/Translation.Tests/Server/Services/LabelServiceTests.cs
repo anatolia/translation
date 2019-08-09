@@ -1581,7 +1581,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateTranslation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, "label_translation_must_be_unique");
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, "edit_old_label_translation");
             AssertReturnType<LabelTranslationCreateResponse>(result);
             MockLabelRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();

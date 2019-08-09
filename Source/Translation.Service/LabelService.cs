@@ -1048,9 +1048,9 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _labelTranslationRepository.Any(x => x.Translation == request.LabelTranslation && x.LanguageId == language.Id && x.LabelId == label.Id))
+            if (await _labelTranslationRepository.Any(x => x.LanguageId == language.Id && x.LabelId == label.Id))
             {
-                response.ErrorMessages.Add("label_translation_must_be_unique");
+                response.ErrorMessages.Add("edit_old_label_translation");
                 response.Status = ResponseStatus.Failed;
                 return response;
             }
