@@ -1091,3 +1091,15 @@ user_revision_list_title,ru,заголовок списка версий пол�
 validate_email_done_title,en,validate email done title
 validate_email_done_title,tr,yapılan e-postayı doğrula
 validate_email_done_title,ru,подтвердить адрес электронной почты
+delete,en,delete
+delete,tr,silmek
+delete,ru,удалять
+change_activation,en,change activation
+change_activation,tr,aktivasyonu değiştir
+change_activation,ru,изменить активацию
+are_you_sure_you_want_to_delete_content,en,are you sure you want to delete content
+are_you_sure_you_want_to_delete_content,tr,içeriği silmek istediğinize emin misiniz?
+are_you_sure_you_want_to_delete_content,ru,Вы уверены что хотите удалить контент?
+are_you_sure_you_want_to_change_activation_content,en,are you sure you want to change activation content
+are_you_sure_you_want_to_change_activation_content,tr,Aktivasyon içeriğini değiştirmek istediğinize emin misiniz?
+are_you_sure_you_want_to_change_activation_content,ru,Вы уверены что хотите изменить содержание активации

@@ -67,6 +67,9 @@ namespace Translation.Client.Tool.PushKeysFromSource
             GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.PrepareButton\\(\\\")(.*)(?=\\\"\\)})");
             GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=\\(Message = \\\")(.*)(?=\\\"\\))");
             GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=Title = \\\")(.*)(?=\\\")");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=name = \\\")(.*)(?=\\\",)");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=confirmTitle = \\\")(.*)(?=\\\",)");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=confirmContent = \\\")(.*)(?=\\\")");
 
             Console.WriteLine("found " + items.Count + " label");
 
