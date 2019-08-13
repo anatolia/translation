@@ -61,9 +61,12 @@ namespace Translation.Client.Tool.PushKeysFromSource
             var items = new List<string>();
 
             GetLabelKeysFromViews(Directory.GetFiles(projectFolder, "*.cshtml", SearchOption.AllDirectories), items);
-            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Localize\\(\")(.*)(?=\")");
-            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Messages.Add\\(\")(.*)(?=\")");
-            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.AddHeaders\\(\")(.*)(?=\")");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Localize\\(\\\")(.*)(?=\\\"\\),)");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Add\\(\\\")(.*)(?=\\\"\\))");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.AddHeaders\\(\\\")(.*)(?=\\\"\\))");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.PrepareButton\\(\\\")(.*)(?=\\\"\\)})");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=\\(Message = \\\")(.*)(?=\\\"\\))");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=Title = \\\")(.*)(?=\\\")");
 
             Console.WriteLine("found " + items.Count + " label");
 
@@ -192,19 +195,27 @@ namespace Translation.Client.Tool.PushKeysFromSource
 
                 foreach (var match in matches)
                 {
-                   
-                    var value = match.ToString().Trim();
-                    if (!isAlphabetical.IsMatch(value))
-                    {
-                        continue;
-                    }
+                    var stringValue = match.ToString().Trim();
+                    var value = stringValue.Split("\"", StringSplitOptions.RemoveEmptyEntries);
 
-                    if (items.Contains(value))
+                    if (value.Length != 0)
                     {
-                        continue;
-                    }
+                        for (int j = 0; j < value.Length; j++)
+                        {
+                            var _value = value[j];
+                            if (!isAlphabetical.IsMatch(_value))
+                            {
+                                continue;
+                            }
 
-                    items.Add(value);
+                            if (items.Contains(_value))
+                            {
+                                continue;
+                            }
+
+                            items.Add(_value);
+                        }
+                    }
                 }
             }
         }
