@@ -227,8 +227,8 @@ namespace Translation.Service
                 var languages = new List<Language>();
                 for (int i = 0; i < request.LanguageIsoCode2s.Length; i++)
                 {
-                    var languageName = request.LanguageIsoCode2s[i];
-                    var language = await _languageRepository.Select(x => x.Name == languageName);
+                    var languageIsoCode2s = request.LanguageIsoCode2s[i];
+                    var language = await _languageRepository.Select(x => x.IsoCode2Char == languageIsoCode2s);
                     if (language != null)
                     {
                         languages.Add(language);

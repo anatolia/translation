@@ -90,7 +90,6 @@ namespace Translation.Client.Web.Controllers
                 }
             }
 
-
             var request = new LabelCreateRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
                                                  model.Key, model.Description, languageUidArray);
             var response = await _labelService.CreateLabel(request);
