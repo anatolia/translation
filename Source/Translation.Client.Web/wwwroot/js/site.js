@@ -113,7 +113,7 @@ function translateElement(element) {
         || labels === undefined) {
         return;
     }
-
+    debugger;
     let defaultLang = 'en';
     if (currentUser !== undefined
         && currentUser !== null) {
@@ -136,7 +136,6 @@ function translateElement(element) {
             }
         }
     });
-
     let items = element.querySelectorAll('[data-translation]');
     items.forEach(function (item) {
         for (let i = 0; i < labels.length; i++) {
@@ -171,9 +170,10 @@ doGet('/Data/GetCurrentUser', function (req) {
 });
 
 let labels = JSON.parse(localStorage.getItem('labels'));
-if (labels.length === 0) {
+if (labels == null
+    || labels.length === 0) {
     doGet('/Data/GetMainLabels', function (req) {
-        if (199 < req.status && req.status < 300) {        
+        if (199 < req.status && req.status < 300) {
             labels = localStorage.setItem('labels', req.responseText);
             translateScreen();
         }
