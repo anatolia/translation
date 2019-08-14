@@ -611,15 +611,6 @@ password_required_error_message,ru,пароль требуется сообще�
 re_enter_password_required_error_message,en,re enter password required error message
 re_enter_password_required_error_message,tr,şifreyi tekrar girin hata mesajı girin
 re_enter_password_required_error_message,ru,введите пароль обязательно сообщение об ошибке
-email_required_error_massage,en,email required error massage
-email_required_error_massage,tr,e-posta gerekli hata masajı
-email_required_error_massage,ru,адрес электронной почты требуется ошибка массаж
-first_name_required_error_massage,en,first name required error massage
-first_name_required_error_massage,tr,ilk ad gerekli hata masajı
-first_name_required_error_massage,ru,имя требуется ошибка массаж
-last_name_required_error_massage,en,last name required error massage
-last_name_required_error_massage,tr,soyadı gerekli hata masajı
-last_name_required_error_massage,ru,фамилия требуется ошибка массаж
 user_uid_is_not_valid,en,user uid is not valid
 user_uid_is_not_valid,tr,kullanıcı kimliği geçerli değil
 user_uid_is_not_valid,ru,UID пользователя недействителен
@@ -1103,3 +1094,57 @@ are_you_sure_you_want_to_delete_content,ru,Вы уверены что хотит
 are_you_sure_you_want_to_change_activation_content,en,are you sure you want to change activation content
 are_you_sure_you_want_to_change_activation_content,tr,Aktivasyon içeriğini değiştirmek istediğinize emin misiniz?
 are_you_sure_you_want_to_change_activation_content,ru,Вы уверены что хотите изменить содержание активации
+first_name,en,first name
+first_name,tr,İsim
+first_name,ru,имя
+last_name,en,last name
+last_name,tr,Soyadı
+last_name,ru,Фамилия
+password,en,password
+password,tr,parola
+password,ru,пароль
+re_enter_password,en,re enter password
+re_enter_password,tr,Şifreyi yeniden gir
+re_enter_password,ru,Повторно введите пароль
+name,en,name
+name,tr,isim
+name,ru,название
+bulk_label_data,en,bulk label data
+bulk_label_data,tr,toplu etiket verileri
+bulk_label_data,ru,объемные данные этикетки
+update_existed_translations,en,update existed translations
+update_existed_translations,tr,varolan çevirileri güncelle
+update_existed_translations,ru,обновить существующие переводы
+key,en,key
+key,tr,anahtar
+key,ru,ключ
+cloning_label_translation_count,en,cloning label translation count
+cloning_label_translation_count,tr,klonlama etiketini çevirme sayısı
+cloning_label_translation_count,ru,число переводов меток клонирования
+csv_file,en,csv file
+csv_file,tr,csv dosyası
+csv_file,ru,CSV-файл
+label_translation,en,label translation
+label_translation,tr,etiket çevirisi
+label_translation,ru,перевод метки
+iso_code_2_character,en,iso code 2 character
+iso_code_2_character,tr,iso kodu 2 karakter
+iso_code_2_character,ru,ISO код 2 символа
+iso_code_3_character,en,iso code 3 character
+iso_code_3_character,tr,iso kodu 3 karakter
+iso_code_3_character,ru,ISO код 3 символа
+slug,en,slug
+slug,tr,sümüklüböcek
+slug,ru,слизень
+is_super_project,en,is super project
+is_super_project,tr,süper proje
+is_super_project,ru,это супер проект
+old_password,en,old password
+old_password,tr,eski şifre
+old_password,ru,Прежний пароль
+re_enter_new_password,en,re enter new password
+re_enter_new_password,tr,yeni şifreyi tekrar giriniz
+re_enter_new_password,ru,Повторно введите новый пароль
+accept_terms,en,accept terms
+accept_terms,tr,Şartları kabul et
+accept_terms,ru,принять условия
