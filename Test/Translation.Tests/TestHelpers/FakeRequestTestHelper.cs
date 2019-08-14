@@ -988,16 +988,24 @@ namespace Translation.Tests.TestHelpers
         public static LabelCreateRequest GetLabelCreateRequest()
         {
             var request = new LabelCreateRequest(CurrentUserId, UidOne, UidOne,
-                                                 StringOne, StringOne, new List<string>(){ IsoCode2One });
+                                                 StringOne, StringOne, GuidArrayOne);
+
+            return request;
+        }
+
+        public static LabelCreateRequest GetLabelCreateRequestLanguagesUidsZero()
+        {
+            var request = new LabelCreateRequest(CurrentUserId, UidOne, UidOne,
+                StringOne, StringOne, GuidArrayZero);
 
             return request;
         }
 
         public static LabelCreateRequest GetLabelCreateRequest(long currentUserId, Guid organizationUid, Guid projectUid,
-                                                               string labelKey, string description, List<string> languages)
+                                                               string labelKey, string description, Guid[] languageGuids)
         {
             var request = new LabelCreateRequest(currentUserId, organizationUid, projectUid,
-                labelKey, description,languages);
+                labelKey, description, languageGuids);
 
             return request;
         }
@@ -1005,21 +1013,28 @@ namespace Translation.Tests.TestHelpers
         public static LabelCreateRequest GetLabelCreateRequest(Label label, Project project)
         {
             var request = new LabelCreateRequest(CurrentUserId, label.OrganizationUid, project.Uid,
-                                                 label.Key, label.Description,new List<string>(){IsoCode2One});
+                                                 label.Key, label.Description, GuidArrayOne);
+
+            return request;
+        }
+
+        public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequestLanguagesIsoCode2Zero()
+        {
+            var request = new LabelCreateWithTokenRequest(UidOne, UidOne, StringOne, IsoCode2ArrayZero);
 
             return request;
         }
 
         public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequest()
         {
-            var request = new LabelCreateWithTokenRequest(UidOne, UidOne, StringOne,LanguagesIsoCode2Char);
+            var request = new LabelCreateWithTokenRequest(UidOne, UidOne, StringOne, IsoCode2ArrayOne);
 
             return request;
         }
 
-        public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequest(Guid token, Guid projectUid, string labelKey, string LanguagesIsoCode2Char)
+        public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequest(Guid token, Guid projectUid, string labelKey, string[] languageNames)
         {
-            var request = new LabelCreateWithTokenRequest(token, projectUid, labelKey, LanguagesIsoCode2Char);
+            var request = new LabelCreateWithTokenRequest(token, projectUid, labelKey, languageNames);
 
             return request;
         }
@@ -1035,7 +1050,7 @@ namespace Translation.Tests.TestHelpers
         public static LabelCreateListRequest GetLabelCreateListRequest()
         {
             var request = new LabelCreateListRequest(CurrentUserId, UidOne, UidOne,
-                                                     BooleanTrue, new List<LabelListInfo>() { GetLabelListInfo() });
+                                                     BooleanFalse, new List<LabelListInfo>() { GetLabelListInfo() });
 
             return request;
         }
@@ -1293,6 +1308,15 @@ namespace Translation.Tests.TestHelpers
 
             return request;
         }
+
+        public static LabelTranslationCreateListRequest GetLabelTranslationCreateListRequestUpdateExistedTranslationsFalse()
+        {
+            var request = new LabelTranslationCreateListRequest(CurrentUserId, UidOne, UidOne,
+                BooleanFalse, new List<TranslationListInfo>() { GetTranslationListInfo() });
+
+            return request;
+        }
+
 
         public static LabelTranslationCreateListRequest GetLabelTranslationCreateListRequest(long currentUserId, Guid organizationUid, Guid labelUid,
                                                                                              bool updateExistedTranslations, List<TranslationListInfo> labelTranslations)

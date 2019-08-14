@@ -270,7 +270,7 @@ namespace Translation.Tests.TestHelpers
 
             token.CreatedAt = DateTimeOne;
             token.IsActive = BooleanTrue;
-
+            token.CreatedBy = LongOne;
             return token;
         }
 
@@ -979,6 +979,20 @@ namespace Translation.Tests.TestHelpers
             language.IsoCode2Char = IsoCode2One;
             language.IsoCode3Char = IsoCode3One;
             language.IconUrl = StringOne;
+            return language;
+        }
+
+        public static Language GetLanguageTwo()
+        {
+            var language = new Language();
+            language.Name = "Language Two";
+            language.Id = LongTwo;
+            language.Uid = UidTwo;
+
+            language.OriginalName = "Language Two Original Name";
+            language.IsoCode2Char = IsoCode2Two;
+            language.IsoCode3Char = IsoCode3Two;
+            language.IconUrl = StringTwo;
             return language;
         }
 

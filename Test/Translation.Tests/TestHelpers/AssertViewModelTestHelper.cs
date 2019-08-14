@@ -148,7 +148,7 @@ namespace Translation.Tests.TestHelpers
 
         public static void AssertViewAccessDenied<T>(RedirectResult result)
         {
-            var controller = new BaseController(null, null);
+            var controller = new BaseController(null, null, null);
             var redirectAccessDenied = controller.RedirectToAccessDenied();
 
             result.ShouldNotBeNull();
@@ -157,7 +157,7 @@ namespace Translation.Tests.TestHelpers
 
         public static void AssertViewAccessDenied(IActionResult result)
         {
-            var controller = new BaseController(null, null);
+            var controller = new BaseController(null, null, null);
             var redirectAccessDenied = controller.RedirectToAccessDenied();
 
             result.ShouldNotBeNull();
@@ -166,7 +166,7 @@ namespace Translation.Tests.TestHelpers
 
         public static void AssertViewRedirectToHome<T>(RedirectResult result)
         {
-            var controller = new BaseController(null, null);
+            var controller = new BaseController(null, null, null);
             var redirectToHome = controller.RedirectToHome();
 
             result.ShouldNotBeNull();
@@ -175,7 +175,7 @@ namespace Translation.Tests.TestHelpers
 
         public static void AssertViewRedirectToHome(IActionResult result)
         {
-            var controller = new BaseController(null, null);
+            var controller = new BaseController(null, null, null);
             var redirectToHome = controller.RedirectToHome();
 
             result.ShouldNotBeNull();
@@ -184,7 +184,7 @@ namespace Translation.Tests.TestHelpers
 
         public static void AssertViewForbid<T>(ForbidResult result)
         {
-            var controller = new BaseController(null, null);
+            var controller = new BaseController(null, null, null);
             var forbid = controller.Forbid();
 
             result.ShouldNotBeNull();
@@ -193,7 +193,7 @@ namespace Translation.Tests.TestHelpers
 
         public static void AssertViewNotFound<T>(NotFoundResult result)
         {
-            var controller = new BaseController(null, null);
+            var controller = new BaseController(null, null, null);
             var notFound = controller.NotFound();
 
             result.ShouldNotBeNull();
@@ -299,6 +299,16 @@ namespace Translation.Tests.TestHelpers
             input.IsRequired.ShouldBe(isRequired);
             input.IsMultiple.ShouldBe(isMultiple);
             input.IsAddNewEnabled.ShouldBe(isAddNewEnabled);
+            input.AddNewUrl.ShouldBe(addNewUrl);
+        }
+
+        public static void AssertSelectInputModel(SelectInputModel input, string name, string labelKey, string dataUrl, bool required = false, string addNewUrl = "")
+        {
+            input.ShouldNotBeNull();
+            input.Name.ShouldBe(name + "Uid");
+            input.LabelKey.ShouldBe(labelKey);
+            input.DataUrl.ShouldBe(dataUrl);
+            input.IsRequired.ShouldBe(required);
             input.AddNewUrl.ShouldBe(addNewUrl);
         }
 

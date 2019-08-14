@@ -27,7 +27,6 @@ function fillTable(dataPath, table) {
                 appendPaginationPanel(dataResult.pagingInfo, table);
             }
         }
-
         translateElement(table);
     });
 }

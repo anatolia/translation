@@ -13,7 +13,7 @@ namespace Translation.Client.Web.Models.Label
         public string CloningLabelKey { get; set; }
         public string CloningLabelDescription { get; set; }
 
-        public Guid ProjectUid { get; set; }
+        public Guid Project { get; set; }
         public string ProjectName { get; set; }
         public string Key { get; set; }
         public string Description { get; set; }
@@ -50,7 +50,7 @@ namespace Translation.Client.Web.Models.Label
             OrganizationInput.Value = OrganizationUid.ToUidString();
             CloningLabelInput.Value = CloningLabelUid.ToUidString();
             CloningLabelKeyInput.Value = CloningLabelKey;
-            ProjectInput.Value = ProjectUid.ToUidString();
+            ProjectInput.Value = Project.ToUidString();
 
             KeyInput.Value = CloningLabelKey;
             DescriptionInput.Value = CloningLabelDescription;
@@ -75,7 +75,7 @@ namespace Translation.Client.Web.Models.Label
                 ErrorMessages.Add("cloning_label_key_required");
             }
 
-            if (ProjectUid.IsEmptyGuid())
+            if (Project.IsEmptyGuid())
             {
                 ProjectInput.ErrorMessage.Add("project_required_error_message");
                 InputErrorMessages.AddRange(ProjectInput.ErrorMessage);

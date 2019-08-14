@@ -55,14 +55,14 @@ namespace Translation.Client.Web.Models.User
             FirstName = FirstName.TrimOrDefault();
             if (FirstName.IsEmpty())
             {
-                FirstNameInput.ErrorMessage.Add("first_name_required_error_massage");
+                FirstNameInput.ErrorMessage.Add("first_name_required_error_message");
                 InputErrorMessages.AddRange(FirstNameInput.ErrorMessage);
             }
 
             LastName = LastName.TrimOrDefault();
             if (LastName.IsEmpty())
             {
-                LastNameInput.ErrorMessage.Add("last_name_required_error_massage");
+                LastNameInput.ErrorMessage.Add("last_name_required_error_message");
                 InputErrorMessages.AddRange(LastNameInput.ErrorMessage);
             }
 

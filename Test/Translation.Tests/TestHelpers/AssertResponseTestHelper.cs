@@ -14,6 +14,7 @@ namespace Translation.Tests.TestHelpers
         public const string UserNameMustBeUnique = "user_name_must_be_unique";
         public const string IntegrationNameMustBeUnique = "integration_name_must_be_unique";
         public const string LanguageNameMustBeUnique = "language_name_must_be_unique";
+        public const string LabelKeyMustBeUnique = "label_key_must_be_unique";
 
         public const string OrganizationNotFound = "organization_not_found";
         public const string ProjectNotFound = "project_not_found";
