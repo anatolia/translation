@@ -16,6 +16,7 @@ using Translation.Tests.SetupHelpers;
 using static Translation.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
+using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Tests.Client.Controllers
 {
@@ -346,6 +347,345 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertViewWithModel<UserLoginLogListModel>(result);
+        }
+
+        [Test]
+        public void UserLoginLogListData_GET()
+        {
+            // arrange
+            MockAdminService.Setup_GetAllUserLoginLogs_Returns_AllLoginLogReadListResponse_Success();
+
+            // act
+            var result = SystemUnderTest.UserLoginLogListData(One, Two);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockAdminService.Verify_GetAllUserLoginLogs();
+        }
+
+        [Test]
+        public void UserLoginLogListData_GET_FailedResponse()
+        {
+            // arrange
+            MockAdminService.Setup_GetAllUserLoginLogs_Returns_AllLoginLogReadListResponse_Failed();
+
+            // act
+            var result = SystemUnderTest.UserLoginLogListData(One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockAdminService.Verify_GetAllUserLoginLogs();
+        }
+
+        [Test]
+        public void UserLoginLogListData_GET_InvalidResponse()
+        {
+            // arrange
+            MockAdminService.Setup_GetAllUserLoginLogs_Returns_AllLoginLogReadListResponse_Invalid();
+
+            // act
+            var result = SystemUnderTest.UserLoginLogListData(One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockAdminService.Verify_GetAllUserLoginLogs();
+        }
+
+        [Test]
+        public void JournalList_GET()
+        {
+            // arrange
+
+            // act
+            var result = SystemUnderTest.JournalList();
+
+            // assert
+            AssertViewWithModel<JournalListModel>(result);
+        }
+
+        [Test]
+        public void JournalListData_GET()
+        {
+            // arrange
+            MockAdminService.Setup_GetJournals_Returns_JournalReadListResponse_Success();
+
+            // act
+            var result = SystemUnderTest.JournalListData(One, Two);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockAdminService.Verify_GetJournals();
+        }
+
+        [Test]
+        public void JournalListData_GET_FailedResponse()
+        {
+            // arrange
+            MockAdminService.Setup_GetJournals_Returns_JournalReadListResponse_Failed();
+
+            // act
+            var result = SystemUnderTest.JournalListData(One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockAdminService.Verify_GetJournals();
+        }
+
+        [Test]
+        public void JournalListData_GET_InvalidResponse()
+        {
+            // arrange
+            MockAdminService.Setup_GetJournals_Returns_JournalReadListResponse_Invalid();
+
+            // act
+            var result = SystemUnderTest.JournalListData(One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockAdminService.Verify_GetJournals();
+        }
+
+        [Test]
+        public void TokenRequestLogList_GET()
+        {
+            // arrange
+
+            // act
+            var result = SystemUnderTest.TokenRequestLogList();
+
+            // assert
+            AssertViewWithModel<TokenRequestLogListModel>(result);
+        }
+
+        [Test]
+        public void TokenRequestLogListData_GET()
+        {
+            // arrange
+            MockAdminService.Setup_GetTokenRequestLogs_Returns_AllJournalReadListResponse_Success();
+
+            // act
+            var result = SystemUnderTest.TokenRequestLogListData(One, Two);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockAdminService.Verify_GetTokenRequestLogs();
+        }
+
+        [Test]
+        public void TokenRequestLogListData_GET_FailedResponse()
+        {
+            // arrange
+            MockAdminService.Setup_GetTokenRequestLogs_Returns_AllJournalReadListResponse_Failed();
+
+            // act
+            var result = SystemUnderTest.TokenRequestLogListData(One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockAdminService.Verify_GetTokenRequestLogs();
+        }
+
+        [Test]
+        public void TokenRequestLogListData_GET_InvalidResponse()
+        {
+            // arrange
+            MockAdminService.Setup_GetTokenRequestLogs_Returns_AllJournalReadListResponse_Invalid();
+
+            // act
+            var result = SystemUnderTest.TokenRequestLogListData(One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockAdminService.Verify_GetTokenRequestLogs();
+        }
+
+        [Test]
+        public void SendEmailLogList_GET()
+        {
+            // arrange
+
+            // act
+            var result = SystemUnderTest.SendEmailLogList();
+
+            // assert
+            AssertViewWithModel<SendEmailLogListModel>(result);
+        }
+
+        [Test]
+        public void SendEmailLogListData_GET()
+        {
+            // arrange
+            MockAdminService.Setup_GetSendEmailLogs_Returns_AllSendEmailReadListResponse_Success();
+
+            // act
+            var result = SystemUnderTest.SendEmailLogListData(One, Two);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockAdminService.Verify_GetSendEmailLogs();
+        }
+
+        [Test]
+        public void SendEmailLogListData_GET_FailedResponse()
+        {
+            // arrange
+            MockAdminService.Setup_GetSendEmailLogs_Returns_AllSendEmailReadListResponse_Failed();
+
+            // act
+            var result = SystemUnderTest.SendEmailLogListData(One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockAdminService.Verify_GetSendEmailLogs();
+        }
+
+        [Test]
+        public void SendEmailLogListData_GET_InvalidResponse()
+        {
+            // arrange
+            MockAdminService.Setup_GetSendEmailLogs_Returns_AllSendEmailReadListResponse_Invalid();
+
+            // act
+            var result = SystemUnderTest.SendEmailLogListData(One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockAdminService.Verify_GetSendEmailLogs();
+        }
+
+        [Test]
+        public void Invite_GET()
+        {
+            // arrange
+
+            // act
+            var result = SystemUnderTest.Invite();
+
+            // assert
+            AssertViewWithModel<AdminInviteModel>(result);
+        }
+
+        [Test]
+        public async Task Invite_POST()
+        {
+            // arrange
+            MockAdminService.Setup_InviteSuperAdminUser_Returns_AdminInviteResponse_Success();
+            var model = GetAdminInviteModel();
+
+            // act
+            var result = await SystemUnderTest.Invite(model);
+
+            // assert
+            ((RedirectResult)result).Url.ShouldBe("/Admin/InviteDone/");
+            MockAdminService.Verify_InviteSuperAdminUser();
+        }
+
+        [Test]
+        public async Task Invite_POST_FailedResponse()
+        {
+            // arrange
+            MockAdminService.Setup_InviteSuperAdminUser_Returns_AdminInviteResponse_Failed();
+            var model = GetAdminInviteModel();
+
+            // act
+            var result = await SystemUnderTest.Invite(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<AdminInviteModel>(result);
+            MockAdminService.Verify_InviteSuperAdminUser();
+        }
+
+        [Test]
+        public async Task Invite_POST_InvalidResponse()
+        {
+            // arrange
+            MockAdminService.Setup_InviteSuperAdminUser_Returns_AdminInviteResponse_Invalid();
+            var model = GetAdminInviteModel();
+
+            // act
+            var result = await SystemUnderTest.Invite(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<AdminInviteModel>(result);
+            MockAdminService.Verify_InviteSuperAdminUser();
+        }
+
+        [Test]
+        public async Task Invite_POST_InvalidModel()
+        {
+            // arrange
+            var model = new AdminInviteModel();
+
+            // act
+            var result = await SystemUnderTest.Invite(model);
+
+            // assert
+            AssertInputErrorMessagesOfView(result, model);
+        }
+
+        [Test]
+        public void InviteDone_GET()
+        {
+            // arrange
+
+            // act
+            var result = SystemUnderTest.InviteDone();
+
+            // assert
+            AssertViewWithModel<AdminInviteDoneModel>(result);
+        }
+
+        [Test]
+        public async Task ChangeActivation_POST()
+        {
+            // arrange
+            MockAdminService.Setup_ChangeActivation_Returns_UserChangeActivationResponse_Success();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.ChangeActivation(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(BooleanTrue);
+            MockAdminService.Verify_ChangeActivation();
+        }
+
+        [Test]
+        public async Task ChangeActivation_POST_FailedResponse()
+        {
+            // arrange
+            MockAdminService.Setup_ChangeActivation_Returns_UserChangeActivationResponse_Failed();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.ChangeActivation(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(BooleanFalse);
+            MockAdminService.Verify_ChangeActivation();
+        }
+
+        [Test]
+        public async Task ChangeActivation_POST_InvalidResponse()
+        {
+            // arrange
+            MockAdminService.Setup_ChangeActivation_Returns_UserChangeActivationResponse_Invalid();
+            // act
+            var result = (JsonResult)await SystemUnderTest.ChangeActivation(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(BooleanFalse);
+            MockAdminService.Verify_ChangeActivation();
+        }
+
+        [Test]
+        public async Task ChangeActivationPOST_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.ChangeActivation(EmptyUid);
+
+            // assert
+            AssertView<ForbidResult>(result);
         }
     }
 }

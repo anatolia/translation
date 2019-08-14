@@ -1,14 +1,16 @@
 using System;
 using Microsoft.AspNetCore.Http;
-
+using Translation.Client.Web.Models;
 using Translation.Client.Web.Models.Admin;
 using Translation.Client.Web.Models.Data;
+using Translation.Client.Web.Models.InputModels;
 using Translation.Client.Web.Models.Integration;
 using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Client.Web.Models.Language;
 using Translation.Client.Web.Models.Organization;
 using Translation.Client.Web.Models.Project;
+using Translation.Client.Web.Models.Token;
 using Translation.Client.Web.Models.User;
 using Translation.Common.Models.Shared;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
@@ -231,6 +233,20 @@ namespace Translation.Tests.TestHelpers
         public static AllUserListModel GetAllUserListModel()
         {
             var model = new AllUserListModel();
+
+            return model;
+        }
+
+        public static HomeModel GetHomeModel()
+        {
+            var model = new HomeModel();
+
+            return model;
+        }
+
+        public static AccessDeniedModel GetAccessDeniedModel()
+        {
+            var model = new AccessDeniedModel();
 
             return model;
         }
@@ -487,7 +503,6 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
-
         public static InviteAcceptModel GetOrganizationOneUserOneInviteAcceptModel()
         {
             var model = new InviteAcceptModel();
@@ -529,6 +544,20 @@ namespace Translation.Tests.TestHelpers
             model.OrganizationUid = UidOne;
             model.Name = StringOne;
             model.Description = StringOne;
+            return model;
+        }
+
+        public static ActiveTokensModel GetActiveTokensModel()
+        {
+            var model = new ActiveTokensModel();
+
+            return model;
+        }
+
+        public static ActiveTokensDataModel GetActiveTokensDataModel()
+        {
+            var model = new ActiveTokensDataModel();
+
             return model;
         }
 
@@ -693,6 +722,116 @@ namespace Translation.Tests.TestHelpers
             model.ProjectName = projectName;
             model.Description = StringOne;
             model.Key = key;
+
+            return model;
+        }
+
+        public static CheckboxInputModel GetCheckboxInputModel(string name, string labelKey, bool isRequired,
+                                                                bool isReadOnly, bool value)
+        {
+            var model = new CheckboxInputModel(name, labelKey, isRequired, isReadOnly, value);
+            return model;
+        }
+
+        public static InputModel GetInputModel(string name, string labelKey, bool isRequired, string value)
+        {
+            var model = new InputModel(name, labelKey, isRequired, value);
+            return model;
+        }
+
+        public static InputModel GetInputModel(string name, string labelKey, bool isRequired)
+        {
+            var model = new InputModel(name, labelKey, isRequired);
+            return model;
+        }
+
+        public static InputModel GetInputModel(string name, string labelKey)
+        {
+            var model = new InputModel(name, labelKey);
+            return model;
+        }
+
+        public static DateInputModel GetDateInputModel(string name, string labelKey, bool isRequired)
+        {
+            var model = new DateInputModel(name, labelKey, isRequired);
+            model.Value = DateTimeOne;
+
+            return model;
+        }
+
+        public static FileInputModel GetFileInputModel(string name, string labelKey, bool isRequired, bool isMultiple)
+        {
+            var model = new FileInputModel(name, labelKey, isRequired, isMultiple);
+
+            return model;
+        }
+
+        public static SelectInputModel GetSelectInputModel(string name, string labelKey, string dataUrl, bool required, string addNewUrl)
+        {
+            var model = new SelectInputModel(name, labelKey, dataUrl, required, addNewUrl);
+
+            return model;
+        }
+
+        public static NumberInputModel GetNumberInputModel(string name, string labelKey, bool isRequired, int value)
+        {
+            var model = new NumberInputModel(name, labelKey, isRequired, value);
+
+            return model;
+        }
+
+        public static PasswordInputModel GetPasswordInputModel(string name, string labelKey, bool isRequired, string value)
+        {
+            var model = new PasswordInputModel(name, labelKey, isRequired, value);
+
+            return model;
+        }
+
+        public static TextareaInputModel GetTextareaInputModel(string name, string labelKey, bool isRequired, string value)
+        {
+            var model = new TextareaInputModel(name, labelKey, isRequired, value);
+
+            return model;
+        }
+
+        public static UrlInputModel GetUrlInputModel(string name, string labelKey, bool isRequired, string value)
+        {
+            var model = new UrlInputModel(name, labelKey, isRequired, value);
+
+            return model;
+        }
+
+        public static ShortInputModel GetShortInputModel(string name, string labelKey, bool isRequired, string value)
+        {
+            var model = new ShortInputModel(name, labelKey, isRequired, value);
+
+            return model;
+        }
+
+        public static ReadOnlyInputModel GetReadOnlyInputModel(string labelKey, string value)
+        {
+            var model = new ReadOnlyInputModel(labelKey, value);
+
+            return model;
+        }
+
+        public static HiddenInputModel GetHiddenInputModel(string name, string value)
+        {
+            var model = new HiddenInputModel(name, value);
+
+            return model;
+        }
+
+        public static LongInputModel GetLongInputModel(string name, string labelKey, bool isRequired)
+        {
+            var model = new LongInputModel(name, labelKey, isRequired);
+
+            return model;
+        }
+
+        public static EmailInputModel GetEmailInputModel(string name, string labelKey, bool isRequired)
+        {
+            var model = new EmailInputModel(name, labelKey, isRequired);
 
             return model;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
-
+using Castle.MicroKernel.SubSystems.Configuration;
+using Castle.Windsor;
 using Translation.Common.Helpers;
 
 namespace Translation.Tests.TestHelpers

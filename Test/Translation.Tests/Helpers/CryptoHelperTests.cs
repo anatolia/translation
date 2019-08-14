@@ -1,10 +1,8 @@
 ﻿using System;
-
 using NUnit.Framework;
-
 using Translation.Common.Helpers;
 
-namespace Translation.Tests.HelperTests
+namespace Translation.Tests.Helpers
 {
     [TestFixture]
     public class CryptoHelperTests

@@ -1,12 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-
 using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Admin;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeDtoTestHelper;
 
-namespace Translation.Tests.Client.Mappers
+namespace Translation.Tests.Client.Helpers.Mappers
 {
     [TestFixture]
     public class AdminMapperTests

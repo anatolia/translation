@@ -599,6 +599,20 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public void Edit_GET_IdEmpty()
+        {
+            // arrange 
+            MockOrganizationService.Setup_GetUser_Returns_UserReadResponse_Success();
+
+            // act
+            var result = SystemUnderTest.Edit(EmptyUid);
+
+            // assert
+            AssertViewWithModel<UserEditModel>(result);
+            MockOrganizationService.Verify_GetUser();
+        }
+
+        [Test]
         public void Edit_GET_FailedResponse()
         {
             // arrange 
@@ -948,6 +962,18 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public void JournalList_GET_IdEmpty()
+        {
+            // arrange
+
+            // act
+            var result = SystemUnderTest.JournalList(EmptyUid);
+
+            // assert
+            AssertViewWithModel<UserJournalListModel>(result);
+        }
+
+        [Test]
         public void JournalListData_GET()
         {
             // arrange
@@ -955,6 +981,20 @@ namespace Translation.Tests.Client.Controllers
 
             // act
             var result = SystemUnderTest.JournalListData(OrganizationOneProjectOneUid, One, Two);
+
+            // assert
+            AssertViewAndHeaders(result, new[] { "message", "created_at" });
+            MockJournalService.Verify_GetJournalsOfUser();
+        }
+
+        [Test]
+        public void JournalListData_GET_IdEmpty()
+        {
+            // arrange
+            MockJournalService.Setup_GetJournalsOfUser_Returns_UserJournalReadListResponse_Success();
+
+            // act
+            var result = SystemUnderTest.JournalListData(EmptyUid, One, Two);
 
             // assert
             AssertViewAndHeaders(result, new[] { "message", "created_at" });
@@ -1019,7 +1059,6 @@ namespace Translation.Tests.Client.Controllers
             AssertPagingInfo(result);
         }
 
-
         [Test]
         public void Revisions_GET()
         {
@@ -1031,6 +1070,34 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertViewWithModel<UserRevisionReadListModel>(result);
+            MockOrganizationService.Verify_GetUser();
+        }
+
+        [Test]
+        public void Revisions_GET_FailedResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetUser_Returns_UserReadResponse_Failed();
+
+            // act
+            var result = SystemUnderTest.Revisions(OrganizationOneUserOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockOrganizationService.Verify_GetUser();
+        }
+
+        [Test]
+        public void Revisions_GET_InvalidResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetUser_Returns_UserReadResponse_Invalid();
+
+            // act
+            var result = SystemUnderTest.Revisions(OrganizationOneUserOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
             MockOrganizationService.Verify_GetUser();
         }
 
@@ -1112,6 +1179,18 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertView<JsonResult>(result);
             MockOrganizationService.Verify_RestoreUser();
+        }
+
+        [Test]
+        public async Task Restore_Post_RevisionZero()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.Restore(OrganizationOneUserOneUid, Zero);
+
+            // assert
+            AssertView<JsonResult>(result);
         }
 
         [Test]
