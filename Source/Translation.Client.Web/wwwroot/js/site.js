@@ -113,11 +113,11 @@ function translateElement(element) {
         || labels === undefined) {
         return;
     }
-    debugger;
+  
     let defaultLang = 'en';
     if (currentUser !== undefined
         && currentUser !== null) {
-        defaultLang = currentUser.language;
+        defaultLang = currentUser.languageIsoCode2Char;
     }
 
     let placeholders = element.querySelectorAll('[placeholder]');
