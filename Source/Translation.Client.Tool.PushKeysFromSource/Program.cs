@@ -70,6 +70,7 @@ namespace Translation.Client.Tool.PushKeysFromSource
             GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=name = \\\")(.*)(?=\\\",)");
             GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=confirmTitle = \\\")(.*)(?=\\\",)");
             GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=confirmContent = \\\")(.*)(?=\\\")");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=InputModel\\(\\\")(.*)(?=\\\")");
 
             Console.WriteLine("found " + items.Count + " label");
 
@@ -159,7 +160,7 @@ namespace Translation.Client.Tool.PushKeysFromSource
                     continue;
                 }
 
-                var isAlphabetical = new Regex("^[A-Za-z0-9_]+$", RegexOptions.Compiled);
+                var isAlphabetical = new Regex("^[a-z0-9_]+$", RegexOptions.Compiled);
 
                 foreach (var match in matches)
                 {
@@ -194,7 +195,7 @@ namespace Translation.Client.Tool.PushKeysFromSource
                     continue;
                 }
 
-                var isAlphabetical = new Regex("^[A-Za-z0-9_]+$", RegexOptions.Compiled);
+                var isAlphabetical = new Regex("^[a-z0-9_]+$", RegexOptions.Compiled);
 
                 foreach (var match in matches)
                 {
@@ -206,6 +207,7 @@ namespace Translation.Client.Tool.PushKeysFromSource
                         for (int j = 0; j < value.Length; j++)
                         {
                             var _value = value[j];
+                          
                             if (!isAlphabetical.IsMatch(_value))
                             {
                                 continue;
