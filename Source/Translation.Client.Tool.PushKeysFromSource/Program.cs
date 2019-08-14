@@ -49,8 +49,8 @@ namespace Translation.Client.Tool.PushKeysFromSource
                 return;
             }
 
-            var languagesIsoCode2Char = ConfigurationManager.AppSettings["LanguagesIsoCode2Char"];
-            if (string.IsNullOrWhiteSpace(languagesIsoCode2Char))
+            var languageIsoCodes = ConfigurationManager.AppSettings["LanguageIsoCode2"];
+            if (string.IsNullOrWhiteSpace(languageIsoCodes))
             {
                 Console.WriteLine("please define languages Iso Code2 Char in app.config");
                 return;
@@ -61,8 +61,16 @@ namespace Translation.Client.Tool.PushKeysFromSource
             var items = new List<string>();
 
             GetLabelKeysFromViews(Directory.GetFiles(projectFolder, "*.cshtml", SearchOption.AllDirectories), items);
-            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Localize\\(\")(.*)(?=\")");
-            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Messages.Add\\(\")(.*)(?=\")");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Localize\\(\\\")(.*)(?=\\\"\\),)");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Add\\(\\\")(.*)(?=\\\"\\))");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.AddHeaders\\(\\\")(.*)(?=\\\"\\))");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.PrepareButton\\(\\\")(.*)(?=\\\"\\)})");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=\\(Message = \\\")(.*)(?=\\\"\\))");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=Title = \\\")(.*)(?=\\\")");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=name = \\\")(.*)(?=\\\",)");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=confirmTitle = \\\")(.*)(?=\\\",)");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=confirmContent = \\\")(.*)(?=\\\")");
+            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=InputModel\\(\\\")(.*)(?=\\\")");
 
             Console.WriteLine("found " + items.Count + " label");
 
@@ -118,7 +126,7 @@ namespace Translation.Client.Tool.PushKeysFromSource
                         new KeyValuePair<string, string>("token", token),
                         new KeyValuePair<string, string>("projectUid", projectUid),
                         new KeyValuePair<string, string>("labelKey", newItem),
-                        new KeyValuePair<string, string>("languagesIsoCode2Char",languagesIsoCode2Char),
+                        new KeyValuePair<string, string>("languageIsoCode2s",languageIsoCodes),
                     });
 
                     var result = client.PostAsync("/Data/AddLabel", content).Result;
@@ -152,7 +160,7 @@ namespace Translation.Client.Tool.PushKeysFromSource
                     continue;
                 }
 
-                var isAlphabetical = new Regex("^[A-Za-z0-9_]+$", RegexOptions.Compiled);
+                var isAlphabetical = new Regex("^[a-z0-9_]+$", RegexOptions.Compiled);
 
                 foreach (var match in matches)
                 {
@@ -187,23 +195,32 @@ namespace Translation.Client.Tool.PushKeysFromSource
                     continue;
                 }
 
-                var isAlphabetical = new Regex("^[A-Za-z0-9_]+$", RegexOptions.Compiled);
+                var isAlphabetical = new Regex("^[a-z0-9_]+$", RegexOptions.Compiled);
 
                 foreach (var match in matches)
                 {
-                    var value = match.ToString().Trim();
-                    if (string.IsNullOrWhiteSpace(value)
-                        || !isAlphabetical.IsMatch(value))
-                    {
-                        continue;
-                    }
+                    var stringValue = match.ToString().Trim();
+                    var value = stringValue.Split("\"", StringSplitOptions.RemoveEmptyEntries);
 
-                    if (items.Contains(value))
+                    if (value.Length != 0)
                     {
-                        continue;
-                    }
+                        for (int j = 0; j < value.Length; j++)
+                        {
+                            var _value = value[j];
+                          
+                            if (!isAlphabetical.IsMatch(_value))
+                            {
+                                continue;
+                            }
 
-                    items.Add(value);
+                            if (items.Contains(_value))
+                            {
+                                continue;
+                            }
+
+                            items.Add(_value);
+                        }
+                    }
                 }
             }
         }

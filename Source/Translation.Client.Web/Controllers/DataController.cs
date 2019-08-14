@@ -97,9 +97,9 @@ namespace Translation.Client.Web.Controllers
             if (model.Token.IsEmptyGuid()
                 || model.ProjectUid.IsEmptyGuid()
                 || model.LabelKey.IsEmpty()
-                || model.LanguagesIsoCode2Char.IsEmpty())
+                || model.LanguageIsoCode2s.IsEmpty())
             {
-                result.Messages.Add("some parameters are missing! (token, projectUid, labelKey, languagesIsoCode2Char)");
+                result.Messages.Add("some parameters are missing! (token, projectUid, labelKey, languageIsoCode2s)");
                 return Json(result);
             }
 
@@ -112,8 +112,11 @@ namespace Translation.Client.Web.Controllers
                 return StatusCode(401, result);
             }
 
-            var labelCreateWithTokenRequest = new LabelCreateWithTokenRequest(model.Token, model.ProjectUid, model.LabelKey, model.LanguagesIsoCode2Char);
+            var languageIsoCode2s = model.LanguageIsoCode2s.Split(",", StringSplitOptions.RemoveEmptyEntries);
+
+            var labelCreateWithTokenRequest = new LabelCreateWithTokenRequest(model.Token, model.ProjectUid, model.LabelKey, languageIsoCode2s);
             var labelsResponse = await _labelService.CreateLabel(labelCreateWithTokenRequest);
+
             if (labelsResponse.Status.IsNotSuccess)
             {
                 response.ErrorMessages = labelsResponse.ErrorMessages;

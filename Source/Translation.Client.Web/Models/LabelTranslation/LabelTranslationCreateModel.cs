@@ -18,6 +18,8 @@ namespace Translation.Client.Web.Models.LabelTranslation
         public string LabelKey { get; set; }
 
         public Guid LanguageUid { get; set; }
+        public string LanguageName { get; set; }
+
         public string LabelTranslation { get; set; }
 
         public HiddenInputModel OrganizationInput { get; }
@@ -61,7 +63,12 @@ namespace Translation.Client.Web.Models.LabelTranslation
             LabelInput.Value = LabelUid.ToUidString();
             LabelKeyInput.Value = LabelKey;
 
-            LanguageInput.Value = LanguageUid.ToUidString();
+            if (LanguageUid.IsNotEmptyGuid())
+            {
+                LanguageInput.Value = LanguageUid.ToUidString();
+                LanguageInput.Text = LanguageName;
+            }
+
             LabelTranslationInput.Value = LabelTranslation;
         }
 

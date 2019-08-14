@@ -83,6 +83,10 @@ namespace Translation.Tests.TestHelpers
         public static Guid UidNine => new Guid("d4fcd9a0-2390-4a0d-be65-7de0356e5b46");
         public static Guid UidTen => new Guid("ec8fd3bb-693c-4f87-880f-a19fac1de0cf");
 
+        public static Guid[] GuidArrayZero = { };
+        public static Guid[] GuidArrayOne = { UidOne };
+        public static Guid[] GuidArrayTwo = { UidOne, UidTwo };
+
         public static DateTime DateTimeOne => new DateTime(2019, 01, 01, 09, 00, 00);
         public static DateTime DateTimeTwo => new DateTime(2019, 01, 02, 18, 00, 00);
         public static DateTime DateTimeThree => new DateTime(2019, 01, 03, 09, 00, 00);
@@ -178,8 +182,15 @@ namespace Translation.Tests.TestHelpers
         public const string IpOne = "85.201.85.116";
         public const string IpTwo = "87.204.85.116";
 
-        public const string IsoCode2One = "TR";
-        public const string IsoCode3One = "TUR";
+        public const string IsoCode2One = "tr";
+        public const string IsoCode3One = "tur";
+        public const string IsoCode2Two = "en";
+        public const string IsoCode3Two = "eng";
+
+        public static string[] IsoCode2ArrayZero = { };
+        public static string[] IsoCode2ArrayOne = { IsoCode2One };
+        public static string[] IsoCode2ArrayTwo = { IsoCode2One, IsoCode2Two };
+
 
         public const string CaseOne = "Case One";
         public const string CaseTwo = "Case Two";

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
@@ -10,6 +11,8 @@ using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
 using Translation.Common.Contracts;
 using Translation.Common.Models.Base;
+using Translation.Common.Models.DataTransferObjects;
+using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Requests.User;
 using Translation.Common.Models.Shared;
 
@@ -19,22 +22,37 @@ namespace Translation.Client.Web.Controllers
     {
         public IOrganizationService OrganizationService { get; set; }
         public IJournalService JournalService { get; set; }
+        public ILanguageService LanguageService { get; set; }
 
         public BaseController()
         {
-            
+
         }
 
-        public BaseController(IOrganizationService organizationService, 
-                              IJournalService journalService)
+        public BaseController(IOrganizationService organizationService,
+                              IJournalService journalService,
+                              ILanguageService languageService)
         {
             OrganizationService = organizationService;
             JournalService = journalService;
         }
 
+        private List<LanguageDto> _languages;
+        public List<LanguageDto> Languages
+        {
+            get
+            {
+                if (_languages == null)
+                {
+                    var request = new LanguageReadListRequest();
+                    _languages = LanguageService.GetLanguages(request).Result.Items;
+                }
+                return _languages;
+            }
+        }
+
+
         private CurrentUser _currentUser;
-
-
         public CurrentUser CurrentUser
         {
             get

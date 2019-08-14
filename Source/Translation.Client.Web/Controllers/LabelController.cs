@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +20,7 @@ using Translation.Common.Models.Requests.Label.LabelTranslation;
 using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Shared;
+using Translation.Data.Entities.Parameter;
 
 namespace Translation.Client.Web.Controllers
 {
@@ -76,16 +78,20 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            var languageList = model.SelectLanguages.Split(Environment.NewLine);
-            List<string> languages=new List<string>();
-
-            for (int i = 0; i <languageList.Length; i++)
+            Guid[] languageUidArray = new Guid[] { };
+            if (model.LanguageUid.IsNotEmpty())
             {
-                languages.Add( languageList[i]);
+                var languageUids = model.LanguageUid.ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
+                languageUidArray = new Guid[languageUids.Length];
+                for (int i = 0; i < languageUids.Length; i++)
+                {
+                    languageUidArray[i] = Guid.Parse(languageUids[i]);
+
+                }
             }
 
             var request = new LabelCreateRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
-                                                 model.Key, model.Description,languages);
+                                                 model.Key, model.Description, languageUidArray);
             var response = await _labelService.CreateLabel(request);
             if (response.Status.IsNotSuccess)
             {
@@ -247,7 +253,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new LabelCloneRequest(CurrentUser.Id, model.OrganizationUid, model.CloningLabelUid,
-                model.ProjectUid, model.Key, model.Description);
+                model.Project, model.Key, model.Description);
 
             var response = await _labelService.CloneLabel(request);
             if (response.Status.IsNotSuccess)
@@ -668,7 +674,7 @@ namespace Translation.Client.Web.Controllers
 
             var sourceLanguageIsoCode2 = sourceLanguageReadResponse.Item.IsoCode2;
 
-            var request = new LabelGetTranslatedTextRequest(CurrentUser.Id,textToTranslate, targetLanguageIsoCode2,
+            var request = new LabelGetTranslatedTextRequest(CurrentUser.Id, textToTranslate, targetLanguageIsoCode2,
                                                             sourceLanguageIsoCode2);
 
             var response = await _textTranslateIntegration.GetTranslatedText(request);

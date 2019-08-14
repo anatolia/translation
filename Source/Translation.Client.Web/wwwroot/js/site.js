@@ -98,27 +98,51 @@ function doRedirectIfConfirmedSuccess(btn, redirectUrl) {
     });
 }
 
-
 function translateScreen() {
+    translateElement(document.head);
+    translateElement(document.body);
+}
 
-    var items = document.querySelectorAll('[data-translation]');
-    var labels = JSON.parse(localStorage.getItem('labels'));
-    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
-    var isoCode2Char = "en";
-    if (currentUser != null) {
-        isoCode2Char = currentUser.languageIsoCode2Char;
-    }
-    if (labels === null) {
+function translateElement(element) {
+    if (element === null
+        || element === undefined) {
         return;
     }
 
+    if (labels === null
+        || labels === undefined) {
+        return;
+    }
+  
+    let defaultLang = 'en';
+    if (currentUser !== undefined
+        && currentUser !== null) {
+        defaultLang = currentUser.languageIsoCode2Char;
+    }
+
+    let placeholders = element.querySelectorAll('[placeholder]');
+    placeholders.forEach(function (item) {
+        for (let i = 0; i < labels.length; i++) {
+            let label = labels[i];
+            if (label.key === item.placeholder) {
+                label.translations.forEach(function (translation) {
+                    if (translation.languageIsoCode2 === defaultLang) {
+                        item.setAttribute('placeholder', translation.translation);
+                        return;
+                    }
+                });
+
+                break;
+            }
+        }
+    });
+    let items = element.querySelectorAll('[data-translation]');
     items.forEach(function (item) {
-        for (var i = 0; i < labels.length; i++) {
-            var label = labels[i];
+        for (let i = 0; i < labels.length; i++) {
+            let label = labels[i];
             if (label.key === item.dataset.translation) {
                 label.translations.forEach(function (translation) {
-                    if (translation.languageIsoCode2 === isoCode2Char) {
+                    if (translation.languageIsoCode2 === defaultLang) {
                         item.innerHTML = translation.translation;
                         return;
                     }
@@ -130,26 +154,27 @@ function translateScreen() {
     });
 }
 
+let currentUser = null;
 doGet('/Data/GetCurrentUser', function (req) {
-
-    console.log("req.responseText: ", req.responseText);
     if (199 < req.status && req.status < 300) {
         if (req.status === 200
             && req.responseText !== null) {
             localStorage.setItem('currentUser', req.responseText);
+            currentUser = JSON.parse(localStorage.getItem('currentUser'));
         } else if (req.status === 200
             && req.responseText === null) {
+            currentUser = null;
             window.redirect('/Login');
         }
     }
 });
 
-if (localStorage.getItem('labels') === null
-    || localStorage.getItem('labels') === undefined
-    || localStorage.getItem('labels') === "[]") {
+let labels = JSON.parse(localStorage.getItem('labels'));
+if (labels == null
+    || labels.length === 0) {
     doGet('/Data/GetMainLabels', function (req) {
         if (199 < req.status && req.status < 300) {
-            localStorage.setItem('labels', req.responseText);
+            labels = localStorage.setItem('labels', req.responseText);
             translateScreen();
         }
     });

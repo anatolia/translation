@@ -62,7 +62,7 @@ namespace Translation.Tests.Client.Models.ViewModels.Project
         [Test]
         public void ProjectCloneModel_LanguageInput()
         {
-            AssertSelectInputModel(SystemUnderTest.LanguageInput, "LanguageUid", "LanguageName", "language", "/Language/SelectData");
+            AssertSelectInputModel(SystemUnderTest.LanguageInput, "Language", "language", "/Language/SelectData");
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace Translation.Tests.Client.Models.ViewModels.Project
         [Test]
         public void ProjectCreateModel_LanguageInput()
         {
-            AssertSelectInputModel(SystemUnderTest.LanguageInput, "LanguageUid", "LanguageName", "language", "/Language/SelectData");
+            AssertSelectInputModel(SystemUnderTest.LanguageInput, "Language", "language", "/Language/SelectData");
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace Translation.Tests.Client.Models.ViewModels.Project
             SystemUnderTest.LabelCountInput.Value.ShouldBe(SystemUnderTest.LabelCount.ToString());
             SystemUnderTest.LabelTranslationCountInput.Value.ShouldBe(SystemUnderTest.LabelTranslationCount.ToString());
             SystemUnderTest.IsSuperProjectInput.Value.ShouldBe(SystemUnderTest.IsSuperProject);
-            SystemUnderTest.LanguageInput.Value.ShouldBe(SystemUnderTest.LanguageUid.ToUidString());
+            SystemUnderTest.LanguageInput.Value.ShouldBe(SystemUnderTest.Language.ToUidString());
             SystemUnderTest.LanguageInput.Text.ShouldBe(SystemUnderTest.LanguageName);
             SystemUnderTest.LanguageInput.IsOptionTypeContent.ShouldBeTrue();
             SystemUnderTest.InfoMessages.Contains("the_project_language_will_use_as_the_source_language_during_the_automatic_translation_of_the_labels").ShouldBeTrue();

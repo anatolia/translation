@@ -70,7 +70,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.LabelTranslationCount = dto.LabelTranslationCount;
             model.IsSuperProject = dto.IsSuperProject;
 
-            model.LanguageUid = dto.LanguageUid;
+            model.Language = dto.LanguageUid;
             model.LanguageName = dto.LanguageName;
 
             model.SetInputModelValues();
