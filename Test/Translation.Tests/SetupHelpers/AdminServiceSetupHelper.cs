@@ -26,6 +26,96 @@ namespace Translation.Tests.SetupHelpers
     public static class AdminServiceSetupHelper
     {
 
+        public static void Setup_AcceptSuperAdminUserInvite_Returns_AdminAcceptInviteResponse_Success(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.AcceptSuperAdminUserInvite(It.IsAny<AdminAcceptInviteRequest>()))
+                .ReturnsAsync(new AdminAcceptInviteResponse() { Status = ResponseStatus.Success });
+        }
+
+        public static void Setup_AcceptSuperAdminUserInvite_Returns_AdminAcceptInviteResponse_Failed(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.AcceptSuperAdminUserInvite(It.IsAny<AdminAcceptInviteRequest>()))
+                .ReturnsAsync(new AdminAcceptInviteResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } });
+        }
+
+        public static void Setup_AcceptSuperAdminUserInvite_Returns_AdminAcceptInviteResponse_Invalid(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.AcceptSuperAdminUserInvite(It.IsAny<AdminAcceptInviteRequest>()))
+                .ReturnsAsync(new AdminAcceptInviteResponse() { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } });
+        }
+
+        public static void Setup_ValidateSuperAdminUserInvitation_Returns_AdminInviteValidateResponse_Success(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.ValidateSuperAdminUserInvitation(It.IsAny<AdminInviteValidateRequest>()))
+                .ReturnsAsync(new AdminInviteValidateResponse() { Status = ResponseStatus.Success });
+        }
+
+        public static void Setup_ValidateSuperAdminUserInvitation_Returns_AdminInviteValidateResponse_Failed(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.ValidateSuperAdminUserInvitation(It.IsAny<AdminInviteValidateRequest>()))
+                .ReturnsAsync(new AdminInviteValidateResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } });
+        }
+
+        public static void Setup_ValidateSuperAdminUserInvitation_Returns_AdminInviteValidateResponse_Invalid(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.ValidateSuperAdminUserInvitation(It.IsAny<AdminInviteValidateRequest>()))
+                .ReturnsAsync(new AdminInviteValidateResponse() { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } });
+        }
+
+        public static void Setup_UpgradeToAdmin_Returns_AdminUpgradeResponse_Success(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.UpgradeToAdmin(It.IsAny<AdminUpgradeRequest>()))
+                .ReturnsAsync(new AdminUpgradeResponse() { Status = ResponseStatus.Success });
+        }
+
+        public static void Setup_UpgradeToAdmin_Returns_AdminUpgradeResponse_Failed(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.UpgradeToAdmin(It.IsAny<AdminUpgradeRequest>()))
+                .ReturnsAsync(new AdminUpgradeResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } });
+        }
+
+        public static void Setup_UpgradeToAdmin_Returns_AdminUpgradeResponse_Invalid(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.UpgradeToAdmin(It.IsAny<AdminUpgradeRequest>()))
+                .ReturnsAsync(new AdminUpgradeResponse() { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } });
+        }
+
+        public static void Setup_DemoteToUser_Returns_AdminDemoteResponse_Success(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.DemoteToUser(It.IsAny<AdminDemoteRequest>()))
+                .ReturnsAsync(new AdminDemoteResponse { Status = ResponseStatus.Success });
+        }
+
+        public static void Setup_DemoteToUser_Returns_AdminDemoteResponse_Failed(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.DemoteToUser(It.IsAny<AdminDemoteRequest>()))
+                .ReturnsAsync(new AdminDemoteResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } });
+        }
+
+        public static void Setup_DemoteToUser_Returns_AdminDemoteResponse_Invalid(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.DemoteToUser(It.IsAny<AdminDemoteRequest>()))
+                .ReturnsAsync(new AdminDemoteResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } });
+        }
+
+        public static void Setup_OrganizationChangeActivation_Returns_OrganizationChangeActivationResponse_Success(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.OrganizationChangeActivation(It.IsAny<OrganizationChangeActivationRequest>()))
+                .ReturnsAsync(new OrganizationChangeActivationResponse { Status = ResponseStatus.Success });
+        }
+
+        public static void Setup_OrganizationChangeActivation_Returns_OrganizationChangeActivationResponse_Failed(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.OrganizationChangeActivation(It.IsAny<OrganizationChangeActivationRequest>()))
+                .ReturnsAsync(new OrganizationChangeActivationResponse { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } });
+        }
+
+        public static void Setup_OrganizationChangeActivation_Returns_OrganizationChangeActivationResponse_Invalid(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.OrganizationChangeActivation(It.IsAny<OrganizationChangeActivationRequest>()))
+                .ReturnsAsync(new OrganizationChangeActivationResponse { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } });
+        }
+
         public static void Setup_ChangeActivation_Returns_UserChangeActivationResponse_Success(this Mock<IAdminService> service)
         {
             service.Setup(x => x.ChangeActivation(It.IsAny<UserChangeActivationRequest>()))
@@ -233,5 +323,29 @@ namespace Translation.Tests.SetupHelpers
             service.Verify(x => x.ChangeActivation(It.IsAny<UserChangeActivationRequest>()));
         }
 
+        public static void Verify_OrganizationChangeActivation(this Mock<IAdminService> service)
+        {
+            service.Verify(x => x.OrganizationChangeActivation(It.IsAny<OrganizationChangeActivationRequest>()));
+        }
+
+        public static void Verify_DemoteToUser(this Mock<IAdminService> service)
+        {
+            service.Verify(x => x.DemoteToUser(It.IsAny<AdminDemoteRequest>()));
+        }
+
+        public static void Verify_UpgradeToAdmin(this Mock<IAdminService> service)
+        {
+            service.Verify(x => x.UpgradeToAdmin(It.IsAny<AdminUpgradeRequest>()));
+        }
+
+        public static void Verify_ValidateSuperAdminUserInvitation(this Mock<IAdminService> service)
+        {
+            service.Verify(x => x.ValidateSuperAdminUserInvitation(It.IsAny<AdminInviteValidateRequest>()));
+        }
+
+        public static void Verify_AcceptSuperAdminUserInvite(this Mock<IAdminService> service)
+        {
+            service.Verify(x => x.AcceptSuperAdminUserInvite(It.IsAny<AdminAcceptInviteRequest>()));
+        }
     }
 }

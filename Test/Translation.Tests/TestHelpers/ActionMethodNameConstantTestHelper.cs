@@ -99,6 +99,8 @@
 
         public const string LogOffAction = "LogOff";
 
+        public const string GetAction = "Get";
+        public const string RevokeAction = "Revoke";
         public const string GetLabelsAction = "GetLabels";
         public const string GetMainLabelsAction = "GetMainLabels";
         public const string GetCurrentUserAction = "GetCurrentUser";

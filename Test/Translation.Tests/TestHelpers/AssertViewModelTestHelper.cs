@@ -97,12 +97,18 @@ namespace Translation.Tests.TestHelpers
             result.Model.ShouldBeAssignableTo<T>();
         }
 
-        public static void AssertView<T>(IActionResult result)
+        public static void AssertView<T>(T result)
+        {
+            result.ShouldNotBeNull();
+            result.ShouldBeAssignableTo<T>();
+        }
+
+        public static void AssertView<T>(Task<IActionResult> result)
         {
             result.ShouldNotBeNull();
         }
 
-        public static void AssertView<T>(Task<IActionResult> result)
+        public static void AssertView<T>(IActionResult result)
         {
             result.ShouldNotBeNull();
         }
