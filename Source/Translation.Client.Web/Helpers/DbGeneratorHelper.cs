@@ -50,6 +50,10 @@ namespace Translation.Client.Web.Helpers
                 var languageFactory = container.Resolve<LanguageFactory>();
                 var (turkish, english) = InsertLanguages(languageRepository, languageFactory);
 
+                var translationProviderRepository = container.Resolve<ITranslationProviderRepository>();
+                var translationProviderFactory = container.Resolve<TranslationProviderFactory>();
+                var (yandex, google) = InsertTranslationProviders(translationProviderRepository, translationProviderFactory);
+
                 var organizationRepository = container.Resolve<IOrganizationRepository>();
                 var userRepository = container.Resolve<IUserRepository>();
                 var projectRepository = container.Resolve<IProjectRepository>();
@@ -129,6 +133,19 @@ namespace Translation.Client.Web.Helpers
             turkish.Id = turkishId;
 
             return (turkish, english);
+        }
+
+        private static (TranslationProvider, TranslationProvider) InsertTranslationProviders(ITranslationProviderRepository translationProviderRepository, TranslationProviderFactory translationProviderFactory)
+        {
+            var google = translationProviderFactory.CreateEntity("google", false, "123");
+            var yandex = translationProviderFactory.CreateEntity("yandex", false, "444");
+
+            var googleId = translationProviderRepository.Insert(0, google).Result;
+            google.Id = googleId;
+            var yandexId = translationProviderRepository.Insert(0, yandex).Result;
+            yandex.Id = yandexId;
+
+            return (yandex, google);
         }
 
         private static void InsertLabels(ILabelService labelService, Project project, string webRootPath)

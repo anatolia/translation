@@ -4,6 +4,7 @@ using StandardCache;
 using StandardRepository.Helpers;
 using Translation.Common.Helpers;
 using Translation.Common.Models.Shared;
+using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
 using Translation.Data.Entities.Parameter;
 using Translation.Data.Factories;
@@ -17,6 +18,8 @@ namespace Translation.Service.Managers
         private const string CACHE_NAME_CURRENT_USER = nameof(CurrentUser);
         private const string CACHE_NAME_ORGANIZATION = nameof(Organization);
         private const string CACHE_NAME_CURRENT_ORGANIZATION = nameof(CurrentOrganization);
+        private const string CACHE_NAME_PROVIDER = nameof(TranslationProvider);
+        private const string CACHE_NAME_CURRENT_PROVIDER = nameof(CurrentTranslationProvider);
         private const string CACHE_NAME_CURRENT_USER_LANGUAGE_ISO_CODE2_CHAR = nameof(CurrentUser.LanguageIsoCode2Char);
 
         private readonly ILanguageRepository _languageRepository;
@@ -205,6 +208,12 @@ namespace Translation.Service.Managers
         {
             AddOrUpdate(CACHE_NAME_ORGANIZATION, new CacheItem(organization.Uid.ToUidString(), organization));
             AddOrUpdate(CACHE_NAME_CURRENT_ORGANIZATION, new CacheItem(organization.Uid.ToUidString(), currentOrganization));
+        }
+
+        public void UpsertTranslationProviderCache(TranslationProvider translationProvider, CurrentTranslationProvider currentTranslationProvider)
+        {
+            AddOrUpdate(CACHE_NAME_PROVIDER, new CacheItem(translationProvider.Uid.ToUidString(), translationProvider));
+            AddOrUpdate(CACHE_NAME_CURRENT_PROVIDER, new CacheItem(translationProvider.Uid.ToUidString(), currentTranslationProvider));
         }
 
         public void RemoveUser(User user)
