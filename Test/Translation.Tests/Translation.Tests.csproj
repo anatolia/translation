@@ -8,8 +8,17 @@
     <Compile Remove="Common\Requests\User\**" />
     <EmbeddedResource Remove="Common\Requests\User\**" />
     <None Remove="Common\Requests\User\**" />
+    <None Update="wwwtestroot\images\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="wwwtestroot\images\flags\tr.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="wwwtestroot\images\flags\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
-
+  
   <ItemGroup>
     <Folder Include="Client\Models\ViewModels\Integration\" />
     <Folder Include="Common\Responses\Admin\" />
@@ -42,5 +51,6 @@
     <ProjectReference Include="..\..\Source\Translation.Data\Translation.Data.csproj" />
     <ProjectReference Include="..\..\Source\Translation.Service\Translation.Service.csproj" />
   </ItemGroup>
+
 
 </Project>
