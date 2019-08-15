@@ -66,6 +66,7 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
             SystemUnderTest.ProjectInput.Value.ShouldBe(SystemUnderTest.ProjectUid.ToUidString());
             SystemUnderTest.ProjectNameInput.Value.ShouldBe(SystemUnderTest.ProjectName);
             SystemUnderTest.BulkLabelInput.Value.ShouldBe(SystemUnderTest.BulkLabelData);
+            SystemUnderTest.UpdateExistedTranslationsInput.Value.ShouldBe(SystemUnderTest.UpdateExistedTranslations);
         }
 
         public static IEnumerable MessageTestCases

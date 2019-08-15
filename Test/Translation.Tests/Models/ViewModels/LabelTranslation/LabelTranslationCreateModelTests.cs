@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections;
-
 using NUnit.Framework;
 using Shouldly;
-
 using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Common.Helpers;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
 
-namespace Translation.Tests.Client.Models.ViewModels.LabelTranslation
+namespace Translation.Tests.Models.ViewModels.LabelTranslation
 {
     [TestFixture]
     public class LabelTranslationCreateModelTests
@@ -62,6 +60,7 @@ namespace Translation.Tests.Client.Models.ViewModels.LabelTranslation
             SystemUnderTest.LabelInput.Value.ShouldBe(SystemUnderTest.LabelUid.ToUidString());
             SystemUnderTest.LabelKeyInput.Value.ShouldBe(SystemUnderTest.LabelKey);
             SystemUnderTest.LanguageInput.Value.ShouldBe(SystemUnderTest.LanguageUid.ToUidString());
+            SystemUnderTest.LanguageInput.Text.ShouldBe(SystemUnderTest.LanguageName);
             SystemUnderTest.LabelTranslationInput.Value.ShouldBe(SystemUnderTest.LabelTranslation);
         }
 

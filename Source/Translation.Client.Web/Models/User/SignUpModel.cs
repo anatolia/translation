@@ -59,49 +59,48 @@ namespace Translation.Client.Web.Models.User
             if (Email.IsEmpty())
             {
                 EmailInput.ErrorMessage.Add("email_required_error_message");
-                ErrorMessages.AddRange(EmailInput.ErrorMessage);
+                InputErrorMessages.AddRange(EmailInput.ErrorMessage);
             }
 
             if (Email.IsNotEmail())
             {
                 EmailInput.ErrorMessage.Add("email_is_not_valid_error_message");
-                ErrorMessages.AddRange(EmailInput.ErrorMessage);
+                InputErrorMessages.AddRange(EmailInput.ErrorMessage);
             }
 
             if (FirstName.IsEmpty())
             {
                 FirstNameInput.ErrorMessage.Add("first_name_required_error_message");
-                ErrorMessages.AddRange(FirstNameInput.ErrorMessage);
+                InputErrorMessages.AddRange(FirstNameInput.ErrorMessage);
             }
 
             if (LastName.IsEmpty())
             {
                 LastNameInput.ErrorMessage.Add("last_name_required_error_message");
-                ErrorMessages.AddRange(LastNameInput.ErrorMessage);
+                InputErrorMessages.AddRange(LastNameInput.ErrorMessage);
             }
 
             if (OrganizationName.IsEmpty())
             {
                 OrganizationNameInput.ErrorMessage.Add("organization_name_required_error_message");
-                ErrorMessages.AddRange(OrganizationNameInput.ErrorMessage);
+                InputErrorMessages.AddRange(OrganizationNameInput.ErrorMessage);
             }
 
             if (Password.IsNotValidPassword())
             {
-                OrganizationNameInput.ErrorMessage.Add("password_is_not_valid_error_message");
-                ErrorMessages.AddRange(OrganizationNameInput.ErrorMessage);
+                PasswordInput.ErrorMessage.Add("password_is_not_valid_error_message");
+                InputErrorMessages.AddRange(PasswordInput.ErrorMessage);
             }
 
             if (LanguageUid.IsEmptyGuid())
             {
-                LanguageInput.ErrorMessage.Add("language_uid_not_valid");
-                InputErrorMessages.AddRange(LanguageInput.ErrorMessage);
+                ErrorMessages.Add("language_uid_not_valid");
             }
 
             if (!IsTermsAccepted)
             {
-                OrganizationNameInput.ErrorMessage.Add("you_must_accept_terms_error_message");
-                ErrorMessages.AddRange(OrganizationNameInput.ErrorMessage);
+                IsTermsAcceptedInput.ErrorMessage.Add("you_must_accept_terms_error_message");
+                InputErrorMessages.AddRange(IsTermsAcceptedInput.ErrorMessage);
             }
         }
     }

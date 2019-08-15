@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
-
 using NUnit.Framework;
+
 using Shouldly;
 
 using Translation.Client.Web.Models.User;
@@ -10,7 +10,7 @@ using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
 
-namespace Translation.Tests.Client.Models.ViewModels.User
+namespace Translation.Tests.Models.ViewModels.User
 {
     [TestFixture]
     public class ChangePasswordModelTests
@@ -24,7 +24,7 @@ namespace Translation.Tests.Client.Models.ViewModels.User
         }
 
         [Test]
-        public void ProjectCreateModel_Title()
+        public void ChangePasswordModel_Title()
         {
             Assert.AreEqual(SystemUnderTest.Title, "user_change_password_title");
         }
@@ -90,7 +90,19 @@ namespace Translation.Tests.Client.Models.ViewModels.User
                                                       "new_password_is_not_valid_error_message",
                                                       "re_entered_password_is_not_valid_error_message",
                                                       "new_password_can_not_same_as_old_password_error_message",
-                                                      "re_entered_password_does_not_match_error_message"
+                                              },
+                                              false);
+
+                yield return new TestCaseData(CaseTwo,
+                                              EmptyUid, EmptyString, EmptyString,
+                                              PasswordOne,
+                                              new[] { "user_uid_is_not_valid_error_message" },
+                                              new[] { "old_password_required_error_message",
+                                                      "new_password_required_error_message",
+                                                      "old_password_is_not_valid_error_message",
+                                                      "new_password_is_not_valid_error_message",
+                                                      "new_password_can_not_same_as_old_password_error_message",
+                                                      "re_entered_password_does_not_match_error_message",
                                               },
                                               false);
             }

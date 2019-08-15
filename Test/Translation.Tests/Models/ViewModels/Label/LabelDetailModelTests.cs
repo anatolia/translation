@@ -5,6 +5,7 @@ using Translation.Client.Web.Models.Label;
 using Translation.Common.Helpers;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
+using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
 namespace Translation.Tests.Client.Models.ViewModels.Label
 {
@@ -47,6 +48,12 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
         public void LabelDetailModel_IsActiveInput()
         {
             AssertCheckboxInputModel(SystemUnderTest.IsActiveInput, "IsActive", "is_active", true, true);
+        }
+
+        [Test]
+        public void LabelDetailModel_Parameter()
+        {
+            SystemUnderTest.LabelTranslationCount.ShouldBe(Zero);
         }
 
         [Test]

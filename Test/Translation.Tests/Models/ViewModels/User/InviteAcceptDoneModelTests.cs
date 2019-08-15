@@ -1,9 +1,8 @@
 ﻿using NUnit.Framework;
-
 using Translation.Client.Web.Models.User;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 
-namespace Translation.Tests.Client.Models.ViewModels.User
+namespace Translation.Tests.Models.ViewModels.User
 {
     [TestFixture]
     public sealed class InviteAcceptDoneModelTests

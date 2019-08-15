@@ -5,6 +5,7 @@ using Translation.Client.Web.Models.Project;
 using Translation.Common.Helpers;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
+using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
 namespace Translation.Tests.Client.Models.ViewModels.Project
 {
@@ -41,6 +42,14 @@ namespace Translation.Tests.Client.Models.ViewModels.Project
         public void ProjectDetailModel_IsActiveInput()
         {
             AssertCheckboxInputModel(SystemUnderTest.IsActiveInput, "IsActive", "is_active", false, true);
+        }
+
+
+        [Test]
+        public void ProjectDetailModel_Parameter()
+        {
+           SystemUnderTest.LanguageName.ShouldBe(StringTwo);
+           SystemUnderTest.LanguageIconUrl.ShouldBe(HttpsUrl);
         }
 
         [Test]

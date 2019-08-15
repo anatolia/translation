@@ -1,9 +1,10 @@
 ﻿using NUnit.Framework;
-
+using Shouldly;
 using Translation.Client.Web.Models.LabelTranslation;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
+using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
-namespace Translation.Tests.Client.Models.ViewModels.LabelTranslation
+namespace Translation.Tests.Models.ViewModels.LabelTranslation
 {
     [TestFixture]
     public class TranslationUploadFromCSVDoneModelTests
@@ -20,6 +21,17 @@ namespace Translation.Tests.Client.Models.ViewModels.LabelTranslation
         public void TranslationUploadFromCSVDoneModel_Title()
         {
             Assert.AreEqual(SystemUnderTest.Title, "translation_upload_done_title");
+        }
+
+        [Test]
+        public void TranslationUploadFromCSVDoneModel_Parameter()
+        {
+            SystemUnderTest.LabelUid.ShouldBe(UidOne);
+           SystemUnderTest.LabelKey.ShouldBe(StringOne);
+           SystemUnderTest.AddedTranslationCount.ShouldBe(Zero);
+           SystemUnderTest.UpdatedTranslationCount.ShouldBe(Zero);
+           SystemUnderTest.CanNotAddedTranslationCount.ShouldBe(Zero);
+           SystemUnderTest.TotalRowsProcessed.ShouldBe(Zero);
         }
     }
 }

@@ -9,6 +9,7 @@ using Translation.Common.Helpers;
 using Translation.Tests.TestHelpers;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Tests.Client.Models.ViewModels.Project
 {
@@ -20,7 +21,7 @@ namespace Translation.Tests.Client.Models.ViewModels.Project
         [SetUp]
         public void run_before_every_test()
         {
-            SystemUnderTest = FakeModelTestHelper.GetOrganizationOneProjectOneCreateModel();
+            SystemUnderTest = GetOrganizationOneProjectOneCreateModel();
         }
 
         [Test]
@@ -64,6 +65,12 @@ namespace Translation.Tests.Client.Models.ViewModels.Project
         public void ProjectCreateModel_DescriptionInput()
         {
             AssertInputModel(SystemUnderTest.DescriptionInput, "Description", "description");
+        }
+
+        [Test]
+        public void ProjectCreateModel_Parameter()
+        {
+            SystemUnderTest.IsActive.ShouldBe(BooleanTrue);
         }
 
         [Test]

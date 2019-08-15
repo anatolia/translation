@@ -72,6 +72,12 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
         }
 
         [Test]
+        public void LabelCloneModel_Parameter()
+        {
+           SystemUnderTest.ProjectName.ShouldBe(OrganizationOneProjectOneName);
+        }
+
+        [Test]
         public void LabelCreateModel_SetInputModelValues()
         {
             // arrange

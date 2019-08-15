@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections;
-
 using NUnit.Framework;
 using Shouldly;
-
 using Translation.Client.Web.Models.User;
 using Translation.Common.Helpers;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
 
-namespace Translation.Tests.Client.Models.ViewModels.User
+namespace Translation.Tests.Models.ViewModels.User
 {
     [TestFixture]
     public class InviteModelTests

@@ -67,6 +67,7 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
             SystemUnderTest.OrganizationInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
             SystemUnderTest.ProjectInput.Value.ShouldBe(SystemUnderTest.ProjectUid.ToUidString());
             SystemUnderTest.ProjectNameInput.Value.ShouldBe(SystemUnderTest.ProjectName);
+            SystemUnderTest.UpdateExistedTranslationsInput.Value.ShouldBe(SystemUnderTest.UpdateExistedTranslations);
         }
 
         public static IEnumerable MessageTestCases
@@ -86,17 +87,20 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
                                               new[] { "organization_uid_not_valid",
                                                       "project_uid_not_valid",
                                                       "project_name_required" },
-                                              new[] { "csv_required_error_message",
-                                                      "file_is_not_csv_error_message" },
+                                              new[] { "csv_required_error_message"},
                                               false);
 
                 yield return new TestCaseData(CaseThree,
                                               EmptyUid, EmptyUid, EmptyString,
-                                              GetCsvFile(5),
+                                              GetIcon(),
                                               new[] { "organization_uid_not_valid",
                                                       "project_uid_not_valid",
                                                       "project_name_required" },
-                                              new[] { "csv_required_error_message" },
+                                              new[]
+                                              {
+                                                  "file_is_not_csv_error_message" ,
+                                                  "csv_required_error_message"
+                                              },
                                               false);
             }
         }

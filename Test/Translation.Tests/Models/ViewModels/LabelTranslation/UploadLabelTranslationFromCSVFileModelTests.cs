@@ -3,7 +3,6 @@ using System.Collections;
 using Microsoft.AspNetCore.Http;
 using NUnit.Framework;
 using Shouldly;
-
 using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Common.Helpers;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
@@ -11,7 +10,7 @@ using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
 
-namespace Translation.Tests.Client.Models.ViewModels.LabelTranslation
+namespace Translation.Tests.Models.ViewModels.LabelTranslation
 {
     [TestFixture]
     public class UploadLabelTranslationFromCSVFileModelTests
@@ -66,6 +65,7 @@ namespace Translation.Tests.Client.Models.ViewModels.LabelTranslation
             SystemUnderTest.OrganizationInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
             SystemUnderTest.LabelInput.Value.ShouldBe(SystemUnderTest.LabelUid.ToUidString());
             SystemUnderTest.LabelKeyInput.Value.ShouldBe(SystemUnderTest.LabelKey);
+            SystemUnderTest.UpdateExistedTranslationsInput.Value.ShouldBe(SystemUnderTest.UpdateExistedTranslations);
         }
 
         public static IEnumerable MessageTestCases

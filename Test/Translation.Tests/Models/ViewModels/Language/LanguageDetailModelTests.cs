@@ -1,10 +1,11 @@
 ﻿using NUnit.Framework;
-
+using Shouldly;
 using Translation.Client.Web.Models.Language;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
+using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
 
 
-namespace Translation.Tests.Client.Models.ViewModels.Language
+namespace Translation.Tests.Models.ViewModels.Language
 {
     [TestFixture]
     public class LanguageDetailModelTests
@@ -21,6 +22,11 @@ namespace Translation.Tests.Client.Models.ViewModels.Language
         public void LanguageDetailModel_Title()
         {
             Assert.AreEqual(SystemUnderTest.Title, "language_detail_title");
+        }
+        [Test]
+        public void LanguageDetailModel_Parameter()
+        {
+            SystemUnderTest.Icon.ShouldBe(null);
         }
 
     }

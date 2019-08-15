@@ -34,12 +34,10 @@
     <Folder Include="Models\ViewModels\Integration\" />
     <Folder Include="Models\ViewModels\Journal\" />
     <Folder Include="Models\ViewModels\LabelTranslation\" />
-    <Folder Include="Models\ViewModels\Label\" />
     <Folder Include="Models\ViewModels\Language\" />
     <Folder Include="Models\ViewModels\Organization\" />
     <Folder Include="Models\ViewModels\Project\" />
     <Folder Include="Models\ViewModels\Token\" />
-    <Folder Include="Models\ViewModels\User\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,8 @@
 ﻿using NUnit.Framework;
-
+using Shouldly;
 using Translation.Client.Web.Models.Token;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
+using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
 namespace Translation.Tests.Client.Models.ViewModels.Admin
 {
@@ -20,6 +21,14 @@ namespace Translation.Tests.Client.Models.ViewModels.Admin
         public void ActiveTokensModel_Title()
         {
             Assert.AreEqual(SystemUnderTest.Title, "active_tokens_title");
+        }
+
+        [Test]
+        public void ActiveTokensModel_Parameter()
+        {
+          SystemUnderTest.ClientUid.ShouldBe(UidStringOne);
+          SystemUnderTest.IntegrationUid.ShouldBe(UidStringTwo);
+          SystemUnderTest.IntegrationName.ShouldBe(OrganizationOneIntegrationOneName);
         }
     }
 }

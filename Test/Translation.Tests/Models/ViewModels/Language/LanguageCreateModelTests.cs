@@ -1,17 +1,14 @@
 ﻿using System.Collections;
 using Microsoft.AspNetCore.Http;
-
 using NUnit.Framework;
 using Shouldly;
-
 using Translation.Client.Web.Models.Language;
-using Translation.Common.Helpers;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 using static Translation.Tests.TestHelpers.FakeEntityTestHelper;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.AssertViewModelTestHelper;
 
-namespace Translation.Tests.Client.Models.ViewModels.Language
+namespace Translation.Tests.Models.ViewModels.Language
 {
     [TestFixture]
     public class LanguageCreateModelTests
@@ -64,6 +61,12 @@ namespace Translation.Tests.Client.Models.ViewModels.Language
         public void LanguageCreateModel_DescriptionInput()
         {
             AssertLongInputModel(SystemUnderTest.DescriptionInput, "Description", "description");
+        }
+
+        [Test]
+        public void LanguageCreateModel_Parameter()
+        {
+           SystemUnderTest.Description.ShouldBe(StringOne);
         }
 
         [Test]

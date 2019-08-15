@@ -1,7 +1,8 @@
 ﻿using NUnit.Framework;
-
+using Shouldly;
 using Translation.Client.Web.Models.Organization;
 using static Translation.Tests.TestHelpers.FakeModelTestHelper;
+using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
 namespace Translation.Tests.Client.Models.ViewModels.Label
 {
@@ -20,6 +21,13 @@ namespace Translation.Tests.Client.Models.ViewModels.Label
         public void OrganizationRevisionReadListModel_Title()
         {
             Assert.AreEqual(SystemUnderTest.Title, "organization_revision_list_title");
+        }
+
+        [Test]
+        public void OrganizationRevisionReadListModel_Parameter()
+        {
+           SystemUnderTest.OrganizationUid.ShouldBe(UidOne);
+           SystemUnderTest.OrganizationName.ShouldBe(OrganizationOneName);
         }
     }
 }
