@@ -677,7 +677,7 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task ChangeActivationPOST_InvalidParameter()
+        public async Task ChangeActivation_POST_InvalidParameter()
         {
             // arrange
 
@@ -687,5 +687,286 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertView<ForbidResult>(result);
         }
+
+        [Test]
+        public async Task OrganizationChangeActivation_POST()
+        {
+            // arrange
+            MockAdminService.Setup_OrganizationChangeActivation_Returns_OrganizationChangeActivationResponse_Success();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.OrganizationChangeActivation(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(BooleanTrue);
+            MockAdminService.Verify_OrganizationChangeActivation();
+        }
+
+        [Test]
+        public async Task OrganizationChangeActivation_POST_FailedResponse()
+        {
+            // arrange
+            MockAdminService.Setup_OrganizationChangeActivation_Returns_OrganizationChangeActivationResponse_Failed();
+            // act
+            var result = (JsonResult)await SystemUnderTest.OrganizationChangeActivation(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(BooleanFalse);
+            MockAdminService.Verify_OrganizationChangeActivation();
+        }
+
+        [Test]
+        public async Task OrganizationChangeActivation_POST_InvalidResponse()
+        {
+            // arrange
+            MockAdminService.Setup_OrganizationChangeActivation_Returns_OrganizationChangeActivationResponse_Invalid();
+            // act
+            var result = (JsonResult)await SystemUnderTest.OrganizationChangeActivation(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(BooleanFalse);
+            MockAdminService.Verify_OrganizationChangeActivation();
+        }
+
+        [Test]
+        public async Task OrganizationChangeActivation_POST_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.OrganizationChangeActivation(EmptyUid);
+
+            // assert
+            AssertView<ForbidResult>(result);
+        }
+
+        [Test]
+        public async Task DegradeToUser_POST()
+        {
+            // arrange
+            MockAdminService.Setup_DemoteToUser_Returns_AdminDemoteResponse_Success();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.DegradeToUser(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(BooleanTrue);
+            MockAdminService.Verify_DemoteToUser();
+        }
+
+        [Test]
+        public async Task DegradeToUser_POST_FailedResponse()
+        {
+            // arrange
+            MockAdminService.Setup_DemoteToUser_Returns_AdminDemoteResponse_Failed();
+            // act
+            var result = (JsonResult)await SystemUnderTest.DegradeToUser(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(BooleanFalse);
+            MockAdminService.Verify_DemoteToUser();
+        }
+
+        [Test]
+        public async Task DegradeToUser_POST_InvalidResponse()
+        {
+            // arrange
+            MockAdminService.Setup_DemoteToUser_Returns_AdminDemoteResponse_Invalid();
+            // act
+            var result = (JsonResult)await SystemUnderTest.DegradeToUser(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(BooleanFalse);
+            MockAdminService.Verify_DemoteToUser();
+        }
+
+        [Test]
+        public async Task DegradeToUser_POST_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.DegradeToUser(EmptyUid);
+
+            // assert
+            AssertView<JsonResult>(result);
+        }
+
+        [Test]
+        public async Task UserUpgradeToAdmin_POST()
+        {
+            // arrange
+            MockAdminService.Setup_UpgradeToAdmin_Returns_AdminUpgradeResponse_Success();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.UserUpgradeToAdmin(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(BooleanTrue);
+            MockAdminService.Verify_UpgradeToAdmin();
+        }
+
+        [Test]
+        public async Task UserUpgradeToAdmin_POST_FailedResponse()
+        {
+            // arrange
+            MockAdminService.Setup_UpgradeToAdmin_Returns_AdminUpgradeResponse_Failed();
+            // act
+            var result = (JsonResult)await SystemUnderTest.UserUpgradeToAdmin(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(BooleanFalse);
+            MockAdminService.Verify_UpgradeToAdmin();
+        }
+
+        [Test]
+        public async Task UserUpgradeToAdmin_POST_InvalidResponse()
+        {
+            // arrange
+            MockAdminService.Setup_UpgradeToAdmin_Returns_AdminUpgradeResponse_Invalid();
+            // act
+            var result = (JsonResult)await SystemUnderTest.UserUpgradeToAdmin(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(BooleanFalse);
+            MockAdminService.Verify_UpgradeToAdmin();
+        }
+
+        [Test]
+        public async Task UserUpgradeToAdmin_POST_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.UserUpgradeToAdmin(EmptyUid);
+
+            // assert
+            AssertView<ForbidResult>(result);
+        }
+
+        [Test]
+        public async Task AcceptInvite_GET()
+        {
+            // arrange
+            MockAdminService.Setup_ValidateSuperAdminUserInvitation_Returns_AdminInviteValidateResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.AcceptInvite(UidOne, EmailOne);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockAdminService.Verify_ValidateSuperAdminUserInvitation();
+        }
+
+        [Test]
+        public async Task AcceptInvite_GET_FailedResponse()
+        {
+            // arrange
+            MockAdminService.Setup_ValidateSuperAdminUserInvitation_Returns_AdminInviteValidateResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.AcceptInvite(UidOne, EmailOne);
+
+            // assert
+            AssertView<RedirectResult>(result);
+            MockAdminService.Verify_ValidateSuperAdminUserInvitation();
+        }
+
+        [Test]
+        public async Task AcceptInvite_GET_InvalidResponse()
+        {
+            // arrange
+            MockAdminService.Setup_ValidateSuperAdminUserInvitation_Returns_AdminInviteValidateResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.AcceptInvite(UidOne, EmailOne);
+
+            // assert
+            AssertViewAccessDenied(result);
+            MockAdminService.Verify_ValidateSuperAdminUserInvitation();
+        }
+
+        [Test]
+        public async Task AcceptInvite_GET_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.AcceptInvite(EmptyUid, StringOne);
+
+            // assert
+            AssertViewAccessDenied(result);
+        }
+
+        [Test]
+        public async Task AcceptInvite_POST()
+        {
+            // arrange
+            MockAdminService.Setup_AcceptSuperAdminUserInvite_Returns_AdminAcceptInviteResponse_Success();
+            var model = GetAdminAcceptInviteModel();
+
+            // act
+            var result = await SystemUnderTest.AcceptInvite(model);
+
+            // assert
+            ((RedirectResult)result).Url.ShouldBe("/Admin/AcceptInviteDone/");
+            MockAdminService.Verify_AcceptSuperAdminUserInvite();
+        }
+
+        [Test]
+        public async Task AcceptInvite_POST_FailedResponse()
+        {
+            // arrange
+            MockAdminService.Setup_AcceptSuperAdminUserInvite_Returns_AdminAcceptInviteResponse_Failed();
+            var model = GetAdminAcceptInviteModel();
+
+            // act
+            var result = await SystemUnderTest.AcceptInvite(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<AdminAcceptInviteModel>(result);
+            MockAdminService.Verify_AcceptSuperAdminUserInvite();
+        }
+
+        [Test]
+        public async Task AcceptInvite_POST_InvalidResponse()
+        {
+            // arrange
+            MockAdminService.Setup_AcceptSuperAdminUserInvite_Returns_AdminAcceptInviteResponse_Invalid();
+            var model = GetAdminAcceptInviteModel();
+
+            // act
+            var result = await SystemUnderTest.AcceptInvite(model);
+
+            // assert
+            AssertErrorMessagesForInvalidOrFailedResponse<AdminAcceptInviteModel>(result);
+            MockAdminService.Verify_AcceptSuperAdminUserInvite();
+        }
+
+        [Test]
+        public async Task AcceptInvite_POST_InvalidModel()
+        {
+            // arrange
+            var model = new AdminAcceptInviteModel();
+
+            // act
+            var result = await SystemUnderTest.AcceptInvite(model);
+
+            // assert
+            AssertInputErrorMessagesOfView(result, model);
+        }
+
+        [Test]
+        public void AcceptInviteDone_GET()
+        {
+            // arrange
+
+            // act
+            var result = SystemUnderTest.AcceptInviteDone();
+
+            // assert
+            AssertViewWithModel<AdminAcceptInviteDoneModel>(result);
+        }
+
     }
 }

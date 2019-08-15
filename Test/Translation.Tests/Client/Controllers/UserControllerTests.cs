@@ -452,8 +452,6 @@ namespace Translation.Tests.Client.Controllers
             AssertInputErrorMessagesOfView(result, model);
         }
 
-
-
         [Test]
         public void ResetPasswordDone_GET()
         {
