@@ -11,11 +11,9 @@ namespace Translation.Integrations
     public class TextTranslateIntegration : ITextTranslateIntegration
     {
         private readonly ITextTranslateProvider _textTranslateProvider;
-        public string ProviderType { get; set; }
 
         public TextTranslateIntegration(ITextTranslateProvider textTranslateProvider)
         {
-            ProviderType = ConfigurationManager.AppSettings["TRANSLATE_PROVIDER_TYPE"];
             _textTranslateProvider = textTranslateProvider;
         }
 

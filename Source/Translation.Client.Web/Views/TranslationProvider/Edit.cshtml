@@ -1,0 +1,26 @@
+﻿@model TranslationProviderEditModel
+
+<h1 data-translation="@Model.Title">@Model.Title</h1>
+<div>
+    <partial name="Components/_InfoMessages" model="@Model.InfoMessages" />
+    <br />
+    <a href="https://medium.com">medium</a>
+</div>
+
+<div>
+    <label data-translation="translationProvider">Translation_Provider</label>
+    <a href="#">@Model.Name</a>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+
+    <partial name="Components/_Hidden" model="@Model.TranslationProviderInput" />
+    <partial name="Components/_Hidden" model="@Model.TranslationProviderNameInput" />
+
+    <partial name="Components/_Textarea" model="@Model.ValueInput" />
+
+    <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
+    <partial name="Components/_ErrorMessages" model="@Model.WarningMessages" />
+
+    <button type="submit" data-translation="edit_button">edit_button</button>
+</form>

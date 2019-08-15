@@ -20,8 +20,10 @@ using Translation.Common.Models.Responses.Integration.Token.RequestLog;
 using Translation.Common.Models.Responses.Journal;
 using Translation.Common.Models.Responses.Organization;
 using Translation.Common.Models.Responses.SendEmailLog;
+using Translation.Common.Models.Responses.TranslationProvider;
 using Translation.Common.Models.Responses.User;
 using Translation.Common.Models.Responses.User.LoginLog;
+using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
@@ -39,6 +41,8 @@ namespace Translation.Service
         private readonly UserFactory _userFactory;
         private readonly IJournalRepository _journalRepository;
         private readonly JournalFactory _journalFactory;
+        private readonly ITranslationProviderRepository _translationProviderRepository;
+        private readonly TranslationProviderFactory _translationProviderFactory;
         private readonly ITokenRequestLogRepository _tokenRequestLogRepository;
         private readonly TokenRequestLogFactory _tokenRequestLogFactory;
         private readonly ISendEmailLogRepository _sendEmailLogRepository;
@@ -54,6 +58,8 @@ namespace Translation.Service
                             UserFactory userFactory,
                             IJournalRepository journalRepository,
                             JournalFactory journalFactory,
+                            ITranslationProviderRepository translationProviderRepository,
+                            TranslationProviderFactory translationProviderFactory,
                             ITokenRequestLogRepository tokenRequestLogRepository,
                             TokenRequestLogFactory tokenRequestLogFactory,
                             ISendEmailLogRepository sendEmailLogRepository,
@@ -69,6 +75,8 @@ namespace Translation.Service
             _userFactory = userFactory;
             _journalRepository = journalRepository;
             _journalFactory = journalFactory;
+            _translationProviderRepository = translationProviderRepository;
+            _translationProviderFactory = translationProviderFactory;
             _tokenRequestLogRepository = tokenRequestLogRepository;
             _tokenRequestLogFactory = tokenRequestLogFactory;
             _sendEmailLogRepository = sendEmailLogRepository;
@@ -386,12 +394,64 @@ namespace Translation.Service
             var result = await _organizationRepository.Update(request.CurrentUserId, organization);
             if (result)
             {
-                _cacheManager.UpsertOrganizationCache(organization,_organizationFactory.MapCurrentOrganization(organization));
-                
+                _cacheManager.UpsertOrganizationCache(organization, _organizationFactory.MapCurrentOrganization(organization));
+
                 response.Status = ResponseStatus.Success;
                 return response;
             }
 
+            response.SetFailed();
+            return response;
+        }
+
+        public async Task<TranslationProviderChangeActivationResponse> TranslationProviderChangeActivation(TranslationProviderChangeActivationRequest request)
+        {
+            var response = new TranslationProviderChangeActivationResponse();
+
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            if (!currentUser.IsSuperAdmin)
+            {
+                response.SetInvalid();
+                return response;
+            }
+
+            var allTranslationProviders = await _translationProviderRepository.SelectAll(x => x.Id != 0);
+            if (allTranslationProviders == null)
+            {
+                response.SetInvalidBecauseNotFound(nameof(TranslationProvider));
+                return response;
+            }
+
+            var selectedTranslationProvider = await _translationProviderRepository.Select(x => x.Uid == request.TranslationProviderUid);
+            if (selectedTranslationProvider.IsNotExist())
+            {
+                response.SetInvalidBecauseNotFound(nameof(TranslationProvider));
+                return response;
+            }
+
+            for (int i = 0; i < allTranslationProviders.Count; i++)
+            {
+                var translationProvider = allTranslationProviders[i];
+
+                if (translationProvider.Value == selectedTranslationProvider.Value)
+                {
+                    selectedTranslationProvider.IsActive = !selectedTranslationProvider.IsActive;
+                }
+                else
+                {
+                    translationProvider.IsActive = false;
+                    await _translationProviderRepository.Update(request.CurrentUserId, translationProvider);
+                }
+            }
+
+            var result = await _translationProviderRepository.Update(request.CurrentUserId, selectedTranslationProvider);
+            if (result)
+            {
+                _cacheManager.UpsertTranslationProviderCache(selectedTranslationProvider, _translationProviderFactory.MapCurrentTranslationProvider(selectedTranslationProvider));
+
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
             response.SetFailed();
             return response;
         }

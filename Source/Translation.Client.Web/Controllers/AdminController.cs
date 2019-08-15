@@ -423,6 +423,25 @@ namespace Translation.Client.Web.Controllers
             return Json(new CommonResult { IsOk = true });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> TranslationProviderChangeActivation(Guid id)
+        {
+            var TranslationproviderUid = id;
+            if (TranslationproviderUid.IsEmptyGuid())
+            {
+                return Forbid();
+            }
+
+            var request = new TranslationProviderChangeActivationRequest(CurrentUser.Id, TranslationproviderUid);
+            var response = await _adminService.TranslationProviderChangeActivation(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return Json(new CommonResult { IsOk = false, Messages = response.ErrorMessages });
+            }
+
+            return Json(new CommonResult { IsOk = true });
+        }
+
         [HttpPost,
          JournalFilter(Message = "demote_to_user")]
         public async Task<IActionResult> DegradeToUser(Guid id)
