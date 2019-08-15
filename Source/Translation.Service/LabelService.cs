@@ -762,7 +762,6 @@ namespace Translation.Service
 
                         dto.Translations.Add(new LabelTranslationSlimDto
                         {
-                            LabelKey = entity.Key,
                             Translation = labelTranslation.Translation,
                             LanguageIsoCode2 = language.IsoCode2Char
                         });

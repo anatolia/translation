@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 
@@ -1300,26 +1301,7 @@ namespace Translation.Tests.TestHelpers
 
         public static string GetTestWebRootPath()
         {
-            var root = "";
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var dirList = currentDirectory.Split("\\");
-
-            for (int i = 0; i < dirList.Length; i++)
-            {
-                var dir = dirList[i];
-                if (dir != "translation")
-                {
-                    root = Path.Combine(root, dir);
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            var webRootPath = Path.Combine(root, @"translation\Test\Translation.Tests\wwwtestroot");
-
-            return webRootPath;
+            return Path.Combine("wwwtestroot");
         }
     }
 }
