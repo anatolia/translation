@@ -23,12 +23,12 @@ namespace Translation.Integrations
             TranslateProviders=new Dictionary<string, ITextTranslateProvider>();
             TranslateProviders.Add("google",new GoogleTranslateProvider(translationProviderRepository));
             TranslateProviders.Add("yandex", new YandexTranslateProvider(translationProviderRepository));
-
         }
 
         public async Task<LabelGetTranslatedTextResponse> GetTranslatedText(LabelGetTranslatedTextRequest request)
         {
             var response = new LabelGetTranslatedTextResponse();
+
             var provider = await _translationProviderRepository.Select(x => x.IsActive == true);
 
             response.Item.Name = await TranslateProviders[provider.Name].TranslateText(request.TextToTranslate, request.TargetLanguageIsoCode2, request.SourceLanguageIsoCode2);

@@ -20,5 +20,17 @@ namespace Translation.Tests.Models.InputModels
             model.IsAddNewEnabled.ShouldBe(!string.IsNullOrEmpty(HttpsUrl));
             model.IsSetFirstItem.ShouldBe(BooleanTrue);
         }
+
+        [Test]
+        public void SelectInputModel_Parameter()
+        {
+            var model = GetSelectInputModel();
+
+            model.IsAllOptionsVisible.ShouldBe(BooleanTrue);
+            model.IsMultiple.ShouldBe(BooleanTrue);
+            model.IsHavingDetailInfo.ShouldBe(BooleanTrue);
+            model.DetailInfoDataUrl.ShouldBe(HttpUrl);
+            model.Parent.ShouldBe(StringOne);
+        }
     }
 }

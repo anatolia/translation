@@ -5,6 +5,7 @@ using Moq;
 
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
+using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Admin;
 using Translation.Common.Models.Requests.Integration.Token;
 using Translation.Common.Models.Requests.Journal;
@@ -17,14 +18,34 @@ using Translation.Common.Models.Responses.Integration.Token.RequestLog;
 using Translation.Common.Models.Responses.Journal;
 using Translation.Common.Models.Responses.Organization;
 using Translation.Common.Models.Responses.SendEmailLog;
+using Translation.Common.Models.Responses.TranslationProvider;
 using Translation.Common.Models.Responses.User;
 using Translation.Common.Models.Responses.User.LoginLog;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Tests.TestHelpers.FakeDtoTestHelper;
 
 namespace Translation.Tests.SetupHelpers
 {
     public static class AdminServiceSetupHelper
     {
+
+        public static void Setup_TranslationProviderChangeActivation_Returns_TranslationProviderChangeActivationResponse_Success(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.TranslationProviderChangeActivation(It.IsAny<TranslationProviderChangeActivationRequest>()))
+                .ReturnsAsync(new TranslationProviderChangeActivationResponse() { Status = ResponseStatus.Success });
+        }
+
+        public static void Setup_TranslationProviderChangeActivation_Returns_TranslationProviderChangeActivationResponse_Failed(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.TranslationProviderChangeActivation(It.IsAny<TranslationProviderChangeActivationRequest>()))
+                .ReturnsAsync(new TranslationProviderChangeActivationResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } });
+        }
+
+        public static void Setup_TranslationProviderChangeActivation_Returns_TranslationProviderChangeActivationResponse_Invalid(this Mock<IAdminService> service)
+        {
+            service.Setup(x => x.TranslationProviderChangeActivation(It.IsAny<TranslationProviderChangeActivationRequest>()))
+                .ReturnsAsync(new TranslationProviderChangeActivationResponse() { Status = ResponseStatus.Invalid, ErrorMessages = new List<string> { StringOne } });
+        }
 
         public static void Setup_AcceptSuperAdminUserInvite_Returns_AdminAcceptInviteResponse_Success(this Mock<IAdminService> service)
         {
@@ -154,8 +175,9 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetSendEmailLogs_Returns_AllSendEmailReadListResponse_Success(this Mock<IAdminService> service)
         {
+            var items= new List<SendEmailLogDto>(){ GetSendEmailLogDto()};
             service.Setup(x => x.GetSendEmailLogs(It.IsAny<AllSendEmailLogReadListRequest>()))
-                .ReturnsAsync(new AllSendEmailReadListResponse { Status = ResponseStatus.Success });
+                .ReturnsAsync(new AllSendEmailReadListResponse { Status = ResponseStatus.Success,Items = items});
         }
 
         public static void Setup_GetSendEmailLogs_Returns_AllSendEmailReadListResponse_Failed(this Mock<IAdminService> service)
@@ -172,8 +194,9 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetTokenRequestLogs_Returns_AllJournalReadListResponse_Success(this Mock<IAdminService> service)
         {
+            var items= new List<TokenRequestLogDto>(){GetTokenRequestLogDto()};
             service.Setup(x => x.GetTokenRequestLogs(It.IsAny<AllTokenRequestLogReadListRequest>()))
-                .ReturnsAsync(new AllTokenRequestLogReadListResponse { Status = ResponseStatus.Success });
+                .ReturnsAsync(new AllTokenRequestLogReadListResponse { Status = ResponseStatus.Success,Items = items});
         }
 
         public static void Setup_GetTokenRequestLogs_Returns_AllJournalReadListResponse_Failed(this Mock<IAdminService> service)
@@ -190,8 +213,9 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetJournals_Returns_JournalReadListResponse_Success(this Mock<IAdminService> service)
         {
+            var items= new List<JournalDto>() { GetJournalDto()};
             service.Setup(x => x.GetJournals(It.IsAny<AllJournalReadListRequest>()))
-                .ReturnsAsync(new JournalReadListResponse { Status = ResponseStatus.Success });
+                .ReturnsAsync(new JournalReadListResponse { Status = ResponseStatus.Success , Items = items});
         }
 
         public static void Setup_GetJournals_Returns_JournalReadListResponse_Failed(this Mock<IAdminService> service)
@@ -208,14 +232,16 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetAllUsers_Returns_AllUserReadListResponse_Success(this Mock<IAdminService> service)
         {
+            var items = new List<UserDto>() { GetUserDto() };
             service.Setup(x => x.GetAllUsers(It.IsAny<AllUserReadListRequest>()))
-                .ReturnsAsync(new AllUserReadListResponse { Status = ResponseStatus.Success });
+                .ReturnsAsync(new AllUserReadListResponse { Status = ResponseStatus.Success, Items = items });
         }
 
         public static void Setup_GetAllUserLoginLogs_Returns_AllLoginLogReadListResponse_Success(this Mock<IAdminService> service)
         {
+            var items = new List<UserLoginLogDto>() { GetUserLoginLogDto() };
             service.Setup(x => x.GetAllUserLoginLogs(It.IsAny<AllLoginLogReadListRequest>()))
-                .ReturnsAsync(new AllLoginLogReadListResponse() { Status = ResponseStatus.Success });
+                .ReturnsAsync(new AllLoginLogReadListResponse() { Status = ResponseStatus.Success, Items = items });
         }
 
         public static void Setup_GetAllUserLoginLogs_Returns_AllLoginLogReadListResponse_Failed(this Mock<IAdminService> service)
@@ -232,8 +258,9 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetSuperAdmins_Returns_SuperAdminUserReadListResponse_Success(this Mock<IAdminService> service)
         {
+            var items = new List<UserDto>() { GetUserDto() };
             service.Setup(x => x.GetSuperAdmins(It.IsAny<SuperAdminUserReadListRequest>()))
-                    .ReturnsAsync(new SuperAdminUserReadListResponse() { Status = ResponseStatus.Success });
+                    .ReturnsAsync(new SuperAdminUserReadListResponse() { Status = ResponseStatus.Success, Items = items });
         }
 
         public static void Setup_GetOrganizations_Returns_OrganizationReadListResponse_Success(this Mock<IAdminService> service)
@@ -346,6 +373,11 @@ namespace Translation.Tests.SetupHelpers
         public static void Verify_AcceptSuperAdminUserInvite(this Mock<IAdminService> service)
         {
             service.Verify(x => x.AcceptSuperAdminUserInvite(It.IsAny<AdminAcceptInviteRequest>()));
+        }
+
+        public static void Verify_TranslationProviderChangeActivation(this Mock<IAdminService> service)
+        {
+            service.Verify(x => x.TranslationProviderChangeActivation(It.IsAny<TranslationProviderChangeActivationRequest>()));
         }
     }
 }

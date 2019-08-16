@@ -14,7 +14,7 @@ namespace Translation.Tests.Client.Mappers
         public void LanguageMapper_MapLanguageEditModel()
         {
             // arrange
-            var dto = GetLanguageDto();
+            var dto = GetLanguageDtoOne();
 
             // act
             var result = LanguageMapper.MapLanguageEditModel(dto);
@@ -33,7 +33,7 @@ namespace Translation.Tests.Client.Mappers
         public void LanguageMapper_MapLanguageDetailModel()
         {
             // arrange
-            var dto = GetLanguageDto();
+            var dto = GetLanguageDtoOne();
 
             // act
             var result = LanguageMapper.MapLanguageDetailModel(dto);

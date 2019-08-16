@@ -1,6 +1,9 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
+using Shouldly;
 using Translation.Client.Web.Models;
-using Translation.Tests.TestHelpers;
+using static Translation.Tests.TestHelpers.FakeModelTestHelper;
+using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
 namespace Translation.Tests.Client.Models
 {
@@ -12,13 +15,19 @@ namespace Translation.Tests.Client.Models
         [SetUp]
         public void run_before_every_test()
         {
-            SystemUnderTest = FakeModelTestHelper.GetHomeModel();
+            SystemUnderTest = GetHomeModel();
         }
 
         [Test]
         public void AllUserListModel_Title()
         {
             Assert.AreEqual(SystemUnderTest.Title, "welcome_to_translation_service");
+        }
+        [Test]
+        public void AllUserListModel_Parameter()
+        {
+          SystemUnderTest.IsAuthenticated.ShouldBe(BooleanTrue);
+          SystemUnderTest.IsSuperAdmin.ShouldBe(BooleanTrue);
         }
     }
 }

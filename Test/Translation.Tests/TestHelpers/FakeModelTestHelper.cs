@@ -414,7 +414,7 @@ namespace Translation.Tests.TestHelpers
 
             model.IsoCode2 = IsoCode2One;
             model.IsoCode3 = IsoCode3One;
-            model.Icon = GetIcon();
+            model.Icon = GetIconNotContentType();
 
             return model;
         }
@@ -1006,6 +1006,14 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static InputModel GetInputModel()
+        {
+            var model = new InputModel(StringOne,StringOne);
+            model.InfoText = StringOne;
+
+            return model;
+        }
+
         public static DateInputModel GetDateInputModel(string name, string labelKey, bool isRequired)
         {
             var model = new DateInputModel(name, labelKey, isRequired);
@@ -1025,6 +1033,18 @@ namespace Translation.Tests.TestHelpers
         {
             var model = new SelectInputModel(name, labelKey, dataUrl, required, addNewUrl);
 
+            return model;
+        }
+
+        public static SelectInputModel GetSelectInputModel()
+        {
+            var model = new SelectInputModel(StringOne, StringOne, HttpUrl, BooleanTrue, HttpUrl);
+            model.IsAllOptionsVisible = BooleanTrue;
+            model.IsMultiple = BooleanTrue;
+            model.IsHavingDetailInfo = BooleanTrue;
+            model.DetailInfoDataUrl = HttpUrl;
+            model.Parent = StringOne;
+        
             return model;
         }
 
@@ -1413,7 +1433,6 @@ namespace Translation.Tests.TestHelpers
             model.Ip = StringOne;
             model.Platform = StringOne;
             model.PlatformVersion = StringOne;
-
             return model;
         }
     }
