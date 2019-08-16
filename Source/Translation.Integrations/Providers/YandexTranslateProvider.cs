@@ -6,22 +6,37 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 using Translation.Common.Contracts;
+using Translation.Data.Repositories.Contracts;
 
 namespace Translation.Integrations.Providers
 {
     public class YandexTranslateProvider : ITextTranslateProvider
     {
-        public string YandexTranslationApiKey { get;}
-        private string RequestUrl { get;}
+        private readonly ITranslationProviderRepository _translationProviderRepository;
+        public string Name { get; }
+        public string YandexTranslationApiKey { get; set; }
+        private string RequestUrl { get; set; }
 
-        public YandexTranslateProvider()
+        public YandexTranslateProvider(ITranslationProviderRepository translationProviderRepository)
         {
-            YandexTranslationApiKey = ConfigurationManager.AppSettings["YANDEX_TRANSLATE_API_KEY"];
+            _translationProviderRepository = translationProviderRepository;
+            Name = "yandex";
+        }
+
+        public void CreateClient()
+        {
+            var provider = _translationProviderRepository.Select(x => x.Name == Name).Result;
+            YandexTranslationApiKey = provider.Value;
             RequestUrl = "https://translate.yandex.net/api/v1.5/tr.json/translate";
         }
 
         public async Task<string> TranslateText(string textToTranslate, string sourceLanguageIsoCode2, string targetLanguageIsoCode2)
         {
+            if (YandexTranslationApiKey==null || RequestUrl==null)
+            {
+                CreateClient();
+            }
+
             var requestBody = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("text", textToTranslate),

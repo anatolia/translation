@@ -61,9 +61,9 @@ namespace Translation.Client.Web.Controllers
                 var item = response.Items[i];
                 var stringBuilder = new StringBuilder();
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Name}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/TranslationProvider/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareChangeActivationButton("/Admin/TranslationProviderChangeActivation/")}");
+                stringBuilder.Append($"{result.PrepareChangeAllActivationButton("/Admin/TranslationProviderChangeActivation/")}");
                 stringBuilder.Append($"{result.PrepareLink($"/TranslationProvider/Edit/{item.Uid}", "Edit",true)}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
@@ -94,7 +94,6 @@ namespace Translation.Client.Web.Controllers
             return Json(new CommonResult { IsOk = true });
         }
 
-
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -115,7 +114,6 @@ namespace Translation.Client.Web.Controllers
 
             return View(model);
         }
-
 
         [HttpPost,
          JournalFilter(Message = "journal_translation_provider_edit")]
@@ -141,5 +139,24 @@ namespace Translation.Client.Web.Controllers
             return Redirect($"/TranslationProvider/List");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Detail(Guid id)
+        {
+            var translationProviderUid = id;
+            if (translationProviderUid.IsEmptyGuid())
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var request = new TranslationProviderReadRequest(CurrentUser.Id, translationProviderUid);
+            var response = await _translationProviderService.GetTranslationProvider(request);
+            if (response.Status.IsNotSuccess)
+            {
+                return RedirectToAccessDenied();
+            }
+
+            var model = TranslationProviderMapper.MapTranslationProviderDetailModel(response.Item);
+            return View(model);
+        }
     }
 }

@@ -346,7 +346,6 @@ function handleChangeActivationRow(btn, url) {
     let row = btn.parentElement.parentElement;
     let table = row.parentElement.parentElement;
     let thead = table.firstChild;
-
     let isActiveIndex = 0;
     for (var i = 0; i < thead.firstChild.childNodes.length; i++) {
         if (thead.firstChild.childNodes[i].dataset.translation === 'is_active') {
@@ -358,6 +357,7 @@ function handleChangeActivationRow(btn, url) {
     let uid = row.dataset.uid;
     handleRow(btn, 'id=' + uid, url,
         function (req) {
+            
             let response = JSON.parse(req.response);
             if (response.isOk === true) {
                 var children = row.children[isActiveIndex];
@@ -367,8 +367,44 @@ function handleChangeActivationRow(btn, url) {
 
                 hidePopup();
             } else {
-                let messages = JSON.parse(req.response).join('<br/>');
-                showPopupMessage(messages);
+                let messages = JSON.parse(req.response);
+                showPopupMessage(messages["messages"].join('<br/>'));
+            }
+        });
+}
+
+
+function handleChangeActivationAllRow(btn, url) {
+    let row = btn.parentElement.parentElement;
+    let table = row.parentElement.parentElement;
+    let thead = table.firstChild;
+    let isActiveIndex = 0;
+    for (var i = 0; i < thead.firstChild.childNodes.length; i++) {
+        if (thead.firstChild.childNodes[i].dataset.translation === 'is_active') {
+            break;
+        }
+        isActiveIndex++;
+    }
+
+    let uid = row.dataset.uid;
+    handleRow(btn, 'id=' + uid, url,
+        function (req) {
+            
+            let response = JSON.parse(req.response);
+            if (response.isOk === true) {
+                var checkboxses=row.parentElement.querySelectorAll('input[type=checkbox]');
+                checkboxses.forEach(function(box) {
+                    box.checked = false;
+                });
+                var children = row.children[isActiveIndex];
+                let old = children.children[0].checked;
+                let isTrue = old === true;
+                children.children[0].checked = !isTrue;
+
+                hidePopup();
+            } else {
+                let messages = JSON.parse(req.response);
+                showPopupMessage(messages["messages"].join('<br/>'));
             }
         });
 }

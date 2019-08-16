@@ -15,21 +15,9 @@ namespace Translation.Client.Web.Helpers.DependencyInstallers
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            var providerType = ConfigurationManager.AppSettings["TRANSLATE_PROVIDER_TYPE"];
-            if (providerType == null
-                || providerType.IsEmpty())
-            {
-                providerType = TranslateProviderType.Google;
-            }
+            container.Register(Component.For<ITextTranslateProvider>().ImplementedBy(typeof(GoogleTranslateProvider)).LifestyleTransient());
 
-            if (providerType == TranslateProviderType.Google)
-            {
-                container.Register(Component.For<ITextTranslateProvider>().ImplementedBy(typeof(GoogleTranslateProvider)).LifestyleTransient());
-            }
-            else if (providerType == TranslateProviderType.Yandex)
-            {
-                container.Register(Component.For<ITextTranslateProvider>().ImplementedBy(typeof(YandexTranslateProvider)).LifestyleTransient());
-            }
+            container.Register(Component.For<ITextTranslateProvider>().ImplementedBy(typeof(YandexTranslateProvider)).LifestyleTransient());
 
             container.Register(Component.For<ITextTranslateIntegration>().ImplementedBy(typeof(TextTranslateIntegration)).LifestyleTransient());
         }
