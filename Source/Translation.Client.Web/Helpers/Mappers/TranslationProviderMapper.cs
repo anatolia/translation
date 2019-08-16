@@ -24,5 +24,17 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
+
+        public static TranslationProviderDetailModel MapTranslationProviderDetailModel(TranslationProviderDto dto)
+        {
+            var model = new TranslationProviderDetailModel();
+            model.TranslationProviderUid = dto.Uid;
+            model.Value = dto.Value;
+            model.Name = dto.Name;
+            model.Description = dto.Description;
+
+            return model;
+        }
+
     }
 }
