@@ -137,8 +137,8 @@ namespace Translation.Client.Web.Helpers
 
         private static (TranslationProvider, TranslationProvider) InsertTranslationProviders(ITranslationProviderRepository translationProviderRepository, TranslationProviderFactory translationProviderFactory)
         {
-            var google = translationProviderFactory.CreateEntity("google", false, "");
-            var yandex = translationProviderFactory.CreateEntity("yandex", false, "");
+            var google = translationProviderFactory.CreateEntity("google");
+            var yandex = translationProviderFactory.CreateEntity("yandex");
 
             var googleId = translationProviderRepository.Insert(0, google).Result;
             google.Id = googleId;

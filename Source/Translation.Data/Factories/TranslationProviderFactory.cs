@@ -7,7 +7,7 @@ namespace Translation.Data.Factories
 {
     public class TranslationProviderFactory
     {
-        public TranslationProvider CreateEntity(string name, bool isActive, string value)
+        public TranslationProvider CreateEntity(string name, bool isActive=false, string value="")
         {
             var entity = new TranslationProvider();
             entity.Name = name;
