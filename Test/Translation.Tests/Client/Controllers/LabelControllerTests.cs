@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
+using Moq;
 using NUnit.Framework;
 using Shouldly;
 
@@ -894,6 +894,18 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public async Task Restore_POST_InvalidParameterRevisionZero()
+        {
+            // arrange
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(UidOne, Zero);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
+        }
+
+        [Test]
         public void ChangeActivation_POST()
         {
             // arrange
@@ -1087,6 +1099,19 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public void DownloadSampleCSVFileForBulkLabelUpload_GET_NotFound()
+        {
+            // arrange
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath_NotExists();
+
+            // act
+            var result = SystemUnderTest.DownloadSampleCSVFileForBulkLabelUpload();
+
+            // assert
+            AssertView<NotFoundResult>(result);
+        }
+
+        [Test]
         public async Task CreateBulkLabel_GET()
         {
             // arrange
@@ -1216,7 +1241,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task Translate_GET()
         {
             // arrange
-            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
+            MockLanguageService.Setup_GetLanguages_Returns_LanguageReadListResponse_Success();
             MockTextTranslateIntegration.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Success();
 
             // act
@@ -1226,43 +1251,71 @@ namespace Translation.Tests.Client.Controllers
             result.Value.ShouldNotBeNull();
             var name = (string)result.Value;
             name.ShouldBe(StringTwo);
-            MockLanguageService.Verify_GetLanguage();
+            MockLanguageService.Verify_GetLanguages();
             MockTextTranslateIntegration.Verify_GetTranslatedText();
         }
 
         [Test]
-        public async Task Translate_GET_LanguageReadResponse_Failed()
+        public async Task Translate_GET_TargetLanguageReadResponse_Failed()
         {
             // arrange
-            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Failed();
+            MockLanguageService.Setup_GetLanguages_Returns_LanguageReadListResponse_Failed();
 
             // act
             var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo);
 
             // assert
             AssertView<JsonResult>(result);
-            MockLanguageService.Verify_GetLanguage();
+            MockLanguageService.Verify_GetLanguages();
         }
 
         [Test]
-        public async Task Translate_GET_LanguageReadResponse_Invalid()
+        public async Task Translate_GET_SourceLanguageReadResponse_Failed()
         {
             // arrange
-            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Invalid();
+            MockLanguageService.Setup_GetLanguages_Returns_SourceLanguageReadResponse_Failed();
 
             // act
             var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo);
 
             // assert
             AssertView<JsonResult>(result);
-            MockLanguageService.Verify_GetLanguage();
+            MockLanguageService.Verify_GetLanguages();
+        }
+
+        [Test]
+        public async Task Translate_GET_TargetLanguageReadResponse_Invalid()
+        {
+            // arrange
+            MockLanguageService.Setup_GetLanguages_Returns_LanguageReadListResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockLanguageService.Verify_GetLanguages();
+        }
+
+        [Test]
+        public async Task Translate_GET_SourceLanguageReadResponse_Invalid()
+        {
+            // arrange
+            MockLanguageService.Setup_GetLanguages_Returns_SourceLanguageReadResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.Translate(StringOne, UidOne, UidTwo);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockLanguageService.Verify_GetLanguages();
         }
 
         [Test]
         public async Task Translate_GET_LabelGetTranslatedTextResponse_Failed()
         {
             // arrange
-            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
+            MockLanguageService.Setup_GetLanguages_Returns_LanguageReadListResponse_Success();
             MockTextTranslateIntegration.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Failed();
 
             // act
@@ -1270,7 +1323,7 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertView<JsonResult>(result);
-            MockLanguageService.Verify_GetLanguage();
+            MockLanguageService.Verify_GetLanguages();
             MockTextTranslateIntegration.Verify_GetTranslatedText();
 
         }
@@ -1279,7 +1332,7 @@ namespace Translation.Tests.Client.Controllers
         public async Task Translate_GET_LabelGetTranslatedTextResponse_Invalid()
         {
             // arrange
-            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
+            MockLanguageService.Setup_GetLanguages_Returns_LanguageReadListResponse_Success();
             MockTextTranslateIntegration.Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Invalid();
 
             // act
@@ -1287,7 +1340,7 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertView<JsonResult>(result);
-            MockLanguageService.Verify_GetLanguage();
+            MockLanguageService.Verify_GetLanguages();
             MockTextTranslateIntegration.Verify_GetTranslatedText();
         }
 
@@ -1617,7 +1670,6 @@ namespace Translation.Tests.Client.Controllers
             AssertInputErrorMessagesOfView(result, model);
         }
 
-
         [Test]
         public async Task LabelTranslationDelete_POST()
         {
@@ -1675,7 +1727,6 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertView<ForbidResult>(result);
         }
-
 
         [Test]
         public async Task LabelTranslationListData_GET()
@@ -1868,6 +1919,19 @@ namespace Translation.Tests.Client.Controllers
 
             // assert
             AssertView<FileResult>(result);
+        }
+
+        [Test]
+        public void DownloadSampleCSVFileForBulkLabelTranslationUpload_GET_NotFound()
+        {
+            // arrange
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath_NotExists();
+
+            // act
+            var result = SystemUnderTest.DownloadSampleCSVFileForBulkLabelTranslationUpload();
+
+            // assert
+            AssertView<NotFoundResult>(result);
         }
 
         [Test]

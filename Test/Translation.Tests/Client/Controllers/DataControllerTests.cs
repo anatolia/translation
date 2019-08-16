@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
+using Moq;
 using NUnit.Framework;
 using Shouldly;
 
@@ -182,7 +182,7 @@ namespace Translation.Tests.Client.Controllers
         public void GetCurrentUser_GET()
         {
             // arrange
-            
+
             // act
             var result = SystemUnderTest.GetCurrentUser();
 
@@ -190,20 +190,17 @@ namespace Translation.Tests.Client.Controllers
             AssertView<JsonResult>(result);
         }
 
-        [Ignore("Null for CurrentUser ")]
         [Test]
         public void GetCurrentUser_GET_Null()
         {
             // arrange
-            MockOrganizationService.Setup_GetCurrentUser_Returns_CurrentUserResponse_Null_Success();
-          
+            MockOrganizationService.Reset();
+
             // act
-            var result = (JsonResult) SystemUnderTest.GetCurrentUser();
+            var result = (JsonResult)SystemUnderTest.GetCurrentUser();
 
             // assert
-            AssertView<JsonResult>(result);
             result.Value.ShouldBe(null);
-            MockOrganizationService.Verify_GetCurrentUser();
         }
 
         [Test]
@@ -224,7 +221,7 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task AddLabel_GET_Failed_LabelCreateResponse()
+        public async Task AddLabel_POST_Failed_LabelCreateResponse()
         {
             // arrange
             MockIntegrationService.Setup_ValidateToken_Returns_TokenValidateResponse_Success();
@@ -241,7 +238,7 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task AddLabel_GET_Invalid_AllLabelReadListResponse()
+        public async Task AddLabel_POST_Invalid_AllLabelReadListResponse()
         {
             // arrange
             MockIntegrationService.Setup_ValidateToken_Returns_TokenValidateResponse_Success();
@@ -257,7 +254,7 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task AddLabel_GET_Failed_TokenValidateResponse()
+        public async Task AddLabel_POST_Failed_TokenValidateResponse()
         {
             // arrange
             MockIntegrationService.Setup_ValidateToken_Returns_TokenValidateResponse_Failed();
@@ -272,7 +269,7 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public async Task AddLabel_GET_Invalid_TokenValidateResponse()
+        public async Task AddLabel_POST_Invalid_TokenValidateResponse()
         {
             // arrange
             MockIntegrationService.Setup_ValidateToken_Returns_TokenValidateResponse_Invalid();
@@ -284,6 +281,21 @@ namespace Translation.Tests.Client.Controllers
             // assert
             MockIntegrationService.Verify_ValidateToken();
         }
+
+        [Test]
+        public async Task AddLabel_POST_InvalidModel()
+        {
+            // arrange
+          
+            var model = new DataAddLabelModel();
+
+            // act
+            var result = await SystemUnderTest.AddLabel(model);
+
+            // assert
+           AssertView<JsonResult>(result);
+        }
+
 
     }
 }

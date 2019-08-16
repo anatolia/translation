@@ -8,6 +8,18 @@
     <Compile Remove="Common\Requests\User\**" />
     <EmbeddedResource Remove="Common\Requests\User\**" />
     <None Remove="Common\Requests\User\**" />
+    <Content Include="wwwtestroot\files\index.html">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwtestroot\files\projectTranslations.csv">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwtestroot\files\uploadLabelCsvTemplate.csv">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwtestroot\files\uploadTranslationCsvTemplate.csv">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <None Update="wwwtestroot\images\index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -20,7 +32,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="Client\Models\ViewModels\Integration\" />
+    <Folder Include="Client\Helpers\ActionFilters\" />
     <Folder Include="Common\Responses\Admin\" />
     <Folder Include="Common\Responses\Integration\" />
     <Folder Include="Common\Responses\LabelTranslation\" />
@@ -30,6 +42,15 @@
     <Folder Include="Common\Responses\Project\" />
     <Folder Include="Common\Responses\User\" />
     <Folder Include="Enumerations\" />
+    <Folder Include="Models\ViewModels\Admin\" />
+    <Folder Include="Models\ViewModels\Integration\" />
+    <Folder Include="Models\ViewModels\Journal\" />
+    <Folder Include="Models\ViewModels\LabelTranslation\" />
+    <Folder Include="Models\ViewModels\Language\" />
+    <Folder Include="Models\ViewModels\Organization\" />
+    <Folder Include="Models\ViewModels\Project\" />
+    <Folder Include="Models\ViewModels\Token\" />
+    <Folder Include="wwwtestroot\files\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Translation.Common\Translation.Common.csproj" />
+    <ProjectReference Include="..\Translation.Data\Translation.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

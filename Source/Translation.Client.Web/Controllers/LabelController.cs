@@ -656,23 +656,20 @@ namespace Translation.Client.Web.Controllers
                 return Json(null);
             }
 
-            var targetLanguageReadRequest = new LanguageReadRequest(CurrentUser.Id, targetLanguageUid);
-            var targetLanguageReadResponse = await _languageService.GetLanguage(targetLanguageReadRequest);
-            if (targetLanguageReadResponse.Status.IsNotSuccess)
+            var targetLanguageReadResponse = Languages.Find(x => x.Uid == targetLanguageUid);
+            if (targetLanguageReadResponse == null)
             {
                 return Json(null);
             }
+            var targetLanguageIsoCode2 = targetLanguageReadResponse.IsoCode2;
 
-            var targetLanguageIsoCode2 = targetLanguageReadResponse.Item.IsoCode2;
 
-            var sourceLanguageReadRequest = new LanguageReadRequest(CurrentUser.Id, sourceLanguageUid);
-            var sourceLanguageReadResponse = await _languageService.GetLanguage(sourceLanguageReadRequest);
-            if (sourceLanguageReadResponse.Status.IsNotSuccess)
+            var sourceLanguageReadResponse = Languages.Find(x => x.Uid == sourceLanguageUid);
+            if (sourceLanguageReadResponse == null)
             {
                 return Json(null);
             }
-
-            var sourceLanguageIsoCode2 = sourceLanguageReadResponse.Item.IsoCode2;
+            var sourceLanguageIsoCode2 = sourceLanguageReadResponse.IsoCode2;
 
             var request = new LabelGetTranslatedTextRequest(CurrentUser.Id, textToTranslate, targetLanguageIsoCode2,
                                                             sourceLanguageIsoCode2);

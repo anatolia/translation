@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace Translation.Tests.HelperTests
+namespace Translation.Tests.Helpers
 {
     [TestFixture]
     public class StringHelperTests

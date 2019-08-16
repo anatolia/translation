@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
 
 using Moq;
+using NUnit.Framework.Internal;
 using StandardRepository.Models.Entities;
 
 using Translation.Common.Models.Requests.Label;
@@ -1290,6 +1292,15 @@ namespace Translation.Tests.TestHelpers
             return mockFormFile.Object;
         }
 
+        public static IFormFile GetIconNotContentType()
+        {
+            var mockFormFile = new Mock<IFormFile>();
+            mockFormFile.Setup(x => x.FileName).Returns("test.png");
+            mockFormFile.Setup(x => x.ContentType).Returns("image/jpg");
+
+            return mockFormFile.Object;
+        }
+
         public static IFormFile GetInvalidIcon()
         {
             var mockFormFile = new Mock<IFormFile>();
@@ -1301,7 +1312,30 @@ namespace Translation.Tests.TestHelpers
 
         public static string GetTestWebRootPath()
         {
-            return Path.Combine("wwwtestroot");
+            var root = "";
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var dirList = currentDirectory.Split("\\");
+            for (int i = 0; i < dirList.Length; i++)
+            {
+                var dir = dirList[i];
+                if (dir != "translation")
+                {
+                    root = Path.Combine(root, dir);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            var webRootPath = Path.Combine(root, "translation","Test","Translation.Tests","wwwtestroot");
+            return webRootPath;
+        }
+
+
+        public static string GetTestWebRootPathNotExists()
+        {
+            return Path.Combine("notwwwtestroot");
         }
     }
 }

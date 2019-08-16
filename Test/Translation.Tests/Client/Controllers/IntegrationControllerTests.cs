@@ -414,6 +414,34 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public async Task Revisions_GET_FailedResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_GetIntegration_Returns_IntegrationReadResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.Revisions(OrganizationOneIntegrationOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockIntegrationService.Verify_GetIntegration();
+        }
+
+        [Test]
+        public async Task Revisions_GET_InvalidResponse()
+        {
+            // arrange
+            MockIntegrationService.Setup_GetIntegration_Returns_IntegrationReadResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.Revisions(OrganizationOneIntegrationOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockIntegrationService.Verify_GetIntegration();
+        }
+
+        [Test]
         public async Task Revisions_GET_InvalidParameter()
         {
             // arrange
@@ -532,6 +560,18 @@ namespace Translation.Tests.Client.Controllers
 
             // act
             var result = (JsonResult)await SystemUnderTest.Restore(EmptyUid, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
+        }
+
+        [Test]
+        public async Task Restore_POST_InvalidParameterRevisionZero()
+        {
+            // arrange
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(UidOne, Zero);
 
             // assert
             ((CommonResult)result.Value).IsOk.ShouldBe(false);

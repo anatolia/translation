@@ -11,19 +11,18 @@ namespace Translation.Integrations
     public class TextTranslateIntegration : ITextTranslateIntegration
     {
         private readonly ITextTranslateProvider _textTranslateProvider;
-        public string ProviderType { get; set; }
 
         public TextTranslateIntegration(ITextTranslateProvider textTranslateProvider)
         {
-            ProviderType = ConfigurationManager.AppSettings["TRANSLATE_PROVIDER_TYPE"];
             _textTranslateProvider = textTranslateProvider;
         }
 
         public async Task<LabelGetTranslatedTextResponse> GetTranslatedText(LabelGetTranslatedTextRequest request)
         {
             var response = new LabelGetTranslatedTextResponse();
+            
             response.Item.Name = await _textTranslateProvider.TranslateText(request.TextToTranslate, request.TargetLanguageIsoCode2, request.SourceLanguageIsoCode2);
-
+            
             response.Status = ResponseStatus.Success;
             return response;
         }

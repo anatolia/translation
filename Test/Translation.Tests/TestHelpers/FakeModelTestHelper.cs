@@ -1,14 +1,18 @@
 using System;
+using Google.Apis.Util;
 using Microsoft.AspNetCore.Http;
-
+using Microsoft.EntityFrameworkCore.Scaffolding;
+using Translation.Client.Web.Models;
 using Translation.Client.Web.Models.Admin;
 using Translation.Client.Web.Models.Data;
+using Translation.Client.Web.Models.InputModels;
 using Translation.Client.Web.Models.Integration;
 using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Client.Web.Models.Language;
 using Translation.Client.Web.Models.Organization;
 using Translation.Client.Web.Models.Project;
+using Translation.Client.Web.Models.Token;
 using Translation.Client.Web.Models.User;
 using Translation.Common.Models.Shared;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
@@ -26,13 +30,96 @@ namespace Translation.Tests.TestHelpers
             model.Url = HttpsUrl;
             model.Slug = OrganizationOneProjectOneSlug;
             model.LanguageUid = UidOne;
-
+            model.LanguageName = StringOne;
+            model.IsActive = BooleanTrue;
             return model;
         }
 
         public static ChangePasswordModel GetChangePasswordModel()
         {
             var model = new ChangePasswordModel();
+            model.OldPassword = PasswordOne;
+            model.NewPassword = PasswordTwo;
+            model.ReEnterNewPassword = PasswordThree;
+
+            return model;
+        }
+
+        public static ResetPasswordModel GetResetPasswordModel(Guid token, string email, string password,
+                                                               string reEnterPassword)
+        {
+            var model = new ResetPasswordModel();
+            model.Token = token;
+            model.Email = email;
+            model.Password = password;
+            model.ReEnterPassword = reEnterPassword;
+            return model;
+        }
+
+        public static ResetPasswordModel GetResetPasswordModel()
+        {
+            var model = new ResetPasswordModel();
+            model.Token = UidOne;
+            model.Email = EmailOne;
+            model.Password = PasswordOne;
+            model.ReEnterPassword = PasswordTwo;
+
+            return model;
+        }
+
+        public static SignUpModel GetSignUpModel()
+        {
+            var model = new SignUpModel();
+            model.Email = EmailOne;
+            model.FirstName = StringOne;
+            model.LastName = StringTwo;
+            model.OrganizationName = OrganizationOneName;
+            model.Password = PasswordOne;
+            model.LanguageUid = UidOne;
+            model.LanguageName = StringThree;
+            model.IsTermsAccepted = BooleanTrue;
+
+            return model;
+        }
+
+        public static SignUpModel GetSignUpModel(string email, string firstName, string lastName,
+                                                 string organizationName, string password, Guid languageUid,
+                                                 string languageName, bool isTermsAccepted)
+        {
+            var model = new SignUpModel();
+            model.Email = email;
+            model.FirstName = firstName;
+            model.LastName = lastName;
+            model.OrganizationName = organizationName;
+            model.Password = password;
+            model.LanguageUid = languageUid;
+            model.LanguageName = languageName;
+            model.IsTermsAccepted = isTermsAccepted;
+
+            return model;
+        }
+
+        public static LogOnModel GetLoginOnModel()
+        {
+            var model = new LogOnModel();
+            model.Email = EmailOne;
+            model.Password = PasswordOne;
+            model.RedirectUrl = HttpUrl;
+
+            return model;
+        }
+
+        public static ResetPasswordDoneModel GetResetPasswordDoneModel()
+        {
+            var model = new ResetPasswordDoneModel();
+            return model;
+        }
+
+        public static LogOnModel GetLoginOnModel(string email, string password)
+        {
+            var model = new LogOnModel();
+            model.Email = email;
+            model.Password = password;
 
             return model;
         }
@@ -40,6 +127,8 @@ namespace Translation.Tests.TestHelpers
         public static InviteAcceptModel GetInviteAcceptModel()
         {
             var model = new InviteAcceptModel();
+            model.Token = UidOne;
+            model.ReEnterPassword = PasswordOne;
 
             return model;
         }
@@ -64,6 +153,43 @@ namespace Translation.Tests.TestHelpers
         public static DemandPasswordResetModel GetDemandPasswordResetModel()
         {
             var model = new DemandPasswordResetModel();
+            model.Email = EmailOne;
+            return model;
+        }
+
+        public static InviteModel GetInviteModel()
+        {
+            var model = new InviteModel();
+            model.Email = EmailOne;
+            model.FirstName = StringOne;
+            model.LastName = StringTwo;
+            model.OrganizationUid = UidTwo;
+
+            return model;
+        }
+
+        public static LoginLogsModel GetLoginLogsModel()
+        {
+            var model = new LoginLogsModel();
+            model.UserUid = UidOne;
+            return model;
+        }
+
+        public static LoginLogsModel GetLoginLogsModel(Guid userUid)
+        {
+            var model = new LoginLogsModel();
+            model.UserUid = userUid;
+            return model;
+        }
+
+        public static InviteModel GetInviteModel(Guid organizationUid, string email, string firstName,
+                                                string lastName)
+        {
+            var model = new InviteModel();
+            model.OrganizationUid = organizationUid;
+            model.Email = email;
+            model.FirstName = firstName;
+            model.LastName = lastName;
 
             return model;
         }
@@ -109,6 +235,78 @@ namespace Translation.Tests.TestHelpers
             model.Email = EmailOne;
             model.FirstName = StringOne;
             model.LastName = StringTwo;
+
+            return model;
+        }
+
+        public static UserDetailModel GetUserDetailModel()
+        {
+            var model = new UserDetailModel();
+            model.UserUid = UidOne;
+            model.Username = StringOne;
+            model.FirstName = StringTwo;
+            model.LastName = StringThree;
+            model.Email = EmailOne;
+            model.Description = StringFour;
+            model.IsAdmin = BooleanTrue;
+            model.LabelCount = Zero;
+            model.LabelTranslationCount = Zero;
+            model.LabelKey = StringFive;
+            model.LanguageName = StringSix;
+            model.LanguageIconUrl = HttpUrl;
+            model.OrganizationUid = UidOne;
+            model.OrganizationName = StringSeven;
+            model.InvitedAt = DateTimeOne;
+            model.InvitedByUserUid = UidTwo;
+            model.InvitedByUserName = StringEight;
+            model.IsActive = BooleanTrue;
+
+            return model;
+        }
+
+        public static ValidateEmailDoneModel GetValidateEmailDoneModel()
+        {
+            var model = new ValidateEmailDoneModel();
+
+            return model;
+        }
+
+        public static UserRevisionReadListModel GetUserRevisionReadListModel()
+        {
+            var model = new UserRevisionReadListModel();
+            model.UserUid = UidOne;
+            model.UserName = StringOne;
+
+            return model;
+        }
+
+        public static UserJournalListModel GetUserJournalListModel()
+        {
+            var model = new UserJournalListModel();
+            model.UserUid = UidOne;
+
+            return model;
+        }
+
+        public static UserEditModel GetUserEditModel()
+        {
+            var model = new UserEditModel();
+            model.FirstName = StringTwo;
+            model.LastName = StringThree;
+            model.UserUid = UidTwo;
+            model.LanguageUid = UidOne;
+            model.LanguageName = StringSix;
+
+            return model;
+        }
+
+        public static UserEditModel GetUserEditModel(Guid userUid, string firstName, string lastName, Guid languageUid)
+        {
+            var model = new UserEditModel();
+            model.UserUid = userUid;
+            model.FirstName = firstName;
+            model.LastName = lastName;
+            model.LanguageUid = languageUid;
 
             return model;
         }
@@ -216,7 +414,7 @@ namespace Translation.Tests.TestHelpers
 
             model.IsoCode2 = IsoCode2One;
             model.IsoCode3 = IsoCode3One;
-            model.Icon = GetIcon();
+            model.Icon = GetIconNotContentType();
 
             return model;
         }
@@ -235,9 +433,32 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static HomeModel GetHomeModel()
+        {
+            var model = new HomeModel();
+            model.IsAuthenticated = BooleanTrue;
+            model.IsSuperAdmin = BooleanTrue;
+
+            return model;
+        }
+
+        public static AccessDeniedModel GetAccessDeniedModel()
+        {
+            var model = new AccessDeniedModel();
+
+            return model;
+        }
+
         public static InviteAcceptDoneModel GetInviteAcceptDoneModel()
         {
             var model = new InviteAcceptDoneModel();
+
+            return model;
+        }
+
+        public static InviteDoneModel GetInviteDoneModel()
+        {
+            var model = new InviteDoneModel();
 
             return model;
         }
@@ -280,13 +501,22 @@ namespace Translation.Tests.TestHelpers
         public static OrganizationUserLoginLogListModel GetOrganizationUserLoginLogListModel()
         {
             var model = new OrganizationUserLoginLogListModel();
-
+            model.OrganizationUid = UidOne;
             return model;
         }
 
         public static CreateBulkLabelDoneModel GetCreateBulkLabelDoneModel()
         {
             var model = new CreateBulkLabelDoneModel();
+            model.ProjectUid = UidOne;
+            model.ProjectName = StringOne;
+            model.AddedLabelCount = Zero;
+            model.CanNotAddedLabelCount = Zero;
+            model.TotalLabelCount = Zero;
+            model.CanNotAddedLabelTranslationCount = Zero;
+            model.AddedLabelTranslationCount = Zero;
+            model.UpdatedLabelTranslationCount = Zero;
+            model.TotalRowsProcessed = Zero;
 
             return model;
         }
@@ -294,7 +524,7 @@ namespace Translation.Tests.TestHelpers
         public static LanguageCreateModel GetLanguageCreateModel()
         {
             var model = new LanguageCreateModel();
-
+            model.Description = StringOne;
             return model;
         }
 
@@ -338,9 +568,30 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
+        public static TranslationCSVData GetTranslationCSVData()
+        {
+            var model = new TranslationCSVData();
+            model.Language2CharCode = StringOne;
+            model.Translation = StringTwo;
+
+            return model;
+        }
+
+        public static LabelCSVData GetLabelCSVData()
+        {
+            var model = new LabelCSVData();
+            model.LabelKey = StringOne;
+            model.Language2CharCode = StringOne;
+            model.Translation = StringTwo;
+
+            return model;
+        }
+
         public static LanguageRevisionReadListModel GetLanguageRevisionReadListModel()
         {
             var model = new LanguageRevisionReadListModel();
+            model.LanguageUid = UidOne;
+            model.LanguageName = StringOne;
 
             return model;
         }
@@ -348,6 +599,7 @@ namespace Translation.Tests.TestHelpers
         public static LanguageDetailModel GetLanguageDetailModel()
         {
             var model = new LanguageDetailModel();
+            model.Icon = null;
 
             return model;
         }
@@ -455,7 +707,7 @@ namespace Translation.Tests.TestHelpers
         public static OrganizationPendingTranslationReadListModel GetOrganizationPendingTranslationReadListModel()
         {
             var model = new OrganizationPendingTranslationReadListModel();
-            model.OrganizationName = StringOne;
+            model.OrganizationName = OrganizationOneName;
             model.OrganizationUid = UidOne;
 
             return model;
@@ -464,7 +716,7 @@ namespace Translation.Tests.TestHelpers
         public static OrganizationRevisionReadListModel GetOrganizationRevisionReadListModel()
         {
             var model = new OrganizationRevisionReadListModel();
-            model.OrganizationName = StringOne;
+            model.OrganizationName = OrganizationOneName;
             model.OrganizationUid = UidOne;
 
             return model;
@@ -486,7 +738,6 @@ namespace Translation.Tests.TestHelpers
 
             return model;
         }
-
 
         public static InviteAcceptModel GetOrganizationOneUserOneInviteAcceptModel()
         {
@@ -529,6 +780,27 @@ namespace Translation.Tests.TestHelpers
             model.OrganizationUid = UidOne;
             model.Name = StringOne;
             model.Description = StringOne;
+            return model;
+        }
+
+        public static ActiveTokensModel GetActiveTokensModel()
+        {
+            var model = new ActiveTokensModel();
+            model.ClientUid = UidStringOne;
+            model.IntegrationUid = UidStringTwo;
+            model.IntegrationName = OrganizationOneIntegrationOneName;
+
+            return model;
+        }
+
+        public static ActiveTokensDataModel GetActiveTokensDataModel()
+        {
+            var model = new ActiveTokensDataModel();
+            model.TokenUid = UidStringOne;
+            model.Ip = IpOne;
+            model.CreatedAt = StringOne;
+            model.ExpiresAt = StringTwo;
+
             return model;
         }
 
@@ -653,6 +925,8 @@ namespace Translation.Tests.TestHelpers
         public static LabelRevisionReadListModel GetLabelRevisionReadListModel()
         {
             var model = new LabelRevisionReadListModel();
+            model.LabelName = StringOne;
+            model.LabelUid = UidOne;
 
             return model;
         }
@@ -665,6 +939,7 @@ namespace Translation.Tests.TestHelpers
             model.Key = StringOne;
             model.ProjectName = StringOne;
             model.Description = StringOne;
+            model.LabelTranslationCount = Zero;
 
             return model;
         }
@@ -672,6 +947,7 @@ namespace Translation.Tests.TestHelpers
         public static LabelSearchListModel GetLabelSearchListModel()
         {
             var model = new LabelSearchListModel();
+            model.SearchTerm = StringOne;
 
             return model;
         }
@@ -679,7 +955,15 @@ namespace Translation.Tests.TestHelpers
         public static LabelUploadFromCSVDoneModel GetLabelUploadFromCSVDoneModel()
         {
             var model = new LabelUploadFromCSVDoneModel();
-
+            model.ProjectUid = UidOne;
+            model.ProjectName = StringOne;
+            model.AddedLabelCount = Zero;
+            model.CanNotAddedLabelCount = Zero;
+            model.TotalLabelCount = Zero;
+            model.CanNotAddedLabelTranslationCount = Zero;
+            model.AddedLabelTranslationCount = Zero;
+            model.UpdatedLabelTranslationCount = Zero;
+            model.TotalRowsProcessed = Zero;
             return model;
         }
 
@@ -693,6 +977,136 @@ namespace Translation.Tests.TestHelpers
             model.ProjectName = projectName;
             model.Description = StringOne;
             model.Key = key;
+
+            return model;
+        }
+
+        public static CheckboxInputModel GetCheckboxInputModel(string name, string labelKey, bool isRequired,
+                                                                bool isReadOnly, bool value)
+        {
+            var model = new CheckboxInputModel(name, labelKey, isRequired, isReadOnly, value);
+            return model;
+        }
+
+        public static InputModel GetInputModel(string name, string labelKey, bool isRequired, string value)
+        {
+            var model = new InputModel(name, labelKey, isRequired, value);
+            return model;
+        }
+
+        public static InputModel GetInputModel(string name, string labelKey, bool isRequired)
+        {
+            var model = new InputModel(name, labelKey, isRequired);
+            return model;
+        }
+
+        public static InputModel GetInputModel(string name, string labelKey)
+        {
+            var model = new InputModel(name, labelKey);
+            return model;
+        }
+
+        public static InputModel GetInputModel()
+        {
+            var model = new InputModel(StringOne,StringOne);
+            model.InfoText = StringOne;
+
+            return model;
+        }
+
+        public static DateInputModel GetDateInputModel(string name, string labelKey, bool isRequired)
+        {
+            var model = new DateInputModel(name, labelKey, isRequired);
+            model.Value = DateTimeOne;
+
+            return model;
+        }
+
+        public static FileInputModel GetFileInputModel(string name, string labelKey, bool isRequired, bool isMultiple)
+        {
+            var model = new FileInputModel(name, labelKey, isRequired, isMultiple);
+
+            return model;
+        }
+
+        public static SelectInputModel GetSelectInputModel(string name, string labelKey, string dataUrl, bool required, string addNewUrl)
+        {
+            var model = new SelectInputModel(name, labelKey, dataUrl, required, addNewUrl);
+
+            return model;
+        }
+
+        public static SelectInputModel GetSelectInputModel()
+        {
+            var model = new SelectInputModel(StringOne, StringOne, HttpUrl, BooleanTrue, HttpUrl);
+            model.IsAllOptionsVisible = BooleanTrue;
+            model.IsMultiple = BooleanTrue;
+            model.IsHavingDetailInfo = BooleanTrue;
+            model.DetailInfoDataUrl = HttpUrl;
+            model.Parent = StringOne;
+        
+            return model;
+        }
+
+        public static NumberInputModel GetNumberInputModel(string name, string labelKey, bool isRequired, int value)
+        {
+            var model = new NumberInputModel(name, labelKey, isRequired, value);
+
+            return model;
+        }
+
+        public static PasswordInputModel GetPasswordInputModel(string name, string labelKey, bool isRequired, string value)
+        {
+            var model = new PasswordInputModel(name, labelKey, isRequired, value);
+
+            return model;
+        }
+
+        public static TextareaInputModel GetTextareaInputModel(string name, string labelKey, bool isRequired, string value)
+        {
+            var model = new TextareaInputModel(name, labelKey, isRequired, value);
+
+            return model;
+        }
+
+        public static UrlInputModel GetUrlInputModel(string name, string labelKey, bool isRequired, string value)
+        {
+            var model = new UrlInputModel(name, labelKey, isRequired, value);
+
+            return model;
+        }
+
+        public static ShortInputModel GetShortInputModel(string name, string labelKey, bool isRequired, string value)
+        {
+            var model = new ShortInputModel(name, labelKey, isRequired, value);
+
+            return model;
+        }
+
+        public static ReadOnlyInputModel GetReadOnlyInputModel(string labelKey, string value)
+        {
+            var model = new ReadOnlyInputModel(labelKey, value);
+
+            return model;
+        }
+
+        public static HiddenInputModel GetHiddenInputModel(string name, string value)
+        {
+            var model = new HiddenInputModel(name, value);
+
+            return model;
+        }
+
+        public static LongInputModel GetLongInputModel(string name, string labelKey, bool isRequired)
+        {
+            var model = new LongInputModel(name, labelKey, isRequired);
+
+            return model;
+        }
+
+        public static EmailInputModel GetEmailInputModel(string name, string labelKey, bool isRequired)
+        {
+            var model = new EmailInputModel(name, labelKey, isRequired);
 
             return model;
         }
@@ -727,6 +1141,7 @@ namespace Translation.Tests.TestHelpers
 
             model.OrganizationUid = OrganizationOneUid;
             model.Project = OrganizationOneProjectOneUid;
+            model.ProjectName = OrganizationOneProjectOneName;
             model.Description = StringOne;
             model.CloningLabelKey = StringOne;
             model.CloningLabelDescription = StringOne;
@@ -759,6 +1174,7 @@ namespace Translation.Tests.TestHelpers
             model.OrganizationUid = OrganizationOneUid;
             model.ProjectUid = OrganizationOneProjectOneUid;
             model.ProjectName = StringOne;
+            model.UpdateExistedTranslations = BooleanTrue;
 
             return model;
         }
@@ -796,6 +1212,7 @@ namespace Translation.Tests.TestHelpers
             model.OrganizationUid = UidOne;
             model.ProjectUid = UidOne;
             model.CSVFile = GetCsvFile(csvFileLength);
+            model.UpdateExistedTranslations = BooleanTrue;
 
             return model;
         }
@@ -824,6 +1241,7 @@ namespace Translation.Tests.TestHelpers
             model.LabelUid = UidOne;
             model.LabelTranslation = StringTwo;
             model.LanguageUid = UidOne;
+            model.LanguageName = StringOne;
 
             return model;
         }
@@ -896,13 +1314,20 @@ namespace Translation.Tests.TestHelpers
         public static LabelTranslationRevisionReadListModel GetLabelTranslationRevisionReadListModel()
         {
             var model = new LabelTranslationRevisionReadListModel();
-
+            model.LabelTranslationName = StringOne;
+            model.LabelTranslationUid = UidOne;
             return model;
         }
 
         public static TranslationUploadFromCSVDoneModel GetTranslationUploadFromCSVDoneModel()
         {
             var model = new TranslationUploadFromCSVDoneModel();
+            model.LabelUid = UidOne;
+            model.LabelKey = StringOne;
+            model.AddedTranslationCount = Zero;
+            model.UpdatedTranslationCount = Zero;
+            model.CanNotAddedTranslationCount = Zero;
+            model.TotalRowsProcessed = Zero;
 
             return model;
         }
@@ -915,6 +1340,7 @@ namespace Translation.Tests.TestHelpers
             model.LabelUid = UidOne;
             model.LabelKey = StringOne;
             model.CSVFile = GetCsvFile(csvFileLength);
+            model.UpdateExistedTranslations = BooleanTrue;
 
             return model;
         }
@@ -1007,7 +1433,6 @@ namespace Translation.Tests.TestHelpers
             model.Ip = StringOne;
             model.Platform = StringOne;
             model.PlatformVersion = StringOne;
-
             return model;
         }
     }

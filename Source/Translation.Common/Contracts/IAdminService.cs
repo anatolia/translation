@@ -12,6 +12,7 @@ using Translation.Common.Models.Responses.Integration.Token.RequestLog;
 using Translation.Common.Models.Responses.Journal;
 using Translation.Common.Models.Responses.Organization;
 using Translation.Common.Models.Responses.SendEmailLog;
+using Translation.Common.Models.Responses.TranslationProvider;
 using Translation.Common.Models.Responses.User;
 using Translation.Common.Models.Responses.User.LoginLog;
 
@@ -30,6 +31,7 @@ namespace Translation.Common.Contracts
 
         Task<UserChangeActivationResponse> ChangeActivation(UserChangeActivationRequest request);
         Task<OrganizationChangeActivationResponse> OrganizationChangeActivation(OrganizationChangeActivationRequest request);
+        Task<TranslationProviderChangeActivationResponse> TranslationProviderChangeActivation(TranslationProviderChangeActivationRequest request);
         Task<AdminDemoteResponse> DemoteToUser(AdminDemoteRequest request);
         Task<AdminUpgradeResponse> UpgradeToAdmin(AdminUpgradeRequest request);
 

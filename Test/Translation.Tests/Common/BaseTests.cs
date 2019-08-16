@@ -32,6 +32,8 @@ namespace Translation.Tests.Common
         protected Mock<ITokenRequestLogRepository> MockTokenRequestLogRepository { get; set; }
         protected Mock<IUserLoginLogRepository> MockUserLoginLogRepository { get; set; }
         protected Mock<IUserRepository> MockUserRepository { get; set; }
+        protected Mock<ITranslationProviderRepository> MockTranslationProviderRepository { get; set; }
+
 
         protected Mock<ILabelUnitOfWork> MockLabelUnitOfWork { get; set; }
         protected Mock<ILogOnUnitOfWork> MockLogOnUnitOfWork { get; set; }
@@ -67,7 +69,7 @@ namespace Translation.Tests.Common
             MockTokenRequestLogRepository = new Mock<ITokenRequestLogRepository>();
             MockUserLoginLogRepository = new Mock<IUserLoginLogRepository>();
             MockUserRepository = new Mock<IUserRepository>();
-
+            MockTranslationProviderRepository = new Mock<ITranslationProviderRepository>();
             #endregion
 
             #region UnitOfWork
@@ -106,6 +108,7 @@ namespace Translation.Tests.Common
             Container.Register(Component.For<TokenRequestLogFactory>());
             Container.Register(Component.For<UserFactory>());
             Container.Register(Component.For<UserLoginLogFactory>());
+            Container.Register(Component.For<TranslationProviderFactory>());
 
             #endregion
 
@@ -124,6 +127,7 @@ namespace Translation.Tests.Common
             Container.Register(Component.For<ITokenRequestLogRepository>().Instance(MockTokenRequestLogRepository.Object));
             Container.Register(Component.For<IUserLoginLogRepository>().Instance(MockUserLoginLogRepository.Object));
             Container.Register(Component.For<IUserRepository>().Instance(MockUserRepository.Object));
+            Container.Register(Component.For<ITranslationProviderRepository>().Instance(MockTranslationProviderRepository.Object));
             #endregion
 
             #region UnitOfWork

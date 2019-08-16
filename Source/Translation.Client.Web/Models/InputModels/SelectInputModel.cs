@@ -19,18 +19,6 @@ namespace Translation.Client.Web.Models.InputModels
 
         public bool IsAddNewEnabled { get; set; }
         public string AddNewUrl { get; set; }
-        
-        public SelectInputModel(string name) : base(name + "Uid", name.ToLowerInvariant(), true)
-        {
-            TextFieldName = $"{name}Name";
-            DataUrl = $"/{name}/SelectData";
-        }
-
-        public SelectInputModel(string name, string dataUrl) : base(name + "Uid", name.ToLowerInvariant(), true)
-        {
-            TextFieldName = $"{name}Name";
-            DataUrl = dataUrl;
-        }
 
         public SelectInputModel(string name, string labelKey, string dataUrl, bool required = false, string addNewUrl = "") : base(name + "Uid", labelKey, required)
         {

@@ -13,6 +13,24 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class LabelRepositorySetupHelper
     {
+        public static void Setup_RestoreRevision_Returns_True(this Mock<ILabelRepository> repository)
+        {
+            repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
+                .ReturnsAsync(BooleanTrue);
+        }
+
+        public static void Setup_RestoreRevision_Returns_False(this Mock<ILabelRepository> repository)
+        {
+            repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
+                .ReturnsAsync(BooleanFalse);
+        }
+
+        public static void Setup_SelectRevisions_Returns_OrganizationOneProjectOneLabelOneRevisionsRevisionOneInIt(this Mock<ILabelRepository> repository)
+        {
+            repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
+                .ReturnsAsync(GetOrganizationOneProjectOneLabelOneRevisionsRevisionOneInIt());
+        }
+
         public static void Setup_SelectAll_Returns_Labels(this Mock<ILabelRepository> repository)
         {
             repository.Setup(x => x.SelectAll(It.IsAny<Expression<Func<Label, bool>>>(),
