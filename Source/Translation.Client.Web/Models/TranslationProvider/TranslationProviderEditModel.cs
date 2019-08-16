@@ -35,8 +35,8 @@ namespace Translation.Client.Web.Models.TranslationProvider
             ValueInput.Value = Value;
 
             InfoMessages.Clear();
-            InfoMessages.Add("provider_info_1");
-            InfoMessages.Add("provider_info_2");
+            InfoMessages.Add("you_add_required_json_file_for_google_provider");
+            InfoMessages.Add("you_add_required_api_key_for_yandex_provider");
         }
 
         public override void SetInputErrorMessages()

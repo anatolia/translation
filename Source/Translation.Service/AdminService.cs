@@ -422,10 +422,10 @@ namespace Translation.Service
                 return response;
             }
 
-            var selectedTranslationProvider = await _translationProviderRepository.Select(x => x.Uid == request.TranslationProviderUid);
-            if (selectedTranslationProvider.IsNotExist())
+             var selectedTranslationProvider = await _translationProviderRepository.Select(x => x.Uid == request.TranslationProviderUid);
+            if (selectedTranslationProvider.Value=="" )
             {
-                response.SetInvalidBecauseNotFound(nameof(TranslationProvider));
+                response.ErrorMessages.Add("please_edit_translation_api_value");
                 return response;
             }
 
