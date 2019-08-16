@@ -127,6 +127,61 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public async Task Detail_GET()
+        {
+            // arrange
+            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.Detail(UidOne);
+
+            // assert
+            AssertViewWithModel<LanguageDetailModel>(result);
+            MockLanguageService.Verify_GetLanguage();
+        }
+
+        [Test]
+        public async Task Detail_GET_FailedResponse()
+        {
+            // arrange
+            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Failed();
+
+            // act
+            var result = await SystemUnderTest.Detail(UidOne);
+
+            // assert
+            AssertViewAccessDenied(result);
+            MockLanguageService.Verify_GetLanguage();
+        }
+
+        [Test]
+        public async Task Detail_GET_InvalidResponse()
+        {
+            // arrange
+            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Invalid();
+
+            // act
+            var result = await SystemUnderTest.Detail(UidOne);
+
+            // assert
+            AssertViewAccessDenied(result);
+            MockLanguageService.Verify_GetLanguage();
+        }
+
+        [Test]
+        public async Task Detail_GET_InvalidParameter()
+        {
+            // arrange
+
+
+            // act
+            var result = await SystemUnderTest.Detail(EmptyUid);
+
+            // assert
+            AssertViewAccessDenied(result);
+        }
+
+        [Test]
         public async Task Edit_GET()
         {
             // arrange
@@ -324,7 +379,7 @@ namespace Translation.Tests.Client.Controllers
             MockLanguageService.Setup_GetLanguages_Returns_LanguageReadListResponse_Success();
 
             // act
-            var result = SystemUnderTest.SelectData(UidOne);
+            var result = SystemUnderTest.SelectData(UidOne,One,StringOne);
 
             // assert
             AssertView<JsonResult>(result);
@@ -372,6 +427,36 @@ namespace Translation.Tests.Client.Controllers
             AssertViewWithModel<LanguageRevisionReadListModel>(result);
             MockLanguageService.Verify_GetLanguage();
         }
+
+
+        [Test]
+        public void Revisions_GET_FailedResponse()
+        {
+            // arrange
+            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
+
+            // act
+            var result = SystemUnderTest.Revisions(OrganizationOneProjectOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockLanguageService.Verify_GetLanguage();
+        }
+
+        [Test]
+        public void Revisions_GET_InvalidResponse()
+        {
+            // arrange
+            MockLanguageService.Setup_GetLanguage_Returns_LanguageReadResponse_Success();
+
+            // act
+            var result = SystemUnderTest.Revisions(OrganizationOneProjectOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockLanguageService.Verify_GetLanguage();
+        }
+
 
         [Test]
         public async Task Revisions_GET_InvalidParameter()
@@ -488,6 +573,18 @@ namespace Translation.Tests.Client.Controllers
 
             // act
             var result = (JsonResult)await SystemUnderTest.Restore(EmptyUid, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
+        }
+
+        [Test]
+        public async Task Restore_Post_InvalidParameterRestoreZero()
+        {
+            // arrange
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(UidOne, Zero);
 
             // assert
             ((CommonResult)result.Value).IsOk.ShouldBe(false);

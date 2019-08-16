@@ -208,42 +208,42 @@ namespace Translation.Tests.Client.Controllers
         public void OrganizationListData_GET()
         {
             // arrange
-            MockAdminService.Setup_GetOrganizations_Returns_OrganizationReadListResponse_Success();
+            MockOrganizationService.Setup_GetOrganizations_Returns_OrganizationReadListResponse_Success();
 
             // act
             var result = SystemUnderTest.OrganizationListData(One, Two);
 
             // assert
             AssertView<JsonResult>(result);
-            MockAdminService.Verify_GetOrganizations();
+            MockOrganizationService.Verify_GetOrganizations();
         }
 
         [Test]
         public void OrganizationListData_GET_FailedResponse()
         {
             // arrange
-            MockAdminService.Setup_GetOrganizations_Returns_OrganizationReadListResponse_Failed();
+            MockOrganizationService.Setup_GetOrganizations_Returns_OrganizationReadListResponse_Failed();
 
             // act
             var result = SystemUnderTest.OrganizationListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
-            MockAdminService.Verify_GetOrganizations();
+            MockOrganizationService.Verify_GetOrganizations();
         }
 
         [Test]
         public void OrganizationListData_GET_InvalidResponse()
         {
             // arrange
-            MockAdminService.Setup_GetOrganizations_Returns_OrganizationReadListResponse_Invalid();
+            MockOrganizationService.Setup_GetOrganizations_Returns_OrganizationReadListResponse_Invalid();
 
-            // act
-            var result = SystemUnderTest.OrganizationListData(One, Two);
+               // act
+               var result = SystemUnderTest.OrganizationListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
-            MockAdminService.Verify_GetOrganizations();
+            MockOrganizationService.Verify_GetOrganizations();
         }
 
         [TestCase(10, 10)]
@@ -735,6 +735,58 @@ namespace Translation.Tests.Client.Controllers
 
             // act
             var result = await SystemUnderTest.OrganizationChangeActivation(EmptyUid);
+
+            // assert
+            AssertView<ForbidResult>(result);
+        }
+
+        [Test]
+        public async Task TranslationProviderChangeActivation_POST()
+        {
+            // arrange
+            MockAdminService.Setup_TranslationProviderChangeActivation_Returns_TranslationProviderChangeActivationResponse_Success();
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.TranslationProviderChangeActivation(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(BooleanTrue);
+            MockAdminService.Verify_TranslationProviderChangeActivation();
+        }
+
+        [Test]
+        public async Task TranslationProviderChangeActivation_POST_FailedResponse()
+        {
+            // arrange
+            MockAdminService.Setup_TranslationProviderChangeActivation_Returns_TranslationProviderChangeActivationResponse_Failed();
+            // act
+            var result = (JsonResult)await SystemUnderTest.TranslationProviderChangeActivation(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(BooleanFalse);
+            MockAdminService.Verify_TranslationProviderChangeActivation();
+        }
+
+        [Test]
+        public async Task TranslationProviderChangeActivation_POST_InvalidResponse()
+        {
+            // arrange
+            MockAdminService.Setup_TranslationProviderChangeActivation_Returns_TranslationProviderChangeActivationResponse_Invalid();
+            // act
+            var result = (JsonResult)await SystemUnderTest.TranslationProviderChangeActivation(UidOne);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(BooleanFalse);
+            MockAdminService.Verify_TranslationProviderChangeActivation();
+        }
+
+        [Test]
+        public async Task TranslationProviderChangeActivation_POST_InvalidParameter()
+        {
+            // arrange
+
+            // act
+            var result = await SystemUnderTest.TranslationProviderChangeActivation(EmptyUid);
 
             // assert
             AssertView<ForbidResult>(result);

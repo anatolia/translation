@@ -246,6 +246,34 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public void Revisions_GET_FailedResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Failed();
+
+            // act
+            var result = SystemUnderTest.Revisions(OrganizationOneProjectOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockOrganizationService.Verify_GetOrganization();
+        }
+
+        [Test]
+        public void Revisions_GET_InvalidResponse()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Invalid();
+
+            // act
+            var result = SystemUnderTest.Revisions(OrganizationOneProjectOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockOrganizationService.Verify_GetOrganization();
+        }
+
+        [Test]
         public void Revisions_GET_InvalidParameter()
         {
             // arrange
@@ -366,6 +394,18 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public async Task Restore_Post_InvalidParameterRevisionZero()
+        {
+            // arrange
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(UidOne, Zero);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
+        }
+
+        [Test]
         public void PendingTranslations_GET()
         {
             // arrange
@@ -425,7 +465,7 @@ namespace Translation.Tests.Client.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.PendingTranslationsData(OrganizationOneProjectOneUid, One, Two);
+            var result = SystemUnderTest.PendingTranslationsData(EmptyUid, One, Two);
 
             // assert
             AssertView<ForbidResult>(result);
@@ -931,7 +971,7 @@ namespace Translation.Tests.Client.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.JournalListData(OrganizationOneProjectOneUid, One, Two);
+            var result = SystemUnderTest.JournalListData(EmptyUid, One, Two);
 
             // assert
             AssertView<ForbidResult>(result);

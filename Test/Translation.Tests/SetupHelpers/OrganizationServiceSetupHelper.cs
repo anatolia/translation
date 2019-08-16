@@ -14,6 +14,7 @@ using Translation.Common.Models.Responses.User;
 using Translation.Common.Models.Responses.User.LoginLog;
 using Translation.Common.Models.Shared;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Tests.TestHelpers.FakeDtoTestHelper;
 
 namespace Translation.Tests.SetupHelpers
 {
@@ -44,7 +45,7 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetUserRevisions_Returns_UserRevisionReadListResponse_Success(this Mock<IOrganizationService> service)
         {
-            var items = new List<RevisionDto<UserDto>>();
+            var items = new List<RevisionDto<UserDto>>(){};
             items.Add(new RevisionDto<UserDto>() { RevisionedByUid = UidOne, Revision = One, Item = new UserDto() { Uid = UidOne } });
 
             service.Setup(x => x.GetUserRevisions(It.IsAny<UserRevisionReadListRequest>()))
@@ -119,8 +120,21 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetOrganizations_Returns_OrganizationReadListResponse_Success(this Mock<IOrganizationService> service)
         {
+            var items= new List<OrganizationDto>(){GetOrganizationDto()};
             service.Setup(x => x.GetOrganizations(It.IsAny<OrganizationReadListRequest>()))
-                   .Returns(Task.FromResult(new OrganizationReadListResponse { Status = ResponseStatus.Success }));
+                   .Returns(Task.FromResult(new OrganizationReadListResponse { Status = ResponseStatus.Success ,Items = items}));
+        }
+
+        public static void Setup_GetOrganizations_Returns_OrganizationReadListResponse_Failed(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.GetOrganizations(It.IsAny<OrganizationReadListRequest>()))
+                   .Returns(Task.FromResult(new OrganizationReadListResponse { Status = ResponseStatus.Failed }));
+        }
+
+        public static void Setup_GetOrganizations_Returns_OrganizationReadListResponse_Invalid(this Mock<IOrganizationService> service)
+        {
+            service.Setup(x => x.GetOrganizations(It.IsAny<OrganizationReadListRequest>()))
+                   .Returns(Task.FromResult(new OrganizationReadListResponse { Status = ResponseStatus.Invalid }));
         }
 
         public static void Verify_GetOrganizations(this Mock<IOrganizationService> service)

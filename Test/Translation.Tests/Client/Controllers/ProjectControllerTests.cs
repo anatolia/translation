@@ -77,6 +77,20 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public void Create_GET_InvalidParameter()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Success();
+
+            // act
+            var result = SystemUnderTest.Create(EmptyUid);
+
+            // assert
+            AssertViewWithModel<ProjectCreateModel>(result);
+            MockOrganizationService.Verify_GetOrganization();
+        }
+
+        [Test]
         public void Create_GET_FailedResponse()
         {
             // arrange
@@ -555,6 +569,34 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public void PendingTranslations_GET_FailedResponse()
+        {
+            // arrange
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Failed();
+
+            // act
+            var result = SystemUnderTest.PendingTranslations(OrganizationOneProjectOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockProjectService.Verify_GetProject();
+        }
+
+        [Test]
+        public void PendingTranslations_GET_InvalidResponse()
+        {
+            // arrange
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Invalid();
+
+            // act
+            var result = SystemUnderTest.PendingTranslations(OrganizationOneProjectOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockProjectService.Verify_GetProject();
+        }
+
+        [Test]
         public async Task PendingTranslations_GET_InvalidParameter()
         {
             // arrange
@@ -614,7 +656,7 @@ namespace Translation.Tests.Client.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.PendingTranslationsData(OrganizationOneProjectOneUid, One, Two);
+            var result = SystemUnderTest.PendingTranslationsData(EmptyUid, One, Two);
 
             // assert
             AssertView<ForbidResult>(result);
@@ -656,7 +698,7 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public void LabelListData_GET_FailedResponse()
+        public void LabelListData_GET_FailedLabelReadListResponse()
         {
             // arrange
             MockLabelService.Setup_GetLabels_Returns_LabelReadListResponse_Failed();
@@ -672,7 +714,7 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
-        public void LabelListData_GET_InvalidResponse()
+        public void LabelListData_GET_InvalidLabelReadListResponse()
         {
             // arrange
             MockLabelService.Setup_GetLabels_Returns_LabelReadListResponse_Invalid();
@@ -684,6 +726,34 @@ namespace Translation.Tests.Client.Controllers
             // assert
             AssertView<NotFoundResult>(result);
             MockLabelService.Verify_GetLabels();
+            MockProjectService.Verify_GetProject();
+        }
+
+        [Test]
+        public void LabelListData_GET_FailedProjectReadResponse()
+        {
+            // arrange
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Failed();
+
+            // act
+            var result = SystemUnderTest.LabelListData(OrganizationOneProjectOneUid, One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockProjectService.Verify_GetProject();
+        }
+
+        [Test]
+        public void LabelListData_GET_InvalidProjectReadResponse()
+        {
+            // arrange
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Invalid();
+
+            // act
+            var result = SystemUnderTest.LabelListData(OrganizationOneProjectOneUid, One, Two);
+
+            // assert
+            AssertView<NotFoundResult>(result);
             MockProjectService.Verify_GetProject();
         }
 
@@ -842,6 +912,35 @@ namespace Translation.Tests.Client.Controllers
         }
 
         [Test]
+        public void Revisions_GET_FailedResponse()
+        {
+            // arrange
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Failed();
+
+            // act
+            var result = SystemUnderTest.Revisions(OrganizationOneProjectOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockProjectService.Verify_GetProject();
+        }
+
+        [Test]
+        public void Revisions_GET_InvalidResponse()
+        {
+            // arrange
+            MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Invalid();
+
+            // act
+            var result = SystemUnderTest.Revisions(OrganizationOneProjectOneUid);
+
+            // assert
+            AssertView<NotFoundResult>(result);
+            MockProjectService.Verify_GetProject();
+        }
+
+
+        [Test]
         public async Task Revisions_GET_InvalidParameter()
         {
             // arrange
@@ -956,6 +1055,18 @@ namespace Translation.Tests.Client.Controllers
 
             // act
             var result = (JsonResult)await SystemUnderTest.Restore(EmptyUid, One);
+
+            // assert
+            ((CommonResult)result.Value).IsOk.ShouldBe(false);
+        }
+
+        [Test]
+        public async Task Restore_Post_InvalidParameterRevisionZero()
+        {
+            // arrange
+
+            // act
+            var result = (JsonResult)await SystemUnderTest.Restore(UidOne, Zero);
 
             // assert
             ((CommonResult)result.Value).IsOk.ShouldBe(false);

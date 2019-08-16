@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 
 using Moq;
-
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Models.DataTransferObjects;
@@ -14,6 +13,7 @@ using Translation.Common.Models.Responses.Integration.IntegrationClient;
 using Translation.Common.Models.Responses.Integration.Token;
 using Translation.Common.Models.Responses.Integration.Token.RequestLog;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Tests.TestHelpers.FakeDtoTestHelper;
 
 namespace Translation.Tests.SetupHelpers
 {
@@ -63,19 +63,21 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_GetIntegrationRevisions_Returns_IntegrationRevisionReadListResponse_Failed(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.GetIntegrationRevisions(It.IsAny<IntegrationRevisionReadListRequest>()))
-                .ReturnsAsync(new IntegrationRevisionReadListResponse() {Status = ResponseStatus.Failed, ErrorMessages = new List<string> {StringOne}});
+                .ReturnsAsync(new IntegrationRevisionReadListResponse() { Status = ResponseStatus.Failed, ErrorMessages = new List<string> { StringOne } });
         }
 
         public static void Setup_GetIntegrations_Returns_IntegrationReadListResponse_Success(this Mock<IIntegrationService> service)
         {
+            var items = new List<IntegrationDto>() { GetIntegrationDto() };
             service.Setup(x => x.GetIntegrations(It.IsAny<IntegrationReadListRequest>()))
-                   .ReturnsAsync(new IntegrationReadListResponse { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new IntegrationReadListResponse { Status = ResponseStatus.Success, Items = items });
         }
 
         public static void Setup_GetIntegration_Returns_IntegrationReadResponse_Success(this Mock<IIntegrationService> service)
         {
+            var items = new List<IntegrationDto>() { GetIntegrationDto() };
             service.Setup(x => x.GetIntegration(It.IsAny<IntegrationReadRequest>()))
-                   .ReturnsAsync(new IntegrationReadResponse { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new IntegrationReadResponse { Status = ResponseStatus.Success, Items = items });
         }
 
         public static void Setup_CreateIntegration_Returns_IntegrationCreateResponse_Success(this Mock<IIntegrationService> service)
@@ -153,7 +155,7 @@ namespace Translation.Tests.SetupHelpers
         public static void Setup_RevokeToken_Returns_TokenRevokeResponse_Success(this Mock<IIntegrationService> service)
         {
             service.Setup(x => x.RevokeToken(It.IsAny<TokenRevokeRequest>()))
-                .ReturnsAsync(new TokenRevokeResponse {Status = ResponseStatus.Success});
+                .ReturnsAsync(new TokenRevokeResponse { Status = ResponseStatus.Success });
         }
 
         public static void Setup_GetActiveTokensOfOrganization_Returns_OrganizationActiveTokenReadListResponse_Success(this Mock<IIntegrationService> service)
@@ -164,14 +166,16 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetActiveTokensOfIntegration_Returns_IntegrationActiveTokenReadListResponse_Success(this Mock<IIntegrationService> service)
         {
+            var items = new List<TokenDto>() { GetTokenDto() };
             service.Setup(x => x.GetActiveTokensOfIntegration(It.IsAny<IntegrationActiveTokenReadListRequest>()))
-                   .ReturnsAsync(new IntegrationActiveTokenReadListResponse { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new IntegrationActiveTokenReadListResponse { Status = ResponseStatus.Success, Items = items });
         }
 
         public static void Setup_GetActiveTokensOfIntegrationClient_Returns_IntegrationClientActiveTokenReadListResponse_Success(this Mock<IIntegrationService> service)
         {
+            var items = new List<TokenDto>() { GetTokenDto() };
             service.Setup(x => x.GetActiveTokensOfIntegrationClient(It.IsAny<IntegrationClientActiveTokenReadListRequest>()))
-                   .ReturnsAsync(new IntegrationClientActiveTokenReadListResponse { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new IntegrationClientActiveTokenReadListResponse { Status = ResponseStatus.Success, Items = items });
         }
 
         public static void Setup_GetAllTokenRequestLogs_Returns_AllTokenRequestLogReadListResponse_Success(this Mock<IIntegrationService> service)
@@ -182,8 +186,9 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_GetTokenRequestLogsOfOrganization_Returns_OrganizationTokenRequestLogReadListResponse_Success(this Mock<IIntegrationService> service)
         {
+            var items=new  List<TokenRequestLogDto>(){ GetTokenRequestLogDto() };
             service.Setup(x => x.GetTokenRequestLogsOfOrganization(It.IsAny<OrganizationTokenRequestLogReadListRequest>()))
-                   .ReturnsAsync(new OrganizationTokenRequestLogReadListResponse { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new OrganizationTokenRequestLogReadListResponse { Status = ResponseStatus.Success ,Items = items});
         }
 
         public static void Setup_GetTokenRequestLogsOfIntegration_Returns_IntegrationTokenRequestLogReadListResponse_Success(this Mock<IIntegrationService> service)

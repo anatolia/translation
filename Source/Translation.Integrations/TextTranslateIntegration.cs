@@ -20,8 +20,9 @@ namespace Translation.Integrations
         public async Task<LabelGetTranslatedTextResponse> GetTranslatedText(LabelGetTranslatedTextRequest request)
         {
             var response = new LabelGetTranslatedTextResponse();
+            
             response.Item.Name = await _textTranslateProvider.TranslateText(request.TextToTranslate, request.TargetLanguageIsoCode2, request.SourceLanguageIsoCode2);
-
+            
             response.Status = ResponseStatus.Success;
             return response;
         }

@@ -111,7 +111,8 @@ namespace Translation.Client.Web.Helpers.Mappers
 
             model.LabelUid = label.Uid;
             model.LabelKey= label.Key;
-
+            model.LanguageUid = project.LanguageUid;
+            model.LanguageName = project.LanguageName;
             model.SetInputModelValues();
             return model;
         }

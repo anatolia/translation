@@ -8,6 +8,18 @@
     <Compile Remove="Common\Requests\User\**" />
     <EmbeddedResource Remove="Common\Requests\User\**" />
     <None Remove="Common\Requests\User\**" />
+    <Content Include="wwwtestroot\files\index.html">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwtestroot\files\projectTranslations.csv">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwtestroot\files\uploadLabelCsvTemplate.csv">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwtestroot\files\uploadTranslationCsvTemplate.csv">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <None Update="wwwtestroot\images\index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -38,6 +50,7 @@
     <Folder Include="Models\ViewModels\Organization\" />
     <Folder Include="Models\ViewModels\Project\" />
     <Folder Include="Models\ViewModels\Token\" />
+    <Folder Include="wwwtestroot\files\" />
   </ItemGroup>
 
   <ItemGroup>

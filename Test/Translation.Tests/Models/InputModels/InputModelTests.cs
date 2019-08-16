@@ -36,5 +36,13 @@ namespace Translation.Tests.Models.InputModels
             model.Name.ShouldBe(StringOne);
             model.LabelKey.ShouldBe(StringTwo);
         }
+
+        [Test]
+        public void InputModel_Parameter()
+        {
+            var model = GetInputModel();
+
+            model.InfoText.ShouldBe(StringOne);
+        }
     }
 }

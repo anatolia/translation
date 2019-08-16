@@ -1,10 +1,13 @@
-﻿using Translation.Common.Models.DataTransferObjects;
+﻿using System.Collections.Generic;
+using Translation.Common.Models.DataTransferObjects;
+using Translation.Data.Entities.Parameter;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 
 namespace Translation.Tests.TestHelpers
 {
     public class FakeDtoTestHelper
     {
+
         public static UserDto GetUserDto()
         {
             var dto = new UserDto();
@@ -69,7 +72,20 @@ namespace Translation.Tests.TestHelpers
             return dto;
         }
 
-        public static LanguageDto GetLanguageDto()
+        public static TokenDto GetTokenDto()
+        {
+            var dto = new TokenDto();
+            dto.Uid = UidOne;
+            dto.Name = StringOne;
+            dto.CreatedAt = DateTimeOne;
+            dto.AccessToken = UidTwo;
+            dto.IntegrationClientUid = UidThree;
+            dto.ExpiresAt = DateTimeOne;
+            dto.IP = IpOne;
+            return dto;
+        }
+
+        public static LanguageDto GetLanguageDtoOne()
         {
             var dto = new LanguageDto();
             dto.Name = StringOne;
@@ -77,6 +93,19 @@ namespace Translation.Tests.TestHelpers
             dto.OriginalName = StringTwo;
             dto.IsoCode2 = IsoCode2One;
             dto.IsoCode3 = IsoCode3One;
+            dto.Description = StringThree;
+
+            return dto;
+        }
+
+        public static LanguageDto GetLanguageDtoTwo()
+        {
+            var dto = new LanguageDto();
+            dto.Name = StringTwo;
+            dto.Uid = UidTwo;
+            dto.OriginalName = StringThree;
+            dto.IsoCode2 = IsoCode2Two;
+            dto.IsoCode3 = IsoCode3Two;
             dto.Description = StringThree;
 
             return dto;
@@ -96,6 +125,69 @@ namespace Translation.Tests.TestHelpers
             dto.Key = StringFour;
 
             dto.IsActive = BooleanTrue;
+
+            return dto;
+        }
+
+        public static JournalDto GetJournalDto()
+        {
+            var dto = new JournalDto();
+            dto.OrganizationUid = UidOne;
+            dto.OrganizationName = StringOne;
+            dto.UserUid = UidOne;
+            dto.UserName = StringOne;
+            dto.IntegrationUid = UidTwo;
+            dto.IntegrationName = StringTwo;
+            dto.Message = StringFive;
+            dto.CreatedAt = DateTimeOne;
+            dto.Uid = UidThree;
+            dto.Name = StringThree;
+
+            return dto;
+        }
+
+ public static SendEmailLogDto GetSendEmailLogDto()
+        {
+            var dto = new SendEmailLogDto();
+            dto.OrganizationUid = UidOne;
+            dto.OrganizationName = StringOne;
+            dto.CreatedAt = DateTimeOne;
+            dto.Uid = UidThree;
+            dto.Name = StringThree;
+
+            return dto;
+        }
+
+        public static LabelFatDto GetLabelFatDto()
+        {
+            var dto = new LabelFatDto();
+            
+            dto.Uid = UidThree;
+            dto.Key = StringFour;
+            dto.Translations=new List<LabelTranslationSlimDto>(){new LabelTranslationSlimDto(){LanguageIsoCode2 = IsoCode2One}};
+            return dto;
+        }
+
+        public static RevisionDto<LabelDto> GetRevisionDtoLabelDto()
+        {
+            var dto = new RevisionDto<LabelDto>();
+            dto.Item = GetLabelDto();
+            dto.Revision = One;
+            dto.RevisionedAt = DateTimeOne;
+            dto.RevisionedByName = StringOne;
+            dto.RevisionedByUid = UidOne;
+
+            return dto;
+        }
+
+        public static RevisionDto<LabelTranslationDto> GetRevisionDtoLabelTranslationDto()
+        {
+            var dto = new RevisionDto<LabelTranslationDto>();
+            dto.Item = GetLabelTranslationDto();
+            dto.Revision = One;
+            dto.RevisionedAt = DateTimeOne;
+            dto.RevisionedByName = StringOne;
+            dto.RevisionedByUid = UidOne;
 
             return dto;
         }
@@ -150,5 +242,45 @@ namespace Translation.Tests.TestHelpers
 
             return dto;
         }
+
+        public static TokenRequestLogDto GetTokenRequestLogDto()
+        {
+            var dto = new TokenRequestLogDto();
+            dto.OrganizationUid = UidOne;
+            dto.OrganizationName = StringOne;
+            dto.IntegrationUid = UidTwo;
+            dto.IntegrationName = StringTwo;
+            dto.IntegrationClientUid = UidThree;
+            dto.Uid = UidThree;
+            dto.Name = StringThree;
+            dto.City = StringTwo;
+            dto.Country = StringThree;
+            dto.HttpMethod = HttpsUrl;
+            dto.ResponseCode = StringFour;
+            dto.CreatedAt = DateTimeOne;
+
+            return dto;
+        }
+
+        public static UserLoginLogDto GetUserLoginLogDto()
+        {
+            var dto = new UserLoginLogDto();
+            dto.OrganizationUid = UidOne;
+            dto.OrganizationName = StringOne;
+            dto.UserUid = UidOne;
+            dto.UserName = StringTwo;
+            dto.Uid = UidThree;
+            dto.Name = StringThree;
+            dto.City = StringTwo;
+            dto.Country = StringThree;
+            dto.CreatedAt = DateTimeOne;
+            dto.Platform = StringFive;
+            dto.PlatformVersion = StringSix;
+            dto.Ip = IpOne;
+
+            return dto;
+        }
+
+
     }
 }
