@@ -38,20 +38,27 @@
         let labelKeyInput = getElement('@Model.LabelKeyInput.Name');
         let labelTranslationInput = getElement('@Model.LabelTranslationInput.Name');
         let textToTranslate = labelKeyInput.value;
-        let lastLabelTranslation = '';
-
+        labelTranslationInput.value = textToTranslate.replace("_", " ");
+        let lastLastLanguageUid = "";
+        let lastLastLabelTranslate = "";
         onSelectChange('@Model.LanguageInput.Name', function () {
             var targetLanguageUid = languageInput.value;
             var sourceLanguageUid = projectLanguageInput.value;
-            doGet('/Label/Translate?text=' + textToTranslate + '&target=' + targetLanguageUid + '&source=' + sourceLanguageUid, function (req) {
-                if (199 < req.status && req.status < 300) {
-                    if (labelTranslationInput.value === ''
-                        || labelTranslationInput.value === lastLabelTranslation) {
-                        labelTranslationInput.value = req.responseText.replace(new RegExp("\"", "g"), "");
-                        lastLabelTranslation = labelTranslationInput.value;
+            if (targetLanguageUid === sourceLanguageUid) {
+                labelTranslationInput.value = textToTranslate.replace("_"," ");
+            } else {
+                doGet('/Label/Translate?text=' + textToTranslate + '&target=' + targetLanguageUid + '&source=' + sourceLanguageUid, function (req) {
+                    if (199 < req.status && req.status < 300) {
+                        if (lastLastLanguageUid!==sourceLanguageUid) {
+                            labelTranslationInput.value = req.responseText.replace(new RegExp("\"", "g"), "");
+                            lastLastLabelTranslate = labelTranslationInput.value;
+                            lastLastLanguageUid = targetLanguageUid;
+                        } else {
+                            labelTranslationInput.value = lastLastLabelTranslate;
+                        }
                     }
-                }
-            });
+                });
+            }
         });
     </script>
 }
