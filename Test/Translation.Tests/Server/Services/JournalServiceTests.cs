@@ -45,7 +45,7 @@ namespace Translation.Tests.Server.Services
             // arrange
             var request = GetOrganizationJournalReadListRequestForSelectMany();
             MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
-            MockJournalRepository.Setup_SelectAfter_Returns_Journals();
+            MockJournalRepository.Setup_SelectMany_Returns_Journals();
             MockJournalRepository.Setup_Count_Returns_Ten();
 
             // act

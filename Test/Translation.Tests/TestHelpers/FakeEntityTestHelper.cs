@@ -1122,7 +1122,7 @@ namespace Translation.Tests.TestHelpers
         {
             var pagingInfo = new PagingInfo();
             pagingInfo.Skip = Zero;
-            pagingInfo.Take = Three;
+            pagingInfo.Take = OneHundred;
             pagingInfo.IsAscending = BooleanTrue;
             pagingInfo.LastUid = UidOne;
             pagingInfo.TotalItemCount = Ten;
@@ -1134,7 +1134,7 @@ namespace Translation.Tests.TestHelpers
         {
             var pagingInfo = new PagingInfo();
             pagingInfo.Skip = One;
-            pagingInfo.Take = Three;
+            pagingInfo.Take = OneHundred;
             pagingInfo.IsAscending = BooleanTrue;
             pagingInfo.TotalItemCount = Ten;
             pagingInfo.LastUid = UidOne;
@@ -1153,6 +1153,7 @@ namespace Translation.Tests.TestHelpers
 
             return labelListInfo;
         }
+
         public static List<LabelListInfo> GetLabelListInfoList()
         {
 

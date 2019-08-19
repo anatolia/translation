@@ -415,7 +415,7 @@ namespace Translation.Tests.Server.Services
             var request = GetOrganizationPendingTranslationReadListRequestForSelectAfter(OrganizationOneUid);
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
             MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
-
+            MockLabelRepository.Setup_SelectAfter_Returns_Labels();
             // act
             var result = await SystemUnderTest.GetPendingTranslations(request);
 
@@ -423,6 +423,25 @@ namespace Translation.Tests.Server.Services
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<OrganizationPendingTranslationReadListResponse>(result);
             AssertPagingInfoForSelectAfter(result.PagingInfo, Ten);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Select();
+            MockLabelRepository.Verify_SelectAfter();
+        }
+
+        [Test]
+        public async Task OrganizationService_GetPendingTranslations_Invalid_OrganizationNotFound()
+        {
+            // arrange
+            var request = GetOrganizationPendingTranslationReadListRequestForSelectAfter(OrganizationOneUid);
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+            MockOrganizationRepository.Setup_Select_Returns_OrganizationOneNotExist();
+
+            // act
+            var result = await SystemUnderTest.GetPendingTranslations(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid,OrganizationNotFound);
+            AssertReturnType<OrganizationPendingTranslationReadListResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Select();
         }
@@ -434,6 +453,7 @@ namespace Translation.Tests.Server.Services
             var request = GetOrganizationPendingTranslationReadListRequestForSelectMany(OrganizationOneUid);
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
             MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
+            MockLabelRepository.Setup_SelectMany_Returns_Labels();
 
             // act
             var result = await SystemUnderTest.GetPendingTranslations(request);
@@ -444,6 +464,7 @@ namespace Translation.Tests.Server.Services
             AssertPagingInfoForSelectMany(result.PagingInfo, Ten);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Select();
+            MockLabelRepository.Verify_SelectMany();
         }
 
         [Test]
@@ -485,7 +506,8 @@ namespace Translation.Tests.Server.Services
         {
             // arrange
             var request = GetValidateEmailRequest();
-            MockUserRepository.Reset();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_Update_Failed();
 
             // act
             var result = await SystemUnderTest.ValidateEmail(request);
@@ -493,6 +515,8 @@ namespace Translation.Tests.Server.Services
             // assert
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<ValidateEmailResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_Update();
         }
 
         [Test]
@@ -598,6 +622,22 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
+        public async Task OrganizationService_DemandPasswordReset_Invalid_UserNotActive()
+        {
+            // arrange
+            var request = GetDemandPasswordResetRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotActive();
+
+            // act
+            var result = await SystemUnderTest.DemandPasswordReset(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotActive);
+            AssertReturnType<DemandPasswordResetResponse>(result);
+            MockUserRepository.Verify_Select();
+        }
+
+        [Test]
         public async Task OrganizationService_DemandPasswordReset_InvalidAlreadyRequested()
         {
             // arrange
@@ -698,11 +738,12 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task OrganizationService_PasswordReset_Failed_UserNotExist()
+        public async Task OrganizationService_PasswordReset_Failed()
         {
             // arrange
             var request = GetPasswordResetRequest();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotExist();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOnePasswordResetRequestedAtFiveMinutesBefore();
+            MockUserRepository.Setup_Update_Failed();
 
             // act
             var result = await SystemUnderTest.PasswordReset(request);
@@ -711,22 +752,7 @@ namespace Translation.Tests.Server.Services
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<PasswordResetResponse>(result);
             MockUserRepository.Verify_Select();
-        }
-
-        [Test]
-        public async Task OrganizationService_PasswordReset_Failed_UserNotActive()
-        {
-            // arrange
-            var request = GetPasswordResetRequest();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneNotActive();
-
-            // act
-            var result = await SystemUnderTest.PasswordReset(request);
-
-            // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
-            AssertReturnType<PasswordResetResponse>(result);
-            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_Update();
         }
 
         [Test]
@@ -759,6 +785,26 @@ namespace Translation.Tests.Server.Services
 
             // assert
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<PasswordChangeResponse>(result);
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_Update();
+            MockUserRepository.Verify_SelectRevisions();
+        }
+
+        [Test]
+        public async Task OrganizationService_ChangePassword_Failed()
+        {
+            // arrange
+            var request = GetPasswordChangeRequest();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_SelectRevisions_Returns_OrganizationOneUserOneRevisions();
+            MockUserRepository.Setup_Update_Failed();
+
+            // act
+            var result = await SystemUnderTest.ChangePassword(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<PasswordChangeResponse>(result);
             MockUserRepository.Verify_Select();
             MockUserRepository.Verify_Update();

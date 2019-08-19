@@ -13,6 +13,30 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class LabelTranslationRepositorySetupHelper
     {
+
+        public static void Setup_SelectAfter_Returns_LabelTranslations(this Mock<ILabelTranslationRepository> repository)
+        {
+            repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<LabelTranslation, bool>>>(),
+              It.IsAny<Guid>(),
+              It.IsAny<int>(),
+              It.IsAny<Expression<Func<LabelTranslation,object>>>(),
+              It.IsAny<bool>(),false))
+                .ReturnsAsync(new List<LabelTranslation>(){GetLabelTranslation()});
+
+        }
+
+        public static void Setup_SelectMany_Returns_LabelTranslations(this Mock<ILabelTranslationRepository> repository)
+        {
+            repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<LabelTranslation, bool>>>(),
+              It.IsAny<int>(),
+              It.IsAny<int>(),
+              It.IsAny<Expression<Func<LabelTranslation,object>>>(),
+              It.IsAny<bool>(),false))
+                .ReturnsAsync(new List<LabelTranslation>(){GetLabelTranslation()});
+
+        }
+
+
         public static void Setup_RestoreRevision_Returns_True(this Mock<ILabelTranslationRepository> repository)
         {
             repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
@@ -124,15 +148,6 @@ namespace Translation.Tests.SetupHelpers
             repository.Verify(x => x.Select(It.IsAny<Expression<Func<LabelTranslation, bool>>>(), false));
         }
 
-        public static void Verify_SelectMany(this Mock<ILabelTranslationRepository> repository)
-        {
-            repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<LabelTranslation, bool>>>(),
-                                               It.IsAny<int>(),
-                                               It.IsAny<int>(),
-                                               It.IsAny<Expression<Func<LabelTranslation, object>>>(),
-                                               It.IsAny<bool>(), false));
-        }
-
         public static void Setup_Insert_Success(this Mock<ILabelTranslationRepository> repository)
         {
             repository.Setup(x => x.Insert(It.IsAny<long>(),
@@ -220,6 +235,26 @@ namespace Translation.Tests.SetupHelpers
         public static void Verify_Any(this Mock<ILabelTranslationRepository> repository)
         {
             repository.Verify(x => x.Any(It.IsAny<Expression<Func<LabelTranslation, bool>>>(), false));
+        }
+
+        public static void Verify_SelectAfter(this Mock<ILabelTranslationRepository> repository)
+        {
+            repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<LabelTranslation, bool>>>(),
+                It.IsAny<Guid>(),
+                It.IsAny<int>(),
+                It.IsAny<Expression<Func<LabelTranslation, object>>>(),
+                It.IsAny<bool>(), false));
+
+        }
+
+        public static void Verify_SelectMany(this Mock<ILabelTranslationRepository> repository)
+        {
+            repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<LabelTranslation, bool>>>(),
+                It.IsAny<int>(),
+                It.IsAny<int>(),
+                It.IsAny<Expression<Func<LabelTranslation, object>>>(),
+                It.IsAny<bool>(), false));
+
         }
     }
 }

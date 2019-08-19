@@ -1450,6 +1450,22 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
+        public async Task IntegrationService_CreateTokenWhenUserAuthenticated_CurrentUserNull()
+        {
+            // arrange
+            var request = GetTokenGetRequest();
+           MockUserRepository.Setup_SelectById_Returns_CurrentUserNull();
+
+            // act
+            var result = await SystemUnderTest.CreateTokenWhenUserAuthenticated(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertReturnType<TokenCreateResponse>(result);
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
         public async Task IntegrationService_CreateTokenWhenUserAuthenticated_Failed()
         {
             // arrange
