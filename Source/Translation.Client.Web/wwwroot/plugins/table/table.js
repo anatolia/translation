@@ -283,8 +283,8 @@ function handleSelectedRows(btn) {
                     }
                 },
                 function (req) {
-                    let messages = JSON.parse(req.response).join('<br/>');
-                    showPopupMessage(messages);
+                    let messages = JSON.parse(req.response);
+                    showPopupMessage(messages["messages"].join('<br/>'));
                 });
         });
 }
@@ -294,8 +294,8 @@ function handleRow(btn, urlEncodedData, url, onSuccess) {
         function () {
             doPostWithFormUrlEncodedContent(url, urlEncodedData, onSuccess,
                 function (req) {
-                    let messages = JSON.parse(req.response).join('<br/>');
-                    showPopupMessage(messages);
+                    let messages = JSON.parse(req.response);
+                    showPopupMessage(messages["messages"].join('<br/>'));
                 });
         });
 }
@@ -335,8 +335,8 @@ function handlePostAndAppendRow(btn) {
                 if (req.status == 500) {
                     showPopupMessage('server_error');
                 } else {
-                    let messages = JSON.parse(req.response).messages.join('<br/>');
-                    showPopupMessage(messages);
+                    let messages = JSON.parse(req.response).messages;
+                    showPopupMessage(messages["messages"].join('<br/>'));
                 }
             });
     });
