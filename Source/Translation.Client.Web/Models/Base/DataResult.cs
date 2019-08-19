@@ -84,7 +84,7 @@ namespace Translation.Client.Web.Models.Base
             return PrepareButton(name, $"handleChangeActivationRow(this, \"{postUrl}\")", "btn-secondary", confirmTitle, confirmContent);
         }
 
-        public string PrepareChangeAllActivationButton(string postUrl, string name = "change_activation",
+        public string PrepareChangeAllActivationButton(string postUrl, string name = "change_all_activation",
             string confirmTitle = "are_you_sure_you_want_to_change_activation_title",
             string confirmContent = "are_you_sure_you_want_to_change_activation_content")
         {
