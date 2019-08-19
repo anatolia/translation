@@ -329,7 +329,6 @@ namespace Translation.Tests.TestHelpers
         public static IntegrationReadListRequest GetIntegrationReadListRequest()
         {
             var request = new IntegrationReadListRequest(CurrentUserId, OrganizationOneUid);
-
             return request;
         }
 
@@ -351,7 +350,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetIntegrationClientReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
-
+            request.SearchTerm = StringOne;
             return request;
         }
 
@@ -367,7 +366,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetIntegrationReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
-
+            request.SearchTerm = StringOne;
             return request;
         }
 

@@ -49,7 +49,7 @@
             } else {
                 doGet('/Label/Translate?text=' + textToTranslate + '&target=' + targetLanguageUid + '&source=' + sourceLanguageUid, function (req) {
                     if (199 < req.status && req.status < 300) {
-                        if (lastLastLanguageUid!==sourceLanguageUid) {
+                        if (lastLastLanguageUid !== targetLanguageUid) {
                             labelTranslationInput.value = req.responseText.replace(new RegExp("\"", "g"), "");
                             lastLastLabelTranslate = labelTranslationInput.value;
                             lastLastLanguageUid = targetLanguageUid;
