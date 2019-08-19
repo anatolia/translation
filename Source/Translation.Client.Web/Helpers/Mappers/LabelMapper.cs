@@ -15,6 +15,8 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.OrganizationUid = dto.OrganizationUid;
             model.ProjectUid = dto.Uid;
             model.ProjectName = dto.Name;
+            model.LanguageName = dto.LanguageName;
+            model.LanguageIconUrl = dto.LanguageIconUrl;
 
             model.SetInputModelValues();
             return model;

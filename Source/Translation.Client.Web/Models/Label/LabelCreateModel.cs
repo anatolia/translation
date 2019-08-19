@@ -15,7 +15,9 @@ namespace Translation.Client.Web.Models.Label
         public string Key { get; set; }
         public string Description { get; set; }
         public string LanguageUid { get; set; }
-     
+        public string LanguageName { get; set; }
+        public string LanguageIconUrl { get; set; }
+
 
         public HiddenInputModel OrganizationInput { get; }
         public HiddenInputModel ProjectInput { get; }

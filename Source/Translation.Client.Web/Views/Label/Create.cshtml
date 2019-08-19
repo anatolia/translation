@@ -7,6 +7,12 @@
     <a href="/Project/Detail/@Model.ProjectUid">@Model.ProjectName</a>
 </div>
 
+<div>
+    <label data-translation="language">language</label>
+    <img src="@Model.LanguageIconUrl" alt="@Model.LanguageName" style="height: 34px; margin-top: 3px; margin-bottom: 5px;" />
+    <span style="display: block; margin-bottom: 10px;">@Model.LanguageName</span>
+</div>
+
 <form method="post">
     <partial name="Components/_Hidden" model="@Model.OrganizationInput" />
     <partial name="Components/_Hidden" model="@Model.ProjectInput" />
