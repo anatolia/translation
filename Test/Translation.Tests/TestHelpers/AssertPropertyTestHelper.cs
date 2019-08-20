@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using NUnit.Framework;
 using Shouldly;
+using Translation.Common.Models.Base;
+using Translation.Common.Models.DataTransferObjects;
 
 namespace Translation.Tests.TestHelpers
 {
     public class AssertPropertyTestHelper
     {
-        public static void AssertInstantProperty(PropertyInfo[] properties, string propertyName, DateTime propertyValue)
+        public static void AssertDateTimeProperty(PropertyInfo[] properties, string propertyName, DateTime propertyValue)
         {
             propertyValue.ShouldNotBeNull();
 
@@ -55,6 +59,7 @@ namespace Translation.Tests.TestHelpers
             var propFirstName = properties.First(x => x.Name == propertyName);
             propFirstName.PropertyType.Name.ShouldBe(nameof(Int64));
         }
+
         public static void AssertNullableLongProperty(PropertyInfo[] properties, string propertyName, long? propertyValue)
         {
             propertyValue.ShouldBeNull();
@@ -62,6 +67,7 @@ namespace Translation.Tests.TestHelpers
             var propFirstName = properties.First(x => x.Name == propertyName);
             propFirstName.PropertyType.ShouldBe(typeof(long?));
         }
+
         public static void AssertGuidProperty(PropertyInfo[] properties, string propertyName, Guid propertyValue)
         {
             propertyValue.ToString().ShouldBe("00000000-0000-0000-0000-000000000000");
@@ -69,6 +75,15 @@ namespace Translation.Tests.TestHelpers
             var propFirstName = properties.First(x => x.Name == propertyName);
             propFirstName.PropertyType.Name.ShouldBe(nameof(Guid));
         }
+
+        public static void AssertObjectProperty(PropertyInfo[] properties, string propertyName, BaseDto propertyValue)
+        {
+            propertyValue.ShouldBeAssignableTo<BaseDto>();
+
+            var propFirstName = properties.First(x => x.Name == propertyName);
+            propFirstName.PropertyType.Name.ShouldBe(nameof(BaseDto));
+        }
+
         public static void AssertNullableGuidProperty(PropertyInfo[] properties, string propertyName, Guid? propertyValue)
         {
             propertyValue.ShouldBeNull();

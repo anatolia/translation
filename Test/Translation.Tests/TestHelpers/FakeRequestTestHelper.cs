@@ -771,6 +771,13 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
+        public static OrganizationSendEmailLogReadListRequest GetOrganizationSendEmailLogReadListRequest(long currentUserId, Guid organizationUid)
+        {
+            var request = new OrganizationSendEmailLogReadListRequest(currentUserId, organizationUid);
+
+            return request;
+        }
+
         public static UserJournalReadListRequest GetUserJournalReadListRequest()
         {
             var request = new UserJournalReadListRequest(CurrentUserId, OrganizationOneUserOneUid);
@@ -954,6 +961,13 @@ namespace Translation.Tests.TestHelpers
             var request = GetAllTokenRequestLogReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
             request.SearchTerm = StringOne;
+
+            return request;
+        }
+
+        public static AllSendEmailLogReadListRequest GetAllSendEmailLogReadListRequest(long currentUserId)
+        {
+            var request = new AllSendEmailLogReadListRequest(currentUserId);
 
             return request;
         }
