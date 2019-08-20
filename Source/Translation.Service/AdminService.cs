@@ -447,7 +447,7 @@ namespace Translation.Service
             var result = await _translationProviderRepository.Update(request.CurrentUserId, selectedTranslationProvider);
             if (result)
             {
-                _cacheManager.UpsertTranslationProviderCache(selectedTranslationProvider, _translationProviderFactory.MapCurrentTranslationProvider(selectedTranslationProvider));
+                _cacheManager.UpsertActiveTranslationProviderCache(selectedTranslationProvider);
 
                 response.Status = ResponseStatus.Success;
                 return response;

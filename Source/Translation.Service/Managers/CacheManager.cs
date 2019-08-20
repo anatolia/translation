@@ -18,8 +18,7 @@ namespace Translation.Service.Managers
         private const string CACHE_NAME_CURRENT_USER = nameof(CurrentUser);
         private const string CACHE_NAME_ORGANIZATION = nameof(Organization);
         private const string CACHE_NAME_CURRENT_ORGANIZATION = nameof(CurrentOrganization);
-        private const string CACHE_NAME_PROVIDER = nameof(TranslationProvider);
-        private const string CACHE_NAME_CURRENT_PROVIDER = nameof(CurrentTranslationProvider);
+        private const string CACHE_NAME_ACTIVE_PROVIDER = nameof(TranslationProvider);
         private const string CACHE_NAME_CURRENT_USER_LANGUAGE_ISO_CODE2_CHAR = nameof(CurrentUser.LanguageIsoCode2Char);
 
         private readonly ILanguageRepository _languageRepository;
@@ -27,18 +26,24 @@ namespace Translation.Service.Managers
         private readonly UserFactory _userFactory;
         private readonly IOrganizationRepository _organizationRepository;
         private readonly OrganizationFactory _organizationFactory;
+        private readonly TranslationProviderFactory _translationProviderFactory;
+        private readonly ITranslationProviderRepository _translationProviderRepository;
 
         public CacheManager(ILanguageRepository languageRepository,
                             IUserRepository userRepository,
                             UserFactory userFactory,
                             IOrganizationRepository organizationRepository,
-                            OrganizationFactory organizationFactory)
+                            OrganizationFactory organizationFactory,
+                            TranslationProviderFactory translationProviderFactory,
+                            ITranslationProviderRepository translationProviderRepository)
         {
             _languageRepository = languageRepository;
             _userRepository = userRepository;
             _userFactory = userFactory;
             _organizationRepository = organizationRepository;
             _organizationFactory = organizationFactory;
+            _translationProviderFactory = translationProviderFactory;
+            _translationProviderRepository = translationProviderRepository;
         }
 
         public User GetCachedUser(long userId)
@@ -210,12 +215,31 @@ namespace Translation.Service.Managers
             AddOrUpdate(CACHE_NAME_CURRENT_ORGANIZATION, new CacheItem(organization.Uid.ToUidString(), currentOrganization));
         }
 
-        public void UpsertTranslationProviderCache(TranslationProvider translationProvider, CurrentTranslationProvider currentTranslationProvider)
+        public void UpsertActiveTranslationProviderCache(TranslationProvider activeTranslationProvide)
         {
-            AddOrUpdate(CACHE_NAME_PROVIDER, new CacheItem(translationProvider.Uid.ToUidString(), translationProvider));
-            AddOrUpdate(CACHE_NAME_CURRENT_PROVIDER, new CacheItem(translationProvider.Uid.ToUidString(), currentTranslationProvider));
+            AddOrUpdate(CACHE_NAME_ACTIVE_PROVIDER, new CacheItem(activeTranslationProvide.IsActive.ToString(), activeTranslationProvide));
         }
 
+        public ActiveTranslationProvider GetCachedActiveTranslationProvider(bool isActive)
+        {
+            var item = Get(CACHE_NAME_ACTIVE_PROVIDER, isActive.ToString());
+            if (item == null)
+            {
+                var translationProvider = _translationProviderRepository.Select(x => x.IsActive == isActive).Result;
+                if (translationProvider.IsNotExist())
+                {
+                    return null;
+                }
+
+                var activeTranslationProvider = _translationProviderFactory.MapActiveTranslationProvider(translationProvider);
+                UpsertActiveTranslationProviderCache(translationProvider);
+
+                return activeTranslationProvider;
+            }
+
+            return (ActiveTranslationProvider)item.Item;
+        }
+       
         public void RemoveUser(User user)
         {
             Remove(CACHE_NAME_USER, user.Id.ToString());

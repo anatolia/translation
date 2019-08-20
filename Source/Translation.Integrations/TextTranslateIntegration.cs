@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO.Compression;
 using System.Threading.Tasks;
@@ -7,31 +8,38 @@ using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Responses.Label;
+using Translation.Common.Models.Shared;
+using Translation.Data.Entities.Domain;
 using Translation.Data.Repositories.Contracts;
 using Translation.Integrations.Providers;
+using Translation.Service.Managers;
 
 namespace Translation.Integrations
 {
     public class TextTranslateIntegration : ITextTranslateIntegration
     {
-        private readonly ITranslationProviderRepository _translationProviderRepository;
-        private  Dictionary<string, ITextTranslateProvider> TranslateProviders { get; set; }
+        private readonly ITextTranslateProvider[] _textTranslateProvider;
+        private Dictionary<string, ITextTranslateProvider> TranslateProviders { get; set; }
+        private ActiveTranslationProvider ActiveTranslationProvider { get; set; }
+        private readonly CacheManager _cacheManager;
 
-        public TextTranslateIntegration( ITranslationProviderRepository translationProviderRepository)
+        public TextTranslateIntegration(CacheManager cacheManager, ITextTranslateProvider[] textTranslateProvider)
         {
-            _translationProviderRepository = translationProviderRepository;
-            TranslateProviders=new Dictionary<string, ITextTranslateProvider>();
-            TranslateProviders.Add("google",new GoogleTranslateProvider(translationProviderRepository));
-            TranslateProviders.Add("yandex", new YandexTranslateProvider(translationProviderRepository));
+            _cacheManager = cacheManager;
+            _textTranslateProvider = textTranslateProvider;
+            TranslateProviders = new Dictionary<string, ITextTranslateProvider>();
+            for (int i = 0; i < _textTranslateProvider.Length; i++)
+            {
+                TranslateProviders.Add(_textTranslateProvider[i].Name, _textTranslateProvider[i]);
+            }
         }
 
         public async Task<LabelGetTranslatedTextResponse> GetTranslatedText(LabelGetTranslatedTextRequest request)
         {
             var response = new LabelGetTranslatedTextResponse();
+            ActiveTranslationProvider = _cacheManager.GetCachedActiveTranslationProvider(true);
 
-            var provider = await _translationProviderRepository.Select(x => x.IsActive == true);
-
-            response.Item.Name = await TranslateProviders[provider.Name].TranslateText(request.TextToTranslate, request.TargetLanguageIsoCode2, request.SourceLanguageIsoCode2);
+            response.Item.Name = await TranslateProviders[ActiveTranslationProvider.Name].TranslateText(request.TextToTranslate, request.TargetLanguageIsoCode2, request.SourceLanguageIsoCode2);
 
             response.Status = ResponseStatus.Success;
             return response;
