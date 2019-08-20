@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-
+using Moq;
 using NUnit.Framework;
 
 using Translation.Common.Contracts;
@@ -343,6 +343,30 @@ namespace Translation.Tests.Server.Services
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
             MockIntegrationRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task IntegrationService_EditIntegration_Failed()
+        {
+            // arrange
+            var request = GetIntegrationEditRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOne();
+            MockIntegrationRepository.Setup_Any_Returns_False();
+            MockIntegrationRepository.Setup_Update_Returns_False();
+
+            // act
+            var result = await SystemUnderTest.EditIntegration(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<IntegrationEditResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationRepository.Verify_Select();
+            MockIntegrationRepository.Verify_Any();
+            MockIntegrationRepository.Verify_Update();
         }
 
         [Test]
@@ -1080,7 +1104,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteIntegrationClient(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid,UserNotAdmin);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<IntegrationClientDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -1225,7 +1249,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid,UserNotAdmin);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -1426,6 +1450,22 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
+        public async Task IntegrationService_CreateTokenWhenUserAuthenticated_CurrentUserNull()
+        {
+            // arrange
+            var request = GetTokenGetRequest();
+           MockUserRepository.Setup_SelectById_Returns_CurrentUserNull();
+
+            // act
+            var result = await SystemUnderTest.CreateTokenWhenUserAuthenticated(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertReturnType<TokenCreateResponse>(result);
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
         public async Task IntegrationService_CreateTokenWhenUserAuthenticated_Failed()
         {
             // arrange
@@ -1534,7 +1574,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.RevokeToken(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid,UserNotAdmin);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<TokenRevokeResponse>(result);
             MockUserRepository.Verify_SelectById();
         }

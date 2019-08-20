@@ -211,6 +211,7 @@ namespace Translation.Service
             if (language.IsNotExist())
             {
                 response.SetInvalidBecauseNotFound(nameof(Language));
+                return response;
             }
 
             var entity = _projectFactory.CreateEntityFromRequest(request, currentUser.Organization, language);

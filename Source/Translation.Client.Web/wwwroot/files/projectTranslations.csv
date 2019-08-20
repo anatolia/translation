@@ -1148,3 +1148,66 @@ re_enter_new_password,ru,Повторно введите новый пароль
 accept_terms,en,accept terms
 accept_terms,tr,Şartları kabul et
 accept_terms,ru,принять условия
+translation_providers,en,translation providers
+translation_providers,tr,çeviri sağlayıcıları
+translation_providers,ru,переводчики
+translation_provider_name,en,translation provider name
+translation_provider_name,tr,çeviri sağlayıcısı adı
+translation_provider_name,ru,название переводчика
+translation_providers_link,en,translation providers link
+translation_providers_link,tr,çeviri sağlayıcıları bağlantısı
+translation_providers_link,ru,ссылка на переводчиков
+translation_provider_info,en,translation provider info
+translation_provider_info,tr,çeviri sağlayıcı bilgisi
+translation_provider_info,ru,информация о переводчике
+translation_provider_value_content,en,translation provider value content
+translation_provider_value_content,tr,çeviri sağlayıcısı değer içeriği
+translation_provider_value_content,ru,ценность содержания провайдера перевода
+edit_button,en,edit button
+edit_button,tr,düzenle düğmesi
+edit_button,ru,кнопка редактирования
+please_edit_translation_api_value,en,please edit translation api value
+please_edit_translation_api_value,tr,lütfen çeviriyi düzenle api değerini değiştir
+please_edit_translation_api_value,ru,пожалуйста измените значение API перевода
+translation_provider_already_exist,en,translation provider already exist
+translation_provider_already_exist,tr,çeviri sağlayıcısı zaten var
+translation_provider_already_exist,ru,поставщик переводов уже существует
+translation_uid_not_valid,en,translation uid not valid
+translation_uid_not_valid,tr,çeviri adı geçerli değil
+translation_uid_not_valid,ru,UID перевода недействителен
+you_add_required_json_file_for_google_provider,en,you add required json file for google provider
+you_add_required_json_file_for_google_provider,tr,google sağlayıcı için gerekli json dosyasını ekle
+you_add_required_json_file_for_google_provider,ru,Вы добавляете необходимый файл JSON для провайдера Google
+you_add_required_api_key_for_yandex_provider,en,you add required api key for yandex provider
+you_add_required_api_key_for_yandex_provider,tr,yandex sağlayıcı için gerekli api anahtarını eklerseniz
+you_add_required_api_key_for_yandex_provider,ru,Вы добавляете необходимый ключ API для провайдера Яндекса
+translation_provider_uid_is_not_valid,en,translation provider uid is not valid
+translation_provider_uid_is_not_valid,tr,çeviri sağlayıcısı kullanıcı kimliği geçerli değil
+translation_provider_uid_is_not_valid,ru,UID переводчика недействителен
+translation_provider_name_required_error_message,en,translation provider name required error message
+translation_provider_name_required_error_message,tr,çeviri sağlayıcısı adı gerekli hata mesajı
+translation_provider_name_required_error_message,ru,имя поставщика перевода требуется сообщение об ошибке
+translation_provider_data_required_error_message,en,translation provider data required error message
+translation_provider_data_required_error_message,tr,çeviri sağlayıcısı verileri gerekli hata mesajı
+translation_provider_data_required_error_message,ru,Требуются данные поставщика перевода. Сообщение об ошибке.
+provider_name,en,provider name
+provider_name,tr,sağlayıcı adı
+provider_name,ru,имя провайдера
+journal_translation_provider_edit,en,journal translation provider edit
+journal_translation_provider_edit,tr,dergi çeviri sağlayıcısı düzenleme
+journal_translation_provider_edit,ru,редактор перевода журнала редактировать
+translation_provider_create_title,en,translation provider create title
+translation_provider_create_title,tr,çeviri sağlayıcısı başlık oluştur
+translation_provider_create_title,ru,переводчик создать заголовок
+translation_provider_detail_title,en,translation provider detail title
+translation_provider_detail_title,tr,çeviri sağlayıcısı detay başlığı
+translation_provider_detail_title,ru,название перевода провайдера
+translation_provider_edit_title,en,translation provider edit title
+translation_provider_edit_title,tr,çeviri sağlayıcısı düzenleme başlığı
+translation_provider_edit_title,ru,переводчик редактировать заголовок
+translation_provider_list_title,en,translation provider list title
+translation_provider_list_title,tr,çeviri sağlayıcı listesi başlığı
+translation_provider_list_title,ru,название списка переводчиков
+value,en,value
+value,tr,değer
+value,ru,значение

@@ -137,6 +137,7 @@ namespace Translation.Tests.TestHelpers
         public const int Eight = 8;
         public const int Nine = 9;
         public const int Ten = 10;
+        public const int OneHundred = 100;
 
         public const double MinusDoubleOne = -1.04;
         public const double MinusDoubleTwo = -2.04;

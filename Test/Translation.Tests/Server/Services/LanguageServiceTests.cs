@@ -362,16 +362,16 @@ namespace Translation.Tests.Server.Services
         public async Task LanguageService_DeleteLanguage_Invalid_LanguageNotFound()
         {
             // arrange
-            var request = GetLanguageEditRequest();
+            var request = GetLanguageDeleteRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
             MockLanguageRepository.Setup_Select_Returns_LanguageNotExist();
 
             // act
-            var result = await SystemUnderTest.EditLanguage(request);
+            var result = await SystemUnderTest.DeleteLanguage(request);
 
             // assert
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LanguageNotFound);
-            AssertReturnType<LanguageEditResponse>(result);
+            AssertReturnType<LanguageDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockLanguageRepository.Verify_Select();
         }

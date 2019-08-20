@@ -6,6 +6,7 @@ using Translation.Common.Models.Base;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Responses.Label;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Tests.TestHelpers.FakeDtoTestHelper;
 
 namespace Translation.Tests.SetupHelpers
 {

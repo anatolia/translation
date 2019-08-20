@@ -147,6 +147,12 @@ namespace Translation.Tests.SetupHelpers
                       .ReturnsAsync(GetOrganizationOneAdminUserOne());
         }
 
+        public static void Setup_SelectById_Returns_CurrentUserNull(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.SelectById(It.IsAny<long>()))
+                      .ReturnsAsync(new User());
+        }
+
         public static void Setup_SelectById_Returns_OrganizationTwoAdminUserOne(this Mock<IUserRepository> repository)
         {
             repository.Setup(x => x.SelectById(It.IsAny<long>()))

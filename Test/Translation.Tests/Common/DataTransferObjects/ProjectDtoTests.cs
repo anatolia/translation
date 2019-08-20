@@ -3,11 +3,8 @@ using NUnit.Framework;
 
 using Shouldly;
 
-using StandardRepository.Models.Entities;
-using StandardRepository.Models.Entities.Schemas;
 using Translation.Common.Models.Base;
 using Translation.Common.Models.DataTransferObjects;
-using Translation.Data.Entities.Domain;
 using static Translation.Tests.TestHelpers.AssertPropertyTestHelper;
 
 namespace Translation.Tests.Common.DataTransferObjects
@@ -35,6 +32,11 @@ namespace Translation.Tests.Common.DataTransferObjects
             AssertIntegerProperty(properties, "LabelTranslationCount", dto.LabelTranslationCount);
             AssertBooleanProperty(properties, "IsSuperProject", dto.IsSuperProject);
             AssertStringProperty(properties, "Slug", dto.Slug);
+
+            AssertLongProperty(properties, "LanguageId", dto.LanguageId);
+            AssertGuidProperty(properties, "LanguageUid", dto.LanguageUid);
+            AssertStringProperty(properties, "LanguageName", dto.LanguageName);
+            AssertStringProperty(properties, "LanguageIconUrl", dto.LanguageIconUrl);
         }
 
     }

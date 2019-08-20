@@ -20,6 +20,12 @@ namespace Translation.Tests.SetupHelpers
                       .ReturnsAsync(BooleanTrue);
         }
 
+        public static void Setup_DoCreateWork_Returns_False(this Mock<IProjectUnitOfWork> unitOfWork)
+        {
+            unitOfWork.Setup(x => x.DoCreateWork(It.IsAny<long>(), It.IsAny<Project>()))
+                      .ReturnsAsync(BooleanFalse);
+        }
+
         public static void Verify_DoCloneWork(this Mock<IProjectUnitOfWork> unitOfWork)
         {
             unitOfWork.Verify(x => x.DoCloneWork(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<Project>()));

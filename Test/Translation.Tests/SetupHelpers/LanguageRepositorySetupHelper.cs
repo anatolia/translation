@@ -143,10 +143,22 @@ namespace Translation.Tests.SetupHelpers
             repository.Verify(x => x.Any(It.IsAny<Expression<Func<Language, bool>>>(), false));
         }
 
+        public static void Setup_Select_Returns_Language_DifferentIsoCode2(this Mock<ILanguageRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Language, bool>>>(), false))
+                      .ReturnsAsync(GetLanguageTwo());
+        }
+
         public static void Setup_Select_Returns_Language(this Mock<ILanguageRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Language, bool>>>(), false))
                       .ReturnsAsync(GetLanguageTwo());
+        }
+
+        public static void Setup_Select_Returns_Language_SameIsoCode2(this Mock<ILanguageRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Language, bool>>>(), false))
+                      .ReturnsAsync(GetLanguageOne());
         }
 
         public static void Setup_Select_Returns_LanguageNotExist(this Mock<ILanguageRepository> repository)

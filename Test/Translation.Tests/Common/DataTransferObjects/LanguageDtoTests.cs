@@ -2,8 +2,6 @@
 
 using Shouldly;
 
-using StandardRepository.Models.Entities;
-using StandardRepository.Models.Entities.Schemas;
 using Translation.Common.Models.Base;
 using Translation.Common.Models.DataTransferObjects;
 using static Translation.Tests.TestHelpers.AssertPropertyTestHelper;

@@ -329,7 +329,6 @@ namespace Translation.Tests.TestHelpers
         public static IntegrationReadListRequest GetIntegrationReadListRequest()
         {
             var request = new IntegrationReadListRequest(CurrentUserId, OrganizationOneUid);
-
             return request;
         }
 
@@ -351,6 +350,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetIntegrationClientReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -359,6 +359,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetIntegrationClientReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -367,6 +368,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetIntegrationReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -375,6 +377,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetIntegrationReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -571,6 +574,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetProjectReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -579,6 +583,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetProjectReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -720,6 +725,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetProjectPendingTranslationReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -728,6 +734,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetProjectPendingTranslationReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -750,6 +757,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetOrganizationJournalReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -758,6 +766,14 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetOrganizationJournalReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
+
+            return request;
+        }
+
+        public static OrganizationSendEmailLogReadListRequest GetOrganizationSendEmailLogReadListRequest(long currentUserId, Guid organizationUid)
+        {
+            var request = new OrganizationSendEmailLogReadListRequest(currentUserId, organizationUid);
 
             return request;
         }
@@ -780,6 +796,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetUserJournalReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -788,6 +805,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetUserJournalReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -803,6 +821,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetAllUserReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -811,6 +830,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetAllUserReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -826,6 +846,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetSuperAdminUserReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -834,6 +855,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetSuperAdminUserReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -904,6 +926,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetAllJournalReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -912,6 +935,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetAllJournalReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -927,6 +951,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetAllTokenRequestLogReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -935,6 +960,14 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetAllTokenRequestLogReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
+
+            return request;
+        }
+
+        public static AllSendEmailLogReadListRequest GetAllSendEmailLogReadListRequest(long currentUserId)
+        {
+            var request = new AllSendEmailLogReadListRequest(currentUserId);
 
             return request;
         }
@@ -950,6 +983,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetAllSendEmailLogReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -958,6 +992,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetAllSendEmailLogReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -973,6 +1008,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetAllLoginLogReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -981,6 +1017,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetAllLoginLogReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -1027,7 +1064,7 @@ namespace Translation.Tests.TestHelpers
 
         public static LabelCreateWithTokenRequest GetLabelCreateWithTokenRequest()
         {
-            var request = new LabelCreateWithTokenRequest(UidOne, UidOne, StringOne, IsoCode2ArrayOne);
+            var request = new LabelCreateWithTokenRequest(UidOne, UidOne, StringOne, IsoCode2ArrayTwo);
 
             return request;
         }
@@ -1047,7 +1084,15 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
-        public static LabelCreateListRequest GetLabelCreateListRequest()
+        public static LabelCreateListRequest GetLabelCreateListRequestUpdateTrue()
+        {
+            var request = new LabelCreateListRequest(CurrentUserId, UidOne, UidOne,
+                                                     BooleanTrue, new List<LabelListInfo>() { GetLabelListInfo() });
+
+            return request;
+        }
+
+        public static LabelCreateListRequest GetLabelCreateListRequestUpdateFalse()
         {
             var request = new LabelCreateListRequest(CurrentUserId, UidOne, UidOne,
                                                      BooleanFalse, new List<LabelListInfo>() { GetLabelListInfo() });
@@ -1109,6 +1154,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetLabelReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -1117,6 +1163,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetLabelReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -1139,6 +1186,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new LabelSearchListRequest(CurrentUserId, StringOne);
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -1157,9 +1205,18 @@ namespace Translation.Tests.TestHelpers
             return request;
         }
 
-        public static AllLabelReadListRequest GetAllLabelReadListRequest()
+        public static AllLabelReadListRequest GetAllLabelReadListRequest_IsDefaultProjectTrue()
         {
             var request = new AllLabelReadListRequest(CurrentUserId, UidOne);
+            request.IsDefaultProject = BooleanTrue;
+
+            return request;
+        }
+
+        public static AllLabelReadListRequest GetAllLabelReadListRequest_IsDefaultProjectFalse()
+        {
+            var request = new AllLabelReadListRequest(CurrentUserId, UidOne);
+            request.IsDefaultProject = BooleanFalse;
 
             return request;
         }
@@ -1344,7 +1401,6 @@ namespace Translation.Tests.TestHelpers
         public static LabelTranslationReadListRequest GetLabelTranslationReadListRequest()
         {
             var request = new LabelTranslationReadListRequest(CurrentUserId, UidOne);
-
             return request;
         }
 
@@ -1359,6 +1415,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetLabelTranslationReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -1367,6 +1424,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetLabelTranslationReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -1463,6 +1521,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetLanguageReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -1471,6 +1530,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetLanguageReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -1608,6 +1668,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetOrganizationReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -1616,6 +1677,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetOrganizationReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -1723,6 +1785,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, organizationUid);
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -1731,6 +1794,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, organizationUid);
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -1837,6 +1901,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetOrganizationLoginLogReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -1845,6 +1910,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetOrganizationLoginLogReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -1992,6 +2058,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetUserReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -2000,6 +2067,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = GetUserReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -2043,6 +2111,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new UserLoginLogReadListRequest(CurrentUserId, UidOne);
             request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
 
             return request;
         }
@@ -2051,6 +2120,7 @@ namespace Translation.Tests.TestHelpers
         {
             var request = new UserLoginLogReadListRequest(CurrentUserId, UidOne);
             request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
 
             return request;
         }

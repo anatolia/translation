@@ -72,6 +72,12 @@ namespace Translation.Tests.SetupHelpers
                       .ReturnsAsync(BooleanTrue);
         }
 
+        public static void Setup_RestoreRevision_Returns_False(this Mock<IProjectRepository> repository)
+        {
+            repository.Setup(x => x.RestoreRevision(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>()))
+                      .ReturnsAsync(BooleanFalse);
+        }
+
         public static void Setup_SelectRevisions_Returns_InvalidRevision(this Mock<IProjectRepository> repository)
         {
             repository.Setup(x => x.SelectRevisions(It.IsAny<long>()))
