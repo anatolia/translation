@@ -32,5 +32,6 @@ namespace Translation.Common.Contracts
         Task<LabelTranslationEditResponse> EditTranslation(LabelTranslationEditRequest request);
         Task<LabelTranslationDeleteResponse> DeleteTranslation(LabelTranslationDeleteRequest request);
         Task<LabelTranslationRestoreResponse> RestoreLabelTranslation(LabelTranslationRestoreRequest request);
+        Task<string> GetTranslationProvider();
     }
 }

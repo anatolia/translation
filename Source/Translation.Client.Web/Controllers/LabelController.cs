@@ -64,6 +64,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var model = LabelMapper.MapLabelCreateModel(response.Item);
+            model.TranslationProviderNameStatus = await _labelService.GetTranslationProvider();
 
             return View(model);
         }
@@ -91,7 +92,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new LabelCreateRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
-                                                 model.Key, model.Description, languageUidArray);
+                                                 model.Key, model.Description, languageUidArray,model.IsGettingTranslationFromOtherProject);
             var response = await _labelService.CreateLabel(request);
             if (response.Status.IsNotSuccess)
             {

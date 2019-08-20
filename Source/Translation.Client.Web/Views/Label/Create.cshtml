@@ -11,6 +11,7 @@
     <label data-translation="language">language</label>
     <img src="@Model.LanguageIconUrl" alt="@Model.LanguageName" style="height: 34px; margin-top: 3px; margin-bottom: 5px;" />
     <span style="display: block; margin-bottom: 10px;">@Model.LanguageName</span>
+    <span style="font-weight: bold">@Model.TranslationProviderNameStatus </span>
 </div>
 
 <form method="post">
@@ -20,7 +21,7 @@
     <partial name="Components/_Input" model="@Model.KeyInput" />
     <partial name="Components/_LongInput" model="@Model.DescriptionInput" />
     <partial name="Components/_Select" model="@Model.LanguagesInput" />
-
+    <partial name="Components/_Checkbox" model="@Model.IsGettingTranslationFromOtherProjectInput" />
 
     <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
 

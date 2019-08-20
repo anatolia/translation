@@ -145,6 +145,13 @@ namespace Translation.Service
                     {
                         var labelGetTranslatedTextRequest = new LabelGetTranslatedTextRequest(currentUser.Id, addedLabel.Name, languages[i].IsoCode2Char, projectLanguage.IsoCode2Char);
                         var labelGetTranslatedTextResponse = await _textTranslateIntegration.GetTranslatedText(labelGetTranslatedTextRequest);
+                        if (labelGetTranslatedTextResponse.Status.IsNotSuccess)
+                        {
+                            response.ErrorMessages.Add("translation_provider_is_not_active");
+                            response.Status = ResponseStatus.Failed;
+                            return response;
+                        }
+
                         labelTranslation = labelGetTranslatedTextResponse.Item.Name.Replace(",", string.Empty);
                     }
 
@@ -1260,6 +1267,20 @@ namespace Translation.Service
             response.Item = _labelTranslationFactory.CreateDtoFromEntity(labelTranslation, language);
             response.Status = ResponseStatus.Success;
             return response;
+        }
+
+        public async Task<string> GetTranslationProvider()
+        {
+            var ActiveTranslationProvider = _cacheManager.GetCachedActiveTranslationProvider(true);
+
+            if (ActiveTranslationProvider==null)
+            {
+                return "taranslation_provider_is_not_active";
+            }
+            else
+            {
+                return "selected_languages_will_translate_automatically_by_" + ActiveTranslationProvider.Name;
+            }
         }
 
         public async Task<LabelTranslationReadListResponse> GetTranslations(LabelTranslationReadListRequest request)

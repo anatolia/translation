@@ -220,7 +220,7 @@ namespace Translation.Service.Managers
             AddOrUpdate(CACHE_NAME_ACTIVE_PROVIDER, new CacheItem(activeTranslationProvide.IsActive.ToString(), activeTranslationProvide));
         }
 
-        public ActiveTranslationProvider GetCachedActiveTranslationProvider(bool isActive)
+        public TranslationProvider GetCachedActiveTranslationProvider(bool isActive)
         {
             var item = Get(CACHE_NAME_ACTIVE_PROVIDER, isActive.ToString());
             if (item == null)
@@ -237,7 +237,7 @@ namespace Translation.Service.Managers
                 return activeTranslationProvider;
             }
 
-            return (ActiveTranslationProvider)item.Item;
+            return (TranslationProvider)item.Item;
         }
        
         public void RemoveUser(User user)

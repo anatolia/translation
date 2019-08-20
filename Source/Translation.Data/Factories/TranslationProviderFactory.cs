@@ -41,9 +41,9 @@ namespace Translation.Data.Factories
             return entity;
         }
 
-        public ActiveTranslationProvider MapActiveTranslationProvider(TranslationProvider platformTranslationProvider)
+        public TranslationProvider MapActiveTranslationProvider(TranslationProvider platformTranslationProvider)
         {
-            var activeTranslationProvider = new ActiveTranslationProvider();
+            var activeTranslationProvider = new TranslationProvider();
             activeTranslationProvider.Id = platformTranslationProvider.Id;
             activeTranslationProvider.Uid = platformTranslationProvider.Uid;
             activeTranslationProvider.Name = platformTranslationProvider.Name;

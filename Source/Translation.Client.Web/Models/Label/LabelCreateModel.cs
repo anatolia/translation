@@ -17,10 +17,13 @@ namespace Translation.Client.Web.Models.Label
         public string LanguageUid { get; set; }
         public string LanguageName { get; set; }
         public string LanguageIconUrl { get; set; }
+        public string TranslationProviderNameStatus { get; set; }
+        public bool IsGettingTranslationFromOtherProject { get; set; }
 
-
+        public CheckboxInputModel IsGettingTranslationFromOtherProjectInput { get; set; }
         public HiddenInputModel OrganizationInput { get; }
         public HiddenInputModel ProjectInput { get; }
+
 
         public InputModel KeyInput { get; }
         public LongInputModel DescriptionInput { get; }
@@ -30,23 +33,22 @@ namespace Translation.Client.Web.Models.Label
             Title = "label_create_title";
 
             OrganizationInput = new HiddenInputModel("OrganizationUid");
-
             ProjectInput = new HiddenInputModel("ProjectUid");
             KeyInput = new InputModel("Key", "key", true);
             DescriptionInput = new LongInputModel("Description", "description");
-
             LanguagesInput = new SelectInputModel("Language", "language", "/Language/SelectData");
             LanguagesInput.IsMultiple = true;
+            IsGettingTranslationFromOtherProjectInput = new CheckboxInputModel("IsGettingTranslationFromOtherProject", "is_getting_translation_from_other_project");
         }
 
         public override void SetInputModelValues()
         {
             OrganizationInput.Value = OrganizationUid.ToUidString();
             ProjectInput.Value = ProjectUid.ToUidString();
-
             KeyInput.Value = Key;
             DescriptionInput.Value = Description;
             LanguagesInput.Value = LanguageUid;
+            IsGettingTranslationFromOtherProjectInput.Value = IsGettingTranslationFromOtherProject;
         }
 
         public override void SetInputErrorMessages()

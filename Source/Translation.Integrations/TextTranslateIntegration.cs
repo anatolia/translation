@@ -20,7 +20,7 @@ namespace Translation.Integrations
     {
         private readonly ITextTranslateProvider[] _textTranslateProvider;
         private Dictionary<string, ITextTranslateProvider> TranslateProviders { get; set; }
-        private ActiveTranslationProvider ActiveTranslationProvider { get; set; }
+        private TranslationProvider ActiveTranslationProvider { get; set; }
         private readonly CacheManager _cacheManager;
 
         public TextTranslateIntegration(CacheManager cacheManager, ITextTranslateProvider[] textTranslateProvider)
@@ -38,7 +38,11 @@ namespace Translation.Integrations
         {
             var response = new LabelGetTranslatedTextResponse();
             ActiveTranslationProvider = _cacheManager.GetCachedActiveTranslationProvider(true);
-
+            if (ActiveTranslationProvider==null)
+            {
+                response.Status = ResponseStatus.Failed;
+                return response;
+            }
             response.Item.Name = await TranslateProviders[ActiveTranslationProvider.Name].TranslateText(request.TextToTranslate, request.TargetLanguageIsoCode2, request.SourceLanguageIsoCode2);
 
             response.Status = ResponseStatus.Success;

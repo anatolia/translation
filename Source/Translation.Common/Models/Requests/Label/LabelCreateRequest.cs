@@ -12,16 +12,17 @@ namespace Translation.Common.Models.Requests.Label
         public string LabelKey { get; }
         public string Description { get; }
         public Guid[] LanguageUids { get; }
-
+        public bool IsGettingTranslationFromOtherProject { get; }
 
         public LabelCreateRequest(long currentUserId, Guid organizationUid, Guid projectUid,
-                                  string labelKey, string description, Guid[] languageUids) : base(currentUserId)
+                                  string labelKey, string description, Guid[] languageUids,
+                                  bool isGettingTranslationFromOtherProject = false) : base(currentUserId)
         {
             if (organizationUid.IsEmptyGuid())
             {
                 ThrowArgumentException(nameof(organizationUid), organizationUid);
             }
-
+            
             if (projectUid.IsEmptyGuid())
             {
                 ThrowArgumentException(nameof(projectUid), projectUid);
@@ -37,6 +38,7 @@ namespace Translation.Common.Models.Requests.Label
             LabelKey = labelKey;
             Description = description;
             LanguageUids = languageUids;
+            IsGettingTranslationFromOtherProject = isGettingTranslationFromOtherProject;
         }
     }
 }
