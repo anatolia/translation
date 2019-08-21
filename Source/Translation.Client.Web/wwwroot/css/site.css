@@ -84,6 +84,17 @@ button {
   border-radius: 3px;
   cursor: pointer; }
 
+.secretSpan {
+    float: left;
+    margin-top: 4px;
+}
+
+.secretButton {
+    margin-left: 5px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .error {
   color: red;
   font-weight: bold;
