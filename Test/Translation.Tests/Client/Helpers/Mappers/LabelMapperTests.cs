@@ -7,6 +7,7 @@ using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Common.Models.DataTransferObjects;
 using static Translation.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Tests.TestHelpers.FakeDtoTestHelper;
+using static Translation.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Tests.Client.Mappers
 {
@@ -18,9 +19,10 @@ namespace Translation.Tests.Client.Mappers
         {
             // arrange
             var dto = GetProjectDto();
+            var activeTranslationProvider = GetActiveTranslationProvider();
 
             // act
-            var result = LabelMapper.MapLabelCreateModel(dto);
+            var result = LabelMapper.MapLabelCreateModel(dto, activeTranslationProvider);
 
             // assert
             result.ShouldBeAssignableTo<LabelCreateModel>();

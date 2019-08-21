@@ -181,7 +181,7 @@ namespace Translation.Tests.TestHelpers
 
         public static void AssertViewRedirectToHome(IActionResult result)
         {
-            var controller = new BaseController(null, null, null);
+            var controller = new BaseController(null, null, null,null);
             var redirectToHome = controller.RedirectToHome();
 
             result.ShouldNotBeNull();
