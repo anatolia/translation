@@ -4,11 +4,11 @@ namespace Translation.Common.Models.Requests.TranslationProvider
 {
     public sealed class ActiveTranslationProviderRequest : BaseRequest
     {
-        public bool Isactive { get; set; }
+        public bool IsActive { get; set; }
 
         public ActiveTranslationProviderRequest()
         {
-            Isactive = true;
+            IsActive = true;
         }
     }
 }

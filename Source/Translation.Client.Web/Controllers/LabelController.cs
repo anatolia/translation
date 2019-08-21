@@ -63,8 +63,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LabelMapper.MapLabelCreateModel(response.Item);
-            model.TranslationProviderNameStatus = await _labelService.GetTranslationProvider();
+            var model = LabelMapper.MapLabelCreateModel(response.Item,ActiveTranslationProvider);
 
             return View(model);
         }

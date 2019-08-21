@@ -20,7 +20,7 @@ namespace Translation.Integrations
     {
         private readonly ITextTranslateProvider[] _textTranslateProvider;
         private Dictionary<string, ITextTranslateProvider> TranslateProviders { get; set; }
-        private TranslationProvider ActiveTranslationProvider { get; set; }
+        private ActiveTranslationProvider ActiveTranslationProvider { get; set; }
         private readonly CacheManager _cacheManager;
 
         public TextTranslateIntegration(CacheManager cacheManager, ITextTranslateProvider[] textTranslateProvider)
@@ -28,6 +28,7 @@ namespace Translation.Integrations
             _cacheManager = cacheManager;
             _textTranslateProvider = textTranslateProvider;
             TranslateProviders = new Dictionary<string, ITextTranslateProvider>();
+
             for (int i = 0; i < _textTranslateProvider.Length; i++)
             {
                 TranslateProviders.Add(_textTranslateProvider[i].Name, _textTranslateProvider[i]);

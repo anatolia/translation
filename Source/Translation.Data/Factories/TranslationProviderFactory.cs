@@ -41,13 +41,14 @@ namespace Translation.Data.Factories
             return entity;
         }
 
-        public TranslationProvider MapActiveTranslationProvider(TranslationProvider platformTranslationProvider)
+        public ActiveTranslationProvider MapActiveTranslationProvider(TranslationProvider translationProvider)
         {
-            var activeTranslationProvider = new TranslationProvider();
-            activeTranslationProvider.Id = platformTranslationProvider.Id;
-            activeTranslationProvider.Uid = platformTranslationProvider.Uid;
-            activeTranslationProvider.Name = platformTranslationProvider.Name;
-            activeTranslationProvider.IsActive = platformTranslationProvider.IsActive;
+            var activeTranslationProvider = new ActiveTranslationProvider();
+            activeTranslationProvider.Id = translationProvider.Id;
+            activeTranslationProvider.Uid = translationProvider.Uid;
+            activeTranslationProvider.Name = translationProvider.Name;
+            activeTranslationProvider.IsActive = translationProvider.IsActive;
+            activeTranslationProvider.Value = translationProvider.Value;
 
             return activeTranslationProvider;
         }

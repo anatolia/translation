@@ -4,14 +4,14 @@
 
 <div>
     <label data-translation="project">project</label>
-    <a href="/Project/Detail/@Model.ProjectUid">@Model.ProjectName</a>
+    <a data-translation="@Model.ProjectName" href="/Project/Detail/@Model.ProjectUid">@Model.ProjectName</a>
 </div>
 
 <div>
     <label data-translation="language">language</label>
-    <img src="@Model.LanguageIconUrl" alt="@Model.LanguageName" style="height: 34px; margin-top: 3px; margin-bottom: 5px;" />
-    <span style="display: block; margin-bottom: 10px;">@Model.LanguageName</span>
-    <span style="font-weight: bold">@Model.TranslationProviderNameStatus </span>
+    <img data-translation="language" src="@Model.LanguageIconUrl" alt="@Model.LanguageName" style="height: 34px; margin-top: 3px; margin-bottom: 5px;" />
+    <span data-translation="@Model.LanguageName" style="display: block; margin-bottom: 10px;">@Model.LanguageName</span>
+    <span data-translation="@Model.ActiveTranslationProviderInfo" style="font-weight: bold">@Model.ActiveTranslationProviderInfo</span>
 </div>
 
 <form method="post">

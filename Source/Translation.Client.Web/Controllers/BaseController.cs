@@ -13,8 +13,10 @@ using Translation.Common.Contracts;
 using Translation.Common.Models.Base;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Language;
+using Translation.Common.Models.Requests.TranslationProvider;
 using Translation.Common.Models.Requests.User;
 using Translation.Common.Models.Shared;
+using Translation.Service;
 
 namespace Translation.Client.Web.Controllers
 {
@@ -23,6 +25,7 @@ namespace Translation.Client.Web.Controllers
         public IOrganizationService OrganizationService { get; set; }
         public IJournalService JournalService { get; set; }
         public ILanguageService LanguageService { get; set; }
+        public ITranslationProviderService TranslationProviderService { get; set; }
 
         public BaseController()
         {
@@ -31,10 +34,12 @@ namespace Translation.Client.Web.Controllers
 
         public BaseController(IOrganizationService organizationService,
                               IJournalService journalService,
-                              ILanguageService languageService)
+                              ILanguageService languageService,
+                              ITranslationProviderService translationProviderService)
         {
             OrganizationService = organizationService;
             JournalService = journalService;
+            TranslationProviderService = translationProviderService;
         }
 
         private List<LanguageDto> _languages;
@@ -68,6 +73,22 @@ namespace Translation.Client.Web.Controllers
                 return _currentUser;
             }
         }
+
+        private ActiveTranslationProvider _activeTranslationProvider;
+        public ActiveTranslationProvider ActiveTranslationProvider
+        {
+            get
+            {
+                if (_activeTranslationProvider == null)
+                {
+                    var activeTranslationProviderRequest = new ActiveTranslationProviderRequest(); ;
+                    _activeTranslationProvider = TranslationProviderService.GetActiveTranslationProvider(activeTranslationProviderRequest);
+                }
+
+                return _activeTranslationProvider;
+            }
+        }
+
 
         public RedirectResult RedirectToHome()
         {

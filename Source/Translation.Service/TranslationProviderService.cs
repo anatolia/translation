@@ -120,5 +120,17 @@ namespace Translation.Service
             response.SetFailed();
             return response;
         }
+
+        public ActiveTranslationProvider GetActiveTranslationProvider(ActiveTranslationProviderRequest request)
+        {
+            var activeTranslationProvider = _cacheManager.GetCachedActiveTranslationProvider(request.IsActive);
+            if (activeTranslationProvider == null)
+            {
+             
+            }
+
+            return activeTranslationProvider;
+        }
+
     }
 }

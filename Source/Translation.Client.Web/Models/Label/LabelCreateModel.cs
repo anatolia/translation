@@ -17,13 +17,12 @@ namespace Translation.Client.Web.Models.Label
         public string LanguageUid { get; set; }
         public string LanguageName { get; set; }
         public string LanguageIconUrl { get; set; }
-        public string TranslationProviderNameStatus { get; set; }
+        public string ActiveTranslationProviderInfo { get; set; }
         public bool IsGettingTranslationFromOtherProject { get; set; }
 
         public CheckboxInputModel IsGettingTranslationFromOtherProjectInput { get; set; }
         public HiddenInputModel OrganizationInput { get; }
         public HiddenInputModel ProjectInput { get; }
-
 
         public InputModel KeyInput { get; }
         public LongInputModel DescriptionInput { get; }
@@ -38,6 +37,8 @@ namespace Translation.Client.Web.Models.Label
             DescriptionInput = new LongInputModel("Description", "description");
             LanguagesInput = new SelectInputModel("Language", "language", "/Language/SelectData");
             LanguagesInput.IsMultiple = true;
+            LanguagesInput.InfoText = "selected_languages_will_have_translated_by_provider_automatically";
+            ActiveTranslationProviderInfo = "translation_provider_not_active";
             IsGettingTranslationFromOtherProjectInput = new CheckboxInputModel("IsGettingTranslationFromOtherProject", "is_getting_translation_from_other_project");
         }
 

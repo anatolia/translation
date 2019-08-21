@@ -11,5 +11,6 @@ namespace Translation.Common.Contracts
         Task<TranslationProviderReadResponse> GetTranslationProvider(TranslationProviderReadRequest request);
         Task<TranslationProviderReadListResponse> GetTranslationProviders(TranslationProviderReadListRequest request);
         Task<TranslationProviderEditResponse> EditTranslationProvider(TranslationProviderEditRequest request);
+        ActiveTranslationProvider GetActiveTranslationProvider(ActiveTranslationProviderRequest request);
     }
 }

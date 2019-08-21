@@ -18,7 +18,7 @@ namespace Translation.Service.Managers
         private const string CACHE_NAME_CURRENT_USER = nameof(CurrentUser);
         private const string CACHE_NAME_ORGANIZATION = nameof(Organization);
         private const string CACHE_NAME_CURRENT_ORGANIZATION = nameof(CurrentOrganization);
-        private const string CACHE_NAME_ACTIVE_PROVIDER = nameof(TranslationProvider);
+        private const string CACHE_NAME_ACTIVE_PROVIDER = nameof(ActiveTranslationProvider);
         private const string CACHE_NAME_CURRENT_USER_LANGUAGE_ISO_CODE2_CHAR = nameof(CurrentUser.LanguageIsoCode2Char);
 
         private readonly ILanguageRepository _languageRepository;
@@ -215,12 +215,12 @@ namespace Translation.Service.Managers
             AddOrUpdate(CACHE_NAME_CURRENT_ORGANIZATION, new CacheItem(organization.Uid.ToUidString(), currentOrganization));
         }
 
-        public void UpsertActiveTranslationProviderCache(TranslationProvider activeTranslationProvide)
+        public void UpsertActiveTranslationProviderCache(ActiveTranslationProvider activeTranslationProvide)
         {
             AddOrUpdate(CACHE_NAME_ACTIVE_PROVIDER, new CacheItem(activeTranslationProvide.IsActive.ToString(), activeTranslationProvide));
         }
 
-        public TranslationProvider GetCachedActiveTranslationProvider(bool isActive)
+        public ActiveTranslationProvider GetCachedActiveTranslationProvider(bool isActive)
         {
             var item = Get(CACHE_NAME_ACTIVE_PROVIDER, isActive.ToString());
             if (item == null)
@@ -232,12 +232,12 @@ namespace Translation.Service.Managers
                 }
 
                 var activeTranslationProvider = _translationProviderFactory.MapActiveTranslationProvider(translationProvider);
-                UpsertActiveTranslationProviderCache(translationProvider);
+                UpsertActiveTranslationProviderCache(activeTranslationProvider);
 
                 return activeTranslationProvider;
             }
 
-            return (TranslationProvider)item.Item;
+            return (ActiveTranslationProvider)item.Item;
         }
        
         public void RemoveUser(User user)

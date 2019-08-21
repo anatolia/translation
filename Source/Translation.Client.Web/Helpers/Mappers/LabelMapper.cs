@@ -3,13 +3,14 @@
 using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Common.Models.DataTransferObjects;
+using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 
 namespace Translation.Client.Web.Helpers.Mappers
 {
     public class LabelMapper
     {
-        public static LabelCreateModel MapLabelCreateModel(ProjectDto dto)
+        public static LabelCreateModel MapLabelCreateModel(ProjectDto dto, ActiveTranslationProvider activeTranslationProvider)
         {
             var model = new LabelCreateModel();
             model.OrganizationUid = dto.OrganizationUid;
@@ -17,7 +18,10 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.ProjectName = dto.Name;
             model.LanguageName = dto.LanguageName;
             model.LanguageIconUrl = dto.LanguageIconUrl;
-
+            if (activeTranslationProvider!=null)
+            {
+                model.ActiveTranslationProviderInfo = activeTranslationProvider.Info;
+            }
             model.SetInputModelValues();
             return model;
         }
