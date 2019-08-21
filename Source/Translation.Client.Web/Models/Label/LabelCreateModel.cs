@@ -38,7 +38,7 @@ namespace Translation.Client.Web.Models.Label
             LanguagesInput = new SelectInputModel("Language", "language", "/Language/SelectData");
             LanguagesInput.IsMultiple = true;
             LanguagesInput.InfoText = "selected_languages_will_have_translated_by_provider_automatically";
-            ActiveTranslationProviderInfo = "translation_provider_not_active";
+            ActiveTranslationProviderInfo = "translation_provider_is_not_active";
             IsGettingTranslationFromOtherProjectInput = new CheckboxInputModel("IsGettingTranslationFromOtherProject", "is_getting_translation_from_other_project");
         }
 

@@ -9,9 +9,9 @@
 
 <div>
     <label data-translation="language">language</label>
-    <img data-translation="language" src="@Model.LanguageIconUrl" alt="@Model.LanguageName" style="height: 34px; margin-top: 3px; margin-bottom: 5px;" />
+    <img data-translation="@Model.LanguageIconUrl" src="@Model.LanguageIconUrl" alt="@Model.LanguageName" style="height: 34px; margin-top: 3px; margin-bottom: 5px;" />
     <span data-translation="@Model.LanguageName" style="display: block; margin-bottom: 10px;">@Model.LanguageName</span>
-    <span data-translation="@Model.ActiveTranslationProviderInfo" style="font-weight: bold">@Model.ActiveTranslationProviderInfo</span>
+    <span id="providerInfo" data-translation="@Model.ActiveTranslationProviderInfo" style="font-weight: bold">@Model.ActiveTranslationProviderInfo</span>
 </div>
 
 <form method="post">
@@ -20,10 +20,29 @@
 
     <partial name="Components/_Input" model="@Model.KeyInput" />
     <partial name="Components/_LongInput" model="@Model.DescriptionInput" />
-    <partial name="Components/_Select" model="@Model.LanguagesInput" />
+    @if (Model.ActiveTranslationProviderInfo.EndsWith("not_active"))
+    {
+        <partial name="Components/_Select" model="@Model.LanguagesInput" />
+        <span data-translation="@Model.ActiveTranslationProviderInfo" style="font-weight: bold; color: red; margin: 4px">@Model.ActiveTranslationProviderInfo</span>
+
+    }
+    else
+    {
+        <partial name="Components/_Select" model="@Model.LanguagesInput" />
+    }
+
     <partial name="Components/_Checkbox" model="@Model.IsGettingTranslationFromOtherProjectInput" />
 
     <partial name="Components/_ErrorMessages" model="@Model.ErrorMessages" />
 
     <button type="submit" data-translation="create_label_button">create_label_button</button>
 </form>
+<script>
+    const providerInfo = document.getElementById("providerInfo");
+    const selectInput = document.querySelector("div.select-wrapper");
+    console.log(selectInput);
+    if (providerInfo.innerHTML.endsWith("not_active")) {
+        providerInfo.style.display = "none";
+        selectInput.style.pointerEvents = "none";
+    }
+</script>
