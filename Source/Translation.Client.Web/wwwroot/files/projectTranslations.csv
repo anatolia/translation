@@ -1211,3 +1211,6 @@ translation_provider_list_title,ru,название списка перевод�
 value,en,value
 value,tr,değer
 value,ru,значение
+translation_provider,ru,переводчик
+translation_provider,tr,çeviri sağlayıcısı
+translation_provider,en,translation provider
