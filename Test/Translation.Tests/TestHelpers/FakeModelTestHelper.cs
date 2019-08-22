@@ -923,7 +923,7 @@ namespace Translation.Tests.TestHelpers
             model.Key = StringOne;
             model.ProjectName = StringOne;
             model.Description = StringOne;
-            model.LanguageUid = UidStringOne;
+            model.ProjectLanguageUid = UidOne;
 
             return model;
         }
