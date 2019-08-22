@@ -448,12 +448,15 @@ namespace Translation.Service
             var result = await _translationProviderRepository.Update(request.CurrentUserId, selectedTranslationProvider);
             if (result)
             {
-                var ActiveTranslationProvider =_translationProviderFactory.MapActiveTranslationProvider(selectedTranslationProvider);
-                _cacheManager.UpsertActiveTranslationProviderCache(ActiveTranslationProvider);
-
+                if (selectedTranslationProvider.IsActive)
+                {
+                    var ActiveTranslationProvider = _translationProviderFactory.MapActiveTranslationProvider(selectedTranslationProvider);
+                    _cacheManager.UpsertActiveTranslationProviderCache(ActiveTranslationProvider);
+                }
                 response.Status = ResponseStatus.Success;
                 return response;
             }
+
             response.SetFailed();
             return response;
         }
