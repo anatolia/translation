@@ -52,16 +52,6 @@ namespace Translation.Tests.SetupHelpers
                                            It.IsAny<bool>()));
         }
 
-        public static void Setup_SelectAfter(this Mock<IIntegrationRepository> repository)
-        {
-            repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<Integration, bool>>>(),
-                                                 It.IsAny<Guid>(),
-                                                 It.IsAny<int>(),
-                                                 It.IsAny<Expression<Func<Integration, object>>>(),
-                                                 It.IsAny<bool>(), false));
-
-        }
-
         public static void Setup_SelectAfter_Returns_Integrations(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Integration, bool>>>(),

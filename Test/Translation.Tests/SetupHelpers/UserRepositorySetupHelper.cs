@@ -76,8 +76,8 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Setup_SelectMany_Returns_Users(this Mock<IUserRepository> repository)
         {
-            repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<User, bool>>>(),
-                                                It.IsAny<Guid>(),
+            repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<User, bool>>>(),
+                                                It.IsAny<int>(),
                                                 It.IsAny<int>(),
                                                 It.IsAny<Expression<Func<User, object>>>(),
                                                 It.IsAny<bool>(), false))

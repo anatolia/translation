@@ -15,7 +15,6 @@ namespace Translation.Tests.SetupHelpers
 {
     public static class IntegrationClientRepositorySetupHelper
     {
-
         public static void Setup_Count_Returns_Ten(this Mock<IIntegrationClientRepository> repository)
         {
             repository.Setup(x => x.Count(It.IsAny<Expression<Func<IntegrationClient, bool>>>(),
@@ -57,6 +56,7 @@ namespace Translation.Tests.SetupHelpers
                                                 It.IsAny<bool>(), false))
                       .ReturnsAsync(new List<IntegrationClient> { GetIntegrationClient() });
         }
+
         public static void Verify_SelectAfter(this Mock<IIntegrationClientRepository> repository)
         {
             repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<IntegrationClient, bool>>>(),
@@ -114,6 +114,7 @@ namespace Translation.Tests.SetupHelpers
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<IntegrationClient, bool>>>(), false))
                       .ReturnsAsync(GetOrganizationOneIntegrationOneIntegrationClientOne());
         }
+
         public static void Setup_Select_Returns_OrganizationTwoIntegrationOneIntegrationClientOne(this Mock<IIntegrationClientRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<IntegrationClient, bool>>>(), false))

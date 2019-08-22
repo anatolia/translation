@@ -296,6 +296,7 @@ namespace Translation.Service
             var response = new AdminAcceptInviteResponse();
 
             var user = await _userRepository.Select(x => x.InvitationToken == request.Token && x.Email == request.Email);
+
             if (user.IsNotExist())
             {
                 response.SetInvalidBecauseNotFound(nameof(User));

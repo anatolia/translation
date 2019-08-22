@@ -44,6 +44,7 @@ namespace Translation.Tests.SetupHelpers
         {
             repository.Verify(x => x.Select(It.IsAny<Expression<Func<Token, bool>>>(), false));
         }
+
         public static void Setup_Any_Returns_False(this Mock<ITokenRepository> repository)
         {
             repository.Setup(x => x.Any(It.IsAny<Expression<Func<Token, bool>>>(), false))
