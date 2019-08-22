@@ -373,7 +373,6 @@ function handleChangeActivationRow(btn, url) {
         });
 }
 
-
 function handleChangeActivationAllRow(btn, url) {
     let row = btn.parentElement.parentElement;
     let table = row.parentElement.parentElement;
@@ -392,14 +391,22 @@ function handleChangeActivationAllRow(btn, url) {
             
             let response = JSON.parse(req.response);
             if (response.isOk === true) {
-                var checkboxses=row.parentElement.querySelectorAll('input[type=checkbox]');
-                checkboxses.forEach(function(box) {
-                    box.checked = false;
-                });
+
                 var children = row.children[isActiveIndex];
-                let old = children.children[0].checked;
-                let isTrue = old === true;
-                children.children[0].checked = !isTrue;
+                var selectedInput = children.children[0];
+                var checkboxses=row.parentElement.querySelectorAll('input[type=checkbox]');
+                checkboxses.forEach(function (box) {
+                    if (box === selectedInput) {
+
+                        let old = children.children[0].checked;
+                        let isTrue = old === true;
+                        children.children[0].checked = !isTrue;
+                    } else {
+                        box.checked = false;
+                    }
+
+                });
+
 
                 hidePopup();
             } else {
