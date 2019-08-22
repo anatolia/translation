@@ -8,27 +8,31 @@
 </div>
 
 <div>
-    <label data-translation="language">language</label>
-    <img data-translation="@Model.LanguageIconUrl" src="@Model.LanguageIconUrl" alt="@Model.LanguageName" style="height: 34px; margin-top: 3px; margin-bottom: 5px;" />
-    <span data-translation="@Model.LanguageName" style="display: block; margin-bottom: 10px;">@Model.LanguageName</span>
+    <label data-translation="project_language">project_language</label>
+    <img data-translation="@Model.ProjectLanguageIconUrl" src="@Model.ProjectLanguageIconUrl" alt="@Model.ProjectLanguageName" style="height: 34px; margin-top: 3px; margin-bottom: 5px;" />
+    <span data-translation="@Model.ProjectLanguageName" style="display: block; margin-bottom: 10px;">@Model.ProjectLanguageName</span>
     <span id="providerInfo" data-translation="@Model.ActiveTranslationProviderInfo" style="font-weight: bold">@Model.ActiveTranslationProviderInfo</span>
 </div>
 
 <form method="post">
     <partial name="Components/_Hidden" model="@Model.OrganizationInput" />
     <partial name="Components/_Hidden" model="@Model.ProjectInput" />
-
+    <partial name="Components/_Hidden" model="@Model.ProjectNameInput" />
+    <partial name="Components/_Hidden" model="@Model.ProjectLanguageInput" />
+    <partial name="Components/_Hidden" model="@Model.ProjectLanguageNameInput" />
+    <partial name="Components/_Hidden" model="@Model.ProjectLanguageIconUrlInput" />
+    <partial name="Components/_Hidden" model="@Model.ActiveTranslationProviderInfoInput" />
     <partial name="Components/_Input" model="@Model.KeyInput" />
     <partial name="Components/_LongInput" model="@Model.DescriptionInput" />
+
     @if (Model.ActiveTranslationProviderInfo.EndsWith("not_active"))
     {
-        <partial name="Components/_Select" model="@Model.LanguagesInput" />
+        <partial name="Components/_Select" model="@Model.LabelTranslationLanguagesInput" />
         <span data-translation="@Model.ActiveTranslationProviderInfo" style="font-weight: bold; color: red; margin: 4px">@Model.ActiveTranslationProviderInfo</span>
-
     }
     else
     {
-        <partial name="Components/_Select" model="@Model.LanguagesInput" />
+        <partial name="Components/_Select" model="@Model.LabelTranslationLanguagesInput" />
     }
 
     <partial name="Components/_Checkbox" model="@Model.IsGettingTranslationFromOtherProjectInput" />
@@ -40,7 +44,8 @@
 <script>
     const providerInfo = document.getElementById("providerInfo");
     const selectInput = document.querySelector("div.select-wrapper");
-    console.log(selectInput);
+    const selectInputActiveItem = document.getElementsByClassName("select-button");
+
     if (providerInfo.innerHTML.endsWith("not_active")) {
         providerInfo.style.display = "none";
         selectInput.style.pointerEvents = "none";
