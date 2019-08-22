@@ -373,7 +373,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task AdminService_AcceptSuperAdminUserInvite_FailedUserUpdate()
+        public async Task AdminService_AcceptSuperAdminUserInvite_Failed_UserUpdate()
         {
             // arrange
             var request = GetAdminAcceptInviteRequest();
@@ -393,7 +393,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task AdminService_AcceptSuperAdminUserInvite_FailedOrganizationUpdate()
+        public async Task AdminService_AcceptSuperAdminUserInvite_Failed_OrganizationUpdate()
         {
             // arrange
             var request = GetAdminAcceptInviteRequest();
