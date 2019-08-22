@@ -16,8 +16,9 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.OrganizationUid = dto.OrganizationUid;
             model.ProjectUid = dto.Uid;
             model.ProjectName = dto.Name;
-            model.LanguageName = dto.LanguageName;
-            model.LanguageIconUrl = dto.LanguageIconUrl;
+            model.ProjectLanguageName = dto.LanguageName;
+            model.ProjectLanguageUid = dto.LanguageUid;
+            model.ProjectLanguageIconUrl = dto.LanguageIconUrl;
             if (activeTranslationProvider!=null)
             {
                 model.ActiveTranslationProviderInfo = activeTranslationProvider.Info;
