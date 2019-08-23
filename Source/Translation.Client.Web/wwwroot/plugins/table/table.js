@@ -404,10 +404,7 @@ function handleChangeActivationAllRow(btn, url) {
                     } else {
                         box.checked = false;
                     }
-
                 });
-
-
                 hidePopup();
             } else {
                 let messages = JSON.parse(req.response);
