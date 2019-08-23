@@ -121,15 +121,45 @@ namespace Translation.Service
             {
                 var projectLanguage = await _languageRepository.SelectById(project.LanguageId);
                 var addedLabel = await _labelRepository.Select(x => x.Uid == label.Uid);
-
                 var languages = new List<Language>();
+
                 for (int i = 0; i < request.LanguageUids.Length; i++)
                 {
                     var languageUid = request.LanguageUids[i];
                     var language = await _languageRepository.Select(x => x.Uid == languageUid);
+
                     if (language != null)
                     {
                         languages.Add(language);
+                    }
+                }
+
+                if (request.IsGettingTranslationFromOtherProject)
+                {
+                    var AllExistingTranslations = await _labelTranslationRepository.SelectAll(x => x.LabelName == label.Name);
+                    if (AllExistingTranslations.Count != 0)
+                    {
+                        Dictionary<string, string> demandedTranslations = new Dictionary<string, string>();
+
+                        for (int i = 0; i < AllExistingTranslations.Count; i++)
+                        {
+                            if (!demandedTranslations.ContainsKey(AllExistingTranslations[i].LanguageName) && languages.Any(x => x.Name == AllExistingTranslations[i].LanguageName))
+                            {
+                                demandedTranslations.Add(AllExistingTranslations[i].LanguageName, AllExistingTranslations[i].Translation);
+                            }
+                        }
+
+                        foreach (var item in demandedTranslations.Keys)
+                        {
+                            var language = languages.Find(x => x.Name == item);
+                            var labelTranslationEntity = _labelTranslationFactory.CreateEntity(demandedTranslations[item], addedLabel, language);
+                            uowResultLabelTranslation = await _labelUnitOfWork.DoCreateTranslationWork(currentUser.Id, labelTranslationEntity);
+                            languages.Remove(language);
+                            if (!uowResultLabelTranslation)
+                            {
+                                continue;
+                            }
+                        }
                     }
                 }
 
@@ -155,7 +185,6 @@ namespace Translation.Service
                     }
 
                     var labelTranslationEntity = _labelTranslationFactory.CreateEntity(labelTranslation, addedLabel, languages[i]);
-
                     uowResultLabelTranslation = await _labelUnitOfWork.DoCreateTranslationWork(currentUser.Id, labelTranslationEntity);
                     if (!uowResultLabelTranslation)
                     {
