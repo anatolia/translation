@@ -120,7 +120,7 @@ namespace Translation.Service
             if (request.LanguageUids.Length != 0)
             {
                 var projectLanguage = await _languageRepository.SelectById(project.LanguageId);
-                var addedLabel = await _labelRepository.Select(x => x.Name == label.Name);
+                var addedLabel = await _labelRepository.Select(x => x.Uid == label.Uid);
 
                 var languages = new List<Language>();
                 for (int i = 0; i < request.LanguageUids.Length; i++)
@@ -134,7 +134,6 @@ namespace Translation.Service
                 }
 
                 var labelTranslation = "";
-
                 for (int i = 0; i < languages.Count; i++)
                 {
                     if (projectLanguage.IsoCode2Char == languages[i].IsoCode2Char)
@@ -1267,20 +1266,6 @@ namespace Translation.Service
             response.Item = _labelTranslationFactory.CreateDtoFromEntity(labelTranslation, language);
             response.Status = ResponseStatus.Success;
             return response;
-        }
-
-        public async Task<string> GetTranslationProvider()
-        {
-            var ActiveTranslationProvider = _cacheManager.GetCachedActiveTranslationProvider(true);
-
-            if (ActiveTranslationProvider==null)
-            {
-                return "taranslation_provider_is_not_active";
-            }
-            else
-            {
-                return "selected_languages_will_translate_automatically_by_" + ActiveTranslationProvider.Name;
-            }
         }
 
         public async Task<LabelTranslationReadListResponse> GetTranslations(LabelTranslationReadListRequest request)
