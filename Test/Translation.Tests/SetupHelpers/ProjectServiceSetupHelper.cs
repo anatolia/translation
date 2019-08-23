@@ -230,7 +230,6 @@ namespace Translation.Tests.SetupHelpers
         public static void Verify_RestoreProject(this Mock<IProjectService> service)
         {
             service.Verify(x => x.RestoreProject(It.IsAny<ProjectRestoreRequest>()));
-
         }
 
         public static void Verify_GetProjectRevisions(this Mock<IProjectService> service)
@@ -240,11 +239,7 @@ namespace Translation.Tests.SetupHelpers
 
         public static void Verify_GetPendingTranslations(this Mock<IProjectService> service)
         {
-            var items = new List<LabelDto>();
-            items.Add(new LabelDto() { Uid = UidOne });
-
             service.Verify(x => x.GetPendingTranslations(It.IsAny<ProjectPendingTranslationReadListRequest>()));
-
         }
 
         public static void Verify_GetProjects(this Mock<IProjectService> service)

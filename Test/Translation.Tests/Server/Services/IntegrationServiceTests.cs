@@ -170,7 +170,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task IntegrationService_CreateIntegration_Failed_NameMustBeUnique()
+        public async Task IntegrationService_CreateIntegration_Failed_IntegrationNameMustBeUnique()
         {
             //arrange
             var request = GetIntegrationCreateRequest();

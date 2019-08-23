@@ -609,9 +609,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DemoteToUser(request);
 
             // assert
-            result.Status.ShouldBe(ResponseStatus.Success);
-            result.ErrorMessages.ShouldNotBeNull();
-            result.ErrorMessages.Count.ShouldBe(0);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<AdminDemoteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();
