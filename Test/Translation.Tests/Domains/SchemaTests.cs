@@ -1,13 +1,13 @@
 ﻿using System;
-
 using NUnit.Framework;
+
 using StandardRepository.Models.Entities.Schemas;
 
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
 using Translation.Data.Entities.Parameter;
 
-namespace Translation.Tests.DomainTests
+namespace Translation.Tests.Domains
 {
     [TestFixture]
     public class SchemaTests
@@ -16,6 +16,8 @@ namespace Translation.Tests.DomainTests
          TestCase(typeof(Label)), 
          TestCase(typeof(LabelTranslation))]
         public void ProjectEntityClasses_Has_ISchemaProject(Type entity)
+
+
         {
             var instance = (ISchemaDomain)Activator.CreateInstance(entity);
             Assert.IsNotNull(instance);

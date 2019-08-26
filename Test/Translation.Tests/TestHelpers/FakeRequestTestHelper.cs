@@ -13,6 +13,7 @@ using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Requests.Organization;
 using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Requests.SendEmailLog;
+using Translation.Common.Models.Requests.TranslationProvider;
 using Translation.Common.Models.Requests.User;
 using Translation.Common.Models.Requests.User.LoginLog;
 using Translation.Common.Models.Responses.Admin;

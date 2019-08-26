@@ -22,6 +22,13 @@ namespace Translation.Tests.TestHelpers
 {
     public class FakeModelTestHelper
     {
+        public static ActiveTranslationProvider GetActiveTranslationProvider()
+        {
+            var model = new ActiveTranslationProvider();
+            model.IsActive = BooleanTrue;
+            return model;
+        }
+
         public static ProjectCreateModel GetOrganizationOneProjectOneCreateModel()
         {
             var model = new ProjectCreateModel();
@@ -528,12 +535,6 @@ namespace Translation.Tests.TestHelpers
             return model;
         }
 
-        public static ActiveTranslationProvider GetActiveTranslationProvider()
-        {
-            var model = new ActiveTranslationProvider();
-            return model;
-        }
-
         public static LanguageCreateModel GetLanguageCreateModel(string name, string originalName, string isoCode2,
                                                                  string isoCode3, IFormFile icon)
         {
@@ -1014,7 +1015,7 @@ namespace Translation.Tests.TestHelpers
 
         public static InputModel GetInputModel()
         {
-            var model = new InputModel(StringOne,StringOne);
+            var model = new InputModel(StringOne, StringOne);
             model.InfoText = StringOne;
 
             return model;
@@ -1050,7 +1051,7 @@ namespace Translation.Tests.TestHelpers
             model.IsHavingDetailInfo = BooleanTrue;
             model.DetailInfoDataUrl = HttpUrl;
             model.Parent = StringOne;
-        
+
             return model;
         }
 

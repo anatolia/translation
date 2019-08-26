@@ -2,7 +2,7 @@
 
 using Translation.Data.Entities.Domain;
 
-namespace Translation.Tests.DomainTests
+namespace Translation.Tests.Domains
 {
     [TestFixture]
     public class ProjectDomainTests

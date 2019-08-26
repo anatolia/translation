@@ -85,13 +85,15 @@ namespace Translation.Tests.Client.Controllers
         {
             // arrange
             MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
-
+            MockTranslationProviderService.Setup_GetActiveTranslationProvider_Returns_ActiveTranslationProvider();
+         
             // act
             var result = await SystemUnderTest.Create(OrganizationOneProjectOneUid);
 
             // assert
             AssertViewWithModel<LabelCreateModel>(result);
             MockProjectService.Verify_GetProject();
+            MockTranslationProviderService.Verify_GetActiveTranslationProvider();
         }
 
         [Test]
