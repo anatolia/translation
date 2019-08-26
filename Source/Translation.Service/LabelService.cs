@@ -203,7 +203,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == project.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound(nameof(Organization));
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
@@ -303,7 +303,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == project.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound(nameof(Organization));
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
@@ -848,7 +848,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == label.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound(nameof(Organization));
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
@@ -891,13 +891,13 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == label.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound(nameof(Organization));
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
             if (await _projectRepository.Any(x => x.Id == label.ProjectId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound(nameof(Project));
+                response.SetInvalidBecauseNotActive(nameof(Project));
                 return response;
             }
 
@@ -1100,7 +1100,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == label.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound(nameof(Organization));
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 

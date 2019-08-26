@@ -315,7 +315,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task AdminService_ValidateSuperAdminUserInvitation_Invalid_OrganizationNotFound()
+        public async Task AdminService_ValidateSuperAdminUserInvitation_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetAdminInviteValidateRequest();
@@ -326,7 +326,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ValidateSuperAdminUserInvitation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<AdminInviteValidateResponse>(result);
             MockUserRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
@@ -431,7 +431,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task AdminService_AcceptSuperAdminUserInvite_Invalid_OrganizationNotFound()
+        public async Task AdminService_AcceptSuperAdminUserInvite_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetAdminAcceptInviteRequest();
@@ -442,7 +442,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.AcceptSuperAdminUserInvite(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<AdminAcceptInviteResponse>(result);
             MockUserRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();

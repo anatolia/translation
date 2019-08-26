@@ -316,7 +316,7 @@ namespace Translation.Service
             var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
             if (organization.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Organization));
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
@@ -588,7 +588,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound(nameof(Organization));
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
@@ -627,7 +627,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound(nameof(Organization));
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
@@ -673,7 +673,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound(nameof(Organization));
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
@@ -710,7 +710,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound(nameof(Organization));
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 

@@ -410,7 +410,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task LabelService_CreateLabel_LabelCreateWithTokenRequest_Invalid_OrganizationNotFound()
+        public async Task LabelService_CreateLabel_LabelCreateWithTokenRequest_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetLabelCreateWithTokenRequest();
@@ -422,7 +422,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<LabelCreateResponse>(result);
             MockProjectRepository.Verify_Select();
             MockTokenRepository.Verify_Select();
@@ -612,7 +612,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task LabelService_CreateLabelFromList_Invalid_OrganizationNotFound()
+        public async Task LabelService_CreateLabelFromList_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetLabelCreateListRequestUpdateTrue();
@@ -623,7 +623,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateLabelFromList(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<LabelCreateListResponse>(result);
             MockProjectRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
@@ -1089,7 +1089,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task LabelService_ChangeActivation_Invalid_OrganizationNotFound()
+        public async Task LabelService_ChangeActivation_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetLabelChangeActivationRequest();
@@ -1101,7 +1101,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<LabelChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockLabelRepository.Verify_Select();
@@ -1211,7 +1211,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task LabelService_DeleteLabel_Invalid_OrganizationNotFound()
+        public async Task LabelService_DeleteLabel_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetLabelDeleteRequest();
@@ -1222,14 +1222,14 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<LabelDeleteResponse>(result);
             MockLabelRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
         }
 
         [Test]
-        public async Task LabelService_DeleteLabel_Invalid_ProjectNotFound()
+        public async Task LabelService_DeleteLabel_Invalid_ProjectNotActive()
         {
             // arrange
             var request = GetLabelDeleteRequest();
@@ -1241,7 +1241,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotActive);
             AssertReturnType<LabelDeleteResponse>(result);
             MockLabelRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
@@ -1854,7 +1854,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task LabelService_CreateTranslationFromList_Invalid_OrganizationNotFound()
+        public async Task LabelService_CreateTranslationFromList_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetLabelTranslationCreateListRequest();
@@ -1865,7 +1865,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.CreateTranslationFromList(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<LabelTranslationCreateListResponse>(result);
             MockLabelRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();

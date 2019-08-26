@@ -273,7 +273,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == user.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound(nameof(Organization));
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
@@ -305,7 +305,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == user.OrganizationId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound(nameof(Organization));
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
@@ -423,8 +423,8 @@ namespace Translation.Service
                 return response;
             }
 
-             var selectedTranslationProvider = await _translationProviderRepository.Select(x => x.Uid == request.TranslationProviderUid);
-            if (selectedTranslationProvider.Value=="" )
+            var selectedTranslationProvider = await _translationProviderRepository.Select(x => x.Uid == request.TranslationProviderUid);
+            if (selectedTranslationProvider.Value == "")
             {
                 response.ErrorMessages.Add("please_edit_translation_api_value");
                 return response;

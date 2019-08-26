@@ -429,7 +429,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task OrganizationService_GetPendingTranslations_Invalid_OrganizationNotFound()
+        public async Task OrganizationService_GetPendingTranslations_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetOrganizationPendingTranslationReadListRequestForSelectAfter(OrganizationOneUid);
@@ -440,7 +440,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.GetPendingTranslations(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid,OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<OrganizationPendingTranslationReadListResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Select();
@@ -914,7 +914,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task OrganizationService_ChangeActivationForUser_Invalid_OrganizationNotFound()
+        public async Task OrganizationService_ChangeActivationForUser_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetUserChangeActivationRequest();
@@ -925,7 +925,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.ChangeActivationForUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<UserChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1033,7 +1033,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task OrganizationService_EditUser_Invalid_OrganizationNotFound()
+        public async Task OrganizationService_EditUser_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetUserEditRequest();
@@ -1044,7 +1044,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.EditUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<UserEditResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1147,7 +1147,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task OrganizationService_DeleteUser_Invalid_OrganizationNotFound()
+        public async Task OrganizationService_DeleteUser_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetUserDeleteRequest();
@@ -1158,7 +1158,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.DeleteUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<UserDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1223,7 +1223,7 @@ namespace Translation.Tests.Server.Services
         }
 
         [Test]
-        public async Task OrganizationService_InviteUser_Invalid_OrganizationNotFound()
+        public async Task OrganizationService_InviteUser_Invalid_OrganizationNotActive()
         {
             // arrange
             var request = GetUserInviteRequest();
@@ -1234,7 +1234,7 @@ namespace Translation.Tests.Server.Services
             var result = await SystemUnderTest.InviteUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<UserInviteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
