@@ -16,7 +16,6 @@ using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Requests.TranslationProvider;
 using Translation.Common.Models.Requests.User;
 using Translation.Common.Models.Shared;
-using Translation.Service;
 
 namespace Translation.Client.Web.Controllers
 {

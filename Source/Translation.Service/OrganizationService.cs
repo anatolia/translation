@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using StandardRepository.Helpers;
-
+using StandardRepository.Models;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Helpers;
@@ -1044,7 +1044,8 @@ namespace Translation.Service
 
         public async Task<bool> LoadOrganizationsToCache()
         {
-            var organizations = await _organizationRepository.SelectAll(x => x.IsActive);
+            var organizations = await _organizationRepository.SelectAll(x => x.IsActive, false,
+                                                                       new List<OrderByInfo<Organization>>() { new OrderByInfo<Organization>(x => x.Id) });
 
             for (var i = 0; i < organizations.Count; i++)
             {
@@ -1057,7 +1058,8 @@ namespace Translation.Service
 
         public async Task<bool> LoadUsersToCache()
         {
-            var users = await _userRepository.SelectAll(x => x.IsActive);
+            var users = await _userRepository.SelectAll(x => x.IsActive, false,
+                                                       new List<OrderByInfo<User>>() { new OrderByInfo<User>(x => x.Id) });
 
             for (var i = 0; i < users.Count; i++)
             {

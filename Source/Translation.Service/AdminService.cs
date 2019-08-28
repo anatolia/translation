@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using StandardRepository.Helpers;
-
+using StandardRepository.Models;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Helpers;
@@ -416,7 +416,8 @@ namespace Translation.Service
                 return response;
             }
 
-            var allTranslationProviders = await _translationProviderRepository.SelectAll(x => x.Id != 0);
+            var allTranslationProviders = await _translationProviderRepository.SelectAll(x => x.Id != 0, false,
+                                                                                         new List<OrderByInfo<TranslationProvider>>() { new OrderByInfo<TranslationProvider>(x => x.Id) });
             if (allTranslationProviders == null)
             {
                 response.SetInvalidBecauseNotFound(nameof(TranslationProvider));

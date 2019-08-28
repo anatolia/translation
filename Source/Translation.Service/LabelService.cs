@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Configuration;
 
 using StandardRepository.Helpers;
-
+using StandardRepository.Models;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Helpers;
@@ -338,7 +338,8 @@ namespace Translation.Service
 
         public async Task<List<Label>> AddLabels(Project project, List<LabelListInfo> labels, LabelCreateListResponse response)
         {
-            var oldLabels = await _labelRepository.SelectAll(x => x.ProjectId == project.Id);
+            var oldLabels = await _labelRepository.SelectAll(x => x.ProjectId == project.Id, false,
+                                                             new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Id) });
 
             var isAlphabetical = new Regex("^[A-Za-z0-9_]+$", RegexOptions.Compiled);
             var labelsToInsert = new List<Label>();
@@ -383,8 +384,11 @@ namespace Translation.Service
 
         public async Task<List<LabelTranslation>> AddedLabelAddLabelTranslation(Project project, List<LabelListInfo> labels, List<Label> labelsToAdd, LabelCreateListResponse response)
         {
-            var languages = await _languageRepository.SelectAll(null);
-            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == project.Id);
+            var languages = await _languageRepository.SelectAll(null, false,
+                                                                new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id) });
+
+            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == project.Id, false,
+                                                                              new List<OrderByInfo<LabelTranslation>>() { new OrderByInfo<LabelTranslation>(x => x.Id) });
 
             var translationsToInsert = new List<LabelTranslation>();
 
@@ -428,9 +432,17 @@ namespace Translation.Service
 
         public async Task<Tuple<List<LabelTranslation>, List<LabelTranslation>>> AddedLabelUpdateAndAddLabelTranslation(Project project, List<LabelListInfo> labels, List<Label> labelsToAdd, LabelCreateListResponse response)
         {
-            var languages = await _languageRepository.SelectAll(null);
-            var oldLabels = await _labelRepository.SelectAll(x => x.ProjectId == project.Id);
-            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == project.Id);
+
+            var languages = await _languageRepository.SelectAll(null, false,
+                                                                new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id) });
+
+            var oldLabels = await _labelRepository.SelectAll(x => x.ProjectId == project.Id, false,
+                                                             new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Id) });
+
+            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == project.Id, false,
+                                                                              new List<OrderByInfo<LabelTranslation>>() { new OrderByInfo<LabelTranslation>(x => x.Id) });
+
+
 
             var translationsToInsert = new List<LabelTranslation>();
             var translationsToUpdate = new List<LabelTranslation>();
@@ -573,11 +585,14 @@ namespace Translation.Service
             List<Label> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _labelRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _labelRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, request.PagingInfo.IsAscending,
+                                                              new List<OrderByInfo<Label>> { new OrderByInfo<Label>(x => x.Id) });
+
             }
             else
             {
-                entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, request.PagingInfo.IsAscending,
+                                                             new List<OrderByInfo<Label>> { new OrderByInfo<Label>(x => x.Id) });
             }
 
             if (entities != null)
@@ -608,7 +623,8 @@ namespace Translation.Service
 
             Expression<Func<Label, bool>> filter = x => x.Name.Contains(request.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
 
-            List<Label> entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+            List<Label> entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, request.PagingInfo.IsAscending,
+                                                                      new List<OrderByInfo<Label>> { new OrderByInfo<Label>(x => x.Id) });
 
             if (entities != null)
             {
@@ -736,10 +752,13 @@ namespace Translation.Service
                 }
             }
 
-            var translations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == project.Id && x.IsActive);
-            var languages = await _languageRepository.SelectAll(null);
+            var translations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == project.Id && x.IsActive, false,
+                                                                           new List<OrderByInfo<LabelTranslation>>() { new OrderByInfo<LabelTranslation>(x => x.Id) });
+            var languages = await _languageRepository.SelectAll(null, false,
+                                                                new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id) });
 
-            var entities = await _labelRepository.SelectAll(x => x.ProjectId == project.Id && x.IsActive);
+            var entities = await _labelRepository.SelectAll(x => x.ProjectId == project.Id && x.IsActive, false,
+                                                            new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Id) });
             if (translations != null)
             {
                 for (var i = 0; i < entities.Count; i++)
@@ -1137,8 +1156,11 @@ namespace Translation.Service
 
         public async Task<List<LabelTranslation>> AddLabelTranslation(Label label, List<TranslationListInfo> LabelTranslations, LabelTranslationCreateListResponse response)
         {
-            var languages = await _languageRepository.SelectAll(null);
-            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == label.ProjectId);
+            var languages = await _languageRepository.SelectAll(null, false,
+                                                                new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id) });
+
+            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == label.ProjectId, false,
+                                                                             new List<OrderByInfo<LabelTranslation>>() { new OrderByInfo<LabelTranslation>(x => x.Id) });
 
             var translationsToInsert = new List<LabelTranslation>();
 
@@ -1179,8 +1201,11 @@ namespace Translation.Service
 
         public async Task<Tuple<List<LabelTranslation>, List<LabelTranslation>>> UpdateAndAddLabelTranslation(Label label, List<TranslationListInfo> LabelTranslations, LabelTranslationCreateListResponse response)
         {
-            var languages = await _languageRepository.SelectAll(null);
-            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == label.ProjectId);
+            var languages = await _languageRepository.SelectAll(null, false,
+                                                                new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id) });
+
+            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == label.ProjectId, false,
+                                                                              new List<OrderByInfo<LabelTranslation>>() { new OrderByInfo<LabelTranslation>(x => x.Id) });
 
             var translationsToInsert = new List<LabelTranslation>();
             var translationsToUpdate = new List<LabelTranslation>();
@@ -1273,7 +1298,7 @@ namespace Translation.Service
         {
             var ActiveTranslationProvider = _cacheManager.GetCachedActiveTranslationProvider(true);
 
-            if (ActiveTranslationProvider==null)
+            if (ActiveTranslationProvider == null)
             {
                 return "taranslation_provider_is_not_active";
             }
@@ -1311,16 +1336,20 @@ namespace Translation.Service
             List<LabelTranslation> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _labelTranslationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _labelTranslationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, request.PagingInfo.IsAscending,
+                                                                         new List<OrderByInfo<LabelTranslation>> { new OrderByInfo<LabelTranslation>(x => x.Id) });
+
             }
             else
             {
-                entities = await _labelTranslationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _labelTranslationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, request.PagingInfo.IsAscending,
+                                                                        new List<OrderByInfo<LabelTranslation>> { new OrderByInfo<LabelTranslation>(x => x.Id) });
             }
 
             if (entities != null)
             {
-                var languages = await _languageRepository.SelectAll(null);
+                var languages = await _languageRepository.SelectAll(null, false,
+                                                               new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id) });
 
                 for (var i = 0; i < entities.Count; i++)
                 {

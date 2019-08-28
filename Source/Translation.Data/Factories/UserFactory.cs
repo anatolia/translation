@@ -180,11 +180,5 @@ namespace Translation.Data.Factories
 
             return currentUser;
         }
-
-        public User UpdateEntityForChangeActivation(User entity)
-        {
-            entity.IsActive = !entity.IsActive;
-            return entity;
-        }
     }
 }
