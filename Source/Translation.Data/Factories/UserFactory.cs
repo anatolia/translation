@@ -139,6 +139,7 @@ namespace Translation.Data.Factories
             dto.LastLoggedInAt = entity.LastLoginAt;
 
             dto.InvitedAt = entity.InvitedAt;
+            dto.InvitationAcceptedAt = entity.InvitationAcceptedAt;
             dto.InvitedByUserUid = entity.InvitedByUserUid;
             dto.InvitedByUserName = entity.InvitedByUserName;
 
