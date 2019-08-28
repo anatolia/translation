@@ -24,20 +24,20 @@ namespace Translation.Common.Tests.SetupHelpers
         public static void Setup_SelectMany_Returns_Integrations(this Mock<IIntegrationRepository> repository)
         {
             repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<Integration, bool>>>(),
-                    It.IsAny<int>(),
-                    It.IsAny<int>(),
-                    It.IsAny<Expression<Func<Integration, object>>>(),
-                    It.IsAny<bool>(), false))
-                .ReturnsAsync(new List<Integration> { GetIntegration() });
+                                               It.IsAny<int>(),
+                                               It.IsAny<int>(),
+                                               It.IsAny<bool>(), 
+                                               It.IsAny<List<OrderByInfo<Integration>>>()))
+                     .ReturnsAsync(new List<Integration> { GetIntegration() });
         }
 
         public static void Verify_SelectMany(this Mock<IIntegrationRepository> repository)
         {
             repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<Integration, bool>>>(),
-                    It.IsAny<int>(),
-                    It.IsAny<int>(),
-                    It.IsAny<Expression<Func<Integration, object>>>(),
-                    It.IsAny<bool>(), false));
+                                                It.IsAny<int>(),
+                                                It.IsAny<int>(),
+                                                It.IsAny<bool>(),
+                                                It.IsAny<List<OrderByInfo<Integration>>>()));
         }
 
         public static void Setup_Count_Returns_Ten(this Mock<IIntegrationRepository> repository)
@@ -60,8 +60,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Integration, bool>>>(),
                                                 It.IsAny<Guid>(),
                                                 It.IsAny<int>(),
-                                                It.IsAny<Expression<Func<Integration, object>>>(),
-                                                It.IsAny<bool>(), false))
+                                                It.IsAny<bool>(),
+                                                It.IsAny<List<OrderByInfo<Integration>>>()))
                       .ReturnsAsync(new List<Integration> { GetIntegration() });
         }
 
@@ -183,9 +183,10 @@ namespace Translation.Common.Tests.SetupHelpers
         public static void Verify_SelectAfter(this Mock<IIntegrationRepository> repository)
         {
             repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<Integration, bool>>>(),
-                                                 It.IsAny<Guid>(), It.IsAny<int>(),
-                                                 It.IsAny<Expression<Func<Integration, object>>>(),
-                                                 It.IsAny<bool>(), false));
+                                                 It.IsAny<Guid>(),
+                                                 It.IsAny<int>(),
+                                                 It.IsAny<bool>(),
+                                                 It.IsAny<List<OrderByInfo<Integration>>>()));
         }
 
         public static void Verify_Update(this Mock<IIntegrationRepository> repository)

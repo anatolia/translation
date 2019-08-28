@@ -17,8 +17,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<UserLoginLog, bool>>>(),
                                                 It.IsAny<Guid>(),
                                                 It.IsAny<int>(),
-                                                It.IsAny<Expression<Func<UserLoginLog, object>>>(),
-                                                It.IsAny<bool>(), false))
+                                                It.IsAny<bool>(),
+                                                It.IsAny<List<OrderByInfo<UserLoginLog>>>()))
                      .ReturnsAsync(new List<UserLoginLog> { GetUserLoginLog() });
         }
 
@@ -27,8 +27,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<UserLoginLog, bool>>>(),
                                                It.IsAny<int>(),
                                                It.IsAny<int>(),
-                                               It.IsAny<Expression<Func<UserLoginLog, object>>>(),
-                                               It.IsAny<bool>(), false))
+                                               It.IsAny<bool>(),
+                                               It.IsAny<List<OrderByInfo<UserLoginLog>>>()))
                      .ReturnsAsync(new List<UserLoginLog> { GetUserLoginLog() });
         }
 
@@ -52,8 +52,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<UserLoginLog, bool>>>(),
                                                 It.IsAny<int>(),
                                                 It.IsAny<int>(),
-                                                It.IsAny<Expression<Func<UserLoginLog, object>>>(),
-                                                It.IsAny<bool>(), false));
+                                                It.IsAny<bool>(),
+                                                It.IsAny<List<OrderByInfo<UserLoginLog>>>()));
         }
 
         public static void Verify_SelectAfter(this Mock<IUserLoginLogRepository> repository)
@@ -61,8 +61,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<UserLoginLog, bool>>>(),
                                                  It.IsAny<Guid>(),
                                                  It.IsAny<int>(),
-                                                 It.IsAny<Expression<Func<UserLoginLog, object>>>(),
-                                                 It.IsAny<bool>(), false));
+                                                 It.IsAny<bool>(),
+                                                 It.IsAny<List<OrderByInfo<UserLoginLog>>>()));
         }
     }
 }

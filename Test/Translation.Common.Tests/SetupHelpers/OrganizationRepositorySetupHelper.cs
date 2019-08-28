@@ -66,8 +66,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Organization, bool>>>(), 
                                                 It.IsAny<Guid>(), 
                                                 It.IsAny<int>(),
-                                                It.IsAny<Expression<Func<Organization, object>>>(),
-                                                It.IsAny<bool>(), false))
+                                                It.IsAny<bool>(),
+                                                It.IsAny<List<OrderByInfo<Organization>>>()))
                       .ReturnsAsync(new List<Organization>{GetOrganization()});
         }
 
@@ -76,8 +76,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<Organization, bool>>>(),
                                                It.IsAny<int>(),
                                                It.IsAny<int>(),
-                                               It.IsAny<Expression<Func<Organization, object>>>(),
-                                               It.IsAny<bool>(), false))
+                                               It.IsAny<bool>(),
+                                               It.IsAny<List<OrderByInfo<Organization>>>()))
                       .ReturnsAsync(new List<Organization> { GetOrganization() });
         }
 
@@ -151,8 +151,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<Organization, bool>>>(),
                                                 It.IsAny<int>(),
                                                 It.IsAny<int>(),
-                                                It.IsAny<Expression<Func<Organization, object>>>(),
-                                                It.IsAny<bool>(), It.IsAny<bool>()));
+                                                It.IsAny<bool>(),
+                                                It.IsAny<List<OrderByInfo<Organization>>>()));
         }
 
         public static void Verify_SelectAfter(this Mock<IOrganizationRepository> repository)
@@ -160,8 +160,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<Organization, bool>>>(),
                                                  It.IsAny<Guid>(),
                                                  It.IsAny<int>(),
-                                                 It.IsAny<Expression<Func<Organization, object>>>(),
-                                                 It.IsAny<bool>(), It.IsAny<bool>()));
+                                                 It.IsAny<bool>(),
+                                                 It.IsAny<List<OrderByInfo<Organization>>>()));
         }
 
         public static void Setup_Update_Success(this Mock<IOrganizationRepository> repository)

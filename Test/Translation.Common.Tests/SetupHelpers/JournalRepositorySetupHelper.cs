@@ -17,8 +17,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Journal, bool>>>(),
                                                 It.IsAny<Guid>(),
                                                 It.IsAny<int>(),
-                                                It.IsAny<Expression<Func<Journal, object>>>(),
-                                                It.IsAny<bool>(), false))
+                                                It.IsAny<bool>(),
+                                                It.IsAny<List<OrderByInfo<Journal>>>()))
                       .ReturnsAsync(new List<Journal> { GetJournal() });
         }
 
@@ -27,8 +27,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<Journal, bool>>>(),
                                                It.IsAny<int>(),
                                                It.IsAny<int>(),
-                                               It.IsAny<Expression<Func<Journal, object>>>(),
-                                               It.IsAny<bool>(), false))
+                                               It.IsAny<bool>(),
+                                               It.IsAny<List<OrderByInfo<Journal>>>()))
                       .ReturnsAsync(new List<Journal> { GetJournal() });
         }
 
@@ -45,8 +45,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<Journal, bool>>>(),
                                                  It.IsAny<Guid>(),
                                                  It.IsAny<int>(),
-                                                 It.IsAny<Expression<Func<Journal, object>>>(),
-                                                 It.IsAny<bool>(), false));
+                                                 It.IsAny<bool>(),
+                                                 It.IsAny<List<OrderByInfo<Journal>>>()));
         }
 
         public static void Verify_SelectMany(this Mock<IJournalRepository> repository)
@@ -54,8 +54,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<Journal, bool>>>(),
                                                 It.IsAny<int>(),
                                                 It.IsAny<int>(),
-                                                It.IsAny<Expression<Func<Journal, object>>>(),
-                                                It.IsAny<bool>(), false));
+                                                It.IsAny<bool>(),
+                                                It.IsAny<List<OrderByInfo<Journal>>>()));
         }
 
         public static void Verify_Count(this Mock<IJournalRepository> repository)

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Configuration;
 
 using StandardRepository.Helpers;
 using StandardRepository.Models;
@@ -14,7 +13,6 @@ using Translation.Common.Helpers;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
-using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Responses.Label;
 using Translation.Common.Models.Responses.Label.LabelTranslation;
 using Translation.Data.Entities.Domain;
@@ -214,7 +212,6 @@ namespace Translation.Service
                 return response;
             }
 
-
             var label = _labelFactory.CreateEntity(request.LabelKey, project);
             var uowResult = await _labelUnitOfWork.DoCreateWork(token.CreatedBy, label);
             if (!uowResult)
@@ -229,7 +226,7 @@ namespace Translation.Service
             if (request.LanguageIsoCode2s.Length != 0)
             {
                 var projectLanguage = await _languageRepository.SelectById(project.LanguageId);
-                var addedLabel = await _labelRepository.Select(x => x.Name == label.Name);
+                var addedLabel = await _labelRepository.Select(x => x.Key == request.LabelKey && x.ProjectId == project.Id);
 
                 var languages = new List<Language>();
                 for (int i = 0; i < request.LanguageIsoCode2s.Length; i++)
@@ -382,7 +379,8 @@ namespace Translation.Service
             return labelsToInsert;
         }
 
-        public async Task<List<LabelTranslation>> AddedLabelAddLabelTranslation(Project project, List<LabelListInfo> labels, List<Label> labelsToAdd, LabelCreateListResponse response)
+        public async Task<List<LabelTranslation>> AddedLabelAddLabelTranslation(Project project, List<LabelListInfo> labels, List<Label> labelsToAdd,
+                                                                                LabelCreateListResponse response)
         {
             var languages = await _languageRepository.SelectAll(null, false,
                                                                 new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id) });
@@ -585,14 +583,14 @@ namespace Translation.Service
             List<Label> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _labelRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, request.PagingInfo.IsAscending,
-                                                              new List<OrderByInfo<Label>> { new OrderByInfo<Label>(x => x.Id) });
+                entities = await _labelRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                              new List<OrderByInfo<Label>> { new OrderByInfo<Label>(x => x.Uid, request.PagingInfo.IsAscending) });
 
             }
             else
             {
-                entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, request.PagingInfo.IsAscending,
-                                                             new List<OrderByInfo<Label>> { new OrderByInfo<Label>(x => x.Id) });
+                entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                             new List<OrderByInfo<Label>> { new OrderByInfo<Label>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
@@ -623,8 +621,8 @@ namespace Translation.Service
 
             Expression<Func<Label, bool>> filter = x => x.Name.Contains(request.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
 
-            List<Label> entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, request.PagingInfo.IsAscending,
-                                                                      new List<OrderByInfo<Label>> { new OrderByInfo<Label>(x => x.Id) });
+            List<Label> entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                      new List<OrderByInfo<Label>> { new OrderByInfo<Label>(x => x.Id, request.PagingInfo.IsAscending) });
 
             if (entities != null)
             {
@@ -1336,14 +1334,13 @@ namespace Translation.Service
             List<LabelTranslation> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _labelTranslationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, request.PagingInfo.IsAscending,
-                                                                         new List<OrderByInfo<LabelTranslation>> { new OrderByInfo<LabelTranslation>(x => x.Id) });
-
+                entities = await _labelTranslationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                                         new List<OrderByInfo<LabelTranslation>> { new OrderByInfo<LabelTranslation>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _labelTranslationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, request.PagingInfo.IsAscending,
-                                                                        new List<OrderByInfo<LabelTranslation>> { new OrderByInfo<LabelTranslation>(x => x.Id) });
+                entities = await _labelTranslationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                        new List<OrderByInfo<LabelTranslation>> { new OrderByInfo<LabelTranslation>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)

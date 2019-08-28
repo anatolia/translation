@@ -105,11 +105,13 @@ namespace Translation.Service
             List<Organization> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _organizationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _organizationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                                     new List<OrderByInfo<Organization>>() { new OrderByInfo<Organization>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _organizationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _organizationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                    new List<OrderByInfo<Organization>>() { new OrderByInfo<Organization>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
@@ -152,11 +154,13 @@ namespace Translation.Service
             List<User> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _userRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _userRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                             new List<OrderByInfo<User>>() { new OrderByInfo<User>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _userRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _userRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                            new List<OrderByInfo<User>>() { new OrderByInfo<User>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
@@ -200,11 +204,13 @@ namespace Translation.Service
             List<User> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _userRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _userRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                             new List<OrderByInfo<User>>() { new OrderByInfo<User>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _userRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _userRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                            new List<OrderByInfo<User>>() { new OrderByInfo<User>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
@@ -548,11 +554,13 @@ namespace Translation.Service
             List<Journal> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _journalRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _journalRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                                new List<OrderByInfo<Journal>>() { new OrderByInfo<Journal>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _journalRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _journalRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                               new List<OrderByInfo<Journal>>() { new OrderByInfo<Journal>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
@@ -595,11 +603,13 @@ namespace Translation.Service
             List<TokenRequestLog> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _tokenRequestLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _tokenRequestLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                                        new List<OrderByInfo<TokenRequestLog>>() { new OrderByInfo<TokenRequestLog>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _tokenRequestLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _tokenRequestLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                       new List<OrderByInfo<TokenRequestLog>>() { new OrderByInfo<TokenRequestLog>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
@@ -642,11 +652,13 @@ namespace Translation.Service
             List<SendEmailLog> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _sendEmailLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _sendEmailLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                                     new List<OrderByInfo<SendEmailLog>>() { new OrderByInfo<SendEmailLog>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _sendEmailLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _sendEmailLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                   new List<OrderByInfo<SendEmailLog>>() { new OrderByInfo<SendEmailLog>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
@@ -689,11 +701,13 @@ namespace Translation.Service
             List<UserLoginLog> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _userLoginLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _userLoginLogRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                                     new List<OrderByInfo<UserLoginLog>>() { new OrderByInfo<UserLoginLog>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _userLoginLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _userLoginLogRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                    new List<OrderByInfo<UserLoginLog>>() { new OrderByInfo<UserLoginLog>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)

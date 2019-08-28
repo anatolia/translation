@@ -95,8 +95,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Language, bool>>>(),
                                                 It.IsAny<Guid>(),
                                                 It.IsAny<int>(),
-                                                It.IsAny<Expression<Func<Language, object>>>(),
-                                                It.IsAny<bool>(), false))
+                                                It.IsAny<bool>(),
+                                                It.IsAny<List<OrderByInfo<Language>>>()))
                       .ReturnsAsync(new List<Language> { GetLanguageOne() });
         }
 
@@ -105,8 +105,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<Language, bool>>>(),
                                                It.IsAny<int>(),
                                                It.IsAny<int>(),
-                                               It.IsAny<Expression<Func<Language, object>>>(),
-                                               It.IsAny<bool>(), false))
+                                               It.IsAny<bool>(), 
+                                               It.IsAny<List<OrderByInfo<Language>>>()))
                       .ReturnsAsync(new List<Language> { GetLanguageOne() });
         }
 
@@ -254,8 +254,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<Language, bool>>>(),
                                                  It.IsAny<Guid>(),
                                                  It.IsAny<int>(),
-                                                 It.IsAny<Expression<Func<Language, object>>>(),
-                                                 It.IsAny<bool>(), false));
+                                                 It.IsAny<bool>(),
+                                                 It.IsAny<List<OrderByInfo<Language>>>()));
         }
 
         public static void Verify_SelectMany(this Mock<ILanguageRepository> repository)
@@ -263,8 +263,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<Language, bool>>>(),
                                                 It.IsAny<int>(),
                                                 It.IsAny<int>(),
-                                                It.IsAny<Expression<Func<Language, object>>>(),
-                                                It.IsAny<bool>(), false));
+                                                It.IsAny<bool>(),
+                                                It.IsAny<List<OrderByInfo<Language>>>()));
         }
 
         public static void Verify_Count(this Mock<ILanguageRepository> repository)

@@ -1,64 +1,67 @@
 ﻿label_key,language,translation
 home_link,en,home link
-home_link,tr,ana link
-home_link,ru,домашняя ссылка
+home_link,tr,ev bağlantı
+home_link,ru,дома ссылка
 admin_list_link,en,admin list link
-admin_list_link,tr,yönetici listesi bağlantısı
-admin_list_link,ru,ссылка на список администраторов
+admin_list_link,tr,admin listesi linki
+admin_list_link,ru,ссылка список админ 
 user_list_link,en,user list link
-user_list_link,tr,kullanıcı listesi bağlantısı
-user_list_link,ru,ссылка на список пользователей
+user_list_link,tr,kullanıcı listesi linki
+user_list_link,ru,ссылка список пользователей 
 organization_list_link,en,organization list link
-organization_list_link,tr,organizasyon listesi bağlantısı
-organization_list_link,ru,ссылка на список организаций
+organization_list_link,tr,organizasyon listesi linki
+organization_list_link,ru,ссылка список организации 
 language_list_link,en,language list link
-language_list_link,tr,dil listesi bağlantısı
-language_list_link,ru,ссылка на список языков
+language_list_link,tr,dil listesi linki
+language_list_link,ru,список языков ссылке
 journal_list_link,en,journal list link
-journal_list_link,tr,günlük listesi bağlantısı
-journal_list_link,ru,ссылка на список журналов
+journal_list_link,tr,dergi listesi linki
+journal_list_link,ru,журнал по ссылке список 
 user_login_log_list_link,en,user login log list link
-user_login_log_list_link,tr,kullanıcı giriş günlüğü listesi bağlantısı
-user_login_log_list_link,ru,ссылка для входа в систему
+user_login_log_list_link,tr,kullanıcı giriş kayıt listesi linki
+user_login_log_list_link,ru,пользователей ссылке список логин войти 
 token_request_log_list_link,en,token request log list link
-token_request_log_list_link,tr,belirteç isteği günlük listesi bağlantısı
-token_request_log_list_link,ru,ссылка на список журналов запроса токена
+token_request_log_list_link,tr,token talep kayıt listesi linki
+token_request_log_list_link,ru,маркер запроса ссылке список журналов 
 send_email_log_list_link,en,send email log list link
-send_email_log_list_link,tr,e-posta günlüğü listesi bağlantısını gönder
-send_email_log_list_link,ru,отправить ссылку на список рассылки
+send_email_log_list_link,tr,e-posta günlük liste link gönder 
+send_email_log_list_link,ru,отправить ссылку по электронной почте список журналов 
+translation_providers,en,translation providers
+translation_providers,tr,çeviri sağlayıcıları
+translation_providers,ru,провайдеры переводов 
 admin_dashboard_link,en,admin dashboard link
-admin_dashboard_link,tr,yönetici panosu bağlantısı
-admin_dashboard_link,ru,ссылка на панель администратора
+admin_dashboard_link,tr,admin paneline link
+admin_dashboard_link,ru,админ панель ссылку
 invite_user_as_admin_button,en,invite user as admin button
-invite_user_as_admin_button,tr,kullanıcıyı admin butonu olarak davet et
-invite_user_as_admin_button,ru,пригласить пользователя в качестве кнопки администратора
+invite_user_as_admin_button,tr,admin düğme olarak davet kullanıcı 
+invite_user_as_admin_button,ru,пригласи пользователя как кнопка администратора 
 invite_new_admin,en,invite new admin
-invite_new_admin,tr,yeni yönetici davet et
+invite_new_admin,tr,davet yeni admin
 invite_new_admin,ru,пригласить нового администратора
 content_access_denied,en,content access denied
-content_access_denied,tr,içerik erişimi reddedildi
+content_access_denied,tr,içerik erişim engellendi
 content_access_denied,ru,доступ к контенту запрещен
 organization_link,en,organization link
-organization_link,tr,organizasyon bağlantısı
-organization_link,ru,ссылка организации
+organization_link,tr,organizasyon linki
+organization_link,ru,организация ссылке
 pending_translations_link,en,pending translations link
-pending_translations_link,tr,bekleyen çeviriler bağlantısı
-pending_translations_link,ru,ссылка на ожидающий перевод
+pending_translations_link,tr,bekleyen çeviriler linki
+pending_translations_link,ru,отложенные переводы ссылке
 search_list_link,en,search list link
-search_list_link,tr,arama listesi bağlantısı
-search_list_link,ru,ссылка на список поиска
+search_list_link,tr,arama listesi linki
+search_list_link,ru,ссылка список поиска 
 integration,en,integration
-integration,tr,bütünleşme
+integration,tr,entegrasyon
 integration,ru,интеграция
 client_id,en,client id
-client_id,tr,Müşteri Kimliği
-client_id,ru,ID клиента
+client_id,tr,istemci kimliği
+client_id,ru,идентификатор клиента 
 create_integration_button,en,create integration button
-create_integration_button,tr,entegrasyon düğmesi oluştur
-create_integration_button,ru,создать кнопку интеграции
+create_integration_button,tr,entegrasyon düğme oluşturun 
+create_integration_button,ru,кнопка "Создать" интеграция 
 integration_name,en,integration name
 integration_name,tr,entegrasyon adı
-integration_name,ru,имя интеграции
+integration_name,ru,имя интеграции 
 description,en,description
 description,tr,açıklama
 description,ru,описание
@@ -66,1151 +69,1160 @@ organization,en,organization
 organization,tr,organizasyon
 organization,ru,организация
 edit_link,en,edit link
-edit_link,tr,bağlantıyı düzenle
-edit_link,ru,редактировать ссылку
+edit_link,tr,bağlantı Düzenle
+edit_link,ru,ссылка редактировать 
 active_tokens_link,en,active tokens link
-active_tokens_link,tr,aktif belirteçler bağlantı
-active_tokens_link,ru,ссылка на активные токены
+active_tokens_link,tr,aktif belirteçleri linki
+active_tokens_link,ru,активные маркеры ссылке
 revisions_link,en,revisions link
-revisions_link,tr,revizyonlar bağlantısı
-revisions_link,ru,ссылка на ревизии
+revisions_link,tr,düzeltme linki
+revisions_link,ru,пересмотр ссылке
 delete_button,en,delete button
 delete_button,tr,sil düğmesi
-delete_button,ru,кнопка удаления
+delete_button,ru,кнопка Удалить 
 integration_clients,en,integration clients
-integration_clients,tr,entegrasyon müşterileri
-integration_clients,ru,клиенты интеграции
+integration_clients,tr,entegrasyon müşterilerine
+integration_clients,ru,интеграция клиентов
 create_integration_client_link,en,create integration client link
-create_integration_client_link,tr,entegrasyon istemcisi bağlantısı oluştur
-create_integration_client_link,ru,создать интеграционную клиентскую ссылку
+create_integration_client_link,tr,entegrasyon istemci bağlantı oluşturmak 
+create_integration_client_link,ru,создание клиентской интеграции ссылке
 update_integration_button,en,update integration button
-update_integration_button,tr,entegrasyon düğmesini güncelle
-update_integration_button,ru,обновить кнопку интеграции
+update_integration_button,tr,entegrasyon düğmesine güncelleme 
+update_integration_button,ru,кнопка интеграции обновления 
 cloning_label_key,en,cloning label key
-cloning_label_key,tr,etiket anahtarı klonlama
-cloning_label_key,ru,ключ клонирования метки
+cloning_label_key,tr,etiket klonlama anahtar
+cloning_label_key,ru,метки клонирование ключа
 clone_label_button,en,clone label button
-clone_label_button,tr,klon etiket düğmesi
-clone_label_button,ru,кнопка метки клона
+clone_label_button,tr,klon etiket düğmesini
+clone_label_button,ru,кнопку ярлыка клона 
 project,en,project
 project,tr,proje
 project,ru,проект
+project_language,en,project language
+project_language,tr,proje dili
+project_language,ru,язык проекта 
 create_label_button,en,create label button
-create_label_button,tr,etiket düğmesi oluştur
-create_label_button,ru,кнопка создания метки
+create_label_button,tr,etiket oluşturun düğmesi
+create_label_button,ru,кнопку Создать ярлык 
 create_bulk_button,en,create bulk button
-create_bulk_button,tr,toplu düğme oluştur
-create_bulk_button,ru,создать объемную кнопку
+create_bulk_button,tr,toplu düğmesine oluştur 
+create_bulk_button,ru,создаем объемную кнопку
 added_label_count,en,added label count
 added_label_count,tr,eklenen etiket sayısı
-added_label_count,ru,добавлено количество меток
+added_label_count,ru,добавлена графа этикетки 
 can_not_added_label_count,en,can not added label count
-can_not_added_label_count,tr,etiket sayısı eklenemiyor
-can_not_added_label_count,ru,нельзя добавить количество меток
+can_not_added_label_count,tr,olamaz ekledi etiket sayısı
+can_not_added_label_count,ru,не может добавил граф этикетки 
 total_label_count,en,total label count
 total_label_count,tr,toplam etiket sayısı
-total_label_count,ru,общее количество меток
+total_label_count,ru,общее количество меток 
 added_label_translation_count,en,added label translation count
-added_label_translation_count,tr,etiket çeviri sayısı eklendi
-added_label_translation_count,ru,добавлен счетчик перевода меток
+added_label_translation_count,tr,eklenen etiket çeviri sayısı
+added_label_translation_count,ru,добавлена метка счетчика перевод 
 can_not_added_label_translation_count,en,can not added label translation count
-can_not_added_label_translation_count,tr,etiket çeviri sayısı eklenemiyor
-can_not_added_label_translation_count,ru,невозможно добавить перевод меток
+can_not_added_label_translation_count,tr,edemez etiket çeviri sayısı eklendi 
+can_not_added_label_translation_count,ru,не может добавил метку рассчитывать перевода 
 uploaded_label_translation_count,en,uploaded label translation count
-uploaded_label_translation_count,tr,yüklenen etiket çeviri sayısı
-uploaded_label_translation_count,ru,количество загруженных меток
+uploaded_label_translation_count,tr,karşıya etiket çeviri sayısı
+uploaded_label_translation_count,ru,загружен метки рассчитывать перевода 
 total_rows_processed,en,total rows processed
-total_rows_processed,tr,işlenen toplam satır
-total_rows_processed,ru,общее количество обработанных строк
+total_rows_processed,tr,toplam satır işlenmiş
+total_rows_processed,ru,общая обработанных строк
 label_name,en,label name
 label_name,tr,etiket adı
-label_name,ru,название ярлыка
+label_name,ru,имя метки 
 label_translation_count,en,label translation count
-label_translation_count,tr,etiket çevirisi sayısı
-label_translation_count,ru,количество переводов меток
+label_translation_count,tr,etiket çeviri sayısı
+label_translation_count,ru,метка граф перевод 
 edit_label_link,en,edit label link
-edit_label_link,tr,etiket bağlantısını düzenle
-edit_label_link,ru,изменить ссылку на ярлык
+edit_label_link,tr,etiketi Düzenle linki
+edit_label_link,ru,редактировать ссылке этикетка 
 clone_label_link,en,clone label link
-clone_label_link,tr,etiket bağlantısını klonla
-clone_label_link,ru,ссылка на метку клона
+clone_label_link,tr,klon etiket bağlantı
+clone_label_link,ru,метка клон 
 change_activation_button,en,change activation button
-change_activation_button,tr,aktivasyon düğmesini değiştir
-change_activation_button,ru,изменить кнопку активации
+change_activation_button,tr,değiştir etkinleştirme düğmesi
+change_activation_button,ru,кнопка активации изменение 
 download_translations_button,en,download translations button
-download_translations_button,tr,çevirileri indir düğmesi
-download_translations_button,ru,кнопка загрузки переводов
+download_translations_button,tr,download çeviriler düğmesi
+download_translations_button,ru,кнопка Скачать перевод 
 translations,en,translations
-translations,tr,çeviriler
-translations,ru,переводы
+translations,tr,çevirileri
+translations,ru,перевод
 create_label_translation_link,en,create label translation link
-create_label_translation_link,tr,etiket çeviri bağlantısı oluştur
-create_label_translation_link,ru,создать ссылку на перевод метки
+create_label_translation_link,tr,etiket çevirisi bağlantı oluşturmak 
+create_label_translation_link,ru,создать ссылку на перевод этикетки 
 upload_translations_from_csv_link,en,upload translations from csv link
-upload_translations_from_csv_link,tr,csv bağlantısından çeviri yükle
-upload_translations_from_csv_link,ru,загрузить переводы из csv ссылки
+upload_translations_from_csv_link,tr,csv upload çeviriler linki
+upload_translations_from_csv_link,ru,загрузить перевод из CSV ссылку
 edit_label_button,en,edit label button
-edit_label_button,tr,etiket düğmesini düzenle
-edit_label_button,ru,кнопка редактирования метки
+edit_label_button,tr,etiketi Düzenle düğmesine
+edit_label_button,ru,кнопку Редактировать метки 
 label_key,en,label key
-label_key,tr,etiket anahtarı
-label_key,ru,ключ метки
+label_key,tr,anahtar etiketi 
+label_key,ru,ключевые метки 
 create_label_translation_button,en,create label translation button
-create_label_translation_button,tr,etiket çeviri düğmesi oluştur
-create_label_translation_button,ru,кнопка создания метки перевода
+create_label_translation_button,tr,etiket çevirisi düğme oluşturun 
+create_label_translation_button,ru,создать кнопку перевод этикетки 
 language_name,en,language name
 language_name,tr,dil adı
-language_name,ru,Название языка
+language_name,ru,название языка 
 translation,en,translation
 translation,tr,çeviri
 translation,ru,перевод
 edit,en,edit
-edit,tr,Düzenle
+edit,tr,edit
 edit,ru,редактировать
 label,en,label
 label,tr,etiket
-label,ru,этикетка
+label,ru,метки
 language,en,language
 language,tr,dil
 language,ru,язык
 edit_translation_button,en,edit translation button
-edit_translation_button,tr,çeviri düğmesini düzenle
-edit_translation_button,ru,кнопка редактирования перевода
+edit_translation_button,tr,çeviri Düzenle düğmesine
+edit_translation_button,ru,кнопка редактирование перевода 
 labels,en,labels
 labels,tr,etiketler
-labels,ru,этикетки
+labels,ru,метки
 label_search_results_for,en,label search results for
-label_search_results_for,tr,için arama sonuçlarını etiketle
-label_search_results_for,ru,результаты поиска ярлыков для
+label_search_results_for,tr,için etiket arama sonuçları 
+label_search_results_for,ru,Результаты поиска метки
 download_label_upload_template_sample_file,en,download label upload template sample file
-download_label_upload_template_sample_file,tr,etiket yükle şablon örnek dosyasını indir
-download_label_upload_template_sample_file,ru,загрузить образец файла шаблона загрузки метки
+download_label_upload_template_sample_file,tr,karşıdan karşıya şablon örnek dosya etiketi 
+download_label_upload_template_sample_file,ru,метки скачать загрузить образец файла шаблона 
 upload_labels_from_csv_button,en,upload labels from csv button
-upload_labels_from_csv_button,tr,csv düğmesinden etiket yükleyin
-upload_labels_from_csv_button,ru,загрузить ярлыки с кнопки csv
+upload_labels_from_csv_button,tr,csv düğmesinden yükleme etiketler 
+upload_labels_from_csv_button,ru,загрузить метки из кнопку формате CSV 
 updated_label_translation_count,en,updated label translation count
-updated_label_translation_count,tr,güncellenmiş etiket çeviri sayısı
-updated_label_translation_count,ru,обновлен счетчик перевода меток
+updated_label_translation_count,tr,güncelleme etiket çeviri sayısı
+updated_label_translation_count,ru,обновленная этикетка граф перевод 
 download_translation_upload_template_file,en,download translation upload template file
-download_translation_upload_template_file,tr,çeviri yükleme şablonu dosyasını indir
-download_translation_upload_template_file,ru,скачать перевод загрузить файл шаблона
+download_translation_upload_template_file,tr,karşıdan karşıya çeviri şablon dosyası
+download_translation_upload_template_file,ru,скачать шаблон перевод загрузить файл
 upload_label_translations_from_csv_button,en,upload label translations from csv button
-upload_label_translations_from_csv_button,tr,csv düğmesinden etiket çevirileri yükle
-upload_label_translations_from_csv_button,ru,загрузить перевод метки с кнопки csv
+upload_label_translations_from_csv_button,tr,csv düğmesinden yükle etiket çevirileri 
+upload_label_translations_from_csv_button,ru,загрузить перевод надписи из кнопку формате CSV 
 added_translation_count,en,added translation count
-added_translation_count,tr,çeviri sayısı eklendi
-added_translation_count,ru,добавлено количество переводов
+added_translation_count,tr,eklendi çeviri sayısı
+added_translation_count,ru,добавлена графа перевода 
 updated_translation_count,en,updated translation count
 updated_translation_count,tr,güncellenmiş çeviri sayısı
-updated_translation_count,ru,обновленный счетчик переводов
+updated_translation_count,ru,обновлен граф перевод 
 can_not_added_translation_count,en,can not added translation count
-can_not_added_translation_count,tr,çeviri sayısı eklenemiyor
-can_not_added_translation_count,ru,нельзя добавить счетчик переводов
+can_not_added_translation_count,tr,olamaz ekledi çeviri sayısı
+can_not_added_translation_count,ru,не может добавил граф перевод 
 languages,en,languages
-languages,tr,duujjil
+languages,tr,diller
 languages,ru,языки
 create_language_button,en,create language button
-create_language_button,tr,dil oluştur düğmesi
-create_language_button,ru,кнопка создания языка
+create_language_button,tr,dil düğmesine oluştur 
+create_language_button,ru,кнопка "создать" язык 
 original_name,en,original name
-original_name,tr,orjinal isim
-original_name,ru,оригинальное имя
+original_name,tr,orijinal adı
+original_name,ru,оригинальное название
 iso_code_2,en,iso code 2
-iso_code_2,tr,iso kodu 2
-iso_code_2,ru,ISO код 2
+iso_code_2,tr,2 ıso kodu 
+iso_code_2,ru,код ISO 2
 iso_code_3,en,iso code 3
-iso_code_3,tr,iso kodu 3
-iso_code_3,ru,ISO код 3
+iso_code_3,tr,3 ıso kodu 
+iso_code_3,ru,код ISO 3
 edit_language_button,en,edit language button
-edit_language_button,tr,dili düzenle düğmesi
-edit_language_button,ru,кнопка редактирования языка
+edit_language_button,tr,dili Düzenle düğmesine
+edit_language_button,ru,кнопка редактирования 
 create_language,en,create language
-create_language,tr,dil oluştur
+create_language,tr,dil oluşturmak 
 create_language,ru,создать язык
 organization_name,en,organization name
-organization_name,tr,Kuruluş Adı
-organization_name,ru,Название организации
+organization_name,tr,kuruluş adı
+organization_name,ru,название организации 
 organization_edit_link,en,organization edit link
-organization_edit_link,tr,organizasyon düzenleme bağlantısı
-organization_edit_link,ru,ссылка для редактирования организации
+organization_edit_link,tr,organizasyon düzenlemek linki
+organization_edit_link,ru,организация редактировать ссылку
 journals_link,en,journals link
-journals_link,tr,dergiler bağlantısı
-journals_link,ru,ссылка на журналы
+journals_link,tr,dergi linki
+journals_link,ru,журналов ссылке
 projects,en,projects
 projects,tr,projeler
-projects,ru,проектов
+projects,ru,проекты
 create_project_link,en,create project link
-create_project_link,tr,proje bağlantısı oluştur
-create_project_link,ru,создать ссылку на проект
+create_project_link,tr,proje bağlantısı oluştur 
+create_project_link,ru,создать проект по ссылке
 users,en,users
 users,tr,kullanıcılar
 users,ru,пользователи
 invite_user_link,en,invite user link
-invite_user_link,tr,kullanıcı bağlantısını davet et
-invite_user_link,ru,пригласить пользователя ссылку
+invite_user_link,tr,kullanıcı davet linki
+invite_user_link,ru,приглашаем пользователей ссылка
 user_login_logs_link,en,user login logs link
-user_login_logs_link,tr,kullanıcı girişi günlükleri bağlantısı
-user_login_logs_link,ru,ссылка на логин пользователя
+user_login_logs_link,tr,kullanıcı oturum açma günlüklerini linki
+user_login_logs_link,ru,журналы логин пользователя ссылка
 integrations,en,integrations
 integrations,tr,entegrasyonlar
-integrations,ru,интеграций
+integrations,ru,интеграция
 integration_create_link,en,integration create link
-integration_create_link,tr,entegrasyon bağlantı oluştur
+integration_create_link,tr,entegrasyon bağlantı oluşturmak 
 integration_create_link,ru,интеграция создать ссылку
 token_request_logs_link,en,token request logs link
-token_request_logs_link,tr,belirteç isteği günlükleri bağlantı
-token_request_logs_link,ru,ссылка на логи запроса токена
+token_request_logs_link,tr,belirteç isteği günlükleri linki
+token_request_logs_link,ru,маркер регистрирует запрос
 update_organization_button,en,update organization button
-update_organization_button,tr,kuruluş düğmesini güncelle
-update_organization_button,ru,кнопка обновления организации
+update_organization_button,tr,güncelleme organizasyon düğmesi
+update_organization_button,ru,кнопка Обновить организацию 
 cloning_project_name,en,cloning project name
-cloning_project_name,tr,proje adı klonlama
-cloning_project_name,ru,клонирование имени проекта
+cloning_project_name,tr,klonlama proje adı
+cloning_project_name,ru,клонирование имя проекта 
 clone_project_button,en,clone project button
-clone_project_button,tr,proje klonla düğmesi
-clone_project_button,ru,кнопка клонирования проекта
+clone_project_button,tr,klon projesi düğmesi
+clone_project_button,ru,кнопка проект клон 
 create_project_button,en,create project button
-create_project_button,tr,proje oluştur düğmesi
-create_project_button,ru,кнопка создания проекта
+create_project_button,tr,proje Oluştur düğmesini 
+create_project_button,ru,кнопку Создать проект 
 project_name,en,project name
-project_name,tr,proje Adı
-project_name,ru,название проекта
+project_name,tr,proje adı
+project_name,ru,название проекта 
 project_slug,en,project slug
-project_slug,tr,proje haberi
-project_slug,ru,слизняк проекта
+project_slug,tr,proje slug
+project_slug,ru,проект слизень
 url,en,url
 url,tr,url
-url,ru,URL
+url,ru,URL-адрес
 label_count,en,label count
 label_count,tr,etiket sayısı
-label_count,ru,количество меток
+label_count,ru,граф этикетки 
 edit_project_link,en,edit project link
-edit_project_link,tr,proje bağlantısını düzenle
-edit_project_link,ru,редактировать ссылку на проект
+edit_project_link,tr,düzenleme projesi bağlantı
+edit_project_link,ru,проект редактировать ссылку
 clone_project_link,en,clone project link
-clone_project_link,tr,proje bağlantısını klonla
-clone_project_link,ru,ссылка на проект клона
+clone_project_link,tr,klon proje linki
+clone_project_link,ru,проект клон ссылке
 download_labels_button,en,download labels button
-download_labels_button,tr,etiketleri indir düğmesi
-download_labels_button,ru,кнопка загрузки ярлыков
+download_labels_button,tr,indirme etiket düğmesini
+download_labels_button,ru,кнопку Скачать этикетки 
 create_label_link,en,create label link
-create_label_link,tr,etiket bağlantısı oluştur
-create_label_link,ru,создать ссылку на ярлык
+create_label_link,tr,etiket bağlantı oluşturmak 
+create_label_link,ru,создать ссылку на метку 
 create_bulk_label_link,en,create bulk label link
-create_bulk_label_link,tr,toplu etiket bağlantısı oluştur
-create_bulk_label_link,ru,создать массовую ссылку на ярлык
+create_bulk_label_link,tr,toplu etiket bağlantı oluşturmak 
+create_bulk_label_link,ru,создать объемную ссылке этикетка 
 upload_labels_from_csv_link,en,upload labels from csv link
-upload_labels_from_csv_link,tr,etiketleri csv bağlantısından yükleyin
-upload_labels_from_csv_link,ru,загрузить ярлыки из CSV-ссылки
+upload_labels_from_csv_link,tr,csv yükleme etiketler linki
+upload_labels_from_csv_link,ru,загрузить метки из CSV ссылку
 project_link,en,project link
-project_link,tr,proje bağlantısı
-project_link,ru,ссылка на проект
+project_link,tr,proje linki
+project_link,ru,проект по ссылке
 edit_project_button,en,edit project button
-edit_project_button,tr,proje düzenle butonu
-edit_project_button,ru,кнопка редактирования проекта
+edit_project_button,tr,düzenleme projesi düğmesi
+edit_project_button,ru,кнопка Редактировать проект 
 log_off,en,log off
-log_off,tr,oturumu Kapat
-log_off,ru,выйти
+log_off,tr,oturumu kapat
+log_off,ru,выйдите
 log_on_link,en,log on link
-log_on_link,tr,bağlantıda oturum aç
+log_on_link,tr,bağlantı oturum açın 
 log_on_link,ru,войти по ссылке
 sign_up_link,en,sign up link
-sign_up_link,tr,kaydolma bağlantısı
-sign_up_link,ru,зарегистрироваться ссылку
+sign_up_link,tr,bağlantı kaydol 
+sign_up_link,ru,зарегистрируйтесь по ссылке
+translation_provider_name,en,translation provider name
+translation_provider_name,tr,çeviri sağlayıcı adı
+translation_provider_name,ru,перевод имени поставщика 
+translation_providers_link,en,translation providers link
+translation_providers_link,tr,çeviri sağlayıcıları linki
+translation_providers_link,ru,поставщиков переводческих ссылке
+translation_provider_info,en,translation provider info
+translation_provider_info,tr,çeviri sağlayıcısı bilgileri
+translation_provider_info,ru,поставщик перевод информация
+translation_provider_value_content,en,translation provider value content
+translation_provider_value_content,tr,çeviri sağlayıcı değer içerik
+translation_provider_value_content,ru,перевод стоимости контент-провайдера
+translation_provider,en,translation provider
+translation_provider,tr,çeviri sağlayıcı
+translation_provider,ru,поставщик перевод 
+edit_button,en,edit button
+edit_button,tr,Düzenle düğmesi
+edit_button,ru,кнопка Редактировать 
 accept_invite_button,en,accept invite button
-accept_invite_button,tr,davet düğmesini kabul et
-accept_invite_button,ru,кнопка принять приглашение
+accept_invite_button,tr,davet kabul et düğmesi 
+accept_invite_button,ru,кнопку Принять пригласить 
 change_password_button,en,change password button
-change_password_button,tr,şifre değiştir düğmesi
-change_password_button,ru,кнопка смены пароля
+change_password_button,tr,parola değiştirme düğmesi
+change_password_button,ru,кнопка сменить пароль 
 user_change_password_done_title,en,user change password done title
-user_change_password_done_title,tr,kullanıcı parolasını değiştirme unvanı
-user_change_password_done_title,ru,пользователь сменил пароль
+user_change_password_done_title,tr,kullanıcı adı şifre değişikliği yapılması 
+user_change_password_done_title,ru,изменение пароля пользователя сделали название
 demand_password_reset_button,en,demand password reset button
-demand_password_reset_button,tr,talep parola sıfırlama düğmesi
-demand_password_reset_button,ru,кнопка сброса пароля по требованию
+demand_password_reset_button,tr,talep parola sıfırlama düğmesi 
+demand_password_reset_button,ru,кнопку пароль требую возврат 
 user_demand_password_reset_done_title,en,user demand password reset done title
-user_demand_password_reset_done_title,tr,kullanıcı talebi parola sıfırlama işlemi yapıldı
-user_demand_password_reset_done_title,ru,сброс пароля по требованию пользователя
+user_demand_password_reset_done_title,tr,Kullanıcı şifre sıfırlama talebi yapılan başlık 
+user_demand_password_reset_done_title,ru,требовать пароль пользователя сброс сделать заголовок
 user_name,en,user name
-user_name,tr,Kullanıcı adı
-user_name,ru,имя пользователя
+user_name,tr,kullanıcı adı
+user_name,ru,имя пользователя 
 email,en,email
-email,tr,E-posta
-email,ru,Эл. адрес
+email,tr,e-posta
+email,ru,электронной почты
 invited_by_user,en,invited by user
-invited_by_user,tr,kullanıcı tarafından davet edildi
-invited_by_user,ru,приглашен пользователем
+invited_by_user,tr,kullanıcı tarafından davet 
+invited_by_user,ru,приглашенных пользователей
 change_password_link,en,change password link
-change_password_link,tr,şifre bağlantısını değiştir
-change_password_link,ru,сменить пароль ссылка
+change_password_link,tr,Şifre değiştirme linki
+change_password_link,ru,смена пароля по ссылке
 user_edit_link,en,user edit link
-user_edit_link,tr,kullanıcı düzenleme bağlantısı
-user_edit_link,ru,ссылка для редактирования пользователя
+user_edit_link,tr,kullanıcı bağlantı Düzenle
+user_edit_link,ru,ссылка редактировать пользователей 
 user_detail_link,en,user detail link
 user_detail_link,tr,kullanıcı detay linki
-user_detail_link,ru,пользовательская ссылка
+user_detail_link,ru,деталь ссылке пользователей 
 update_user_button,en,update user button
-update_user_button,tr,kullanıcı düğmesini güncelle
-update_user_button,ru,обновить кнопку пользователя
+update_user_button,tr,kullanıcı düğmesi güncelleme 
+update_user_button,ru,кнопку пользователей обновление 
 invite_translator_button,en,invite translator button
-invite_translator_button,tr,tercüman davet et düğmesi
-invite_translator_button,ru,кнопка пригласить переводчика
+invite_translator_button,tr,davet çevirmen düğme
+invite_translator_button,ru,кнопка пригласить переводчика 
 user_invite_done_title,en,user invite done title
-user_invite_done_title,tr,kullanıcı davetini yaptı
-user_invite_done_title,ru,Приглашение пользователя готово название
+user_invite_done_title,tr,kullanıcı davet title bitti 
+user_invite_done_title,ru,приглашаем пользователей сделали название
 user_link,en,user link
-user_link,tr,kullanıcı bağlantısı
-user_link,ru,ссылка пользователя
+user_link,tr,kullanıcı bağlantı
+user_link,ru,пользователей ссылка
 log_on_button,en,log on button
-log_on_button,tr,oturum açma düğmesi
-log_on_button,ru,кнопка входа
+log_on_button,tr,düğme oturum açın 
+log_on_button,ru,войдите на кнопки
 password_reset_link,en,password reset link
-password_reset_link,tr,şifre sıfırlama bağlantısı
-password_reset_link,ru,ссылка для сброса пароля
+password_reset_link,tr,şifre sıfırlama 
+password_reset_link,ru,ссылку для смены пароля
 reset_password_button,en,reset password button
-reset_password_button,tr,parola sıfırlama düğmesi
-reset_password_button,ru,кнопка сброса пароля
+reset_password_button,tr,parola sıfırlama düğmesi 
+reset_password_button,ru,кнопка сброса пароля 
 user_reset_password_done_title,en,user reset password done title
-user_reset_password_done_title,tr,kullanıcı sıfırlama parolasının başlığı
-user_reset_password_done_title,ru,сброс пароля пользователя
+user_reset_password_done_title,tr,kullanıcı şifresi ile yapılan başlık Sıfırla 
+user_reset_password_done_title,ru,пользовательский сброс сделать пароль название
 sign_up_button,en,sign up button
-sign_up_button,tr,kayıt butonu
-sign_up_button,ru,кнопка регистрации
+sign_up_button,tr,düğme kaydolun 
+sign_up_button,ru,кнопка Зарегистрироваться 
 user_validate_email_done_title,en,user validate email done title
-user_validate_email_done_title,tr,kullanıcı yapılan e-postayı tamamladı
-user_validate_email_done_title,ru,пользователь подтвердил адрес электронной почты
+user_validate_email_done_title,tr,kullanıcı doğrulama e-posta başlık yapılması 
+user_validate_email_done_title,ru,проверка электронной почты пользователя сделали название
 user_already_invited,en,user already invited
-user_already_invited,tr,kullanıcı zaten davet edildi
+user_already_invited,tr,kullanıcı zaten davet etti
 user_already_invited,ru,пользователь уже приглашен
+please_edit_translation_api_value,en,please edit translation api value
+please_edit_translation_api_value,tr,lütfen düzenlemek çeviri apı değeri
+please_edit_translation_api_value,ru,пожалуйста отредактируйте перевод значение API 
 label_key_must_be_unique,en,label key must be unique
-label_key_must_be_unique,tr,etiket anahtarı benzersiz olmalı
-label_key_must_be_unique,ru,ключ метки должен быть уникальным
+label_key_must_be_unique,tr,etiket anahtar benzersiz olmalıdır 
+label_key_must_be_unique,ru,ключевые метки должны быть уникальными
+translation_provider_is_not_active,en,translation provider is not active
+translation_provider_is_not_active,tr,çeviri sağlayıcı etkin değil 
+translation_provider_is_not_active,ru,поставщик перевод не активный
 label_key_already_exist_in_this_project,en,label key already exist in this project
-label_key_already_exist_in_this_project,tr,Bu projede zaten etiket anahtarı var
-label_key_already_exist_in_this_project,ru,ключ метки уже существует в этом проекте
+label_key_already_exist_in_this_project,tr,etiket anahtar zaten bu projede yok 
+label_key_already_exist_in_this_project,ru,ключ уже существует в этом проекте
 edit_old_label_translation,en,edit old label translation
-edit_old_label_translation,tr,eski etiket çevirisini düzenle
-edit_old_label_translation,ru,редактировать старый перевод метки
+edit_old_label_translation,tr,düzen eski etiket çeviri
+edit_old_label_translation,ru,редактирование старых переводов этикетки 
 language_already_exist,en,language already exist
 language_already_exist,tr,dil zaten var
 language_already_exist,ru,язык уже существует
 email_already_exist,en,email already exist
 email_already_exist,tr,e-posta zaten var
-email_already_exist,ru,электронная почта уже существует
+email_already_exist,ru,электронной почты уже существует
 password_invalid,en,password invalid
-password_invalid,tr,şifre geçersiz
-password_invalid,ru,неверный пароль
+password_invalid,tr,parola geçersiz
+password_invalid,ru,неверный пароль 
 already_requested_password_reset_in_last_two_minutes,en,already requested password reset in last two minutes
-already_requested_password_reset_in_last_two_minutes,tr,Zaten iki dakika içinde zaten şifre sıfırlama istedi
-already_requested_password_reset_in_last_two_minutes,ru,уже запрошенный сброс пароля за последние две минуты
+already_requested_password_reset_in_last_two_minutes,tr,son iki dakika içinde zaten istenen parola sıfırlama 
+already_requested_password_reset_in_last_two_minutes,ru,уже запросил сброс пароля в последние две минуты
 old_password_is_not_right,en,old password is not right
-old_password_is_not_right,tr,eski şifre doğru değil
-old_password_is_not_right,ru,старый пароль не верный
+old_password_is_not_right,tr,eski parola doğru değil 
+old_password_is_not_right,ru,старый пароль не правильный
 choose_other_password_different_then_last_2,en,choose other password different then last 2
-choose_other_password_different_then_last_2,tr,başka bir şifreyi seçtikten sonra son 2
-choose_other_password_different_then_last_2,ru,выберите другой пароль отличный от последнего 2
+choose_other_password_different_then_last_2,tr,son iki şifre farklı seç 
+choose_other_password_different_then_last_2,ru,выбрать другой пароль разные то последние 2
 email_already_invited,en,email already invited
-email_already_invited,tr,e-posta zaten davet edildi
-email_already_invited,ru,электронная почта уже приглашена
+email_already_invited,tr,e-posta zaten davet
+email_already_invited,ru,электронной почты уже пригласили
 project_name_and_slug_must_be_unique,en,project name and slug must be unique
-project_name_and_slug_must_be_unique,tr,proje adı ve sümüklü böcek benzersiz olmalı
-project_name_and_slug_must_be_unique,ru,Название проекта и слизняк должны быть уникальными
+project_name_and_slug_must_be_unique,tr,proje adı ve sülük benzersiz olmalıdır 
+project_name_and_slug_must_be_unique,ru,название проекта и пули должны быть уникальными
+translation_provider_already_exist,en,translation provider already exist
+translation_provider_already_exist,tr,çeviri sağlayıcısı zaten var
+translation_provider_already_exist,ru,поставщик перевод уже существует
 unauthorized,en,unauthorized
-unauthorized,tr,yetkisiz
-unauthorized,ru,неразрешенный
+unauthorized,tr,izinsiz
+unauthorized,ru,несанкционированного
 file_has_more_columns_than_expected,en,file has more columns than expected
-file_has_more_columns_than_expected,tr,dosya beklenenden daha fazla sütun içeriyor
+file_has_more_columns_than_expected,tr,dosya beklenenden daha fazla sütun var 
 file_has_more_columns_than_expected,ru,файл имеет больше столбцов чем ожидалось
 please_upload_png_file,en,please upload png file
-please_upload_png_file,tr,lütfen png dosyasını yükleyin
-please_upload_png_file,ru,пожалуйста загрузите png файл
+please_upload_png_file,tr,png dosya upload lütfen 
+please_upload_png_file,ru,Пожалуйста загрузите PNG файл 
 organization_uid_is_not_valid,en,organization uid is not valid
-organization_uid_is_not_valid,tr,kuruluş kimliği geçerli değil
-organization_uid_is_not_valid,ru,UID организации недействителен
+organization_uid_is_not_valid,tr,organizasyon uid geçerli değil 
+organization_uid_is_not_valid,ru,организация Уид не действует
 token_uid_is_not_valid,en,token uid is not valid
-token_uid_is_not_valid,tr,belirteç kullanıcı kimliği geçerli değil
-token_uid_is_not_valid,ru,UID токена недействителен
+token_uid_is_not_valid,tr,token uid geçerli değil 
+token_uid_is_not_valid,ru,маркер uid не действует
 email_is_not_valid,en,email is not valid
-email_is_not_valid,tr,E-posta geçerli değil
-email_is_not_valid,ru,Email не является допустимым
+email_is_not_valid,tr,e-posta geçerli değil 
+email_is_not_valid,ru,электронной почты не является действительным
 first_name_required_error_message,en,first name required error message
-first_name_required_error_message,tr,ilk ad gerekli hata mesajı
-first_name_required_error_message,ru,имя требуется сообщение об ошибке
+first_name_required_error_message,tr,ilk adı hata iletisi gerekli 
+first_name_required_error_message,ru,имя обязательное сообщение об ошибке 
 last_name_required_error_message,en,last name required error message
-last_name_required_error_message,tr,soyadı gerekli hata mesajı
-last_name_required_error_message,ru,фамилия требуется сообщение об ошибке
+last_name_required_error_message,tr,soyadı hata mesajı gerekli 
+last_name_required_error_message,ru,фамилия Обязательное поле Сообщение об ошибке 
 password_is_not_valid_error_message,en,password is not valid error message
-password_is_not_valid_error_message,tr,şifre geçerli bir hata mesajı değil
-password_is_not_valid_error_message,ru,пароль недействителен сообщение об ошибке
+password_is_not_valid_error_message,tr,parola geçerli bir hata iletisi değil 
+password_is_not_valid_error_message,ru,пароль не действителен сообщение об ошибке 
 re_enter_password_is_not_valid_error_message,en,re enter password is not valid error message
-re_enter_password_is_not_valid_error_message,tr,şifreyi tekrar girin geçerli bir hata mesajı değil
-re_enter_password_is_not_valid_error_message,ru,повторный ввод пароля не действителен сообщение об ошибке
+re_enter_password_is_not_valid_error_message,tr,yeniden girin parola geçerli bir hata iletisi değil 
+re_enter_password_is_not_valid_error_message,ru,повторный ввод пароля не является допустимым сообщение об ошибке 
 password_and_re_entered_password_does_not_match_error_message,en,password and re entered password does not match error message
-password_and_re_entered_password_does_not_match_error_message,tr,şifre ve tekrar girilen şifre hata mesajı ile eşleşmiyor
-password_and_re_entered_password_does_not_match_error_message,ru,пароль и повторно введенный пароль не совпадает с сообщением об ошибке
+password_and_re_entered_password_does_not_match_error_message,tr,şifre ve tekrar şifre hata iletisi eşleşmiyor girdi 
+password_and_re_entered_password_does_not_match_error_message,ru,пароль и повторно введенный пароль не совпадает с сообщение об ошибке 
 email_is_not_valid_error_message,en,email is not valid error message
-email_is_not_valid_error_message,tr,e-posta geçerli bir hata mesajı değil
-email_is_not_valid_error_message,ru,адрес электронной почты не является действительным сообщением об ошибке
+email_is_not_valid_error_message,tr,e-posta geçerli bir hata iletisi değil 
+email_is_not_valid_error_message,ru,электронной почты не является действительным сообщением об ошибке 
 integration_name_required_error_message,en,integration name required error message
-integration_name_required_error_message,tr,entegrasyon adı gerekli hata mesajı
-integration_name_required_error_message,ru,имя интеграции требуется сообщение об ошибке
+integration_name_required_error_message,tr,entegrasyon adı hata iletisi gerekli 
+integration_name_required_error_message,ru,имя интеграции требуется сообщение об ошибке 
 integration_uid_is_not_valid,en,integration uid is not valid
-integration_uid_is_not_valid,tr,entegrasyon kullanıcı kimliği geçerli değil
-integration_uid_is_not_valid,ru,UID интеграции недействителен
+integration_uid_is_not_valid,tr,entegrasyon uid geçerli değil 
+integration_uid_is_not_valid,ru,интеграция uid не действует
 you_update_label_translation_previously_added_that_have_same_language,en,you update label translation previously added that have same language
-you_update_label_translation_previously_added_that_have_same_language,tr,Daha önce eklenmiş aynı dilden etiket çevirisini güncellerseniz
-you_update_label_translation_previously_added_that_have_same_language,ru,Вы обновляете перевод метки ранее добавленный на том же языке
+you_update_label_translation_previously_added_that_have_same_language,tr,etiket çeviri güncelleştirme daha önce aynı dili eklendi 
+you_update_label_translation_previously_added_that_have_same_language,ru,обновление перевода ярлыка ранее добавил что есть же язык
 if_you_add_multiple_translation_for_same_language_accepts_the_first_one,en,if you add multiple translation for same language accepts the first one
-if_you_add_multiple_translation_for_same_language_accepts_the_first_one,tr,aynı dil için birden fazla çeviri eklerseniz ilkini kabul eder
-if_you_add_multiple_translation_for_same_language_accepts_the_first_one,ru,если вы добавляете несколько переводов для одного языка принимается первый
+if_you_add_multiple_translation_for_same_language_accepts_the_first_one,tr,aynı dil için birden fazla çeviri ekleyin eğer birincisi kabul eder 
+if_you_add_multiple_translation_for_same_language_accepts_the_first_one,ru,если вы добавляете несколько переводов на одном языке принимает первый
 project_uid_is_not_valid,en,project uid is not valid
-project_uid_is_not_valid,tr,proje kimliği geçerli değil
-project_uid_is_not_valid,ru,UID проекта недействителен
+project_uid_is_not_valid,tr,proje uid geçerli değil 
+project_uid_is_not_valid,ru,проект uid не действует
 project_name_required,en,project name required
 project_name_required,tr,proje adı gerekli
-project_name_required,ru,требуется название проекта
+project_name_required,ru,название проекта требуется
 bulk_label_data_required_error_message,en,bulk label data required error message
-bulk_label_data_required_error_message,tr,toplu etiket verisi gerekli hata mesajı
-bulk_label_data_required_error_message,ru,сообщение об ошибке на этикетке данных
+bulk_label_data_required_error_message,tr,toplu etiket veri gerekli hata iletisi
+bulk_label_data_required_error_message,ru,требуемого объема данных метка сообщение об ошибке 
 organization_uid_not_valid,en,organization uid not valid
-organization_uid_not_valid,tr,kuruluş kimliği geçerli değil
-organization_uid_not_valid,ru,UID организации не действителен
+organization_uid_not_valid,tr,organizasyon uid geçerli değil 
+organization_uid_not_valid,ru,организация Уид не действует
 cloning_label_uid_not_valid,en,cloning label uid not valid
-cloning_label_uid_not_valid,tr,klonlama etiketi kimliği geçerli değil
-cloning_label_uid_not_valid,ru,UID метки клонирования недействителен
+cloning_label_uid_not_valid,tr,klonlama etiketi geçerli uid değil 
+cloning_label_uid_not_valid,ru,метки клонирования жидкости не действует
 cloning_label_key_required,en,cloning label key required
-cloning_label_key_required,tr,klonlama etiket anahtarı gerekli
-cloning_label_key_required,ru,Требуется ключ метки клонирования
+cloning_label_key_required,tr,klonlama etiketi anahtar gerekli
+cloning_label_key_required,ru,ключевые метки клонирования требуется
 project_required_error_message,en,project required error message
-project_required_error_message,tr,proje gerekli hata mesajı
-project_required_error_message,ru,проект требует сообщение об ошибке
+project_required_error_message,tr,proje hata mesajı gerekli 
+project_required_error_message,ru,проект требуется сообщение об ошибке 
 key_required_error_message,en,key required error message
-key_required_error_message,tr,anahtar gerekli hata mesajı
-key_required_error_message,ru,ключ требуется сообщение об ошибке
+key_required_error_message,tr,anahtar gerekli hata iletisi
+key_required_error_message,ru,ключ требуется сообщение об ошибке 
 project_uid_not_valid,en,project uid not valid
-project_uid_not_valid,tr,proje kimliği geçerli değil
-project_uid_not_valid,ru,UID проекта недействителен
+project_uid_not_valid,tr,proje geçerli uid değil 
+project_uid_not_valid,ru,проект uid не действует
 label_uid_is_not_valid,en,label uid is not valid
-label_uid_is_not_valid,tr,etiket kimliği geçerli değil
-label_uid_is_not_valid,ru,UID ярлыка недействителен
+label_uid_is_not_valid,tr,etiket uid geçerli değil 
+label_uid_is_not_valid,ru,метки uid не действует
 the_file_must_be_utf8_encoded,en,the file must be utf8 encoded
-the_file_must_be_utf8_encoded,tr,dosya utf8 kodlanmış olmalıdır
+the_file_must_be_utf8_encoded,tr,dosyayı utf8 kodlanmış olmalı 
 the_file_must_be_utf8_encoded,ru,файл должен быть в кодировке utf8
 you_cannot_add_labels_and_same_label_translations_that_have_same_label_key,en,you cannot add labels and same label translations that have same label key
-you_cannot_add_labels_and_same_label_translations_that_have_same_label_key,tr,aynı etiket anahtarına sahip etiketleri ve aynı etiket çevirilerini ekleyemezsiniz
-you_cannot_add_labels_and_same_label_translations_that_have_same_label_key,ru,Вы не можете добавлять метки и одинаковые переводы меток с одинаковым ключом метки
+you_cannot_add_labels_and_same_label_translations_that_have_same_label_key,tr,aynı etiket anahtar etiketleri ve aynı etiket çeviriler ekleyemezsiniz 
+you_cannot_add_labels_and_same_label_translations_that_have_same_label_key,ru,вы не можете добавлять ярлыки и же перевод надписей которые имеют те же ключевые метки 
 you_update_label_translation_previously_added_that_have_same_label_key,en,you update label translation previously added that have same label key
-you_update_label_translation_previously_added_that_have_same_label_key,tr,Daha önce aynı etiket anahtarına sahip olan etiket çevirisini güncellediniz
-you_update_label_translation_previously_added_that_have_same_label_key,ru,Вы обновляете ранее добавленный перевод метки с тем же ключом метки
+you_update_label_translation_previously_added_that_have_same_label_key,tr,etiket çeviri güncelleştirme daha önce aynı etiket anahtarı eklendi 
+you_update_label_translation_previously_added_that_have_same_label_key,ru,обновление перевод надписей добавлены ранее которые имеют те же ключевые метки 
 csv_required_error_message,en,csv required error message
-csv_required_error_message,tr,csv gerekli hata mesajı
-csv_required_error_message,ru,CSV требуется сообщение об ошибке
+csv_required_error_message,tr,csv hata mesajı gerekli 
+csv_required_error_message,ru,КШМ требуется сообщение об ошибке 
 file_is_not_csv_error_message,en,file is not csv error message
-file_is_not_csv_error_message,tr,dosya csv hata mesajı değil
-file_is_not_csv_error_message,ru,Файл не CSV сообщение об ошибке
+file_is_not_csv_error_message,tr,csv dosyası hata iletisi 
+file_is_not_csv_error_message,ru,файл не сообщение в формате CSV ошибка 
 project_name_not_valid,en,project name not valid
-project_name_not_valid,tr,proje adı geçerli değil
-project_name_not_valid,ru,название проекта недействительно
+project_name_not_valid,tr,proje adı geçerli değil 
+project_name_not_valid,ru,название проекта не действует
 label_uid_not_valid,en,label uid not valid
-label_uid_not_valid,tr,etiket kimliği geçerli değil
-label_uid_not_valid,ru,UID ярлыка недействителен
+label_uid_not_valid,tr,etiket uid geçerli değil 
+label_uid_not_valid,ru,метка жидкость не действует
 label_key_not_valid,en,label key not valid
-label_key_not_valid,tr,etiket anahtarı geçerli değil
-label_key_not_valid,ru,Ключ метки недействителен
+label_key_not_valid,tr,etiket anahtarı geçerli değil 
+label_key_not_valid,ru,метка ключа не действителен
 language_uid_not_valid,en,language uid not valid
-language_uid_not_valid,tr,dil kimliği geçerli değil
-language_uid_not_valid,ru,неверный язык
+language_uid_not_valid,tr,dil geçerli uid değil 
+language_uid_not_valid,ru,язык uid не действует
 label_translation_required_error_message,en,label translation required error message
-label_translation_required_error_message,tr,etiket çevirisi gerekli hata mesajı
-label_translation_required_error_message,ru,перевод метки требуется сообщение об ошибке
+label_translation_required_error_message,tr,etiket çeviri hatası mesaj gerekli 
+label_translation_required_error_message,ru,перевод этикетки требуется сообщение об ошибке 
 label_translation_uid_not_valid,en,label translation uid not valid
-label_translation_uid_not_valid,tr,etiket çevirisi kullanıcı kimliği geçerli değil
-label_translation_uid_not_valid,ru,UID перевода метки недействителен
+label_translation_uid_not_valid,tr,etiket çeviri uid geçerli değil 
+label_translation_uid_not_valid,ru,перевод метка жидкость не действует
 translation_required_error_message,en,translation required error message
-translation_required_error_message,tr,çeviri gerekli hata mesajı
-translation_required_error_message,ru,требуется перевод сообщения об ошибке
+translation_required_error_message,tr,çeviri hata mesajı gerekli 
+translation_required_error_message,ru,перевод сообщения об ошибке 
 language_name_required_error_message,en,language name required error message
-language_name_required_error_message,tr,dil adı gerekli hata mesajı
-language_name_required_error_message,ru,название языка требуется сообщение об ошибке
+language_name_required_error_message,tr,dil adı hata iletisi gerekli 
+language_name_required_error_message,ru,название языка требуется сообщение об ошибке 
 language_original_name_required_error_message,en,language original name required error message
-language_original_name_required_error_message,tr,dil orijinal adı gerekli hata mesajı
-language_original_name_required_error_message,ru,язык оригинальное имя требуется сообщение об ошибке
+language_original_name_required_error_message,tr,dil orijinal adı hata iletisi gerekli 
+language_original_name_required_error_message,ru,язык оригинальное название требуемой сообщение об ошибке 
 iso_code_2_required_error_message,en,iso code 2 required error message
-iso_code_2_required_error_message,tr,iso kodu 2 gerekli hata mesajı
-iso_code_2_required_error_message,ru,ISO-код 2 требуется сообщение об ошибке
+iso_code_2_required_error_message,tr,2 ıso kodu hata mesajı gerekli 
+iso_code_2_required_error_message,ru,код ISO 2 требуется сообщение об ошибке 
 iso_code_3_required_error_message,en,iso code 3 required error message
-iso_code_3_required_error_message,tr,iso kodu 3 gerekli hata mesajı
-iso_code_3_required_error_message,ru,ISO код 3 требуется сообщение об ошибке
+iso_code_3_required_error_message,tr,3 ıso kodu hata mesajı gerekli 
+iso_code_3_required_error_message,ru,код ISO 3 требуется сообщение об ошибке 
 iso_code_2_must_be_2_character,en,iso code 2 must be 2 character
-iso_code_2_must_be_2_character,tr,iso kodu 2 2 karakter olmalı
-iso_code_2_must_be_2_character,ru,ISO код 2 должен быть 2 символа
+iso_code_2_must_be_2_character,tr,2 ıso kodu 2 karakter olmalıdır 
+iso_code_2_must_be_2_character,ru,код ISO 2 должно быть 2 персонажа
 iso_code_3_must_be_3_character,en,iso code 3 must be 3 character
-iso_code_3_must_be_3_character,tr,iso kodu 3 3 karakter olmalı
-iso_code_3_must_be_3_character,ru,ISO код 3 должен быть 3 символа
+iso_code_3_must_be_3_character,tr,3 ıso kodu 3 karakter olmalıdır 
+iso_code_3_must_be_3_character,ru,код ISO 3 должно быть 3 персонажа
 icon_required_error_message,en,icon required error message
-icon_required_error_message,tr,simge gerekli hata mesajı
-icon_required_error_message,ru,значок требуется сообщение об ошибке
+icon_required_error_message,tr,simge hata iletisi gerekli 
+icon_required_error_message,ru,значок требуемого сообщение об ошибке 
 icon_file_type_error_message,en,icon file type error message
-icon_file_type_error_message,tr,simge dosya tipi hata mesajı
-icon_file_type_error_message,ru,значок сообщения об ошибке типа файла
+icon_file_type_error_message,tr,simge dosya türü hata iletisi
+icon_file_type_error_message,ru,значок файла сообщение об ошибке типа 
 organization_name_required_error_message,en,organization name required error message
-organization_name_required_error_message,tr,kuruluş adı gerekli hata mesajı
-organization_name_required_error_message,ru,название организации требуется сообщение об ошибке
+organization_name_required_error_message,tr,kuruluş adı hata iletisi gerekli 
+organization_name_required_error_message,ru,название организации необходима сообщение об ошибке 
 the_project_language_will_use_as_the_source_language_during_the_automatic_translation_of_the_labels,en,the project language will use as the source language during the automatic translation of the labels
-the_project_language_will_use_as_the_source_language_during_the_automatic_translation_of_the_labels,tr,Etiketlerin otomatik çevirisi sırasında proje dili kaynak dil olarak kullanılacaktır.
-the_project_language_will_use_as_the_source_language_during_the_automatic_translation_of_the_labels,ru,язык проекта будет использоваться в качестве исходного языка при автоматическом переводе меток
+the_project_language_will_use_as_the_source_language_during_the_automatic_translation_of_the_labels,tr,proje dili kaynak dil olarak etiketlerin otomatik çeviri sırasında kullanacak 
+the_project_language_will_use_as_the_source_language_during_the_automatic_translation_of_the_labels,ru,язык проекта будет использовать в качестве исходного языка при автоматическом переводе этикетки
 cloning_project_uid_is_not_valid,en,cloning project uid is not valid
-cloning_project_uid_is_not_valid,tr,proje kimliği klonlama geçerli değil
-cloning_project_uid_is_not_valid,ru,UID клонирования проекта недействителен
+cloning_project_uid_is_not_valid,tr,proje uid klonlama geçerli değil 
+cloning_project_uid_is_not_valid,ru,клонирование проекта uid не действует
 project_name_required_error_message,en,project name required error message
-project_name_required_error_message,tr,proje adı gerekli hata mesajı
-project_name_required_error_message,ru,название проекта требуется сообщение об ошибке
+project_name_required_error_message,tr,proje adı hata iletisi gerekli 
+project_name_required_error_message,ru,название проекта требуется сообщение об ошибке 
 project_slug_required_error_message,en,project slug required error message
-project_slug_required_error_message,tr,Proje talebi gerekli hata mesajı
-project_slug_required_error_message,ru,Project Slug требуется сообщение об ошибке
+project_slug_required_error_message,tr,proje slug hata mesajı gerekli 
+project_slug_required_error_message,ru,слизень проекта требуется сообщение об ошибке 
 url_is_not_valid_error_message,en,url is not valid error message
-url_is_not_valid_error_message,tr,url geçerli bir hata mesajı değil
-url_is_not_valid_error_message,ru,URL-адрес не является допустимым сообщением об ошибке
+url_is_not_valid_error_message,tr,url geçerli bir hata iletisi değil 
+url_is_not_valid_error_message,ru,URL-адрес не является допустимым сообщение об ошибке 
+translation_uid_not_valid,en,translation uid not valid
+translation_uid_not_valid,tr,çeviri uid geçerli değil 
+translation_uid_not_valid,ru,перевод жидкости не действует
+you_add_required_json_file_for_google_provider,en,you add required json file for google provider
+you_add_required_json_file_for_google_provider,tr,google sağlayıcı için gerekli json dosyasına ekleyin 
+you_add_required_json_file_for_google_provider,ru,вы добавляете нужный файл JSON для провайдера Google 
+you_add_required_api_key_for_yandex_provider,en,you add required api key for yandex provider
+you_add_required_api_key_for_yandex_provider,tr,üye sağlayıcısı için apı anahtarı gerekli ekleyin 
+you_add_required_api_key_for_yandex_provider,ru,вы добавляете необходимые API ключ для Яндекс поставщиком 
+translation_provider_uid_is_not_valid,en,translation provider uid is not valid
+translation_provider_uid_is_not_valid,tr,çeviri sağlayıcı uid geçerli değil 
+translation_provider_uid_is_not_valid,ru,перевод поставщик uid не действует
+translation_provider_name_required_error_message,en,translation provider name required error message
+translation_provider_name_required_error_message,tr,çeviri sağlayıcı adı hata iletisi gerekli 
+translation_provider_name_required_error_message,ru,перевод имени поставщика необходимо сообщение об ошибке 
+translation_provider_data_required_error_message,en,translation provider data required error message
+translation_provider_data_required_error_message,tr,çeviri sağlayıcı veri hata mesajı gerekli 
+translation_provider_data_required_error_message,ru,поставщик перевод данных необходимых сообщение об ошибке 
 user_uid_is_not_valid_error_message,en,user uid is not valid error message
-user_uid_is_not_valid_error_message,tr,kullanıcı kimliği geçerli bir hata mesajı değil
-user_uid_is_not_valid_error_message,ru,Пользователь UID не является допустимым сообщением об ошибке
+user_uid_is_not_valid_error_message,tr,kullanıcı uid geçerli bir hata iletisi değil 
+user_uid_is_not_valid_error_message,ru,уникальный идентификатор пользователя не является допустимым сообщение об ошибке 
 old_password_required_error_message,en,old password required error message
-old_password_required_error_message,tr,eski şifre gerekli hata mesajı
-old_password_required_error_message,ru,старый пароль требуется сообщение об ошибке
+old_password_required_error_message,tr,eski şifre hata mesajı gerekli 
+old_password_required_error_message,ru,старый пароль сообщение об ошибке 
 new_password_required_error_message,en,new password required error message
-new_password_required_error_message,tr,yeni şifre gerekli hata mesajı
-new_password_required_error_message,ru,новый пароль требуется сообщение об ошибке
+new_password_required_error_message,tr,yeni şifre hata mesajı gerekli 
+new_password_required_error_message,ru,новый пароль сообщение об ошибке 
 re_entered_password_required_error_message,en,re entered password required error message
-re_entered_password_required_error_message,tr,yeniden girilen şifre gerekli hata mesajı
-re_entered_password_required_error_message,ru,повторно введенный пароль требуется сообщение об ошибке
+re_entered_password_required_error_message,tr,yeniden şifre gerekli hata iletisi girdi 
+re_entered_password_required_error_message,ru,повторно введенный пароль требуется сообщение об ошибке 
 old_password_is_not_valid_error_message,en,old password is not valid error message
-old_password_is_not_valid_error_message,tr,eski şifre geçerli bir hata mesajı değil
-old_password_is_not_valid_error_message,ru,старый пароль недействителен сообщение об ошибке
+old_password_is_not_valid_error_message,tr,eski şifre geçerli bir hata iletisi değil 
+old_password_is_not_valid_error_message,ru,старый пароль не действителен сообщение об ошибке 
 new_password_is_not_valid_error_message,en,new password is not valid error message
-new_password_is_not_valid_error_message,tr,yeni şifre geçerli bir hata mesajı değil
-new_password_is_not_valid_error_message,ru,новый пароль недействителен сообщение об ошибке
+new_password_is_not_valid_error_message,tr,yeni şifre geçerli bir hata iletisi değil 
+new_password_is_not_valid_error_message,ru,новый пароль не действителен сообщение об ошибке 
 re_entered_password_is_not_valid_error_message,en,re entered password is not valid error message
-re_entered_password_is_not_valid_error_message,tr,yeniden girilen şifre geçerli bir hata mesajı değil
-re_entered_password_is_not_valid_error_message,ru,Повторно введенный пароль не является действительным сообщением об ошибке
+re_entered_password_is_not_valid_error_message,tr,tekrar girilen şifre geçerli bir hata iletisi değil 
+re_entered_password_is_not_valid_error_message,ru,повторно введенный пароль не действителен сообщение об ошибке 
 new_password_can_not_same_as_old_password_error_message,en,new password can not same as old password error message
-new_password_can_not_same_as_old_password_error_message,tr,yeni şifre eski şifre hata mesajı ile aynı olamaz
-new_password_can_not_same_as_old_password_error_message,ru,новый пароль не может совпадать с сообщением об ошибке старого пароля
+new_password_can_not_same_as_old_password_error_message,tr,yeni şifre eski şifre hata mesajı olarak aynı değil 
+new_password_can_not_same_as_old_password_error_message,ru,новый пароль не может совпадать старый сообщение об ошибке ввода пароля 
 re_entered_password_does_not_match_error_message,en,re entered password does not match error message
-re_entered_password_does_not_match_error_message,tr,tekrar girilen şifre hata mesajı ile eşleşmiyor
-re_entered_password_does_not_match_error_message,ru,Повторно введенный пароль не соответствует сообщению об ошибке
+re_entered_password_does_not_match_error_message,tr,tekrar girilen şifre hata iletisi eşleşmiyor 
+re_entered_password_does_not_match_error_message,ru,повторно введенный пароль не совпадает с сообщение об ошибке 
 email_required_error_message,en,email required error message
-email_required_error_message,tr,e-posta gerekli hata mesajı
-email_required_error_message,ru,адрес электронной почты требуется сообщение об ошибке
+email_required_error_message,tr,e-posta hata iletisi gerekli 
+email_required_error_message,ru,электронная почта необходима сообщение об ошибке 
 token_is_not_valid,en,token is not valid
-token_is_not_valid,tr,belirteç geçerli değil
-token_is_not_valid,ru,токен недействителен
+token_is_not_valid,tr,token geçerli değil 
+token_is_not_valid,ru,знак не действует
 password_required_error_message,en,password required error message
-password_required_error_message,tr,şifre gerekli hata mesajı
-password_required_error_message,ru,пароль требуется сообщение об ошибке
+password_required_error_message,tr,şifre hata mesajı gerekli 
+password_required_error_message,ru,пароль сообщение об ошибке 
 re_enter_password_required_error_message,en,re enter password required error message
-re_enter_password_required_error_message,tr,şifreyi tekrar girin hata mesajı girin
-re_enter_password_required_error_message,ru,введите пароль обязательно сообщение об ошибке
+re_enter_password_required_error_message,tr,yeniden şifre gerekli hata mesajı girin 
+re_enter_password_required_error_message,ru,повторно введите пароль сообщение об ошибке 
 user_uid_is_not_valid,en,user uid is not valid
-user_uid_is_not_valid,tr,kullanıcı kimliği geçerli değil
-user_uid_is_not_valid,ru,UID пользователя недействителен
+user_uid_is_not_valid,tr,kullanıcı uid geçerli değil 
+user_uid_is_not_valid,ru,uid пользователей не действует
 you_must_accept_terms_error_message,en,you must accept terms error message
-you_must_accept_terms_error_message,tr,şartları hata mesajı kabul etmelisin
-you_must_accept_terms_error_message,ru,вы должны принять условия сообщение об ошибке
+you_must_accept_terms_error_message,tr,açısından hata iletisi kabul etmelisiniz 
+you_must_accept_terms_error_message,ru,вы должны принять условия сообщение об ошибке 
 user_uid_not_valid,en,user uid not valid
-user_uid_not_valid,tr,kullanıcı kimliği geçerli değil
-user_uid_not_valid,ru,UID пользователя недействителен
+user_uid_not_valid,tr,kullanıcı geçerli uid değil 
+user_uid_not_valid,ru,uid пользователей не действует
 is_active,en,is active
-is_active,tr,aktif
-is_active,ru,активен
+is_active,tr,aktif 
+is_active,ru,активна
 user_count,en,user count
 user_count,tr,kullanıcı sayısı
-user_count,ru,количество пользователей
+user_count,ru,число пользователей 
 project_count,en,project count
 project_count,tr,proje sayısı
-project_count,ru,количество проектов
+project_count,ru,граф проекта 
 user,en,user
 user,tr,kullanıcı
 user,ru,пользователь
 ip,en,ip
-ip,tr,ip
-ip,ru,IP
+ip,tr,ıp
+ip,ru,ИС
 country,en,country
 country,tr,ülke
 country,ru,страна
 city,en,city
-city,tr,Kent
+city,tr,şehir
 city,ru,город
 browser,en,browser
 browser,tr,tarayıcı
 browser,ru,браузер
 browser_version,en,browser version
 browser_version,tr,tarayıcı sürümü
-browser_version,ru,версия браузера
+browser_version,ru,версия браузера 
 platform,en,platform
 platform,tr,platform
-platform,ru,Платформа
+platform,ru,платформа
 platform_version,en,platform version
-platform_version,tr,platform versiyonu
+platform_version,tr,platform sürüm
 platform_version,ru,версия платформы
 created_at,en,created at
-created_at,tr,yaratıldı
+created_at,tr,oluşturulan
 created_at,ru,создан в
 message,en,message
 message,tr,mesaj
 message,ru,сообщение
 http_method,en,http method
 http_method,tr,http yöntemi
-http_method,ru,http метод
+http_method,ru,метод HTTP 
 response_code,en,response code
-response_code,tr,cevap kodu
-response_code,ru,код ответа
+response_code,tr,yanıt kodu
+response_code,ru,код ответа 
 mail_uid,en,mail uid
-mail_uid,tr,posta kimliği
-mail_uid,ru,почтовый ящик
+mail_uid,tr,posta uid
+mail_uid,ru,почта ЮИД
 send_to,en,send to
-send_to,tr,gönderildi
-send_to,ru,Отправить
+send_to,tr,gönder 
+send_to,ru,отправить
 subject,en,subject
 subject,tr,konu
-subject,ru,предмет
+subject,ru,тема
 send_at,en,send at
-send_at,tr,gönder
-send_at,ru,отправить в
+send_at,tr,gönderme
+send_at,ru,отправить на
 is_opened,en,is opened
-is_opened,tr,açık
+is_opened,tr,açılan
 is_opened,ru,открыт
 revision,en,revision
 revision,tr,revizyon
 revision,ru,пересмотр
 revisioned_by,en,revisioned by
-revisioned_by,tr,tarafından revize edildi
-revisioned_by,ru,пересмотрено
+revisioned_by,tr,revisioned tarafından
+revisioned_by,ru,обслуживаются
 revisioned_at,en,revisioned at
-revisioned_at,tr,tarihinde revize edildi
-revisioned_at,ru,пересмотрен в
+revisioned_at,tr,revisioned at
+revisioned_at,ru,revisioned в
 client_secret,en,client secret
-client_secret,tr,müşteri sırrı
+client_secret,tr,istemci gizli
 client_secret,ru,секрет клиента
 access_token,en,access token
 access_token,tr,erişim belirteci
-access_token,ru,токен доступа
+access_token,ru,маркер доступа 
 expires_at,en,expires at
-expires_at,tr,süresi doluyor
+expires_at,tr,sona at
 expires_at,ru,истекает в
 integration_client_uid,en,integration client uid
-integration_client_uid,tr,entegrasyon istemcisi kullanıcı kimliği
-integration_client_uid,ru,UID клиента интеграции
+integration_client_uid,tr,entegrasyon istemci uid
+integration_client_uid,ru,интеграция клиента ЮИД
 label_translation_name,en,label translation name
-label_translation_name,tr,etiket çeviri adı
-label_translation_name,ru,название перевода метки
+label_translation_name,tr,etiket adı çeviri
+label_translation_name,ru,имя метки перевода 
 2_char_code,en,2 char code
 2_char_code,tr,2 karakter kodu
-2_char_code,ru,2-значный код
+2_char_code,ru,2 гольца код
 3_char_code,en,3 char code
 3_char_code,tr,3 karakter kodu
-3_char_code,ru,3-значный код
+3_char_code,ru,3 Чара код
 icon,en,icon
-icon,tr,ikon
+icon,tr,simge
 icon,ru,значок
 invited_at,en,invited at
-invited_at,tr,davet edildi
-invited_at,ru,приглашен в
+invited_at,tr,davet at
+invited_at,ru,пригласили на
 last_logged_in_at,en,last logged in at
-last_logged_in_at,tr,en son giriş yapılan
-last_logged_in_at,ru,последний раз входил в
+last_logged_in_at,tr,sonunda giriş 
+last_logged_in_at,ru,последние вошли в
 integration_client,en,integration client
-integration_client,tr,entegrasyon istemcisi
-integration_client,ru,клиент интеграции
+integration_client,tr,ıntegration client
+integration_client,ru,интеграция клиента
+provider_name,en,provider name
+provider_name,tr,sağlayıcı adı
+provider_name,ru,имя поставщика 
 degrade_to_user,en,degrade to user
-degrade_to_user,tr,kullanıcıya düşürmek
-degrade_to_user,ru,деградировать до пользователя
+degrade_to_user,tr,kullanıcı alçaltır 
+degrade_to_user,ru,ухудшают для пользователей
 are_you_sure_you_want_to_degrade_to_user_title,en,are you sure you want to degrade to user title
-are_you_sure_you_want_to_degrade_to_user_title,tr,kullanıcı başlığına düşürmek istediğinizden emin misiniz?
-are_you_sure_you_want_to_degrade_to_user_title,ru,Вы уверены что хотите перейти к названию пользователя?
+are_you_sure_you_want_to_degrade_to_user_title,tr,kullanıcı adı için aşağılamak istediğine emin misin 
+are_you_sure_you_want_to_degrade_to_user_title,ru,вы уверены что хотите деградировать до звания пользователей 
 are_you_sure_you_want_to_degrade_to_user_content,en,are you sure you want to degrade to user content
-are_you_sure_you_want_to_degrade_to_user_content,tr,kullanıcı içeriğine düşürmek istediğinizden emin misiniz?
-are_you_sure_you_want_to_degrade_to_user_content,ru,Вы уверены что хотите перейти на пользовательский контент?
+are_you_sure_you_want_to_degrade_to_user_content,tr,Kullanıcı İçeriği için aşağılamak istediğine emin misin 
+are_you_sure_you_want_to_degrade_to_user_content,ru,вы уверены что хотите ухудшить пользовательского контента 
 upgrade_to_admin,en,upgrade to admin
-upgrade_to_admin,tr,admin'e yükselt
-upgrade_to_admin,ru,обновить до администратора
+upgrade_to_admin,tr,admin yükseltme 
+upgrade_to_admin,ru,обновление до администратора
 are_you_sure_you_want_to_upgrade_to_admin_title,en,are you sure you want to upgrade to admin title
-are_you_sure_you_want_to_upgrade_to_admin_title,tr,admin başlığına yükseltmek istediğinize emin misiniz
-are_you_sure_you_want_to_upgrade_to_admin_title,ru,Вы уверены что хотите перейти на админ
+are_you_sure_you_want_to_upgrade_to_admin_title,tr,başlık admin yükseltmek istediğinizden emin misiniz 
+are_you_sure_you_want_to_upgrade_to_admin_title,ru,вы уверены что хотите перейти на звание админа 
 are_you_sure_you_want_to_upgrade_to_admin_content,en,are you sure you want to upgrade to admin content
-are_you_sure_you_want_to_upgrade_to_admin_content,tr,Yönetici içeriğine yükseltmek istediğinizden emin misiniz?
-are_you_sure_you_want_to_upgrade_to_admin_content,ru,Вы уверены что хотите обновить контент администратора?
+are_you_sure_you_want_to_upgrade_to_admin_content,tr,içerik admin yükseltmek istediğinizden emin misiniz 
+are_you_sure_you_want_to_upgrade_to_admin_content,ru,вы уверены что хотите перейти к admin содержание
 journal_invite_admin,en,journal invite admin
-journal_invite_admin,tr,günlük davet yöneticisi
-journal_invite_admin,ru,журнал пригласить админа
+journal_invite_admin,tr,günlük davet admin
+journal_invite_admin,ru,журнал пригласить администратора
 demote_to_user,en,demote to user
-demote_to_user,tr,kullanıcıya adamak
+demote_to_user,tr,kullanıcı indirge 
 demote_to_user,ru,понизить до пользователя
 journal_integration_create,en,journal integration create
-journal_integration_create,tr,dergi entegrasyonu oluşturmak
-journal_integration_create,ru,интеграция журнала создать
+journal_integration_create,tr,dergi entegrasyon oluşturmak
+journal_integration_create,ru,журнал интеграция создавать
 journal_integration_edit,en,journal integration edit
-journal_integration_edit,tr,dergi entegrasyonu düzenleme
-journal_integration_edit,ru,редактирование интеграции журнала
+journal_integration_edit,tr,dergi entegrasyon Düzenle
+journal_integration_edit,ru,журнал интеграция редактировать
 journal_integration_delete,en,journal integration delete
-journal_integration_delete,tr,günlük entegrasyonu sil
-journal_integration_delete,ru,интеграция журнала удалить
+journal_integration_delete,tr,dergi entegrasyon sil
+journal_integration_delete,ru,журнал интеграция удалить
 journal_integration_restore,en,journal integration restore
-journal_integration_restore,tr,dergi entegrasyonu geri yükleme
-journal_integration_restore,ru,восстановление интеграции журнала
+journal_integration_restore,tr,günlük entegrasyonu geri yükleme
+journal_integration_restore,ru,журнал интеграция восстановить
 journal_integration_client_create,en,journal integration client create
-journal_integration_client_create,tr,günlük entegrasyon istemcisi oluştur
-journal_integration_client_create,ru,создание журнала интеграции клиента
+journal_integration_client_create,tr,günlük entegrasyonu istemci oluşturun
+journal_integration_client_create,ru,журнал интеграция клиента создать
 journal_integration_client_delete,en,journal integration client delete
-journal_integration_client_delete,tr,günlük entegrasyon istemcisi sil
-journal_integration_client_delete,ru,клиент интеграции журнала удалить
+journal_integration_client_delete,tr,günlük entegrasyonu istemci sil
+journal_integration_client_delete,ru,журнал интеграция клиента удалить
 journal_integration_client_change_activation,en,journal integration client change activation
-journal_integration_client_change_activation,tr,dergi entegrasyonu müşteri değişikliği
-journal_integration_client_change_activation,ru,активация изменения клиента интеграции журнала
+journal_integration_client_change_activation,tr,günlük entegrasyonu istemci değiştirmek etkinleştirme
+journal_integration_client_change_activation,ru,журнал интеграция активации изменение клиента 
 journal_integration_client_refresh,en,journal integration client refresh
-journal_integration_client_refresh,tr,günlük entegrasyon istemcisi yenileme
-journal_integration_client_refresh,ru,обновление клиента интеграции журнала
+journal_integration_client_refresh,tr,günlük entegrasyonu istemci yenileme
+journal_integration_client_refresh,ru,журнал интеграция обновить клиент 
 journal_label_create,en,journal label create
-journal_label_create,tr,günlük etiketi oluştur
-journal_label_create,ru,создание лейбла журнала
+journal_label_create,tr,dergi etiket oluştur
+journal_label_create,ru,метки журнал создать
 journal_label_edit,en,journal label edit
-journal_label_edit,tr,günlük etiketi düzenle
-journal_label_edit,ru,редактирование журнала
+journal_label_edit,tr,dergi etiketi Düzenle
+journal_label_edit,ru,журнал метки правка
 journal_label_delete,en,journal label delete
-journal_label_delete,tr,günlük etiketi silme
-journal_label_delete,ru,метка журнала удалить
+journal_label_delete,tr,dergi etiket sil
+journal_label_delete,ru,журнал ярлык удалить
 journal_label_clone,en,journal label clone
-journal_label_clone,tr,günlük etiketi klonu
-journal_label_clone,ru,журнал лейбл клон
+journal_label_clone,tr,dergi etiket klon
+journal_label_clone,ru,журнал клонировать метку 
 journal_label_restore,en,journal label restore
-journal_label_restore,tr,günlük etiketi geri yükleme
-journal_label_restore,ru,восстановление метки журнала
+journal_label_restore,tr,dergi etiket geri yükleme
+journal_label_restore,ru,метки журнал восстановления
 journal_label_change_activation,en,journal label change activation
-journal_label_change_activation,tr,günlük etiketi değişikliği aktivasyonu
-journal_label_change_activation,ru,активация изменения метки журнала
+journal_label_change_activation,tr,dergi etiketini değiştirmek etkinleştirme
+journal_label_change_activation,ru,журнал активации ярлыка изменить 
 journal_label_upload_from_csv,en,journal label upload from csv
-journal_label_upload_from_csv,tr,csv'den dergi etiketi yükleme
-journal_label_upload_from_csv,ru,загрузка метки журнала из csv
+journal_label_upload_from_csv,tr,csv günlük etiket yükle 
+journal_label_upload_from_csv,ru,журнал загрузки ярлык из CSV
 journal_create_bulk_label_from_csv,en,journal create bulk label from csv
-journal_create_bulk_label_from_csv,tr,dergi csv'den toplu etiket oluştur
-journal_create_bulk_label_from_csv,ru,журнал создать массовую метку из CSV
+journal_create_bulk_label_from_csv,tr,günlük csv toplu etiket oluştur 
+journal_create_bulk_label_from_csv,ru,журнал создать объемную надпись из CSV
 journal_label_translation_create,en,journal label translation create
-journal_label_translation_create,tr,günlük etiketi çevirisi oluştur
-journal_label_translation_create,ru,перевод метки журнала создать
+journal_label_translation_create,tr,dergi etiket çeviri oluşturun
+journal_label_translation_create,ru,журнал переводов ярлык создать
 journal_label_translation_edit,en,journal label translation edit
-journal_label_translation_edit,tr,dergi etiketi çeviri düzenleme
-journal_label_translation_edit,ru,редактирование перевода журнала
+journal_label_translation_edit,tr,dergi etiket çeviri Düzenle
+journal_label_translation_edit,ru,журнал перевод ярлыка редактировать
 journal_label_translation_delete,en,journal label translation delete
-journal_label_translation_delete,tr,günlük etiketi çevirisini sil
-journal_label_translation_delete,ru,перевод метки журнала удалить
+journal_label_translation_delete,tr,dergi etiket çeviri sil
+journal_label_translation_delete,ru,журнал переводов ярлык удалить
 journal_label_translation_upload_from_csv,en,journal label translation upload from csv
-journal_label_translation_upload_from_csv,tr,csv'den dergi etiketi çevirisi yükle
-journal_label_translation_upload_from_csv,ru,загрузка перевода журнала журнала из csv
+journal_label_translation_upload_from_csv,tr,csv dergi etiket çeviri yükle 
+journal_label_translation_upload_from_csv,ru,журнал переводов ярлык загрузки из CSV
 journal_label_download_translations,en,journal label download translations
-journal_label_download_translations,tr,dergi etiketi indir çevirileri
-journal_label_download_translations,ru,журнал лейбл скачать переводы
+journal_label_download_translations,tr,dergi etiket indirmek çeviriler
+journal_label_download_translations,ru,метки журнал скачать перевод
 journal_label_translation_restore,en,journal label translation restore
-journal_label_translation_restore,tr,günlük etiketi çevirisi geri yükleme
-journal_label_translation_restore,ru,восстановление метки журнала
+journal_label_translation_restore,tr,dergi etiket çeviri geri
+journal_label_translation_restore,ru,журнал перевод этикеток восстановления
 journal_language_create,en,journal language create
-journal_language_create,tr,günlük dili oluştur
-journal_language_create,ru,язык журнала создать
+journal_language_create,tr,günlük dil oluşturmak
+journal_language_create,ru,журнал Language создать
 journal_language_edit,en,journal language edit
-journal_language_edit,tr,günlük dili düzenleme
-journal_language_edit,ru,редактирование языка журнала
+journal_language_edit,tr,günlük dil Düzenle
+journal_language_edit,ru,журнал язык редактирования
 journal_language_restore,en,journal language restore
-journal_language_restore,tr,günlük dili geri yükleme
-journal_language_restore,ru,восстановление языка журнала
+journal_language_restore,tr,günlük dil geri yükleme
+journal_language_restore,ru,журнал Language восстановить
 journal_organization_edit,en,journal organization edit
-journal_organization_edit,tr,dergi organizasyonu düzenleme
-journal_organization_edit,ru,организация журнала редактировать
+journal_organization_edit,tr,günlük organizasyon düzenlemek
+journal_organization_edit,ru,журнал организация редактировать
 journal_organization_restore,en,journal organization restore
-journal_organization_restore,tr,dergi kuruluşu geri yükleme
-journal_organization_restore,ru,организация журнала восстановления
+journal_organization_restore,tr,dergi kuruluş geri yükleme
+journal_organization_restore,ru,журнал организация восстановления
 journal_project_create,en,journal project create
-journal_project_create,tr,dergi projesi oluştur
-journal_project_create,ru,создание журнала проекта
+journal_project_create,tr,günlük proje oluşturma
+journal_project_create,ru,проект создания журнала
 journal_project_edit,en,journal project edit
-journal_project_edit,tr,dergi projesi düzenleme
-journal_project_edit,ru,редактирование проекта журнала
+journal_project_edit,tr,günlük proje Düzenle
+journal_project_edit,ru,журнал Проект редактировать
 journal_project_delete,en,journal project delete
-journal_project_delete,tr,dergi projesi silme
-journal_project_delete,ru,проект журнала удалить
+journal_project_delete,tr,dergi projesi sil
+journal_project_delete,ru,журнал проекта удалить
 journal_project_clone,en,journal project clone
-journal_project_clone,tr,günlük proje klonu
-journal_project_clone,ru,Журнал клон проекта
+journal_project_clone,tr,günlük proje klon
+journal_project_clone,ru,журнал Проект клон
 journal_project_download_labels,en,journal project download labels
-journal_project_download_labels,tr,dergi projesi indir etiketleri
-journal_project_download_labels,ru,ярлыки загрузок проекта журнала
+journal_project_download_labels,tr,günlük proje yükleme etiketler
+journal_project_download_labels,ru,журнал скачать проект этикетки
 journal_change_activation,en,journal change activation
-journal_change_activation,tr,dergi değişikliği aktivasyonu
-journal_change_activation,ru,активация изменения журнала
+journal_change_activation,tr,günlük değişim etkinleştirme
+journal_change_activation,ru,журнал активации изменение 
 journal_project_restore,en,journal project restore
-journal_project_restore,tr,dergi projesi geri yükleme
-journal_project_restore,ru,восстановление журнала проекта
+journal_project_restore,tr,günlük proje geri
+journal_project_restore,ru,проект журнала восстановления
 journal_token_revoke,en,journal token revoke
-journal_token_revoke,tr,günlük belirteci iptali
-journal_token_revoke,ru,аннулирование токена журнала
+journal_token_revoke,tr,günlük token iptal
+journal_token_revoke,ru,журнал токен отмены
+journal_translation_provider_edit,en,journal translation provider edit
+journal_translation_provider_edit,tr,dergi çeviri sağlayıcı Düzenle
+journal_translation_provider_edit,ru,журнал переводов редактировать
 journal_change_password,en,journal change password
-journal_change_password,tr,günlük değişim şifresi
-journal_change_password,ru,журнал сменить пароль
+journal_change_password,tr,günlük parolayı değiştir
+journal_change_password,ru,журнал "Смена пароля" 
 journal_user_edit,en,journal user edit
-journal_user_edit,tr,günlük kullanıcı düzenleme
-journal_user_edit,ru,редактирование пользователя журнала
+journal_user_edit,tr,günlük kullanıcı Düzenle
+journal_user_edit,ru,журнал редактирование пользователей 
 journal_user_invite,en,journal user invite
-journal_user_invite,tr,günlük kullanıcısı davet
-journal_user_invite,ru,приглашение пользователя журнала
+journal_user_invite,tr,günlük kullanıcı davet
+journal_user_invite,ru,дневник пользователя пригласить
 journal_change_user_activation,en,journal change user activation
-journal_change_user_activation,tr,günlük değişikliği kullanıcı aktivasyonu
-journal_change_user_activation,ru,активация смены журнала
+journal_change_user_activation,tr,günlük değişim kullanıcı etkinleştirme
+journal_change_user_activation,ru,журнал изменений активации пользователя 
 journal_log_off,en,journal log off
-journal_log_off,tr,günlük oturumu kapat
-journal_log_off,ru,выход из журнала
+journal_log_off,tr,günlük oturumu kapat 
+journal_log_off,ru,журнал выкл.
 journal_user_restore,en,journal user restore
 journal_user_restore,tr,günlük kullanıcı geri yükleme
-journal_user_restore,ru,восстановление пользователя журнала
+journal_user_restore,ru,пользователей журнала восстановления
 access_denied_title,en,access denied title
-access_denied_title,tr,erişim reddedildi
-access_denied_title,ru,доступ запрещен
+access_denied_title,tr,konu başlığı erişim engellendi 
+access_denied_title,ru,доступ запрещен название
 welcome_to_translation_service,en,welcome to translation service
-welcome_to_translation_service,tr,çeviri servisine hoş geldiniz
-welcome_to_translation_service,ru,добро пожаловать в службу переводов
+welcome_to_translation_service,tr,Hoşgeldiniz çeviri hizmeti 
+welcome_to_translation_service,ru,сервис Добро пожаловать в перевод 
 admin_accept_invite_done_title,en,admin accept invite done title
-admin_accept_invite_done_title,tr,admin davetli unvanı kabul et
-admin_accept_invite_done_title,ru,администратор принимает приглашение сделать заголовок
+admin_accept_invite_done_title,tr,yönetim davet yaptı başlık kabul 
+admin_accept_invite_done_title,ru,админ принимает приглашение сделано название
 admin_accept_title,en,admin accept title
-admin_accept_title,tr,admin unvanı kabul et
-admin_accept_title,ru,администратор принимает титул
+admin_accept_title,tr,yönetici unvanı kabul 
+admin_accept_title,ru,админ принимает титул
 admin_dashboard_title,en,admin dashboard title
-admin_dashboard_title,tr,yönetici panosu başlığı
-admin_dashboard_title,ru,заголовок панели администратора
+admin_dashboard_title,tr,admin pano Başlığı
+admin_dashboard_title,ru,название админ панель 
 admin_invite_done_tittle,en,admin invite done tittle
-admin_invite_done_tittle,tr,yönetici davetiyen yapıldı
-admin_invite_done_tittle,ru,админ пригласил молодец
+admin_invite_done_tittle,tr,admin davet tittle yapılır 
+admin_invite_done_tittle,ru,админ предлагаю сделать титл
 admin_invite_title,en,admin invite title
-admin_invite_title,tr,yönetici davet başlığı
-admin_invite_title,ru,Администратор приглашает заголовок
+admin_invite_title,tr,admin davet Başlığı
+admin_invite_title,ru,админ предложите название
 admin_list_title,en,admin list title
-admin_list_title,tr,yönetici listesi başlığı
-admin_list_title,ru,заголовок списка администратора
+admin_list_title,tr,admin listesi başlık
+admin_list_title,ru,заголовок списка админ 
 journal_list_title,en,journal list title
-journal_list_title,tr,günlük listesi başlığı
-journal_list_title,ru,название списка журналов
+journal_list_title,tr,dergi listesi başlık
+journal_list_title,ru,название журнала список 
 send_email_log_list_title,en,send email log list title
-send_email_log_list_title,tr,e-posta günlüğü listesi başlığı gönder
-send_email_log_list_title,ru,отправьте электронное письмо с названием журнала
+send_email_log_list_title,tr,e-posta kayıt listesi adı gönder 
+send_email_log_list_title,ru,отправить по электронной почте заголовок списка журнала 
 token_request_log_list_title,en,token request log list title
-token_request_log_list_title,tr,belirteç isteği günlük listesi başlığı
-token_request_log_list_title,ru,заголовок списка журнала запросов токенов
+token_request_log_list_title,tr,token talep kayıt listesi adı
+token_request_log_list_title,ru,маркер запроса заголовок списка журнала 
 user_login_log_list_title,en,user login log list title
-user_login_log_list_title,tr,kullanıcı giriş günlüğü liste başlığı
-user_login_log_list_title,ru,логин пользователя
+user_login_log_list_title,tr,kullanıcı giriş kayıt listesi başlık
+user_login_log_list_title,ru,имя пользователя заголовок списка журнала 
 are_you_sure_you_want_to_delete_title,en,are you sure you want to delete title
-are_you_sure_you_want_to_delete_title,tr,başlığı silmek istediğinize emin misiniz?
-are_you_sure_you_want_to_delete_title,ru,Вы уверены что хотите удалить заголовок
+are_you_sure_you_want_to_delete_title,tr,konu başlığı silmek istediğinizden emin misiniz 
+are_you_sure_you_want_to_delete_title,ru,вы уверены что хотите удалить заголовок
 are_you_sure_you_want_to_change_activation_title,en,are you sure you want to change activation title
-are_you_sure_you_want_to_change_activation_title,tr,Aktivasyon başlığını değiştirmek istediğinize emin misiniz?
-are_you_sure_you_want_to_change_activation_title,ru,Вы уверены что хотите изменить заголовок активации
+are_you_sure_you_want_to_change_activation_title,tr,etkinleştirme Başlığı değiştirmek istediğinizden emin misiniz 
+are_you_sure_you_want_to_change_activation_title,ru,вы уверены что хотите изменить название активации 
 are_you_sure_you_want_to_restore_title,en,are you sure you want to restore title
-are_you_sure_you_want_to_restore_title,tr,başlığı geri yüklemek istediğinden emin misin?
-are_you_sure_you_want_to_restore_title,ru,Вы уверены что хотите восстановить заголовок?
+are_you_sure_you_want_to_restore_title,tr,başlık geri yüklemek istediğinizden emin misiniz 
+are_you_sure_you_want_to_restore_title,ru,вы уверены что хотите восстановить название
 are_you_sure_you_want_to_restore_content,en,are you sure you want to restore content
-are_you_sure_you_want_to_restore_content,tr,içeriği geri yüklemek istediğinize emin misiniz?
-are_you_sure_you_want_to_restore_content,ru,Вы уверены что хотите восстановить контент?
+are_you_sure_you_want_to_restore_content,tr,içeriği geri yüklemek istediğinizden emin misiniz 
+are_you_sure_you_want_to_restore_content,ru,вы уверены что хотите восстановить содержимое
 active_tokens_title,en,active tokens title
-active_tokens_title,tr,aktif belirteçlerin başlığı
-active_tokens_title,ru,название активных токенов
+active_tokens_title,tr,aktif belirteçleri başlık
+active_tokens_title,ru,название активные маркеры 
 token_request_logs_title,en,token request logs title
-token_request_logs_title,tr,token isteği günlüğe kaydetti
-token_request_logs_title,ru,заголовок логов запроса на токен
+token_request_logs_title,tr,belirteç isteği başlık günlükleri 
+token_request_logs_title,ru,запрос маркера журналы название
 integration_create_title,en,integration create title
-integration_create_title,tr,entegrasyon başlık yarat
-integration_create_title,ru,интеграция создать заголовок
+integration_create_title,tr,entegrasyon başlık oluştur 
+integration_create_title,ru,интеграция создать название
 integration_detail_title,en,integration detail title
-integration_detail_title,tr,entegrasyon detay başlığı
-integration_detail_title,ru,название детали интеграции
+integration_detail_title,tr,entegrasyon detay Başlığı
+integration_detail_title,ru,интеграция заголовок деталь 
 integration_edit_title,en,integration edit title
-integration_edit_title,tr,entegrasyon düzenleme başlığı
-integration_edit_title,ru,интеграция редактировать заголовок
+integration_edit_title,tr,entegrasyon Başlığı Düzenle
+integration_edit_title,ru,интеграция изменить название
 integration_revision_list_title,en,integration revision list title
-integration_revision_list_title,tr,entegrasyon revizyon listesi başlığı
-integration_revision_list_title,ru,название списка версий интеграции
+integration_revision_list_title,tr,entegrasyon revizyon listesi başlık
+integration_revision_list_title,ru,пересмотр интеграции заголовок списка 
 create_bulk_label_done_title,en,create bulk label done title
-create_bulk_label_done_title,tr,toplu etiket oluşturulmuş başlık yarat
-create_bulk_label_done_title,ru,создать массовую метку готового заголовка
+create_bulk_label_done_title,tr,toplu etiket yapmış başlık oluştur 
+create_bulk_label_done_title,ru,создать объемную надпись сделать заголовок
 create_bulk_label_title,en,create bulk label title
-create_bulk_label_title,tr,toplu etiket başlığı oluştur
-create_bulk_label_title,ru,создать заголовок навалом
+create_bulk_label_title,tr,toplu etiket adı oluştur 
+create_bulk_label_title,ru,создать объемную заголовок 
 label_clone_title,en,label clone title
-label_clone_title,tr,etiket klonu başlığı
-label_clone_title,ru,название клона ярлыка
+label_clone_title,tr,etiket klon başlık
+label_clone_title,ru,метка название клона 
 label_create_title,en,label create title
-label_create_title,tr,etiket başlık yarat
+label_create_title,tr,etiket oluşturma Başlığı
 label_create_title,ru,ярлык создать заголовок
 label_detail_title,en,label detail title
-label_detail_title,tr,etiket detay başlığı
-label_detail_title,ru,название метки
+label_detail_title,tr,etiket detay Başlığı
+label_detail_title,ru,метка титул деталь 
 label_edit_title,en,label edit title
-label_edit_title,tr,etiket düzenleme başlığı
-label_edit_title,ru,заголовок редактирования ярлыка
+label_edit_title,tr,etiket Başlığı Düzenle
+label_edit_title,ru,метки редактировать название
 label_revision_list_title,en,label revision list title
-label_revision_list_title,tr,etiket revizyon listesi başlığı
-label_revision_list_title,ru,название списка редакций меток
+label_revision_list_title,tr,etiket revizyon listesi başlık
+label_revision_list_title,ru,пересмотр ярлык заголовок списка 
 label_search_list_title,en,label search list title
-label_search_list_title,tr,etiket arama listesi başlığı
-label_search_list_title,ru,заголовок списка поиска меток
+label_search_list_title,tr,etiket arama listesi başlık
+label_search_list_title,ru,метка заголовка списка поиска 
 label_upload_done_title,en,label upload done title
-label_upload_done_title,tr,etiket yükleme tamamlandı
-label_upload_done_title,ru,загрузка ярлыка завершена
+label_upload_done_title,tr,yükleme yapılan başlık etiketi 
+label_upload_done_title,ru,ярлык загрузки делается название
 upload_labels_from_csv_file_title,en,upload labels from csv file title
-upload_labels_from_csv_file_title,tr,etiketleri csv dosya başlığından yükle
-upload_labels_from_csv_file_title,ru,загрузить ярлыки из заголовка CSV-файла
+upload_labels_from_csv_file_title,tr,csv dosyası başlıktan yükleme etiketler 
+upload_labels_from_csv_file_title,ru,загрузить метки из заголовка CSV-файл 
 label_translation_create_title,en,label translation create title
-label_translation_create_title,tr,etiket çevirisi başlık yarat
-label_translation_create_title,ru,перевод метки создать заголовок
+label_translation_create_title,tr,etiket çevirisi başlık oluştur 
+label_translation_create_title,ru,перевод ярлыка создать заголовок
 label_translation_detail_title,en,label translation detail title
-label_translation_detail_title,tr,etiket çevirisi detay başlığı
-label_translation_detail_title,ru,заголовок детализации перевода
+label_translation_detail_title,tr,etiket çevirisi detay Başlığı
+label_translation_detail_title,ru,перевод надписи название детали 
 label_translation_edit_title,en,label translation edit title
-label_translation_edit_title,tr,etiket çeviri düzenleme başlığı
-label_translation_edit_title,ru,перевод метки редактировать заголовок
+label_translation_edit_title,tr,etiket çeviri Başlığı Düzenle
+label_translation_edit_title,ru,перевод ярлыка отредактируйте название
 label_translations_list_title,en,label translations list title
-label_translations_list_title,tr,etiket çevirileri liste başlığı
-label_translations_list_title,ru,заголовок списка переводов меток
+label_translations_list_title,tr,etiket çeviriler başlık listesi 
+label_translations_list_title,ru,перевод метки титульный лист
 label_translation_revision_list_title,en,label translation revision list title
-label_translation_revision_list_title,tr,etiket çevirisi revizyon listesi başlığı
-label_translation_revision_list_title,ru,название списка редакций перевода меток
+label_translation_revision_list_title,tr,etiket çeviri revizyon listesi başlık
+label_translation_revision_list_title,ru,метка список версий перевода названия
 translation_upload_done_title,en,translation upload done title
-translation_upload_done_title,tr,çeviri yükleme tamamlandı
-translation_upload_done_title,ru,перевод загружен
+translation_upload_done_title,tr,çeviri yapılan başlık upload 
+translation_upload_done_title,ru,перевод загрузить сделать название
 upload_labels_translation_from_csv_file_title,en,upload labels translation from csv file title
-upload_labels_translation_from_csv_file_title,tr,csv dosya adından etiket çevirisi yükle
-upload_labels_translation_from_csv_file_title,ru,загрузить перевод меток из заголовка csv файла
+upload_labels_translation_from_csv_file_title,tr,yükleme etiketler csv dosyası başlıktan çeviri 
+upload_labels_translation_from_csv_file_title,ru,загрузить меток перевод с заголовка CSV-файл 
 language_create_title,en,language create title
-language_create_title,tr,dil başlık yarat
+language_create_title,tr,dil oluşturma Başlığı
 language_create_title,ru,язык создать название
 language_detail_title,en,language detail title
-language_detail_title,tr,dil detay başlığı
-language_detail_title,ru,название языка
+language_detail_title,tr,dil detay Başlığı
+language_detail_title,ru,язык название детали 
 language_edit_title,en,language edit title
-language_edit_title,tr,dil düzenleme başlığı
-language_edit_title,ru,язык редактировать название
+language_edit_title,tr,dil Başlığı Düzenle
+language_edit_title,ru,язык изменить название
 language_list_title,en,language list title
-language_list_title,tr,dil listesi başlığı
-language_list_title,ru,название списка языков
+language_list_title,tr,dil listesi başlık
+language_list_title,ru,заголовок списка язык 
 language_revision_list_title,en,language revision list title
-language_revision_list_title,tr,dil revizyon listesi başlığı
-language_revision_list_title,ru,название списка языковых версий
+language_revision_list_title,tr,dil revizyon listesi başlık
+language_revision_list_title,ru,пересмотр титульного языка список 
 organization_detail_title,en,organization detail title
-organization_detail_title,tr,organizasyon detay başlığı
-organization_detail_title,ru,название организации
+organization_detail_title,tr,organizasyon detay Başlığı
+organization_detail_title,ru,название организации подробно 
 organization_edit_title,en,organization edit title
-organization_edit_title,tr,organizasyon düzenleme başlığı
-organization_edit_title,ru,название организации
+organization_edit_title,tr,organizasyon Başlığı Düzenle
+organization_edit_title,ru,организация отредактировать название
 organization_list_title,en,organization list title
-organization_list_title,tr,organizasyon listesi başlığı
-organization_list_title,ru,название списка организаций
+organization_list_title,tr,organizasyon listesi başlık
+organization_list_title,ru,название организации список 
 organization_pending_translations_title,en,organization pending translations title
-organization_pending_translations_title,tr,kuruluş bekleyen çeviriler başlığı
-organization_pending_translations_title,ru,организация ожидает перевода название
+organization_pending_translations_title,tr,organizasyon bekleyen çeviriler başlık
+organization_pending_translations_title,ru,название организации отложенные переводы 
 organization_revision_list_title,en,organization revision list title
-organization_revision_list_title,tr,kuruluş revizyon listesi başlığı
-organization_revision_list_title,ru,название списка редакций организации
+organization_revision_list_title,tr,organizasyon revizyon listesi başlık
+organization_revision_list_title,ru,пересмотр организации титульный список 
 user_login_logs_title,en,user login logs title
-user_login_logs_title,tr,kullanıcı girişi log günlüğü
-user_login_logs_title,ru,логин пользователя
+user_login_logs_title,tr,kullanıcı oturum açma başlık günlükleri 
+user_login_logs_title,ru,логин пользователя название
 project_clone_title,en,project clone title
-project_clone_title,tr,proje klonu başlığı
-project_clone_title,ru,название проекта клон
+project_clone_title,tr,proje klon başlık
+project_clone_title,ru,название проекта клона 
 project_create_title,en,project create title
-project_create_title,tr,proje başlığı yarat
-project_create_title,ru,проект создать заголовок
+project_create_title,tr,proje adı oluştur 
+project_create_title,ru,проект создания заголовков
 project_detail_title,en,project detail title
-project_detail_title,tr,proje detay başlığı
-project_detail_title,ru,название проекта
+project_detail_title,tr,proje detay Başlığı
+project_detail_title,ru,название детали проекта 
 project_edit_title,en,project edit title
-project_edit_title,tr,proje düzenleme başlığı
-project_edit_title,ru,название проекта
+project_edit_title,tr,proje Başlığı Düzenle
+project_edit_title,ru,проекта изменить название
 project_pending_translations_title,en,project pending translations title
-project_pending_translations_title,tr,proje bekleyen çevirileri unvanı
-project_pending_translations_title,ru,название проекта в ожидании перевода
+project_pending_translations_title,tr,proje bekleyen çeviriler başlık
+project_pending_translations_title,ru,в ожидании проекта название перевод 
 project_revision_list_title,en,project revision list title
-project_revision_list_title,tr,proje revizyon listesi başlığı
-project_revision_list_title,ru,название списка редакций проекта
+project_revision_list_title,tr,proje revizyon listesi başlık
+project_revision_list_title,ru,список пересмотру название проекта
 active_tokens_table_title,en,active tokens table title
-active_tokens_table_title,tr,aktif belirteçler tablo başlığı
-active_tokens_table_title,ru,название таблицы активных токенов
+active_tokens_table_title,tr,aktif belirteçleri tablo Başlığı
+active_tokens_table_title,ru,активные маркеры заголовка таблицы 
+translation_provider_create_title,en,translation provider create title
+translation_provider_create_title,tr,çeviri sağlayıcısı başlık oluştur 
+translation_provider_create_title,ru,поставщик перевод создать название
+translation_provider_detail_title,en,translation provider detail title
+translation_provider_detail_title,tr,çeviri sağlayıcı detay Başlığı
+translation_provider_detail_title,ru,перевод название детали поставщика 
+translation_provider_edit_title,en,translation provider edit title
+translation_provider_edit_title,tr,çeviri sağlayıcısı Başlığı Düzenle
+translation_provider_edit_title,ru,поставщик перевод редактировать название
+translation_provider_list_title,en,translation provider list title
+translation_provider_list_title,tr,çeviri sağlayıcı listesi başlık
+translation_provider_list_title,ru,заголовок списка поставщика перевода 
 user_list_title,en,user list title
-user_list_title,tr,kullanıcı listesi başlığı
-user_list_title,ru,заголовок списка пользователей
+user_list_title,tr,kullanıcı listesi başlık
+user_list_title,ru,заголовок списка пользователей 
 user_change_password_title,en,user change password title
-user_change_password_title,tr,kullanıcı parola başlığını değiştir
-user_change_password_title,ru,пользователь сменил пароль
+user_change_password_title,tr,kullanıcı parolasını değiştir Başlığı
+user_change_password_title,ru,изменить название пользователя пароль 
 demand_password_reset_title,en,demand password reset title
-demand_password_reset_title,tr,talep şifresini sıfırla
-demand_password_reset_title,ru,требовать сброс пароля
+demand_password_reset_title,tr,talep Başlığı parola sıfırlama 
+demand_password_reset_title,ru,пароль требовать возврата титул
 user_accept_invite_done_title,en,user accept invite done title
-user_accept_invite_done_title,tr,kullanıcı davet başlığını kabul et
-user_accept_invite_done_title,ru,пользователь принимает приглашение сделать заголовок
+user_accept_invite_done_title,tr,kullanıcı davet yapılan başlık kabul 
+user_accept_invite_done_title,ru,пользователь принимает приглашение сделано название
 accept_invite_title,en,accept invite title
-accept_invite_title,tr,davet başlığını kabul et
-accept_invite_title,ru,принять приглашение
+accept_invite_title,tr,davet Başlığı kabul 
+accept_invite_title,ru,приглашаем принять титул
 user_invite_title,en,user invite title
-user_invite_title,tr,kullanıcı davet başlığı
-user_invite_title,ru,заголовок приглашения пользователя
+user_invite_title,tr,kullanıcı davet Başlığı
+user_invite_title,ru,предложите название пользователя 
 log_on_title,en,log on title
-log_on_title,tr,giriş yap
-log_on_title,ru,войти в заголовок
+log_on_title,tr,başlık oturum açın 
+log_on_title,ru,войдите на титул
 user_reset_password_done,en,user reset password done
-user_reset_password_done,tr,kullanıcı sıfırlama şifresi tamamlandı
-user_reset_password_done,ru,пароль пользователя сброшен
+user_reset_password_done,tr,kullanıcı parolayı Sıfırla yaptım
+user_reset_password_done,ru,сброса пароля пользователя сделано
 sign_up_title,en,sign up title
-sign_up_title,tr,kaydol başlığı
+sign_up_title,tr,başlık kaydol 
 sign_up_title,ru,зарегистрируйтесь название
 user_detail_title,en,user detail title
-user_detail_title,tr,kullanıcı detay başlığı
-user_detail_title,ru,пользовательский заголовок
+user_detail_title,tr,kullanıcı detay Başlığı
+user_detail_title,ru,заголовок деталь пользователей 
 user_edit_title,en,user edit title
-user_edit_title,tr,kullanıcı düzenleme başlığı
-user_edit_title,ru,пользователь редактировать заголовок
+user_edit_title,tr,kullanıcı Başlığı Düzenle
+user_edit_title,ru,изменить название пользователя 
 user_journal_list_title,en,user journal list title
-user_journal_list_title,tr,kullanıcı günlüğü listesi başlığı
-user_journal_list_title,ru,заголовок списка пользовательских журналов
+user_journal_list_title,tr,kullanıcı günlük liste Başlığı
+user_journal_list_title,ru,название журнала список пользователей 
 user_revision_list_title,en,user revision list title
-user_revision_list_title,tr,kullanıcı revizyon listesi başlığı
-user_revision_list_title,ru,заголовок списка версий пользователя
+user_revision_list_title,tr,kullanıcı revizyon listesi başlık
+user_revision_list_title,ru,пересмотр заголовок списка пользователей 
 validate_email_done_title,en,validate email done title
-validate_email_done_title,tr,yapılan e-postayı doğrula
-validate_email_done_title,ru,подтвердить адрес электронной почты
+validate_email_done_title,tr,doğrulama e-posta başlık yapılması 
+validate_email_done_title,ru,проверить почту сделать название
 delete,en,delete
-delete,tr,silmek
-delete,ru,удалять
+delete,tr,sil
+delete,ru,удалить
 change_activation,en,change activation
-change_activation,tr,aktivasyonu değiştir
-change_activation,ru,изменить активацию
+change_activation,tr,değiştir etkinleştirme
+change_activation,ru,активации изменение 
+change_all_activation,en,change all activation
+change_all_activation,tr,tüm aktivasyon değiştirin 
+change_all_activation,ru,изменить все активации
 are_you_sure_you_want_to_delete_content,en,are you sure you want to delete content
-are_you_sure_you_want_to_delete_content,tr,içeriği silmek istediğinize emin misiniz?
-are_you_sure_you_want_to_delete_content,ru,Вы уверены что хотите удалить контент?
+are_you_sure_you_want_to_delete_content,tr,içeriğini silmek istediğinizden emin misiniz 
+are_you_sure_you_want_to_delete_content,ru,вы уверены что хотите удалить содержимое
 are_you_sure_you_want_to_change_activation_content,en,are you sure you want to change activation content
-are_you_sure_you_want_to_change_activation_content,tr,Aktivasyon içeriğini değiştirmek istediğinize emin misiniz?
-are_you_sure_you_want_to_change_activation_content,ru,Вы уверены что хотите изменить содержание активации
+are_you_sure_you_want_to_change_activation_content,tr,içerik aktivasyon değiştirmek istediğinizden emin misiniz 
+are_you_sure_you_want_to_change_activation_content,ru,вы уверены что хотите изменить активации контента
 first_name,en,first name
-first_name,tr,İsim
+first_name,tr,ilk adı
 first_name,ru,имя
 last_name,en,last name
-last_name,tr,Soyadı
-last_name,ru,Фамилия
+last_name,tr,soyadı
+last_name,ru,фамилия
 password,en,password
-password,tr,parola
+password,tr,şifre
 password,ru,пароль
 re_enter_password,en,re enter password
-re_enter_password,tr,Şifreyi yeniden gir
-re_enter_password,ru,Повторно введите пароль
+re_enter_password,tr,yeniden parola girin 
+re_enter_password,ru,повторно введите пароль
 name,en,name
-name,tr,isim
+name,tr,adı
 name,ru,название
 bulk_label_data,en,bulk label data
-bulk_label_data,tr,toplu etiket verileri
-bulk_label_data,ru,объемные данные этикетки
+bulk_label_data,tr,toplu etiket veri
+bulk_label_data,ru,Навальный данных метки 
 update_existed_translations,en,update existed translations
-update_existed_translations,tr,varolan çevirileri güncelle
-update_existed_translations,ru,обновить существующие переводы
+update_existed_translations,tr,güncelleme var çevirileri
+update_existed_translations,ru,обновление существовали переводы
 key,en,key
 key,tr,anahtar
 key,ru,ключ
 cloning_label_translation_count,en,cloning label translation count
-cloning_label_translation_count,tr,klonlama etiketini çevirme sayısı
-cloning_label_translation_count,ru,число переводов меток клонирования
+cloning_label_translation_count,tr,klonlama etiket çeviri sayısı
+cloning_label_translation_count,ru,метки клонирования рассчитывать перевода 
+is_getting_translation_from_other_project,en,is getting translation from other project
+is_getting_translation_from_other_project,tr,diğer projeden çeviri oluyor 
+is_getting_translation_from_other_project,ru,получаю перевод из другого проекта
 csv_file,en,csv file
 csv_file,tr,csv dosyası
-csv_file,ru,CSV-файл
+csv_file,ru,CSV-файл 
 label_translation,en,label translation
 label_translation,tr,etiket çevirisi
-label_translation,ru,перевод метки
+label_translation,ru,перевод этикетки 
 iso_code_2_character,en,iso code 2 character
-iso_code_2_character,tr,iso kodu 2 karakter
-iso_code_2_character,ru,ISO код 2 символа
+iso_code_2_character,tr,ıso kodu 2 karakter
+iso_code_2_character,ru,код ISO 2 персонажа
 iso_code_3_character,en,iso code 3 character
-iso_code_3_character,tr,iso kodu 3 karakter
-iso_code_3_character,ru,ISO код 3 символа
+iso_code_3_character,tr,ıso kodu 3 karakter
+iso_code_3_character,ru,код ISO 3 персонажа
 slug,en,slug
-slug,tr,sümüklüböcek
+slug,tr,slug
 slug,ru,слизень
 is_super_project,en,is super project
-is_super_project,tr,süper proje
-is_super_project,ru,это супер проект
-old_password,en,old password
-old_password,tr,eski şifre
-old_password,ru,Прежний пароль
-re_enter_new_password,en,re enter new password
-re_enter_new_password,tr,yeni şifreyi tekrar giriniz
-re_enter_new_password,ru,Повторно введите новый пароль
-accept_terms,en,accept terms
-accept_terms,tr,Şartları kabul et
-accept_terms,ru,принять условия
-translation_providers,en,translation providers
-translation_providers,tr,çeviri sağlayıcıları
-translation_providers,ru,переводчики
-translation_provider_name,en,translation provider name
-translation_provider_name,tr,çeviri sağlayıcısı adı
-translation_provider_name,ru,название переводчика
-translation_providers_link,en,translation providers link
-translation_providers_link,tr,çeviri sağlayıcıları bağlantısı
-translation_providers_link,ru,ссылка на переводчиков
-translation_provider_info,en,translation provider info
-translation_provider_info,tr,çeviri sağlayıcı bilgisi
-translation_provider_info,ru,информация о переводчике
-translation_provider_value_content,en,translation provider value content
-translation_provider_value_content,tr,çeviri sağlayıcısı değer içeriği
-translation_provider_value_content,ru,ценность содержания провайдера перевода
-edit_button,en,edit button
-edit_button,tr,düzenle düğmesi
-edit_button,ru,кнопка редактирования
-please_edit_translation_api_value,en,please edit translation api value
-please_edit_translation_api_value,tr,lütfen çeviriyi düzenle api değerini değiştir
-please_edit_translation_api_value,ru,пожалуйста измените значение API перевода
-translation_provider_already_exist,en,translation provider already exist
-translation_provider_already_exist,tr,çeviri sağlayıcısı zaten var
-translation_provider_already_exist,ru,поставщик переводов уже существует
-translation_uid_not_valid,en,translation uid not valid
-translation_uid_not_valid,tr,çeviri adı geçerli değil
-translation_uid_not_valid,ru,UID перевода недействителен
-you_add_required_json_file_for_google_provider,en,you add required json file for google provider
-you_add_required_json_file_for_google_provider,tr,google sağlayıcı için gerekli json dosyasını ekle
-you_add_required_json_file_for_google_provider,ru,Вы добавляете необходимый файл JSON для провайдера Google
-you_add_required_api_key_for_yandex_provider,en,you add required api key for yandex provider
-you_add_required_api_key_for_yandex_provider,tr,yandex sağlayıcı için gerekli api anahtarını eklerseniz
-you_add_required_api_key_for_yandex_provider,ru,Вы добавляете необходимый ключ API для провайдера Яндекса
-translation_provider_uid_is_not_valid,en,translation provider uid is not valid
-translation_provider_uid_is_not_valid,tr,çeviri sağlayıcısı kullanıcı kimliği geçerli değil
-translation_provider_uid_is_not_valid,ru,UID переводчика недействителен
-translation_provider_name_required_error_message,en,translation provider name required error message
-translation_provider_name_required_error_message,tr,çeviri sağlayıcısı adı gerekli hata mesajı
-translation_provider_name_required_error_message,ru,имя поставщика перевода требуется сообщение об ошибке
-translation_provider_data_required_error_message,en,translation provider data required error message
-translation_provider_data_required_error_message,tr,çeviri sağlayıcısı verileri gerekli hata mesajı
-translation_provider_data_required_error_message,ru,Требуются данные поставщика перевода. Сообщение об ошибке.
-provider_name,en,provider name
-provider_name,tr,sağlayıcı adı
-provider_name,ru,имя провайдера
-journal_translation_provider_edit,en,journal translation provider edit
-journal_translation_provider_edit,tr,dergi çeviri sağlayıcısı düzenleme
-journal_translation_provider_edit,ru,редактор перевода журнала редактировать
-translation_provider_create_title,en,translation provider create title
-translation_provider_create_title,tr,çeviri sağlayıcısı başlık oluştur
-translation_provider_create_title,ru,переводчик создать заголовок
-translation_provider_detail_title,en,translation provider detail title
-translation_provider_detail_title,tr,çeviri sağlayıcısı detay başlığı
-translation_provider_detail_title,ru,название перевода провайдера
-translation_provider_edit_title,en,translation provider edit title
-translation_provider_edit_title,tr,çeviri sağlayıcısı düzenleme başlığı
-translation_provider_edit_title,ru,переводчик редактировать заголовок
-translation_provider_list_title,en,translation provider list title
-translation_provider_list_title,tr,çeviri sağlayıcı listesi başlığı
-translation_provider_list_title,ru,название списка переводчиков
+is_super_project,tr,süper proje 
+is_super_project,ru,супер проект
 value,en,value
 value,tr,değer
 value,ru,значение
-translation_provider,ru,переводчик
-translation_provider,tr,çeviri sağlayıcısı
-translation_provider,en,translation provider
+old_password,en,old password
+old_password,tr,eski parola
+old_password,ru,старый пароль
+re_enter_new_password,en,re enter new password
+re_enter_new_password,tr,yeniden yeni bir parola girin. 
+re_enter_new_password,ru,повторно введите новый пароль
+accept_terms,en,accept terms
+accept_terms,tr,şartları kabul 
+accept_terms,ru,принимаем условия

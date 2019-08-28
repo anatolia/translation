@@ -17,8 +17,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<SendEmailLog, bool>>>(),
                                                 It.IsAny<Guid>(),
                                                 It.IsAny<int>(),
-                                                It.IsAny<Expression<Func<SendEmailLog, object>>>(),
-                                                It.IsAny<bool>(), false))
+                                                It.IsAny<bool>(),
+                                                It.IsAny<List<OrderByInfo<SendEmailLog>>>()))
                       .ReturnsAsync(new List<SendEmailLog> { GetSendEmailLog() });
         }
 
@@ -27,8 +27,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<SendEmailLog, bool>>>(),
                                                It.IsAny<int>(),
                                                It.IsAny<int>(),
-                                               It.IsAny<Expression<Func<SendEmailLog, object>>>(),
-                                               It.IsAny<bool>(), false))
+                                               It.IsAny<bool>(),
+                                               It.IsAny<List<OrderByInfo<SendEmailLog>>>()))
                       .ReturnsAsync(new List<SendEmailLog> { GetSendEmailLog() });
         }
 
@@ -45,8 +45,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<SendEmailLog, bool>>>(),
                                                 It.IsAny<int>(),
                                                 It.IsAny<int>(),
-                                                It.IsAny<Expression<Func<SendEmailLog, object>>>(),
-                                                It.IsAny<bool>(), false));
+                                                It.IsAny<bool>(),
+                                                It.IsAny<List<OrderByInfo<SendEmailLog>>>()));
         }
 
         public static void Verify_SelectAfter(this Mock<ISendEmailLogRepository> repository)
@@ -54,8 +54,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<SendEmailLog, bool>>>(),
                                                  It.IsAny<Guid>(),
                                                  It.IsAny<int>(),
-                                                 It.IsAny<Expression<Func<SendEmailLog, object>>>(),
-                                                 It.IsAny<bool>(), false));
+                                                 It.IsAny<bool>(),
+                                                 It.IsAny<List<OrderByInfo<SendEmailLog>>>()));
         }
 
         public static void Setup_Count_Returns_POSITIVE_INT_NUMBER_10(this Mock<ISendEmailLogRepository> repository)

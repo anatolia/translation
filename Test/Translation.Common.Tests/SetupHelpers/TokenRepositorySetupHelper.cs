@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Moq;
+using StandardRepository.Models;
 using Translation.Data.Entities.Main;
 using Translation.Data.Repositories.Contracts;
 using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
@@ -15,8 +16,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<Token, bool>>>(),
                                                It.IsAny<int>(),
                                                It.IsAny<int>(),
-                                               It.IsAny<Expression<Func<Token, object>>>(),
-                                               It.IsAny<bool>(), false))
+                                               It.IsAny<bool>(),
+                                               It.IsAny<List<OrderByInfo<Token>>>()))
                       .ReturnsAsync(new List<Token> {GetToken() });
         }
 
@@ -64,8 +65,8 @@ namespace Translation.Common.Tests.SetupHelpers
         {
             repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<Token, bool>>>(),
                                                 It.IsAny<int>(), It.IsAny<int>(),
-                                                It.IsAny<Expression<Func<Token, object>>>(),
-                                                It.IsAny<bool>(), false));
+                                                It.IsAny<bool>(),
+                                                It.IsAny<List<OrderByInfo<Token>>>()));
         }
 
         public static void Setup_Delete_Returns_True(this Mock<ITokenRepository> repository)

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using StandardRepository.Helpers;
-
+using StandardRepository.Models;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Helpers;
@@ -132,11 +132,13 @@ namespace Translation.Service
             List<Integration> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _integrationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _integrationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                                    new List<OrderByInfo<Integration>>() { new OrderByInfo<Integration>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _integrationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _integrationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                   new List<OrderByInfo<Integration>>() { new OrderByInfo<Integration>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
@@ -453,11 +455,14 @@ namespace Translation.Service
             List<IntegrationClient> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _integrationClientRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _integrationClientRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                                          new List<OrderByInfo<IntegrationClient>>() { new OrderByInfo<IntegrationClient>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _integrationClientRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _integrationClientRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                         new List<OrderByInfo<IntegrationClient>>() { new OrderByInfo<IntegrationClient>(x => x.Id, request.PagingInfo.IsAscending) });
+
             }
 
             if (entities != null)
@@ -793,7 +798,10 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
             var now = DateTime.UtcNow;
-            var entities = await _tokenRepository.SelectMany(x => x.OrganizationId == currentUser.OrganizationId && x.ExpiresAt > now, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+            var entities = await _tokenRepository.SelectMany(x => x.OrganizationId == currentUser.OrganizationId && x.ExpiresAt > now,
+                                                             request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                             new List<OrderByInfo<Token>>() { new OrderByInfo<Token>(x => x.Id, false) });
+
             if (entities != null)
             {
                 for (var i = 0; i < entities.Count; i++)
@@ -816,8 +824,10 @@ namespace Translation.Service
 
             var now = DateTime.UtcNow;
             var entities = await _tokenRepository.SelectMany(x => x.IntegrationUid == request.IntegrationUid
-                                                                       && x.OrganizationId == currentUser.OrganizationId
-                                                                       && x.ExpiresAt > now, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                                                                  && x.OrganizationId == currentUser.OrganizationId
+                                                                  && x.ExpiresAt > now, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                  new List<OrderByInfo<Token>>() { new OrderByInfo<Token>(x => x.Id, false) });
+
             if (entities != null)
             {
                 for (var i = 0; i < entities.Count; i++)
@@ -841,7 +851,8 @@ namespace Translation.Service
             var now = DateTime.UtcNow;
             var entities = await _tokenRepository.SelectMany(x => x.IntegrationClientUid == request.IntegrationClientUid
                                                                        && x.OrganizationId == currentUser.OrganizationId
-                                                                       && x.ExpiresAt > now, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                                                                       && x.ExpiresAt > now, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                       new List<OrderByInfo<Token>>() { new OrderByInfo<Token>(x => x.Id, false) });
             if (entities != null)
             {
                 for (var i = 0; i < entities.Count; i++)
@@ -862,7 +873,8 @@ namespace Translation.Service
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
-            var entities = await _tokenRequestLogRepository.SelectMany(x => x.OrganizationId == currentUser.OrganizationId, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+            var entities = await _tokenRequestLogRepository.SelectMany(x => x.OrganizationId == currentUser.OrganizationId, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                       new List<OrderByInfo<TokenRequestLog>>() { new OrderByInfo<TokenRequestLog>(x => x.Id, false) });
             if (entities != null)
             {
                 for (var i = 0; i < entities.Count; i++)
@@ -888,7 +900,9 @@ namespace Translation.Service
                 return response;
             }
 
-            var entities = await _tokenRequestLogRepository.SelectMany(x => x.IntegrationUid == request.IntegrationUid, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+            var entities = await _tokenRequestLogRepository.SelectMany(x => x.IntegrationUid == request.IntegrationUid, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                       new List<OrderByInfo<TokenRequestLog>>() { new OrderByInfo<TokenRequestLog>(x => x.Id, false) });
+
             if (entities != null)
             {
                 for (var i = 0; i < entities.Count; i++)
@@ -907,7 +921,8 @@ namespace Translation.Service
         {
             var response = new IntegrationClientTokenRequestLogReadListResponse();
 
-            var entities = await _tokenRequestLogRepository.SelectMany(x => x.IntegrationClientUid == request.IntegrationClientUid, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+            var entities = await _tokenRequestLogRepository.SelectMany(x => x.IntegrationClientUid == request.IntegrationClientUid, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                        new List<OrderByInfo<TokenRequestLog>>() { new OrderByInfo<TokenRequestLog>(x => x.Id, false) });
             if (entities != null)
             {
                 for (var i = 0; i < entities.Count; i++)
@@ -926,7 +941,8 @@ namespace Translation.Service
         {
             var response = new AllActiveTokenReadListResponse();
 
-            var entities = await _tokenRepository.SelectMany(null, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+            var entities = await _tokenRepository.SelectMany(null, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                             new List<OrderByInfo<Token>>() { new OrderByInfo<Token>(x => x.Id, false) });
             if (entities != null)
             {
                 for (var i = 0; i < entities.Count; i++)
@@ -946,7 +962,8 @@ namespace Translation.Service
         {
             var response = new AllTokenRequestLogReadListResponse();
 
-            var entities = await _tokenRequestLogRepository.SelectMany(null, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+            var entities = await _tokenRequestLogRepository.SelectMany(null, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                       new List<OrderByInfo<TokenRequestLog>>() { new OrderByInfo<TokenRequestLog>(x => x.Id, false) });
             if (entities != null)
             {
                 for (var i = 0; i < entities.Count; i++)

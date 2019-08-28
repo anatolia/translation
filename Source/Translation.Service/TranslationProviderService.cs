@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using StandardRepository.Helpers;
+using StandardRepository.Models;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Helpers;
@@ -62,11 +63,13 @@ namespace Translation.Service
             List<TranslationProvider> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _translationProviderRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _translationProviderRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                                            new List<OrderByInfo<TranslationProvider>>() { new OrderByInfo<TranslationProvider>(x => x.Uid) });
             }
             else
             {
-                entities = await _translationProviderRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _translationProviderRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                           new List<OrderByInfo<TranslationProvider>>() { new OrderByInfo<TranslationProvider>(x => x.Id) });
             }
 
             if (entities != null)
@@ -126,7 +129,7 @@ namespace Translation.Service
             var activeTranslationProvider = _cacheManager.GetCachedActiveTranslationProvider(request.IsActive);
             if (activeTranslationProvider == null)
             {
-             
+
             }
 
             return activeTranslationProvider;

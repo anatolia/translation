@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using StandardRepository.Helpers;
-
+using StandardRepository.Models;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Helpers;
@@ -72,11 +72,13 @@ namespace Translation.Service
             List<Project> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _projectRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _projectRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                                new List<OrderByInfo<Project>>() { new OrderByInfo<Project>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _projectRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _projectRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                               new List<OrderByInfo<Project>>() { new OrderByInfo<Project>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
@@ -375,7 +377,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _projectRepository.Any(x =>  x.Slug == request.Slug
+            if (await _projectRepository.Any(x => x.Slug == request.Slug
                                                   && x.OrganizationId == currentUser.OrganizationId))
             {
                 response.SetFailedBecauseSlugMustBeUnique(nameof(Project));
@@ -511,11 +513,13 @@ namespace Translation.Service
             List<Label> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _labelRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _labelRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                              new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                             new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
