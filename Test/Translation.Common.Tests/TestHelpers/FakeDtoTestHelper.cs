@@ -7,6 +7,18 @@ namespace Translation.Common.Tests.TestHelpers
     public class FakeDtoTestHelper
     {
 
+        public static TranslationProviderDto GetTranslationProviderDto()
+        {
+            var dto = new TranslationProviderDto();
+            
+            dto.Uid = UidTwo;
+            dto.Name = StringTwo;
+            dto.Description = StringFive;
+            dto.IsActive = BooleanTrue;
+
+            return dto;
+        }
+
         public static UserDto GetUserDto()
         {
             var dto = new UserDto();
@@ -145,7 +157,7 @@ namespace Translation.Common.Tests.TestHelpers
             return dto;
         }
 
- public static SendEmailLogDto GetSendEmailLogDto()
+        public static SendEmailLogDto GetSendEmailLogDto()
         {
             var dto = new SendEmailLogDto();
             dto.OrganizationUid = UidOne;
@@ -160,10 +172,10 @@ namespace Translation.Common.Tests.TestHelpers
         public static LabelFatDto GetLabelFatDto()
         {
             var dto = new LabelFatDto();
-            
+
             dto.Uid = UidThree;
             dto.Key = StringFour;
-            dto.Translations=new List<LabelTranslationSlimDto>(){new LabelTranslationSlimDto(){LanguageIsoCode2 = IsoCode2One}};
+            dto.Translations = new List<LabelTranslationSlimDto>() { new LabelTranslationSlimDto() { LanguageIsoCode2 = IsoCode2One } };
             return dto;
         }
 

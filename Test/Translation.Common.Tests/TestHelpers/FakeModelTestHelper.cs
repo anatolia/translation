@@ -11,8 +11,10 @@ using Translation.Client.Web.Models.Language;
 using Translation.Client.Web.Models.Organization;
 using Translation.Client.Web.Models.Project;
 using Translation.Client.Web.Models.Token;
+using Translation.Client.Web.Models.TranslationProvider;
 using Translation.Client.Web.Models.User;
 using Translation.Common.Models.Shared;
+using Translation.Data.Entities.Domain;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
 
@@ -420,6 +422,46 @@ namespace Translation.Common.Tests.TestHelpers
             model.IsoCode2 = IsoCode2One;
             model.IsoCode3 = IsoCode3One;
             model.Icon = GetIconNotContentType();
+
+            return model;
+        }
+
+        public static TranslationProviderListModel GetTranslationProviderListModel()
+        {
+            var model = new TranslationProviderListModel();
+
+            return model;
+        }
+
+        public static TranslationProviderDetailModel GetTranslationProviderDetailModel()
+        {
+            var model = new TranslationProviderDetailModel();
+            model.TranslationProviderUid = UidOne;
+            model.Value = StringOne;
+            model.Name = StringTwo;
+            model.Description = StringThree;
+
+            return model;
+        }
+
+        public static TranslationProviderEditModel GetTranslationProviderEditModel()
+        {
+            var model = new TranslationProviderEditModel();
+            model.TranslationProviderUid = UidOne;
+            model.Value = StringOne;
+            model.Name = StringTwo;
+            model.Description = StringThree;
+
+            return model;
+        }
+
+        public static TranslationProviderEditModel GetTranslationProviderEditModel(Guid translationProviderUid, string value, string name, string description)
+        {
+            var model = new TranslationProviderEditModel();
+            model.TranslationProviderUid = translationProviderUid;
+            model.Value = value;
+            model.Name = name;
+            model.Description = description;
 
             return model;
         }

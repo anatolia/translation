@@ -41,7 +41,7 @@ namespace Translation.Service
             var provider = await _translationProviderRepository.Select(x => x.Uid == request.TranslationProviderUid);
             if (provider.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(provider));
+                response.SetInvalidBecauseNotFound(nameof(TranslationProvider));
                 return response;
             }
 

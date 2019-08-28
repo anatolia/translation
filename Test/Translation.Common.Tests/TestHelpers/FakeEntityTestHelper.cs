@@ -15,6 +15,20 @@ namespace Translation.Common.Tests.TestHelpers
 {
     public class FakeEntityTestHelper
     {
+        public static TranslationProvider GetTranslationProvider()
+        {
+            var model = new TranslationProvider();
+            model.IsActive = BooleanTrue;
+            return model;
+        }
+
+        public static TranslationProvider GetTranslationProviderNotExist()
+        {
+            var model = GetTranslationProvider();
+            model.Id = Zero;
+            return model;
+        }
+
         public static Language GetLanguage()
         {
             var language = new Language();

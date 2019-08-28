@@ -16,6 +16,7 @@ namespace Translation.Common.Tests.TestHelpers
 
         public const string OrganizationNotFound = "organization_not_found";
         public const string ProjectNotFound = "project_not_found";
+        public const string TranslationProviderNotFound = "translationProvider_not_found";
         public const string UserNotFound = "user_not_found";
         public const string LanguageNotFound = "language_not_found";
         public const string IntegrationNotFound = "integration_not_found";

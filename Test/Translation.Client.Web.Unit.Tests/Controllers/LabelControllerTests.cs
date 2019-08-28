@@ -86,7 +86,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             // arrange
             MockProjectService.Setup_GetProject_Returns_ProjectReadResponse_Success();
             MockTranslationProviderService.Setup_GetActiveTranslationProvider_Returns_ActiveTranslationProvider();
-         
+
             // act
             var result = await SystemUnderTest.Create(OrganizationOneProjectOneUid);
 

@@ -12,6 +12,7 @@ using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Requests.Organization;
 using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Requests.SendEmailLog;
+using Translation.Common.Models.Requests.TranslationProvider;
 using Translation.Common.Models.Requests.User;
 using Translation.Common.Models.Requests.User.LoginLog;
 using Translation.Common.Models.Responses.Admin;
@@ -734,6 +735,43 @@ namespace Translation.Common.Tests.TestHelpers
             var request = GetProjectPendingTranslationReadListRequest();
             request.PagingInfo = GetPagingInfoForSelectMany();
             request.SearchTerm = StringOne;
+
+            return request;
+        }
+
+        public static TranslationProviderReadRequest GetTranslationProviderReadRequest()
+        {
+            var request = new TranslationProviderReadRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
+        public static TranslationProviderReadListRequest GetTranslationProviderReadListRequest()
+        {
+            var request = new TranslationProviderReadListRequest();
+
+            return request;
+        }
+
+        public static TranslationProviderReadListRequest GetTranslationProviderReadListRequestForSelectAfter()
+        {
+            var request = new TranslationProviderReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectAfter();
+            request.SearchTerm = StringOne;
+            return request;
+        }
+
+        public static TranslationProviderReadListRequest GetTranslationProviderReadListRequestForSelectMany()
+        {
+            var request = new TranslationProviderReadListRequest();
+            request.PagingInfo = GetPagingInfoForSelectMany();
+            request.SearchTerm = StringOne;
+            return request;
+        }
+
+        public static TranslationProviderEditRequest GetTranslationProviderEditRequest()
+        {
+            var request = new TranslationProviderEditRequest(CurrentUserId, UidOne, StringOne, StringTwo);
 
             return request;
         }

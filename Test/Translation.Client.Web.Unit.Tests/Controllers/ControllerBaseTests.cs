@@ -59,7 +59,6 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             Container.Register(Component.For<ITranslationProviderService>().Instance(MockTranslationProviderService.Object).LifestyleTransient());
 
 
-          
             Container.Register(Component.For<AdminController>().LifestyleTransient());
             Container.Register(Component.For<DataController>().LifestyleTransient());
             Container.Register(Component.For<HomeController>().LifestyleTransient());
@@ -70,6 +69,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             Container.Register(Component.For<ProjectController>().LifestyleTransient());
             Container.Register(Component.For<TokenController>().LifestyleTransient());
             Container.Register(Component.For<UserController>().LifestyleTransient());
+            Container.Register(Component.For<TranslationProviderController>().LifestyleTransient());
           
 
             Container.Register(Component.For<CacheManager>());

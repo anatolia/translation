@@ -5,8 +5,8 @@ using Moq;
 using StandardRepository.Models;
 using Translation.Data.Entities.Main;
 using Translation.Data.Repositories.Contracts;
-using  static  Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
-using  static  Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
+using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
 
 
 namespace Translation.Common.Tests.SetupHelpers
@@ -33,8 +33,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Setup(x => x.SelectMany(It.IsAny<Expression<Func<IntegrationClient, bool>>>(),
                                                It.IsAny<int>(),
                                                It.IsAny<int>(),
-                                               It.IsAny<Expression<Func<IntegrationClient, object>>>(),
-                                               It.IsAny<bool>(), false))
+                                               It.IsAny<bool>(),
+                                               It.IsAny<List<OrderByInfo<IntegrationClient>>>()))
                       .ReturnsAsync(new List<IntegrationClient> { GetIntegrationClient() });
         }
 
@@ -43,8 +43,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Verify(x => x.SelectMany(It.IsAny<Expression<Func<IntegrationClient, bool>>>(),
                                                 It.IsAny<int>(),
                                                 It.IsAny<int>(),
-                                                It.IsAny<Expression<Func<IntegrationClient, object>>>(),
-                                                It.IsAny<bool>(), false));
+                                                It.IsAny<bool>(),
+                                                It.IsAny<List<OrderByInfo<IntegrationClient>>>()));
         }
 
         public static void Setup_SelectAfter_Returns_IntegrationClients(this Mock<IIntegrationClientRepository> repository)
@@ -52,8 +52,8 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<IntegrationClient, bool>>>(),
                                                 It.IsAny<Guid>(),
                                                 It.IsAny<int>(),
-                                                It.IsAny<Expression<Func<IntegrationClient, object>>>(),
-                                                It.IsAny<bool>(), false))
+                                                It.IsAny<bool>(),
+                                                It.IsAny<List<OrderByInfo<IntegrationClient>>>()))
                       .ReturnsAsync(new List<IntegrationClient> { GetIntegrationClient() });
         }
 
@@ -62,13 +62,13 @@ namespace Translation.Common.Tests.SetupHelpers
             repository.Verify(x => x.SelectAfter(It.IsAny<Expression<Func<IntegrationClient, bool>>>(),
                                                  It.IsAny<Guid>(),
                                                  It.IsAny<int>(),
-                                                 It.IsAny<Expression<Func<IntegrationClient, object>>>(),
-                                                 It.IsAny<bool>(), false));
+                                                 It.IsAny<bool>(),
+                                                 It.IsAny<List<OrderByInfo<IntegrationClient>>>()));
         }
 
         public static void Setup_Any_Returns_False(this Mock<IIntegrationClientRepository> repository)
         {
-            repository.Setup(x => x.Any(It.IsAny<Expression<Func<IntegrationClient, bool>>>(), 
+            repository.Setup(x => x.Any(It.IsAny<Expression<Func<IntegrationClient, bool>>>(),
                                         It.IsAny<bool>()))
                       .ReturnsAsync(false);
         }
@@ -82,7 +82,7 @@ namespace Translation.Common.Tests.SetupHelpers
 
         public static void Verify_Any(this Mock<IIntegrationClientRepository> repository)
         {
-            repository.Verify(x => x.Any(It.IsAny<Expression<Func<IntegrationClient, bool>>>(), 
+            repository.Verify(x => x.Any(It.IsAny<Expression<Func<IntegrationClient, bool>>>(),
                                          It.IsAny<bool>()));
         }
 

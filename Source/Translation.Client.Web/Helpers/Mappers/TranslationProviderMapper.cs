@@ -1,7 +1,5 @@
 ﻿using System;
 
-using Translation.Client.Web.Models.Label;
-using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Client.Web.Models.TranslationProvider;
 using Translation.Common.Models.DataTransferObjects;
 
