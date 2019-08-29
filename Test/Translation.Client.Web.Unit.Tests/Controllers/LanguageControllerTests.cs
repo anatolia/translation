@@ -254,6 +254,23 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
         }
 
         [Test]
+        public async Task Edit_POST_NotImage_NotPng()
+        {
+            // arrange
+            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
+            MockLanguageService.Setup_EditLanguage_Returns_LanguageEditResponse_Success();
+            var model = GetIconNotContentTypeLanguageOneEditModel();
+
+            // act
+            var result = await SystemUnderTest.Edit(model);
+
+            // assert
+            ((RedirectResult)result).Url.ShouldBe("/Language/List/");
+            MockHostingEnvironment.Verify_WebRootPath();
+            MockLanguageService.Verify_EditLanguage();
+        }
+
+        [Test]
         public async Task Edit_POST_FailedResponse()
         {
             // arrange

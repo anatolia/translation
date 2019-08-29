@@ -63,7 +63,7 @@ namespace Translation.Common.Tests.SetupHelpers
         public static void Verify_Count(this Mock<IProjectRepository> repository)
         {
             repository.Setup(x => x.Count(It.IsAny<Expression<Func<Project, bool>>>(),
-                                          It.IsAny<bool>(), 
+                                          It.IsAny<bool>(),
                                           It.IsAny<List<DistinctInfo<Project>>>()))
                       .ReturnsAsync(Ten);
         }
@@ -102,6 +102,12 @@ namespace Translation.Common.Tests.SetupHelpers
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<Project, bool>>>(), false))
                       .ReturnsAsync(GetOrganizationOneSuperProjectOne());
+        }
+
+        public static void Setup_Select_Returns_OrganizationOneSuperProjectOneNotExist(this Mock<IProjectRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<Project, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneSuperProjectOneNotExist());
         }
 
         public static void Setup_Select_Returns_OrganizationTwoProjectOne(this Mock<IProjectRepository> repository)
@@ -209,6 +215,24 @@ namespace Translation.Common.Tests.SetupHelpers
         {
             repository.Setup(x => x.Any(It.IsAny<Expression<Func<Project, bool>>>(), false))
                       .ReturnsAsync(true);
+        }
+
+        public static void Setup_IsProjectNameMustBeUnique_Returns_True(this Mock<IProjectRepository> repository)
+        {
+            repository.Setup(x => x.IsProjectNameMustBeUnique(It.IsAny<string>(), It.IsAny<long>()))
+                      .ReturnsAsync(true);
+        }
+
+        public static void Setup_IsProjectNameMustBeUnique_Returns_False(this Mock<IProjectRepository> repository)
+        {
+            repository.Setup(x => x.IsProjectNameMustBeUnique(It.IsAny<string>(), It.IsAny<long>()))
+                      .ReturnsAsync(false);
+        }
+
+        public static void Verify_IsProjectNameMustBeUnique(this Mock<IProjectRepository> repository)
+        {
+            repository.Verify(x => x.IsProjectNameMustBeUnique(It.IsAny<string>(), It.IsAny<long>()));
+
         }
 
         public static void Verify_RestoreRevision(this Mock<IProjectRepository> repository)

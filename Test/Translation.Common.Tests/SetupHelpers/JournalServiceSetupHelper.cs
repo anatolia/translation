@@ -8,6 +8,7 @@ using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Journal;
 using Translation.Common.Models.Responses.Journal;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Common.Tests.TestHelpers.FakeDtoTestHelper;
 
 namespace Translation.Common.Tests.SetupHelpers
 {
@@ -15,8 +16,15 @@ namespace Translation.Common.Tests.SetupHelpers
     {
         public static void Setup_GetJournalsOfOrganization_Returns_OrganizationJournalReadListResponse_Success(this Mock<IJournalService> service)
         {
-            var items = new List<JournalDto>();
-            items.Add(new JournalDto() { Uid = UidOne });
+            var items = new List<JournalDto>() { GetJournalDto() };
+
+            service.Setup(x => x.GetJournalsOfOrganization(It.IsAny<OrganizationJournalReadListRequest>()))
+                   .ReturnsAsync(new JournalReadListResponse { Status = ResponseStatus.Success, Items = items });
+        }
+
+        public static void Setup_GetJournalsOfOrganization_Returns_OrganizationJournalReadListResponse_UserUidAndIntegrationUidEmpty_Success(this Mock<IJournalService> service)
+        {
+            var items = new List<JournalDto>() { GetUserUidAndIntegrationUidEmptyJournalDto() };
 
             service.Setup(x => x.GetJournalsOfOrganization(It.IsAny<OrganizationJournalReadListRequest>()))
                    .ReturnsAsync(new JournalReadListResponse { Status = ResponseStatus.Success, Items = items });
@@ -24,8 +32,7 @@ namespace Translation.Common.Tests.SetupHelpers
 
         public static void Setup_GetJournalsOfUser_Returns_UserJournalReadListResponse_Success(this Mock<IJournalService> service)
         {
-            var items = new List<JournalDto>();
-            items.Add(new JournalDto() { Uid = UidOne });
+            var items = new List<JournalDto>() { GetJournalDto() };
 
             service.Setup(x => x.GetJournalsOfUser(It.IsAny<UserJournalReadListRequest>()))
                    .ReturnsAsync(new JournalReadListResponse { Status = ResponseStatus.Success, Items = items });

@@ -421,6 +421,20 @@ namespace Translation.Common.Tests.TestHelpers
 
             model.IsoCode2 = IsoCode2One;
             model.IsoCode3 = IsoCode3One;
+            model.Icon = GetIcon();
+
+            return model;
+        }
+
+        public static LanguageEditModel GetIconNotContentTypeLanguageOneEditModel()
+        {
+            var model = new LanguageEditModel();
+            model.Name = "Language One";
+            model.LanguageUid = UidOne;
+            model.OriginalName = "Language One Original Name";
+
+            model.IsoCode2 = IsoCode2One;
+            model.IsoCode3 = IsoCode3One;
             model.Icon = GetIconNotContentType();
 
             return model;

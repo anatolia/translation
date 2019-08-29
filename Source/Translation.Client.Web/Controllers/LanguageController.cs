@@ -130,6 +130,7 @@ namespace Translation.Client.Web.Controllers
                 {
                     model.ErrorMessages.Add("please_upload_png_file");
                 }
+
                 if ((System.IO.File.Exists(path)))
                 {
                     System.IO.File.Delete(path);

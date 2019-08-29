@@ -144,8 +144,7 @@ namespace Translation.Service
                         var labelGetTranslatedTextResponse = await _textTranslateIntegration.GetTranslatedText(labelGetTranslatedTextRequest);
                         if (labelGetTranslatedTextResponse.Status.IsNotSuccess)
                         {
-                            response.ErrorMessages.Add("translation_provider_is_not_active");
-                            response.Status = ResponseStatus.Failed;
+                            response.SetInvalidBecauseNotActive(nameof(TranslationProvider));
                             return response;
                         }
 
@@ -249,6 +248,12 @@ namespace Translation.Service
                     {
                         var labelGetTranslatedTextRequest = new LabelGetTranslatedTextRequest(token.CreatedBy, addedLabel.Name, languages[i].IsoCode2Char, projectLanguage.IsoCode2Char);
                         var labelGetTranslatedTextResponse = await _textTranslateIntegration.GetTranslatedText(labelGetTranslatedTextRequest);
+                        if (labelGetTranslatedTextResponse.Status.IsNotSuccess)
+                        {
+                            response.SetInvalidBecauseNotActive(nameof(TranslationProvider));
+                            return response;
+                        }
+
                         labelTranslation = labelGetTranslatedTextResponse.Item.Name.Replace(",", string.Empty);
                     }
 
@@ -423,7 +428,8 @@ namespace Translation.Service
             return translationsToInsert;
         }
 
-        public async Task<Tuple<List<LabelTranslation>, List<LabelTranslation>>> AddedLabelUpdateAndAddLabelTranslation(Project project, List<LabelListInfo> labels, List<Label> labelsToAdd, LabelCreateListResponse response)
+        public async Task<Tuple<List<LabelTranslation>, List<LabelTranslation>>> AddedLabelUpdateAndAddLabelTranslation(Project project, List<LabelListInfo> labels, List<Label> labelsToAdd,
+                                                                                                                        LabelCreateListResponse response)
         {
 
             var languages = await _languageRepository.SelectAll(null, false);
@@ -707,7 +713,7 @@ namespace Translation.Service
                     var token = await _tokenRepository.Select(x => x.AccessToken == request.Token && x.ExpiresAt > now);
                     if (token.IsNotExist())
                     {
-                        response.SetInvalid();
+                        response.SetInvalidBecauseNotFound(nameof(Token));
                         return response;
                     }
 
@@ -735,7 +741,7 @@ namespace Translation.Service
 
                 if (await _organizationRepository.Any(x => x.Id == project.OrganizationId && !x.IsActive))
                 {
-                    response.SetInvalid();
+                   response.SetInvalidBecauseNotActive(nameof(Organization));
                     return response;
                 }
             }
@@ -786,8 +792,7 @@ namespace Translation.Service
             }
 
             response.Status = ResponseStatus.Success;
-            return response;
-        }
+            return response; }
 
         public async Task<LabelEditResponse> EditLabel(LabelEditRequest request)
         {
@@ -1284,7 +1289,7 @@ namespace Translation.Service
 
             if (ActiveTranslationProvider == null)
             {
-                return "taranslation_provider_is_not_active";
+                return  "translation_provider_is_not_active";
             }
             else
             {
@@ -1331,8 +1336,7 @@ namespace Translation.Service
 
             if (entities != null)
             {
-                var languages = await _languageRepository.SelectAll(null, false,
-                                                               new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id) });
+                var languages = await _languageRepository.SelectAll(null, false);
 
                 for (var i = 0; i < entities.Count; i++)
                 {

@@ -1745,6 +1745,22 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
         }
 
         [Test]
+        public async Task LabelTranslationListData_GET_SuperAdmin()
+        {
+            // arrange
+            MockOrganizationService.Setup_GetCurrentUser_Returns_CurrentUserResponse_SuperAdmin();
+            MockLabelService.Setup_GetTranslations_Returns_LabelTranslationReadListResponse_Success();
+
+            // act
+            var result = await SystemUnderTest.LabelTranslationListData(UidOne, One, Two);
+
+            // assert
+            AssertView<JsonResult>(result);
+            MockOrganizationService.Verify_GetCurrentUser();
+            MockLabelService.Verify_GetTranslations();
+        }
+
+        [Test]
         public async Task LabelTranslationListData_GET_FailedResponse()
         {
             // arrange

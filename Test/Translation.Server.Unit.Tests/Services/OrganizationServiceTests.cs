@@ -237,7 +237,7 @@ namespace Translation.Server.Unit.Tests.Services
             // arrange
             var request = GetOrganizationEditRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
-            MockOrganizationRepository.Setup_Any_Returns_True();
+            MockOrganizationRepository.Setup_IsOrganizationActive_Returns_True();
 
             // act
             var result = await SystemUnderTest.EditOrganization(request);
@@ -246,6 +246,27 @@ namespace Translation.Server.Unit.Tests.Services
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
             AssertReturnType<OrganizationEditResponse>(result);
             MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_IsOrganizationActive();
+
+        }
+
+        [Test]
+        public async Task OrganizationService_EditOrganization_Invalid_OrganizationNameMustBeUnique()
+        {
+            // arrange
+            var request = GetOrganizationEditRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_IsOrganizationActive_Returns_False();
+            MockOrganizationRepository.Setup_Any_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.EditOrganization(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, OrganizationNameMustBeUnique);
+            AssertReturnType<OrganizationEditResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_IsOrganizationActive();
             MockOrganizationRepository.Verify_Any();
         }
 
@@ -265,25 +286,6 @@ namespace Translation.Server.Unit.Tests.Services
             AssertReturnType<OrganizationEditResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Select();
-        }
-
-        [Ignore("*-> How can we test the 'organization name must be unique' check while there are two Any method call of the OrganizationRepository?")]
-        [Test]
-        public async Task OrganizationService_EditOrganization_Invalid_OrganizationNameMustBeUnique()
-        {
-            // arrange
-            var request = GetOrganizationEditRequest();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
-            MockOrganizationRepository.Setup_Any_Returns_False();
-
-            // act
-            var result = await SystemUnderTest.EditOrganization(request);
-
-            // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNameMustBeUnique);
-            AssertReturnType<OrganizationEditResponse>(result);
-            MockUserRepository.Verify_SelectById();
-            MockOrganizationRepository.Verify_Any();
         }
 
         [Test]

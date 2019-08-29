@@ -769,6 +769,13 @@ namespace Translation.Common.Tests.TestHelpers
             return request;
         }
 
+        public static TranslationProviderChangeActivationRequest GetTranslationProviderChangeActivationRequest()
+        {
+            var request = new TranslationProviderChangeActivationRequest(CurrentUserId, UidOne);
+
+            return request;
+        }
+
         public static TranslationProviderEditRequest GetTranslationProviderEditRequest()
         {
             var request = new TranslationProviderEditRequest(CurrentUserId, UidOne, StringOne, StringTwo);
@@ -1262,6 +1269,22 @@ namespace Translation.Common.Tests.TestHelpers
             var request = new AllLabelReadListRequest(CurrentUserId, UidOne);
             request.IsDefaultProject = BooleanFalse;
 
+            return request;
+        }
+
+        public static AllLabelReadListRequest GetAllLabelReadListRequest_IsDefaultProjectTrueAndCurrentUserIdZero()
+        {
+            var request = GetAllLabelReadListRequest_IsDefaultProjectTrue();
+            request.CurrentUserId = Zero;
+            
+            return request;
+        }
+
+        public static AllLabelReadListRequest GetAllLabelReadListRequest_IsDefaultProjectFalseAndCurrentUserIdZero()
+        {
+            var request = GetAllLabelReadListRequest_IsDefaultProjectFalse();
+            request.CurrentUserId = Zero;
+            
             return request;
         }
 

@@ -430,8 +430,9 @@ namespace Translation.Service
             }
 
             var selectedTranslationProvider = await _translationProviderRepository.Select(x => x.Uid == request.TranslationProviderUid);
-            if (selectedTranslationProvider.Value == "")
+            if (selectedTranslationProvider.Value == "" )
             {
+                response.Status = ResponseStatus.Invalid;
                 response.ErrorMessages.Add("please_edit_translation_api_value");
                 return response;
             }

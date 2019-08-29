@@ -9,6 +9,7 @@ using Translation.Common.Models.Responses.Integration.Token.RequestLog;
 using Translation.Common.Models.Responses.Journal;
 using Translation.Common.Models.Responses.Organization;
 using Translation.Common.Models.Responses.SendEmailLog;
+using Translation.Common.Models.Responses.TranslationProvider;
 using Translation.Common.Models.Responses.User;
 using Translation.Common.Models.Responses.User.LoginLog;
 using Translation.Common.Tests.SetupHelpers;
@@ -593,6 +594,126 @@ namespace Translation.Server.Unit.Tests.Services
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Select();
             MockOrganizationRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task AdminService_TranslationProviderChangeActivation_Success()
+        {
+            // arrange
+            var request = GetTranslationProviderChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockTranslationProviderRepository.Setup_SelectAll_Returns_TranslationProviders();
+            MockTranslationProviderRepository.Setup_Select_Returns_TranslationProviderOne();
+            MockTranslationProviderRepository.Setup_Update_Success();
+
+            // act
+            var result = await SystemUnderTest.TranslationProviderChangeActivation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<TranslationProviderChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockTranslationProviderRepository.Verify_SelectAll();
+            MockTranslationProviderRepository.Verify_Select();
+            MockTranslationProviderRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task AdminService_TranslationProviderChangeActivation_MatchValue_Success()
+        {
+            // arrange
+            var request = GetTranslationProviderChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockTranslationProviderRepository.Setup_SelectAll_Returns_TranslationProviders();
+            MockTranslationProviderRepository.Setup_Select_Returns_TranslationProviderTwo();
+            MockTranslationProviderRepository.Setup_Update_Success();
+
+            // act
+            var result = await SystemUnderTest.TranslationProviderChangeActivation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<TranslationProviderChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockTranslationProviderRepository.Verify_SelectAll();
+            MockTranslationProviderRepository.Verify_Select();
+            MockTranslationProviderRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task AdminService_TranslationProviderChangeActivation_Invalid_CurrentUserNotSuperAdmin()
+        {
+            // arrange
+            var request = GetTranslationProviderChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+
+            // act
+            var result = await SystemUnderTest.TranslationProviderChangeActivation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertReturnType<TranslationProviderChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+        }
+
+        [Test]
+        public async Task AdminService_TranslationProviderChangeActivation_TranslationProviderNotFound()
+        {
+            // arrange
+            var request = GetTranslationProviderChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockTranslationProviderRepository.Setup_SelectAll_Returns_TranslationProvidersNull();
+
+            // act
+            var result = await SystemUnderTest.TranslationProviderChangeActivation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, TranslationProviderNotFound);
+            AssertReturnType<TranslationProviderChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockTranslationProviderRepository.Verify_SelectAll();
+        }
+
+        [Test]
+        public async Task AdminService_TranslationProviderChangeActivation_Invalid_NullValue()
+        {
+            // arrange
+            var request = GetTranslationProviderChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockTranslationProviderRepository.Setup_SelectAll_Returns_TranslationProviders();
+            MockTranslationProviderRepository.Setup_Select_Returns_GetTranslationProviderNullValue();
+
+            // act
+            var result = await SystemUnderTest.TranslationProviderChangeActivation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, "please_edit_translation_api_value");
+            AssertReturnType<TranslationProviderChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockTranslationProviderRepository.Verify_SelectAll();
+            MockTranslationProviderRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task AdminService_TranslationProviderChangeActivation_Failed()
+        {
+            // arrange
+            var request = GetTranslationProviderChangeActivationRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockTranslationProviderRepository.Setup_SelectAll_Returns_TranslationProviders();
+            MockTranslationProviderRepository.Setup_Select_Returns_TranslationProviderOne();
+            MockTranslationProviderRepository.Setup_Update_Failed();
+
+            // act
+            var result = await SystemUnderTest.TranslationProviderChangeActivation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
+            AssertReturnType<TranslationProviderChangeActivationResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockTranslationProviderRepository.Verify_SelectAll();
+            MockTranslationProviderRepository.Verify_Select();
+            MockTranslationProviderRepository.Verify_Update();
         }
 
         [Test]

@@ -150,7 +150,7 @@ namespace Translation.Service
 
             if (project.OrganizationId != currentUser.OrganizationId)
             {
-                response.SetFailed();
+                response.SetInvalid();
                 return response;
             }
 
@@ -174,7 +174,7 @@ namespace Translation.Service
 
             if (project.OrganizationId != currentUser.OrganizationId)
             {
-                response.SetFailed();
+                response.SetInvalid();
                 return response;
             }
 
@@ -255,7 +255,7 @@ namespace Translation.Service
 
             if (project.OrganizationId != currentUser.OrganizationId)
             {
-                response.SetFailed();
+                response.SetInvalid();
                 return response;
             }
 
@@ -271,6 +271,7 @@ namespace Translation.Service
             if (language.IsNotExist())
             {
                 response.SetInvalidBecauseNotFound(nameof(Language));
+                return response;
             }
 
             var updatedEntity = _projectFactory.CreateEntityFromRequest(request, project, language);
@@ -306,13 +307,13 @@ namespace Translation.Service
 
             if (project.OrganizationId != currentUser.OrganizationId)
             {
-                response.SetFailed();
+                response.SetInvalid();
                 return response;
             }
 
             if (await _organizationRepository.Any(x => x.Id == project.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
@@ -360,18 +361,17 @@ namespace Translation.Service
 
             if (project.OrganizationId != currentUser.OrganizationId)
             {
-                response.SetFailed();
+                response.SetInvalid();
                 return response;
             }
 
             if (await _organizationRepository.Any(x => x.Id == project.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
-            if (await _projectRepository.Any(x => x.Name == request.Name
-                                                  && x.OrganizationId == currentUser.OrganizationId))
+            if (await _projectRepository.IsProjectNameMustBeUnique(request.Name, currentUser.OrganizationId))
             {
                 response.SetFailedBecauseNameMustBeUnique(nameof(Project));
                 return response;
@@ -388,6 +388,7 @@ namespace Translation.Service
             if (language.IsNotExist())
             {
                 response.SetInvalidBecauseNotFound(nameof(Language));
+                return response;
             }
 
             var cloningEntity = _projectFactory.CreateEntityFromRequest(request, project, language);
@@ -423,7 +424,7 @@ namespace Translation.Service
 
             if (project.OrganizationId != currentUser.OrganizationId)
             {
-                response.SetFailed();
+                response.SetInvalid();
                 return response;
             }
 

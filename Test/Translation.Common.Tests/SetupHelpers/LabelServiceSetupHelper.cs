@@ -186,7 +186,7 @@ namespace Translation.Common.Tests.SetupHelpers
 
         public static void Setup_GetLabelsWithTranslations_Returns_AllLabelReadListResponse_Success(this Mock<ILabelService> service)
         {
-            var items = new List<LabelFatDto>() { GetLabelFatDto() };
+            var items = GetLabelFatDtoList();
             service.Setup(x => x.GetLabelsWithTranslations(It.IsAny<AllLabelReadListRequest>()))
                    .ReturnsAsync(new AllLabelReadListResponse { Status = ResponseStatus.Success, Labels = items });
         }

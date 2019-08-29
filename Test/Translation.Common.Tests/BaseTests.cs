@@ -34,6 +34,7 @@ namespace Translation.Common.Tests
         protected Mock<ITranslationProviderRepository> MockTranslationProviderRepository { get; set; }
 
 
+
         protected Mock<ILabelUnitOfWork> MockLabelUnitOfWork { get; set; }
         protected Mock<ILogOnUnitOfWork> MockLogOnUnitOfWork { get; set; }
         protected Mock<IProjectUnitOfWork> MockProjectUnitOfWork { get; set; }

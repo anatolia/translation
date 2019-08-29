@@ -65,12 +65,12 @@ namespace Translation.Common.Tests.SetupHelpers
 
         public static void Setup_SelectAfter_Returns_Organizations(this Mock<IOrganizationRepository> repository)
         {
-            repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Organization, bool>>>(), 
-                                                It.IsAny<Guid>(), 
+            repository.Setup(x => x.SelectAfter(It.IsAny<Expression<Func<Organization, bool>>>(),
+                                                It.IsAny<Guid>(),
                                                 It.IsAny<int>(),
                                                 It.IsAny<bool>(),
                                                 It.IsAny<List<OrderByInfo<Organization>>>()))
-                      .ReturnsAsync(new List<Organization>{GetOrganization()});
+                      .ReturnsAsync(new List<Organization> { GetOrganization() });
         }
 
         public static void Setup_SelectMany_Returns_Organizations(this Mock<IOrganizationRepository> repository)
@@ -123,16 +123,33 @@ namespace Translation.Common.Tests.SetupHelpers
 
         public static void Setup_Any_Returns_False(this Mock<IOrganizationRepository> repository)
         {
-            repository.Setup(x => x.Any(It.IsAny<Expression<Func<Organization, bool>>>(), 
+            repository.Setup(x => x.Any(It.IsAny<Expression<Func<Organization, bool>>>(),
                                         It.IsAny<bool>()))
                       .ReturnsAsync(false);
         }
 
         public static void Setup_Any_Returns_True(this Mock<IOrganizationRepository> repository)
         {
-            repository.Setup(x => x.Any(It.IsAny<Expression<Func<Organization, bool>>>(),             
+            repository.Setup(x => x.Any(It.IsAny<Expression<Func<Organization, bool>>>(),
                                         It.IsAny<bool>()))
                       .ReturnsAsync(true);
+        }
+
+        public static void Setup_IsOrganizationActive_Returns_True(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Setup(x => x.IsOrganizationActive(It.IsAny<long>()))
+                      .ReturnsAsync(true);
+        }
+
+        public static void Setup_IsOrganizationActive_Returns_False(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Setup(x => x.IsOrganizationActive(It.IsAny<long>()))
+                      .ReturnsAsync(false);
+        }
+
+        public static void Verify_IsOrganizationActive(this Mock<IOrganizationRepository> repository)
+        {
+            repository.Verify(x => x.IsOrganizationActive(It.IsAny<long>()));
         }
 
         public static void Verify_Any(this Mock<IOrganizationRepository> repository)

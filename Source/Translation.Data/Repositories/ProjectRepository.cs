@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System.Threading.Tasks;
 using StandardRepository.Helpers;
 using StandardRepository.PostgreSQL;
 using StandardRepository.PostgreSQL.Helpers;
@@ -26,5 +26,11 @@ namespace Translation.Data.Repositories
             nameof(Project.Url),
             nameof(Project.IsActive),
         };
+
+        public Task<bool> IsProjectNameMustBeUnique(string name, long organizationId)
+        {
+            return Any(x => x.Name == name
+                            && x.OrganizationId == organizationId);
+        }
     }
 }

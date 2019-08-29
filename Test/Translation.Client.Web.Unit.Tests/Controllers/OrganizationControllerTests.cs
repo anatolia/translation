@@ -938,6 +938,20 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
         }
 
         [Test]
+        public void JournalListData_GET_UserUidAndIntegrationUidEmpty_Success()
+        {
+            // arrange
+            MockJournalService.Setup_GetJournalsOfOrganization_Returns_OrganizationJournalReadListResponse_UserUidAndIntegrationUidEmpty_Success();
+
+            // act
+            var result = SystemUnderTest.JournalListData(OrganizationOneProjectOneUid, One, Two);
+
+            // assert
+            AssertViewAndHeaders(result, new[] { "user_name", "integration_name", "message", "created_at" });
+            MockJournalService.Verify_GetJournalsOfOrganization();
+        }
+
+        [Test]
         public void JournalListData_GET_FailedResponse()
         {
             // arrange

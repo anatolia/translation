@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Translation.Common.Models.DataTransferObjects;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 
@@ -10,7 +11,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static TranslationProviderDto GetTranslationProviderDto()
         {
             var dto = new TranslationProviderDto();
-            
+
             dto.Uid = UidTwo;
             dto.Name = StringTwo;
             dto.Description = StringFive;
@@ -140,6 +141,23 @@ namespace Translation.Common.Tests.TestHelpers
             return dto;
         }
 
+        public static JournalDto GetUserUidAndIntegrationUidEmptyJournalDto()
+        {
+            var dto = new JournalDto();
+            dto.OrganizationUid = UidOne;
+            dto.OrganizationName = StringOne;
+            dto.UserUid = EmptyUid;
+            dto.UserName = StringOne;
+            dto.IntegrationUid = EmptyUid;
+            dto.IntegrationName = StringTwo;
+            dto.Message = StringFive;
+            dto.CreatedAt = DateTimeOne;
+            dto.Uid = UidThree;
+            dto.Name = StringThree;
+
+            return dto;
+        }
+
         public static JournalDto GetJournalDto()
         {
             var dto = new JournalDto();
@@ -175,8 +193,22 @@ namespace Translation.Common.Tests.TestHelpers
 
             dto.Uid = UidThree;
             dto.Key = StringFour;
-            dto.Translations = new List<LabelTranslationSlimDto>() { new LabelTranslationSlimDto() { LanguageIsoCode2 = IsoCode2One } };
+            dto.Translations = new List<LabelTranslationSlimDto>()
+            {
+                new LabelTranslationSlimDto() { LanguageIsoCode2 = IsoCode2One },
+            };
             return dto;
+        }
+
+        public static List<LabelFatDto> GetLabelFatDtoList()
+        {
+            var list = new List<LabelFatDto>();
+            var dto = GetLabelFatDto();
+            list.Add(dto);
+            var dtoOne = new LabelFatDto();
+            list.Add(dtoOne);
+
+            return list;
         }
 
         public static RevisionDto<LabelDto> GetRevisionDtoLabelDto()

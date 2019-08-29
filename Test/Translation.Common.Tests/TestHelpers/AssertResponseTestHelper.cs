@@ -14,6 +14,8 @@ namespace Translation.Common.Tests.TestHelpers
         public const string LanguageNameMustBeUnique = "language_name_must_be_unique";
         public const string LabelKeyMustBeUnique = "label_key_must_be_unique";
 
+        public const string ProjectSlugMustBeUnique = "project_slug_must_be_unique";
+
         public const string OrganizationNotFound = "organization_not_found";
         public const string ProjectNotFound = "project_not_found";
         public const string TranslationProviderNotFound = "translationprovider_not_found";
@@ -34,6 +36,7 @@ namespace Translation.Common.Tests.TestHelpers
         public const string TokenNotActive = "token_not_active";
         public const string LabelNotActive = "label_not_active";
         public const string LabelTranslationNotActive = "labeltranslation_not_active";
+        public const string TranslationProviderNotActive = "translationprovider_not_active";
 
         public const string OrganizationRevisionNotFound = "organization_revision_not_found";
         public const string ProjectRevisionNotFound = "project_revision_not_found";

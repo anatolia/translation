@@ -15,7 +15,7 @@ namespace Translation.Common.Tests.TestHelpers
 {
     public class FakeEntityTestHelper
     {
-        public static TranslationProvider GetTranslationProvider()
+        public static TranslationProvider GetTranslationProviderOne()
         {
             var model = new TranslationProvider();
             model.Id = LongOne;
@@ -24,9 +24,26 @@ namespace Translation.Common.Tests.TestHelpers
             return model;
         }
 
+        public static TranslationProvider GetTranslationProviderTwo()
+        {
+            var model = new TranslationProvider();
+            model.Id = LongTwo;
+            model.Value = StringTwo;
+            model.IsActive = BooleanTrue;
+            return model;
+        }
+
+        public static TranslationProvider GetTranslationProviderNullValue()
+        {
+            var model = new TranslationProvider();
+            model.Id = LongOne;
+            model.Value = EmptyString;
+            return model;
+        }
+
         public static TranslationProvider GetTranslationProviderNotExist()
         {
-            var model = GetTranslationProvider();
+            var model = GetTranslationProviderOne();
             model.Id = Zero;
             return model;
         }
@@ -416,7 +433,14 @@ namespace Translation.Common.Tests.TestHelpers
         {
             var project = GetOrganizationOneProjectOne();
             project.IsSuperProject = BooleanTrue;
+            return project;
+        }
 
+        public static Project GetOrganizationOneSuperProjectOneNotExist()
+        {
+            var project = GetOrganizationOneProjectOne();
+            project.IsSuperProject = BooleanTrue;
+            project.Id = Zero;
             return project;
         }
 
@@ -748,7 +772,7 @@ namespace Translation.Common.Tests.TestHelpers
             return user;
         }
 
-        public static CurrentUser GetOrganizationTwoCurrentUserOne()
+        public static CurrentUser GetOrganizationTwoCurrentSuperAdminUser()
         {
             var user = new CurrentUser();
             user.Id = OrganizationTwoUserOneId;
@@ -756,6 +780,7 @@ namespace Translation.Common.Tests.TestHelpers
             user.Name = OrganizationTwoUserOneName;
             user.Email = OrganizationTwoUserOneEmail;
             user.IsActive = BooleanTrue;
+            user.IsSuperAdmin = BooleanTrue;
 
             return user;
         }
@@ -889,7 +914,7 @@ namespace Translation.Common.Tests.TestHelpers
             labelTranslation.Name = StringOne;
             labelTranslation.Translation = StringOne;
             labelTranslation.IsActive = BooleanTrue;
-
+            labelTranslation.LanguageId = LongOne;
             return labelTranslation;
         }
 
@@ -1321,7 +1346,7 @@ namespace Translation.Common.Tests.TestHelpers
         {
             var mockFormFile = new Mock<IFormFile>();
             mockFormFile.Setup(x => x.FileName).Returns("test.png");
-            mockFormFile.Setup(x => x.ContentType).Returns("image/jpg");
+            mockFormFile.Setup(x => x.ContentType).Returns("not/image/png");
 
             return mockFormFile.Object;
         }
@@ -1356,7 +1381,6 @@ namespace Translation.Common.Tests.TestHelpers
             var webRootPath = Path.Combine(root, "translation", "Test", "Translation.Common.Tests", "wwwtestroot");
             return webRootPath;
         }
-
 
         public static string GetTestWebRootPathNotExists()
         {

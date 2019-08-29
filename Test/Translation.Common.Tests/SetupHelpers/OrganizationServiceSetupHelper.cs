@@ -14,6 +14,7 @@ using Translation.Common.Models.Responses.User.LoginLog;
 using Translation.Common.Models.Shared;
 using static Translation.Common.Tests.TestHelpers.FakeDtoTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Common.Tests.SetupHelpers
 {
@@ -168,10 +169,10 @@ namespace Translation.Common.Tests.SetupHelpers
                    .ReturnsAsync(new OrganizationPendingTranslationReadListResponse { Status = ResponseStatus.Success, Items = items });
         }
 
-        public static void Setup_GetCurrentUser_Returns_CurrentUserResponse_Null_Success(this Mock<IOrganizationService> service)
+        public static void Setup_GetCurrentUser_Returns_CurrentUserResponse_SuperAdmin(this Mock<IOrganizationService> service)
         {
             service.Setup(x => x.GetCurrentUser(It.IsAny<CurrentUserRequest>()))
-                .Returns(new CurrentUser());
+                .Returns(GetOrganizationTwoCurrentSuperAdminUser());
         }
 
         public static void Verify_GetCurrentUser(this Mock<IOrganizationService> service)
