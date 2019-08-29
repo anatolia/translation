@@ -85,6 +85,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static Guid[] GuidArrayZero = { };
         public static Guid[] GuidArrayOne = { UidOne };
         public static Guid[] GuidArrayTwo = { UidOne, UidTwo };
+        public static string GuidStringTwo = UidOne + "," + UidTwo;
 
         public static DateTime DateTimeOne => new DateTime(2019, 01, 01, 09, 00, 00);
         public static DateTime DateTimeTwo => new DateTime(2019, 01, 02, 18, 00, 00);

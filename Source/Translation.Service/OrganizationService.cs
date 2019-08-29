@@ -22,6 +22,7 @@ using Translation.Data.Entities.Main;
 using Translation.Data.Entities.Parameter;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
+using Translation.Data.RepositoryHelpers.Contracts;
 using Translation.Data.UnitOfWorks.Contracts;
 using Translation.Service.Managers;
 
@@ -37,6 +38,7 @@ namespace Translation.Service
         private readonly IUserRepository _userRepository;
         private readonly UserFactory _userFactory;
         private readonly IOrganizationRepository _organizationRepository;
+        private readonly IOrganizationRepositoryHelper _organizationRepositoryHelper;
         private readonly LabelFactory _labelFactory;
         private readonly OrganizationFactory _organizationFactory;
         private readonly IUserLoginLogRepository _userLoginLogRepository;
@@ -52,6 +54,7 @@ namespace Translation.Service
                                    ILogOnUnitOfWork logOnUnitOfWork,
                                    IUserRepository userRepository, UserFactory userFactory,
                                    IOrganizationRepository organizationRepository,
+                                   IOrganizationRepositoryHelper organizationRepositoryHelper,
                                    LabelFactory labelFactory,
                                    OrganizationFactory organizationFactory,
                                    IUserLoginLogRepository userLoginLogRepository, UserLoginLogFactory userLoginLogFactory,
@@ -69,6 +72,7 @@ namespace Translation.Service
             _userRepository = userRepository;
             _userFactory = userFactory;
             _organizationRepository = organizationRepository;
+            _organizationRepositoryHelper = organizationRepositoryHelper;
             _labelFactory = labelFactory;
             _organizationFactory = organizationFactory;
             _userLoginLogRepository = userLoginLogRepository;
@@ -235,7 +239,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            if (await _organizationRepositoryHelper.IsAnyActive(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
@@ -251,6 +255,7 @@ namespace Translation.Service
             if (await _organizationRepository.Any(x => x.Name == request.Name && x.Id != currentUser.OrganizationId))
             {
                 response.SetFailedBecauseNameMustBeUnique(nameof(Organization));
+                return response;
             }
 
             var updatedEntity = _organizationFactory.CreateEntityFromRequest(request, entity);

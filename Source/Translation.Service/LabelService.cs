@@ -98,8 +98,7 @@ namespace Translation.Service
 
             if (await _labelRepository.Any(x => x.Key == request.LabelKey && x.ProjectId == project.Id))
             {
-                response.ErrorMessages.Add("label_key_must_be_unique");
-                response.Status = ResponseStatus.Failed;
+                response.SetFailedBecauseLabelKeyMustBeUnique(nameof(Label));
                 return response;
             }
 
@@ -207,8 +206,7 @@ namespace Translation.Service
 
             if (await _labelRepository.Any(x => x.Key == request.LabelKey && x.ProjectId == project.Id))
             {
-                response.ErrorMessages.Add("label_key_must_be_unique");
-                response.Status = ResponseStatus.Failed;
+                response.SetFailedBecauseLabelKeyMustBeUnique(nameof(Label));
                 return response;
             }
 
@@ -335,8 +333,7 @@ namespace Translation.Service
 
         public async Task<List<Label>> AddLabels(Project project, List<LabelListInfo> labels, LabelCreateListResponse response)
         {
-            var oldLabels = await _labelRepository.SelectAll(x => x.ProjectId == project.Id, false,
-                                                             new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Id) });
+            var oldLabels = await _labelRepository.SelectAll(x => x.ProjectId == project.Id, false);
 
             var isAlphabetical = new Regex("^[A-Za-z0-9_]+$", RegexOptions.Compiled);
             var labelsToInsert = new List<Label>();
@@ -382,11 +379,9 @@ namespace Translation.Service
         public async Task<List<LabelTranslation>> AddedLabelAddLabelTranslation(Project project, List<LabelListInfo> labels, List<Label> labelsToAdd,
                                                                                 LabelCreateListResponse response)
         {
-            var languages = await _languageRepository.SelectAll(null, false,
-                                                                new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id) });
+            var languages = await _languageRepository.SelectAll(null, false);
 
-            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == project.Id, false,
-                                                                              new List<OrderByInfo<LabelTranslation>>() { new OrderByInfo<LabelTranslation>(x => x.Id) });
+            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == project.Id, false);
 
             var translationsToInsert = new List<LabelTranslation>();
 
@@ -431,16 +426,11 @@ namespace Translation.Service
         public async Task<Tuple<List<LabelTranslation>, List<LabelTranslation>>> AddedLabelUpdateAndAddLabelTranslation(Project project, List<LabelListInfo> labels, List<Label> labelsToAdd, LabelCreateListResponse response)
         {
 
-            var languages = await _languageRepository.SelectAll(null, false,
-                                                                new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id) });
+            var languages = await _languageRepository.SelectAll(null, false);
 
-            var oldLabels = await _labelRepository.SelectAll(x => x.ProjectId == project.Id, false,
-                                                             new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Id) });
+            var oldLabels = await _labelRepository.SelectAll(x => x.ProjectId == project.Id, false);
 
-            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == project.Id, false,
-                                                                              new List<OrderByInfo<LabelTranslation>>() { new OrderByInfo<LabelTranslation>(x => x.Id) });
-
-
+            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == project.Id, false);
 
             var translationsToInsert = new List<LabelTranslation>();
             var translationsToUpdate = new List<LabelTranslation>();
@@ -751,12 +741,12 @@ namespace Translation.Service
             }
 
             var translations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == project.Id && x.IsActive, false,
-                                                                           new List<OrderByInfo<LabelTranslation>>() { new OrderByInfo<LabelTranslation>(x => x.Id) });
+                                                                           new List<OrderByInfo<LabelTranslation>>() { new OrderByInfo<LabelTranslation>(x => x.Id, false) });
             var languages = await _languageRepository.SelectAll(null, false,
-                                                                new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id) });
+                                                                new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id, false) });
 
             var entities = await _labelRepository.SelectAll(x => x.ProjectId == project.Id && x.IsActive, false,
-                                                            new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Id) });
+                                                            new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Id, false) });
             if (translations != null)
             {
                 for (var i = 0; i < entities.Count; i++)
@@ -974,8 +964,8 @@ namespace Translation.Service
 
             if (await _labelRepository.Any(x => x.Key == request.LabelKey && x.ProjectUid == request.ProjectUid))
             {
-                response.ErrorMessages.Add("label_key_must_be_unique");
-                response.Status = ResponseStatus.Failed;
+
+                response.SetFailedBecauseLabelKeyMustBeUnique(nameof(Label));
                 return response;
             }
 
@@ -1154,11 +1144,9 @@ namespace Translation.Service
 
         public async Task<List<LabelTranslation>> AddLabelTranslation(Label label, List<TranslationListInfo> LabelTranslations, LabelTranslationCreateListResponse response)
         {
-            var languages = await _languageRepository.SelectAll(null, false,
-                                                                new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id) });
+            var languages = await _languageRepository.SelectAll(null, false);
 
-            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == label.ProjectId, false,
-                                                                             new List<OrderByInfo<LabelTranslation>>() { new OrderByInfo<LabelTranslation>(x => x.Id) });
+            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == label.ProjectId, false);
 
             var translationsToInsert = new List<LabelTranslation>();
 
@@ -1199,11 +1187,9 @@ namespace Translation.Service
 
         public async Task<Tuple<List<LabelTranslation>, List<LabelTranslation>>> UpdateAndAddLabelTranslation(Label label, List<TranslationListInfo> LabelTranslations, LabelTranslationCreateListResponse response)
         {
-            var languages = await _languageRepository.SelectAll(null, false,
-                                                                new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id) });
+            var languages = await _languageRepository.SelectAll(null, false);
 
-            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == label.ProjectId, false,
-                                                                              new List<OrderByInfo<LabelTranslation>>() { new OrderByInfo<LabelTranslation>(x => x.Id) });
+            var oldTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == label.ProjectId, false);
 
             var translationsToInsert = new List<LabelTranslation>();
             var translationsToUpdate = new List<LabelTranslation>();

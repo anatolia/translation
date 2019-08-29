@@ -16,7 +16,7 @@ namespace Translation.Common.Tests.TestHelpers
 
         public const string OrganizationNotFound = "organization_not_found";
         public const string ProjectNotFound = "project_not_found";
-        public const string TranslationProviderNotFound = "translationProvider_not_found";
+        public const string TranslationProviderNotFound = "translationprovider_not_found";
         public const string UserNotFound = "user_not_found";
         public const string LanguageNotFound = "language_not_found";
         public const string IntegrationNotFound = "integration_not_found";
@@ -57,6 +57,7 @@ namespace Translation.Common.Tests.TestHelpers
 
         public const string UserNotSuperAdmin = "user_not_super_admin";
         public const string UserNotAdmin = "user_not_admin";
+
         public static void AssertResponseStatusAndErrorMessages(BaseResponse result, ResponseStatus status, string errorMessage)
         {
             result.ShouldNotBeNull();

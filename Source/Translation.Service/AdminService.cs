@@ -422,8 +422,7 @@ namespace Translation.Service
                 return response;
             }
 
-            var allTranslationProviders = await _translationProviderRepository.SelectAll(x => x.Id != 0, false,
-                                                                                         new List<OrderByInfo<TranslationProvider>>() { new OrderByInfo<TranslationProvider>(x => x.Id) });
+            var allTranslationProviders = await _translationProviderRepository.SelectAll(x => x.Id != 0, false);
             if (allTranslationProviders == null)
             {
                 response.SetInvalidBecauseNotFound(nameof(TranslationProvider));
@@ -457,8 +456,9 @@ namespace Translation.Service
             {
                 if (selectedTranslationProvider.IsActive)
                 {
-                    var ActiveTranslationProvider = _translationProviderFactory.MapActiveTranslationProvider(selectedTranslationProvider);
-                    _cacheManager.UpsertActiveTranslationProviderCache(ActiveTranslationProvider);
+                    var activeTranslationProvider = _translationProviderFactory.MapActiveTranslationProvider(selectedTranslationProvider);
+
+                    _cacheManager.UpsertActiveTranslationProviderCache(activeTranslationProvider);
                 }
                 response.Status = ResponseStatus.Success;
                 return response;

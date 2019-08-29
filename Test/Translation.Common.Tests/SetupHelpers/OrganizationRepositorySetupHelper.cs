@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+
 using Moq;
+
 using StandardRepository.Models;
-using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
 using Translation.Data.Repositories.Contracts;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
+
 namespace Translation.Common.Tests.SetupHelpers
 {
     public static class OrganizationRepositorySetupHelper

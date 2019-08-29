@@ -776,6 +776,13 @@ namespace Translation.Common.Tests.TestHelpers
             return request;
         }
 
+        public static ActiveTranslationProviderRequest GetActiveTranslationProvider()
+        {
+            var request = new ActiveTranslationProviderRequest();
+            request.IsActive = BooleanTrue;
+            return request;
+        }
+
         public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequest()
         {
             var request = new OrganizationJournalReadListRequest(CurrentUserId, OrganizationOneUid);

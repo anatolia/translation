@@ -18,6 +18,8 @@ namespace Translation.Common.Tests.TestHelpers
         public static TranslationProvider GetTranslationProvider()
         {
             var model = new TranslationProvider();
+            model.Id = LongOne;
+            model.Value = StringOne;
             model.IsActive = BooleanTrue;
             return model;
         }

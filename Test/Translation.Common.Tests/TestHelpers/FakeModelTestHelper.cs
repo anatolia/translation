@@ -965,7 +965,7 @@ namespace Translation.Common.Tests.TestHelpers
             model.ProjectName = StringOne;
             model.Description = StringOne;
             model.ProjectLanguageUid = UidOne;
-
+            model.LabelTranslationLanguageUid = GuidStringTwo;
             return model;
         }
 

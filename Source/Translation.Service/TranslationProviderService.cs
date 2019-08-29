@@ -64,12 +64,12 @@ namespace Translation.Service
             if (request.PagingInfo.Skip < 1)
             {
                 entities = await _translationProviderRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
-                                                                            new List<OrderByInfo<TranslationProvider>>() { new OrderByInfo<TranslationProvider>(x => x.Uid) });
+                                                                            new List<OrderByInfo<TranslationProvider>>() { new OrderByInfo<TranslationProvider>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
                 entities = await _translationProviderRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
-                                                                           new List<OrderByInfo<TranslationProvider>>() { new OrderByInfo<TranslationProvider>(x => x.Id) });
+                                                                           new List<OrderByInfo<TranslationProvider>>() { new OrderByInfo<TranslationProvider>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
@@ -127,10 +127,6 @@ namespace Translation.Service
         public ActiveTranslationProvider GetActiveTranslationProvider(ActiveTranslationProviderRequest request)
         {
             var activeTranslationProvider = _cacheManager.GetCachedActiveTranslationProvider(request.IsActive);
-            if (activeTranslationProvider == null)
-            {
-
-            }
 
             return activeTranslationProvider;
         }
