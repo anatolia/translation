@@ -11,28 +11,22 @@
     <label data-translation="project_language">project_language</label>
     <img data-translation="@Model.ProjectLanguageIconUrl" src="@Model.ProjectLanguageIconUrl" alt="@Model.ProjectLanguageName" style="height: 34px; margin-top: 3px; margin-bottom: 5px;" />
     <span data-translation="@Model.ProjectLanguageName" style="display: block; margin-bottom: 10px;">@Model.ProjectLanguageName</span>
-    <span id="providerInfo" data-translation="@Model.ActiveTranslationProviderInfo" style="font-weight: bold">@Model.ActiveTranslationProviderInfo</span>
 </div>
 
 <form method="post">
     <partial name="Components/_Hidden" model="@Model.OrganizationInput" />
     <partial name="Components/_Hidden" model="@Model.ProjectInput" />
-    <partial name="Components/_Hidden" model="@Model.ProjectNameInput" />
-    <partial name="Components/_Hidden" model="@Model.ProjectLanguageInput" />
-    <partial name="Components/_Hidden" model="@Model.ProjectLanguageNameInput" />
-    <partial name="Components/_Hidden" model="@Model.ProjectLanguageIconUrlInput" />
-    <partial name="Components/_Hidden" model="@Model.ActiveTranslationProviderInfoInput" />
+
     <partial name="Components/_Input" model="@Model.KeyInput" />
     <partial name="Components/_LongInput" model="@Model.DescriptionInput" />
-
-    @if (Model.ActiveTranslationProviderInfo.EndsWith("not_active"))
+    <partial name="Components/_Select" model="@Model.LabelTranslationLanguagesInput" />
+    @if (!Model.IsHavingActiveTranslationProvider)
     {
-        <partial name="Components/_Select" model="@Model.LabelTranslationLanguagesInput" />
-        <span data-translation="@Model.ActiveTranslationProviderInfo" style="font-weight: bold; color: red; margin: 4px">@Model.ActiveTranslationProviderInfo</span>
+        <span data-translation="translation_provider_is_not_active" class="error">translation_provider_is_not_active</span>
     }
     else
     {
-        <partial name="Components/_Select" model="@Model.LabelTranslationLanguagesInput" />
+     <span data-translation="translation_provider_is">translation_provider_is</span>@Html.Raw("&nbsp;")<span>@Model.TranslationProviderName</span>
     }
 
     <partial name="Components/_Checkbox" model="@Model.IsGettingTranslationFromOtherProjectInput" />

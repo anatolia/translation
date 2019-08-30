@@ -76,18 +76,6 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             Assert.AreEqual(attributes.Length, 1);
         }
 
-        [TestCase(InviteDoneAction)]
-        [TestCase(InviteDoneAction)]
-        public void Methods_Returning_ViewResult_Has_Model_With_Title(string methodName)
-        {
-            var methodInfo = SystemUnderTest.GetType().GetMethod(methodName);
-            var result = (ViewResult)methodInfo.Invoke(SystemUnderTest, null);
-
-            result.ShouldSatisfyAllConditions(() => result.ShouldNotBeNull(),
-                                              () => result.ViewName.ShouldBeNullOrEmpty(),
-                                              () => result.Model.ShouldNotBeNull());
-        }
-
         [Test]
         public void Controller_Derived_From_ControllerBaseTests()
         {

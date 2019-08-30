@@ -19,9 +19,10 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.ProjectLanguageName = dto.LanguageName;
             model.ProjectLanguageUid = dto.LanguageUid;
             model.ProjectLanguageIconUrl = dto.LanguageIconUrl;
-            if (activeTranslationProvider!=null)
+            model.IsHavingActiveTranslationProvider = activeTranslationProvider != null;
+            if (model.IsHavingActiveTranslationProvider)
             {
-                model.ActiveTranslationProviderInfo = activeTranslationProvider.Info;
+                model.TranslationProviderName = activeTranslationProvider.Name;
             }
             model.SetInputModelValues();
             return model;
@@ -101,7 +102,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             var model = new UploadLabelTranslationFromCSVFileModel();
             model.OrganizationUid = label.OrganizationUid;
             model.LabelUid = label.Uid;
-            model.LabelKey= label.Key;
+            model.LabelKey = label.Key;
 
             model.SetInputModelValues();
             return model;
@@ -117,7 +118,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.ProjectLanguageUid = project.LanguageUid;
 
             model.LabelUid = label.Uid;
-            model.LabelKey= label.Key;
+            model.LabelKey = label.Key;
             model.LanguageUid = project.LanguageUid;
             model.LanguageName = project.LanguageName;
             model.SetInputModelValues();

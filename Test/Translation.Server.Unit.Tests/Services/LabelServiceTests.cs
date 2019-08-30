@@ -982,29 +982,6 @@ namespace Translation.Server.Unit.Tests.Services
             MockLabelRepository.Verify_SelectAll();
         }
 
-        [Ignore("request.Token.IsNotEmptyGuid() && request.CurrentUserId > 0")]
-        [Test]
-        public async Task LabelService_GetLabelsWithTranslations_IsDefaultProjectFalse_Invalid()
-        {
-            // arrange
-            var request = GetAllLabelReadListRequest_IsDefaultProjectFalse();
-            MockProjectRepository.Setup_Select_Returns_OrganizationOneSuperProjectOne();
-            MockLabelTranslationRepository.Setup_SelectAll_Returns_LabelTranslations();
-            MockLanguageRepository.Setup_SelectAll_Returns_Languages();
-            MockLabelRepository.Setup_SelectAll_Returns_Labels();
-
-            // act
-            var result = await SystemUnderTest.GetLabelsWithTranslations(request);
-
-            // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
-            AssertReturnType<AllLabelReadListResponse>(result);
-            MockProjectRepository.Verify_Select();
-            MockLabelTranslationRepository.Verify_SelectAll();
-            MockLanguageRepository.Verify_SelectAll();
-            MockLabelRepository.Verify_SelectAll();
-        }
-
         [Test]
         public async Task LabelService_GetLabelsWithTranslations_CurrentUserId_Invalid_ProjectNotFound()
         {
@@ -2180,35 +2157,6 @@ namespace Translation.Server.Unit.Tests.Services
             AssertReturnType<LabelTranslationReadResponse>(result);
             MockLabelTranslationRepository.Verify_Select();
             MockLanguageRepository.Verify_SelectById();
-        }
-
-        [Test]
-        public async Task LabelService_GetTranslationProvider_Success()
-        {
-            // arrange
-            MockTranslationProviderRepository.Setup_Select_Returns_TranslationProviderOne();
-
-            // act
-            var result = await SystemUnderTest.GetTranslationProvider();
-
-            // assert
-            AssertReturnType<string>(result);
-            result.Contains("selected_languages_will_translate_automatically_by_");
-            MockTranslationProviderRepository.Verify_Select();
-        }
-
-        [Test]
-        public async Task LabelService_GetTranslationProvider_ActiveTranslationProviderNull()
-        {
-            // arrange
-         
-            // act
-            var result = await SystemUnderTest.GetTranslationProvider();
-
-            // assert
-            AssertReturnType<string>(result);
-            result.ShouldBe("translation_provider_is_not_active");
-         
         }
 
         [Test]

@@ -113,7 +113,7 @@ namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.Project
             SystemUnderTest.LabelCountInput.Value.ShouldBe(SystemUnderTest.LabelCount.ToString());
             SystemUnderTest.LabelTranslationCountInput.Value.ShouldBe(SystemUnderTest.LabelTranslationCount.ToString());
             SystemUnderTest.IsSuperProjectInput.Value.ShouldBe(SystemUnderTest.IsSuperProject);
-            SystemUnderTest.LanguageInput.Value.ShouldBe(SystemUnderTest.Language.ToUidString());
+            SystemUnderTest.LanguageInput.Value.ShouldBe(SystemUnderTest.LanguageUid.ToUidString());
             SystemUnderTest.LanguageInput.Text.ShouldBe(SystemUnderTest.LanguageName);
             SystemUnderTest.LanguageInput.IsOptionTypeContent.ShouldBeTrue();
             SystemUnderTest.InfoMessages.Contains("the_project_language_will_use_as_the_source_language_during_the_automatic_translation_of_the_labels").ShouldBeTrue();

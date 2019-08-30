@@ -725,7 +725,7 @@ namespace Translation.Server.Unit.Tests.Services
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
-            MockProjectRepository.Setup_Delete_Success();
+            MockProjectUnitOfWork.Setup_DoDeleteWork_Returns_True();
 
             // act
             var result = await SystemUnderTest.DeleteProject(request);
@@ -736,7 +736,7 @@ namespace Translation.Server.Unit.Tests.Services
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
-            MockProjectRepository.Verify_Delete();
+            MockProjectUnitOfWork.Verify_DoDeleteWork();
         }
 
         [Test]
@@ -841,7 +841,6 @@ namespace Translation.Server.Unit.Tests.Services
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
-            MockProjectRepository.Setup_Delete_Failed();
             MockProjectUnitOfWork.Setup_DoDeleteWork_Returns_False();
 
             // act
@@ -853,31 +852,6 @@ namespace Translation.Server.Unit.Tests.Services
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
-            MockProjectRepository.Verify_Delete();
-            MockProjectUnitOfWork.Verify_DoDeleteWork();
-        }
-
-        [Test]
-        public async Task ProjectService_DeleteProject_DoDeleteWork_Success()
-        {
-            // arrange
-            var request = GetProjectDeleteRequest();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
-            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
-            MockOrganizationRepository.Setup_Any_Returns_False();
-            MockProjectRepository.Setup_Delete_Failed();
-            MockProjectUnitOfWork.Setup_DoDeleteWork_Returns_True();
-
-            // act
-            var result = await SystemUnderTest.DeleteProject(request);
-
-            // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
-            AssertReturnType<ProjectDeleteResponse>(result);
-            MockUserRepository.Verify_SelectById();
-            MockProjectRepository.Verify_Select();
-            MockOrganizationRepository.Verify_Any();
-            MockProjectRepository.Verify_Delete();
             MockProjectUnitOfWork.Verify_DoDeleteWork();
         }
 
@@ -1115,7 +1089,7 @@ namespace Translation.Server.Unit.Tests.Services
             // assert
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectPendingTranslationReadListResponse>(result);
-            AssertPagingInfoForSelectAfter(request.PagingInfo,Ten);
+            AssertPagingInfoForSelectAfter(request.PagingInfo, Ten);
             MockProjectRepository.Verify_Select();
             MockUserRepository.Verify_SelectById();
             MockLabelRepository.Verify_SelectAfter();
@@ -1138,7 +1112,7 @@ namespace Translation.Server.Unit.Tests.Services
             // assert
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectPendingTranslationReadListResponse>(result);
-            AssertPagingInfoForSelectMany(request.PagingInfo,Ten);
+            AssertPagingInfoForSelectMany(request.PagingInfo, Ten);
             MockProjectRepository.Verify_Select();
             MockUserRepository.Verify_SelectById();
             MockLabelRepository.Verify_SelectMany();

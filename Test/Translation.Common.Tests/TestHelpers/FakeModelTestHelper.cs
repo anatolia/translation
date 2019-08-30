@@ -380,7 +380,7 @@ namespace Translation.Common.Tests.TestHelpers
             model.LabelTranslationCount = Two;
             model.Url = HttpsUrl;
             model.Slug = StringOne;
-            model.Language = UidOne;
+            model.LanguageUid = UidOne;
             model.LanguageName = StringOne;
 
             return model;
@@ -1429,7 +1429,7 @@ namespace Translation.Common.Tests.TestHelpers
             model.Name = name;
             model.Slug = slug;
             model.Url = url;
-            model.Language = languageUid;
+            model.LanguageUid = languageUid;
             model.Description = description;
 
             return model;

@@ -682,12 +682,6 @@ namespace Translation.Service
             }
             else
             {
-                if (request.Token.IsNotEmptyGuid() && request.CurrentUserId > 0)
-                {
-                    response.SetInvalid();
-                    return response;
-                }
-
                 if (request.CurrentUserId > 0)
                 {
                     project = await _projectRepository.Select(x => x.Uid == request.ProjectUid && x.IsActive);
@@ -717,15 +711,7 @@ namespace Translation.Service
                         return response;
                     }
 
-                    if (request.IsDefaultProject)
-                    {
-                        project = await _projectRepository.Select(x => x.Name == "Default" && x.OrganizationId == token.OrganizationId && x.IsActive);
-                    }
-                    else
-                    {
-                        project = await _projectRepository.Select(x => x.Uid == request.ProjectUid && x.IsActive);
-                    }
-
+                    project = await _projectRepository.Select(x => x.Uid == request.ProjectUid && x.IsActive);
                     if (project.IsNotExist())
                     {
                         response.SetInvalidBecauseNotFound(nameof(Project));
@@ -741,18 +727,15 @@ namespace Translation.Service
 
                 if (await _organizationRepository.Any(x => x.Id == project.OrganizationId && !x.IsActive))
                 {
-                   response.SetInvalidBecauseNotActive(nameof(Organization));
+                    response.SetInvalidBecauseNotActive(nameof(Organization));
                     return response;
                 }
             }
 
-            var translations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == project.Id && x.IsActive, false,
-                                                                           new List<OrderByInfo<LabelTranslation>>() { new OrderByInfo<LabelTranslation>(x => x.Id, false) });
-            var languages = await _languageRepository.SelectAll(null, false,
-                                                                new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id, false) });
+            var translations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == project.Id && x.IsActive, false);
+            var languages = await _languageRepository.SelectAll(null, false);
 
-            var entities = await _labelRepository.SelectAll(x => x.ProjectId == project.Id && x.IsActive, false,
-                                                            new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Id, false) });
+            var entities = await _labelRepository.SelectAll(x => x.ProjectId == project.Id && x.IsActive, false);
             if (translations != null)
             {
                 for (var i = 0; i < entities.Count; i++)
@@ -792,7 +775,8 @@ namespace Translation.Service
             }
 
             response.Status = ResponseStatus.Success;
-            return response; }
+            return response;
+        }
 
         public async Task<LabelEditResponse> EditLabel(LabelEditRequest request)
         {
@@ -1281,20 +1265,6 @@ namespace Translation.Service
             response.Item = _labelTranslationFactory.CreateDtoFromEntity(labelTranslation, language);
             response.Status = ResponseStatus.Success;
             return response;
-        }
-
-        public async Task<string> GetTranslationProvider()
-        {
-            var ActiveTranslationProvider = _cacheManager.GetCachedActiveTranslationProvider(true);
-
-            if (ActiveTranslationProvider == null)
-            {
-                return  "translation_provider_is_not_active";
-            }
-            else
-            {
-                return "selected_languages_will_translate_automatically_by_" + ActiveTranslationProvider.Name;
-            }
         }
 
         public async Task<LabelTranslationReadListResponse> GetTranslations(LabelTranslationReadListRequest request)

@@ -323,13 +323,6 @@ namespace Translation.Service
                 return response;
             }
 
-            var result = await _projectRepository.Delete(request.CurrentUserId, project.Id);
-            if (result)
-            {
-                response.Status = ResponseStatus.Success;
-                return response;
-            }
-
             var uowResult = await _projectUnitOfWork.DoDeleteWork(request.CurrentUserId, project);
             if (uowResult)
             {

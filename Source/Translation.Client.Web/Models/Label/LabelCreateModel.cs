@@ -19,8 +19,9 @@ namespace Translation.Client.Web.Models.Label
         public string Description { get; set; }
         public string LabelTranslationLanguageName { get; set; }
         public string LabelTranslationLanguageUid { get; set; }
-        public string ActiveTranslationProviderInfo { get; set; }
+        public string TranslationProviderName { get; set; }
         public bool IsGettingTranslationFromOtherProject { get; set; }
+        public bool IsHavingActiveTranslationProvider { get; set; }
 
         public HiddenInputModel OrganizationInput { get; }
         public HiddenInputModel ProjectInput { get; }
@@ -28,7 +29,6 @@ namespace Translation.Client.Web.Models.Label
         public HiddenInputModel ProjectLanguageInput { get; }
         public HiddenInputModel ProjectLanguageNameInput { get; }
         public HiddenInputModel ProjectLanguageIconUrlInput { get; }
-        public HiddenInputModel ActiveTranslationProviderInfoInput { get; }
         public InputModel KeyInput { get; }
         public LongInputModel DescriptionInput { get; }
         public SelectInputModel LabelTranslationLanguagesInput { get; }
@@ -43,13 +43,11 @@ namespace Translation.Client.Web.Models.Label
             ProjectLanguageInput = new HiddenInputModel("ProjectLanguageUid");
             ProjectLanguageNameInput = new HiddenInputModel("ProjectLanguageName");
             ProjectLanguageIconUrlInput = new HiddenInputModel("ProjectLanguageIconUrl");
-            ActiveTranslationProviderInfoInput= new HiddenInputModel("ActiveTranslationProviderInfo");
             KeyInput = new InputModel("Key", "key", true);
             DescriptionInput = new LongInputModel("Description", "description");
             LabelTranslationLanguagesInput = new SelectInputModel("LabelTranslationLanguage", "labelTranslationLanguage", "/Language/SelectData");
             LabelTranslationLanguagesInput.IsMultiple = true;
             LabelTranslationLanguagesInput.InfoText = "selected_languages_will_have_translated_by_provider_automatically";
-            ActiveTranslationProviderInfo = "translation_provider_is_not_active";
             IsGettingTranslationFromOtherProjectInput = new CheckboxInputModel("IsGettingTranslationFromOtherProject", "is_getting_translation_from_other_project");
         }
 
@@ -61,7 +59,7 @@ namespace Translation.Client.Web.Models.Label
             ProjectNameInput.Value = ProjectName;
             ProjectLanguageNameInput.Value = ProjectLanguageName;
             ProjectLanguageIconUrlInput.Value = ProjectLanguageIconUrl;
-            ActiveTranslationProviderInfoInput.Value = ActiveTranslationProviderInfo;
+          
             KeyInput.Value = Key;
             DescriptionInput.Value = Description;
             if (ErrorMessages.Count==0)
