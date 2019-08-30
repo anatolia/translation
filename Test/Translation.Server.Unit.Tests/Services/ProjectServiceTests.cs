@@ -1100,6 +1100,52 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
+        public async Task ProjectService_GetPendingTranslations_SelectAfter_Success()
+        {
+            // arrange
+            var request = GetProjectPendingTranslationReadListRequestForSelectAfter();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
+            MockLabelRepository.Setup_SelectAfter_Returns_Labels();
+            MockLabelRepository.Setup_Count_Returns_Ten();
+
+            // act
+            var result = await SystemUnderTest.GetPendingTranslations(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<ProjectPendingTranslationReadListResponse>(result);
+            AssertPagingInfoForSelectAfter(request.PagingInfo,Ten);
+            MockProjectRepository.Verify_Select();
+            MockUserRepository.Verify_SelectById();
+            MockLabelRepository.Verify_SelectAfter();
+            MockLabelRepository.Verify_Count();
+        }
+
+        [Test]
+        public async Task ProjectService_GetPendingTranslations_SelectMany_Success()
+        {
+            // arrange
+            var request = GetProjectPendingTranslationReadListRequestForSelectMany();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
+            MockLabelRepository.Setup_SelectMany_Returns_Labels();
+            MockLabelRepository.Setup_Count_Returns_Ten();
+
+            // act
+            var result = await SystemUnderTest.GetPendingTranslations(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<ProjectPendingTranslationReadListResponse>(result);
+            AssertPagingInfoForSelectMany(request.PagingInfo,Ten);
+            MockProjectRepository.Verify_Select();
+            MockUserRepository.Verify_SelectById();
+            MockLabelRepository.Verify_SelectMany();
+            MockLabelRepository.Verify_Count();
+        }
+
+        [Test]
         public async Task ProjectService_GetPendingTranslations_Invalid_ProjectNotFound()
         {
             // arrange
@@ -1111,22 +1157,6 @@ namespace Translation.Server.Unit.Tests.Services
 
             // assert
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
-            AssertReturnType<ProjectPendingTranslationReadListResponse>(result);
-            MockProjectRepository.Verify_Select();
-        }
-
-        [Test]
-        public async Task ProjectService_GetPendingTranslations_Success()
-        {
-            // arrange
-            var request = GetProjectPendingTranslationReadListRequest();
-            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
-
-            // act
-            var result = await SystemUnderTest.GetPendingTranslations(request);
-
-            // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<ProjectPendingTranslationReadListResponse>(result);
             MockProjectRepository.Verify_Select();
         }
@@ -1148,5 +1178,6 @@ namespace Translation.Server.Unit.Tests.Services
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
         }
+
     }
 }

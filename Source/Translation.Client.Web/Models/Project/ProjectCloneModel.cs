@@ -21,7 +21,7 @@ namespace Translation.Client.Web.Models.Project
 
         public string Slug { get; set; }
 
-        public Guid Language { get; set; }
+        public Guid LanguageUid { get; set; }
         public string LanguageName { get; set; }
 
         public HiddenInputModel OrganizationInput { get; }
@@ -71,9 +71,9 @@ namespace Translation.Client.Web.Models.Project
             LabelTranslationCountInput.Value = LabelTranslationCount.ToString();
             IsSuperProjectInput.Value = IsSuperProject;
 
-            if (Language.IsNotEmptyGuid())
+            if (LanguageUid.IsNotEmptyGuid())
             {
-                LanguageInput.Value = Language.ToUidString();
+                LanguageInput.Value = LanguageUid.ToUidString();
                 LanguageInput.Text = LanguageName;
             }
 
@@ -115,7 +115,7 @@ namespace Translation.Client.Web.Models.Project
                 InputErrorMessages.AddRange(UrlInput.ErrorMessage);
             }
 
-            if (Language.IsEmptyGuid())
+            if (LanguageUid.IsEmptyGuid())
             {
                 LanguageInput.ErrorMessage.Add("language_uid_not_valid");
                 InputErrorMessages.AddRange(LanguageInput.ErrorMessage);

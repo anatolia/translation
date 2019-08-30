@@ -20,7 +20,7 @@ namespace Translation.Common.Tests.SetupHelpers
                                                 It.IsAny<int>(),
                                                 It.IsAny<bool>(),
                                                 It.IsAny<List<OrderByInfo<LabelTranslation>>>()))
-                .ReturnsAsync(new List<LabelTranslation>() { GetLabelTranslation() });
+                      .ReturnsAsync(GetLabelTranslationList());
 
         }
 

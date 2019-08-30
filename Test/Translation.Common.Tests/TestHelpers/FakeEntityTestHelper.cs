@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using Moq;
+using NUnit.Framework;
 using StandardRepository.Models.Entities;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
@@ -918,6 +919,15 @@ namespace Translation.Common.Tests.TestHelpers
             return labelTranslation;
         }
 
+        public static List<LabelTranslation> GetLabelTranslationList()
+        {
+            var list = new List<LabelTranslation>();
+            list.Add(GetLabelTranslation());
+            list.Add(GetOrganizationOneProjectOneLabelOneLabelTranslationOne());
+
+            return list;
+        }
+
         public static LabelTranslation GetLabelTranslationNotExist()
         {
             var labelTranslation = GetLabelTranslation();
@@ -1023,15 +1033,24 @@ namespace Translation.Common.Tests.TestHelpers
         public static Language GetLanguageOne()
         {
             var language = new Language();
-            language.Name = "Language One";
+            language.Name = StringOne;
             language.Id = LongOne;
             language.Uid = UidOne;
 
-            language.OriginalName = "Language One Original Name";
+            language.OriginalName = StringOne;
             language.IsoCode2Char = IsoCode2One;
             language.IsoCode3Char = IsoCode3One;
             language.IconUrl = StringOne;
             return language;
+        }
+
+        public static List<Language> GetLanguageOneList()
+        {
+            var list = new List<Language>();
+            list.Add(GetLanguageOne());
+            list.Add(GetLanguageTwo());
+
+            return list;
         }
 
         public static Language GetLanguageTwo()
