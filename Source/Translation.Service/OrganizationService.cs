@@ -424,6 +424,7 @@ namespace Translation.Service
                         response.Item.OrganizationUid = user.OrganizationUid;
                         response.Item.Name = user.Name;
                         response.Item.Email = user.Email;
+                        
                         return response;
                     }
                 }

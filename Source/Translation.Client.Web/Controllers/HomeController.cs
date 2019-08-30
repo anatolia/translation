@@ -16,6 +16,8 @@ namespace Translation.Client.Web.Controllers
             var model = new HomeModel();
             model.IsSuperAdmin = CurrentUser?.IsSuperAdmin ?? false;
             model.IsAuthenticated = CurrentUser != null;
+          
+
             return View(model);
         }
 

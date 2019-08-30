@@ -21,9 +21,6 @@
     <Content Include="wwwtestroot\files\index.html">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="wwwtestroot\files\projectTranslations.csv">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
     <Content Include="wwwtestroot\files\uploadLabelCsvTemplate.csv">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

@@ -1,16 +1,17 @@
 ﻿@model TranslationProviderEditModel
 
+<a href="/TranslationProvider/List/" data-translation="translation_providers_link">translation_providers_link</a>
 <h1 data-translation="@Model.Title">@Model.Title</h1>
 <div>
     <partial name="Components/_InfoMessages" model="@Model.InfoMessages" />
     <br />
     <a href="https://medium.com/search?q=Use%20Google%20Translation%20API">How To Get Required JSON File for Google Api</a>
     <br />  <br />
-            <a href="https://translate.yandex.com/developers">How To Get Required Apikey for Yandex Api</a>
+    <a href="https://translate.yandex.com/developers">How To Get Required Apikey for Yandex Api</a>
 </div>
 <div>
     <label data-translation="translation_provider">translation_provider</label>
-    <a href="/TranslationProvider/List/">@Model.Name</a>
+    <a href="/TranslationProvider/Detail/@Model.TranslationProviderUid" data-translation="@Model.Name">@Model.Name</a>
 </div>
 
 <form method="post" enctype="multipart/form-data">

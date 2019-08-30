@@ -37,8 +37,15 @@
 <partial name="Components/_Checkbox" model="@Model.IsActiveInput" />
 
 <div class="bottom-links">
-    <a href="/User/ChangePassword" data-translation="change_password_link">change_password_link</a>
-    <a href="/User/Edit/@Model.UserUid" data-translation="user_edit_link">user_edit_link</a>
+
+    @if (@Model.UserUid == Model.InvitedByUserUid
+         || Model.InvitedByUserUid == null)
+    {
+        <a href="/User/ChangePassword" data-translation="change_password_link">change_password_link</a>
+
+        <a href="/User/Edit/@Model.UserUid" data-translation="user_edit_link">user_edit_link</a>
+    }
+
     <a href="/User/JournalList/" data-translation="journals_link">journals_link</a>
     <a href="/User/Revisions/@Model.UserUid" data-translation="revisions_link">revisions_link</a>
 </div>

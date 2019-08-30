@@ -128,7 +128,6 @@ namespace Translation.Client.Web.Helpers.Mappers
         public static LabelTranslationEditModel MapLabelTranslationEditModel(LabelTranslationDto dto)
         {
             var model = new LabelTranslationEditModel();
-            model.LabelTranslationUid = dto.Uid;
             model.Translation = dto.Translation;
             model.TranslationInput.Value = dto.Translation;
             model.LabelKey = dto.LabelKey;
@@ -136,6 +135,9 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.LanguageIconUrl = dto.LanguageIconUrl;
 
             model.OrganizationUid = dto.OrganizationUid;
+            model.LabelUid = dto.LabelUid;
+            model.LabelTranslationUid = dto.Uid;
+
             model.SetInputModelValues();
 
             return model;
