@@ -51,7 +51,10 @@ namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.LabelTranslation
 
             // assert
             SystemUnderTest.OrganizationInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
+            SystemUnderTest.LabelInput.Value.ShouldBe(SystemUnderTest.LabelUid.ToUidString());
             SystemUnderTest.LabelTranslationInput.Value.ShouldBe(SystemUnderTest.LabelTranslationUid.ToUidString());
+            SystemUnderTest.TranslationInput.Value.ShouldBe(SystemUnderTest.Translation);
+
         }
 
         public static IEnumerable MessageTestCases
@@ -59,16 +62,17 @@ namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.LabelTranslation
             get
             {
                 yield return new TestCaseData(CaseOne,
-                                              UidOne, UidTwo, StringOne,
+                                              UidOne, UidTwo, UidThree, StringOne,
                                               StringTwo, StringThree, StringFour,
                                               null,
                                               null,
                                               true);
 
                 yield return new TestCaseData(CaseTwo,
-                                              EmptyUid, EmptyUid, EmptyString,
+                                              EmptyUid, EmptyUid, EmptyUid, EmptyString,
                                               EmptyString, EmptyString, EmptyString,
                                               new[] { "organization_uid_not_valid",
+                                                      "label_uid_not_valid",
                                                       "label_translation_uid_not_valid"},
                                               new[] { "translation_required_error_message" },
                                               false);
@@ -77,13 +81,13 @@ namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.LabelTranslation
 
         [TestCaseSource(nameof(MessageTestCases))]
         public void LabelTranslationEditModel_InputErrorMessages(string caseName,
-                                                                 Guid organizationUid, Guid labelTranslationUid, string labelKey,
+                                                                 Guid organizationUid, Guid labelUid, Guid labelTranslationUid, string labelKey,
                                                                  string languageName, string languageIconUrl, string translation,
                                                                  string[] errorMessages,
                                                                  string[] inputErrorMessages,
                                                                  bool result)
         {
-            var model = GetLabelTranslationEditModel(organizationUid, labelTranslationUid, labelKey,
+            var model = GetLabelTranslationEditModel(organizationUid, labelUid, labelTranslationUid, labelKey,
                                                      languageName, languageIconUrl, translation);
             model.IsValid().ShouldBe(result);
             model.IsNotValid().ShouldBe(!result);

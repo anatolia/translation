@@ -1344,18 +1344,20 @@ namespace Translation.Common.Tests.TestHelpers
             var model = new LabelTranslationEditModel();
 
             model.OrganizationUid = OrganizationOneUid;
-            model.LabelTranslationUid = UidOne;
-            model.Translation = UidStringOne;
+            model.LabelUid = OrganizationOneProjectOneLabelOneUid;
+            model.LabelTranslationUid = OrganizationOneProjectOneLabelOneLabelTranslationOneUid;
+            model.Translation = StringOne;
 
             return model;
         }
 
-        public static LabelTranslationEditModel GetLabelTranslationEditModel(Guid organizationUid, Guid labelTranslationUid, string labelKey,
+        public static LabelTranslationEditModel GetLabelTranslationEditModel(Guid organizationUid, Guid labelUid, Guid labelTranslationUid, string labelKey,
                                                                              string languageName, string languageIconUrl, string translation)
         {
             var model = new LabelTranslationEditModel();
 
             model.OrganizationUid = organizationUid;
+            model.LabelUid = labelUid;
             model.LabelTranslationUid = labelTranslationUid;
             model.LabelKey = labelKey;
             model.LanguageName = languageName;
