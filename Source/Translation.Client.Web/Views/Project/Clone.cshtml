@@ -5,7 +5,7 @@
 <form method="post">
     <div>
         <label data-translation="cloning_project_name">cloning_project_name</label>
-        @Model.Name
+        <a href="/Project/Detail/@Model.CloningProjectUid">@Model.Name</a>
     </div>
 
     <partial name="Components/_Hidden" model="@Model.OrganizationInput" />

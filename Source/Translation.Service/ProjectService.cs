@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using StandardRepository.Helpers;
-
+using StandardRepository.Models;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Helpers;
@@ -72,11 +72,13 @@ namespace Translation.Service
             List<Project> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _projectRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _projectRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                                new List<OrderByInfo<Project>>() { new OrderByInfo<Project>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _projectRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _projectRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                               new List<OrderByInfo<Project>>() { new OrderByInfo<Project>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
@@ -148,7 +150,7 @@ namespace Translation.Service
 
             if (project.OrganizationId != currentUser.OrganizationId)
             {
-                response.SetFailed();
+                response.SetInvalid();
                 return response;
             }
 
@@ -172,7 +174,7 @@ namespace Translation.Service
 
             if (project.OrganizationId != currentUser.OrganizationId)
             {
-                response.SetFailed();
+                response.SetInvalid();
                 return response;
             }
 
@@ -211,6 +213,7 @@ namespace Translation.Service
             if (language.IsNotExist())
             {
                 response.SetInvalidBecauseNotFound(nameof(Language));
+                return response;
             }
 
             var entity = _projectFactory.CreateEntityFromRequest(request, currentUser.Organization, language);
@@ -252,7 +255,7 @@ namespace Translation.Service
 
             if (project.OrganizationId != currentUser.OrganizationId)
             {
-                response.SetFailed();
+                response.SetInvalid();
                 return response;
             }
 
@@ -268,6 +271,7 @@ namespace Translation.Service
             if (language.IsNotExist())
             {
                 response.SetInvalidBecauseNotFound(nameof(Language));
+                return response;
             }
 
             var updatedEntity = _projectFactory.CreateEntityFromRequest(request, project, language);
@@ -303,26 +307,19 @@ namespace Translation.Service
 
             if (project.OrganizationId != currentUser.OrganizationId)
             {
-                response.SetFailed();
+                response.SetInvalid();
                 return response;
             }
 
             if (await _organizationRepository.Any(x => x.Id == project.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
             if (await _labelRepository.Any(x => x.ProjectId == project.Id))
             {
                 response.SetInvalidBecauseHasChildren(nameof(Project));
-                return response;
-            }
-
-            var result = await _projectRepository.Delete(request.CurrentUserId, project.Id);
-            if (result)
-            {
-                response.Status = ResponseStatus.Success;
                 return response;
             }
 
@@ -357,24 +354,23 @@ namespace Translation.Service
 
             if (project.OrganizationId != currentUser.OrganizationId)
             {
-                response.SetFailed();
+                response.SetInvalid();
                 return response;
             }
 
             if (await _organizationRepository.Any(x => x.Id == project.OrganizationId && !x.IsActive))
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
-            if (await _projectRepository.Any(x => x.Name == request.Name
-                                                  && x.OrganizationId == currentUser.OrganizationId))
+            if (await _projectRepository.IsProjectNameMustBeUnique(request.Name, currentUser.OrganizationId))
             {
                 response.SetFailedBecauseNameMustBeUnique(nameof(Project));
                 return response;
             }
 
-            if (await _projectRepository.Any(x =>  x.Slug == request.Slug
+            if (await _projectRepository.Any(x => x.Slug == request.Slug
                                                   && x.OrganizationId == currentUser.OrganizationId))
             {
                 response.SetFailedBecauseSlugMustBeUnique(nameof(Project));
@@ -385,6 +381,7 @@ namespace Translation.Service
             if (language.IsNotExist())
             {
                 response.SetInvalidBecauseNotFound(nameof(Language));
+                return response;
             }
 
             var cloningEntity = _projectFactory.CreateEntityFromRequest(request, project, language);
@@ -420,7 +417,7 @@ namespace Translation.Service
 
             if (project.OrganizationId != currentUser.OrganizationId)
             {
-                response.SetFailed();
+                response.SetInvalid();
                 return response;
             }
 
@@ -510,11 +507,13 @@ namespace Translation.Service
             List<Label> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _labelRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _labelRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                              new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                             new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)

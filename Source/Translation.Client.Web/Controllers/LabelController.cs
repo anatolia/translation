@@ -63,7 +63,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LabelMapper.MapLabelCreateModel(response.Item);
+            var model = LabelMapper.MapLabelCreateModel(response.Item,ActiveTranslationProvider);
 
             return View(model);
         }
@@ -78,25 +78,25 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            Guid[] languageUidArray = new Guid[] { };
-            if (model.LanguageUid.IsNotEmpty())
+            Guid[] labelTranslationLanguageUidArray = new Guid[] {};
+            if (model.LabelTranslationLanguageUid.IsNotEmpty())
             {
-                var languageUids = model.LanguageUid.ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
-                languageUidArray = new Guid[languageUids.Length];
+                var languageUids = model.LabelTranslationLanguageUid.ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
+                labelTranslationLanguageUidArray = new Guid[languageUids.Length];
                 for (int i = 0; i < languageUids.Length; i++)
                 {
-                    languageUidArray[i] = Guid.Parse(languageUids[i]);
+                    labelTranslationLanguageUidArray[i] = Guid.Parse(languageUids[i]);
 
                 }
             }
 
             var request = new LabelCreateRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
-                                                 model.Key, model.Description, languageUidArray);
+                                                 model.Key, model.Description, labelTranslationLanguageUidArray, 
+                                                 model.IsGettingTranslationFromOtherProject);
             var response = await _labelService.CreateLabel(request);
             if (response.Status.IsNotSuccess)
             {
                 model.MapMessages(response);
-                model.SetInputModelValues();
                 return View(model);
             }
 

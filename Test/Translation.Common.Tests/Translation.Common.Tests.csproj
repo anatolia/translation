@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\Requests\User\**" />
+    <EmbeddedResource Remove="Models\Requests\User\**" />
+    <None Remove="Models\Requests\User\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="wwwtestroot\files\index.html" />
+    <None Remove="wwwtestroot\files\projectTranslations.csv" />
+    <None Remove="wwwtestroot\files\uploadLabelCsvTemplate.csv" />
+    <None Remove="wwwtestroot\files\uploadTranslationCsvTemplate.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwtestroot\files\index.html">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwtestroot\files\uploadLabelCsvTemplate.csv">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwtestroot\files\uploadTranslationCsvTemplate.csv">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.6" />
+    <PackageReference Include="Moq" Version="4.13.0" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+    <PackageReference Include="Shouldly" Version="3.0.2" />
+    <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.1.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Source\Translation.Client.Web\Translation.Client.Web.csproj" />
+    <ProjectReference Include="..\..\Source\Translation.Common\Translation.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="wwwtestroot\images\flags\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="wwwtestroot\images\flags\tr.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="wwwtestroot\images\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

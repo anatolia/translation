@@ -12,12 +12,19 @@
     transform: rotate(360deg); } }
 
 /* Overlay Style */
+.info-text {
+    display: block;
+    color:#666;
+    margin-top: 3px;
+    margin-bottom: -3px;
+}
 .select {
-  position: relative;
-  width: calc(34% + 10px);
-  min-height: 31px;
-  border: 1px solid grey;
-  margin-top: 8px; }
+    position: relative;
+    width: calc(34% + 10px);
+    min-height: 31px;
+    border: 1px solid grey;
+    margin-top: 8px;
+}
   .select div {
     min-height: unset; }
   .select .select-button {

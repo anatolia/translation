@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using StandardRepository.Models;
 using StandardRepository.PostgreSQL;
 using Translation.Common.Contracts;
 using Translation.Data.Entities.Domain;
@@ -103,7 +103,8 @@ namespace Translation.Data.UnitOfWorks
 
                 }
 
-                var labelList = await _labelRepository.SelectAll(x => x.ProjectId == project.Id);
+                var labelList = await _labelRepository.SelectAll(x => x.ProjectId == project.Id, false,
+                                                                 new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Id) });
 
                 for (var i = 0; i < labelList.Count; i++)
                 {
@@ -191,7 +192,8 @@ namespace Translation.Data.UnitOfWorks
                 var user = await _userRepository.SelectById(currentUserId);
                 user.LabelCount++;
 
-                var labelTranslations = await _labelTranslationRepository.SelectAll(x => x.LabelId == labelId);
+                var labelTranslations = await _labelTranslationRepository.SelectAll(x => x.LabelId == labelId, false,
+                                                                                    new List<OrderByInfo<LabelTranslation>>() { new OrderByInfo<LabelTranslation>(x => x.Id) });
                 for (var i = 0; i < labelTranslations.Count; i++)
                 {
                     var labelTranslation = labelTranslations[i];

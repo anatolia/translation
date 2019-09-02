@@ -15,10 +15,11 @@
 
 <h2 data-translation="translation_provider_info">translation_provider_info</h2>
 
-<div >
+<div>
     <label class="content" data-translation="translation_provider_value_content">translation_provider_value_content</label>
-    @Model.Value
+    <div id="api-value">@Model.Value</div>
 </div>
+
 
 
 @section Scripts {
@@ -57,23 +58,26 @@
 
             this.hide = function () {
                 this.el.innerHTML = this.getSecretSpan();
-                this.el.innerHTML += this.getButton('show');
+                this.el.innerHTML += this.getButton(' show');
                 this.isVisible = false;
                 this.enableButtons();
             }
 
             this.show = function () {
                 this.el.innerHTML = this.text;
-                this.el.innerHTML += this.getButton('hide');
+                this.el.innerHTML += this.getButton(' hide');
                 this.isVisible = true;
                 this.enableButtons();
             }
         }
 
-        var element = document.getElementsByClassName("content");
-        var secretField = new SecretField(elemenet, 0);
-        secretField.hide();
+        var element = document.getElementById("api-value");
 
+        var tableChangeInterval = setInterval(() => {
+            clearInterval(tableChangeInterval);
+            var secretField = new SecretField(element, 1);
+            secretField.hide();
+        }, 5);
 
     </script>
 }

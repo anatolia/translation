@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
-
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using StandardRepository.Helpers;
 using StandardRepository.PostgreSQL;
 using StandardRepository.PostgreSQL.Helpers;
@@ -25,5 +27,10 @@ namespace Translation.Data.Repositories
             nameof(Organization.Description),
             nameof(Organization.IsActive)
         };
+
+        public async Task<bool> IsOrganizationActive(long organizationId)
+        {
+            return await Any(x => x.Id == organizationId && !x.IsActive);
+        }
     }
 }

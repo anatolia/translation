@@ -426,13 +426,13 @@ namespace Translation.Client.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> TranslationProviderChangeActivation(Guid id)
         {
-            var TranslationproviderUid = id;
-            if (TranslationproviderUid.IsEmptyGuid())
+            var translationproviderUid = id;
+            if (translationproviderUid.IsEmptyGuid())
             {
                 return Forbid();
             }
 
-            var request = new TranslationProviderChangeActivationRequest(CurrentUser.Id, TranslationproviderUid);
+            var request = new TranslationProviderChangeActivationRequest(CurrentUser.Id, translationproviderUid);
             var response = await _adminService.TranslationProviderChangeActivation(request);
             if (response.Status.IsNotSuccess)
             {

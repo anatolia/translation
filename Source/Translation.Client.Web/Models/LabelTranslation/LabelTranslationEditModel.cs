@@ -9,6 +9,7 @@ namespace Translation.Client.Web.Models.LabelTranslation
     public sealed class LabelTranslationEditModel : BaseModel
     {
         public Guid OrganizationUid { get; set; }
+        public Guid LabelUid { get; set; }
         public Guid LabelTranslationUid { get; set; }
 
         public string LabelKey { get; set; }
@@ -18,6 +19,7 @@ namespace Translation.Client.Web.Models.LabelTranslation
         public string Translation { get; set; }
 
         public HiddenInputModel OrganizationInput { get; }
+        public HiddenInputModel LabelInput { get; }
         public HiddenInputModel LabelTranslationInput { get; set; }
 
         public InputModel TranslationInput { get; set; }
@@ -27,6 +29,7 @@ namespace Translation.Client.Web.Models.LabelTranslation
             Title = "label_translation_edit_title";
 
             OrganizationInput = new HiddenInputModel("OrganizationUid");
+            LabelInput = new HiddenInputModel("LabelUid");
             LabelTranslationInput = new HiddenInputModel("LabelTranslationUid");
 
             TranslationInput = new InputModel("Translation", "translation", true);
@@ -35,6 +38,7 @@ namespace Translation.Client.Web.Models.LabelTranslation
         public override void SetInputModelValues()
         {
             OrganizationInput.Value = OrganizationUid.ToUidString();
+            LabelInput.Value = LabelUid.ToUidString();
             LabelTranslationInput.Value = LabelTranslationUid.ToUidString();
 
             TranslationInput.Value = Translation;
@@ -45,6 +49,11 @@ namespace Translation.Client.Web.Models.LabelTranslation
             if (OrganizationUid.IsEmptyGuid())
             {
                 ErrorMessages.Add("organization_uid_not_valid");
+            }
+
+            if (LabelUid.IsEmptyGuid())
+            {
+                ErrorMessages.Add("label_uid_not_valid");
             }
 
             if (LabelTranslationUid.IsEmptyGuid())

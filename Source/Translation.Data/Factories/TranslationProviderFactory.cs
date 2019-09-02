@@ -7,7 +7,7 @@ namespace Translation.Data.Factories
 {
     public class TranslationProviderFactory
     {
-        public TranslationProvider CreateEntity(string name, bool isActive, string value)
+        public TranslationProvider CreateEntity(string name, bool isActive=false, string value="")
         {
             var entity = new TranslationProvider();
             entity.Name = name;
@@ -41,14 +41,16 @@ namespace Translation.Data.Factories
             return entity;
         }
 
-        public CurrentTranslationProvider MapCurrentTranslationProvider(TranslationProvider platformTranslationProvider)
+        public ActiveTranslationProvider MapActiveTranslationProvider(TranslationProvider translationProvider)
         {
-            var currentTranslationProvider = new CurrentTranslationProvider();
-            currentTranslationProvider.Id = platformTranslationProvider.Id;
-            currentTranslationProvider.Uid = platformTranslationProvider.Uid;
-            currentTranslationProvider.Name = platformTranslationProvider.Name;
+            var activeTranslationProvider = new ActiveTranslationProvider();
+            activeTranslationProvider.Id = translationProvider.Id;
+            activeTranslationProvider.Uid = translationProvider.Uid;
+            activeTranslationProvider.Name = translationProvider.Name;
+            activeTranslationProvider.IsActive = translationProvider.IsActive;
+            activeTranslationProvider.Value = translationProvider.Value;
 
-            return currentTranslationProvider;
+            return activeTranslationProvider;
         }
 
     }

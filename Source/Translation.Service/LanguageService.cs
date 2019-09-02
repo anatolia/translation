@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using StandardRepository.Helpers;
-
+using StandardRepository.Models;
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Helpers;
@@ -26,7 +26,7 @@ namespace Translation.Service
         private readonly ILanguageRepository _languageRepository;
         private readonly LanguageFactory _languageFactory;
 
-        public LanguageService(CacheManager cacheManager, 
+        public LanguageService(CacheManager cacheManager,
                                ILanguageRepository languageRepository, LanguageFactory languageFactory)
         {
             _cacheManager = cacheManager;
@@ -57,7 +57,7 @@ namespace Translation.Service
             Expression<Func<Language, bool>> filter = null;
             if (request.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm) 
+                filter = x => x.Name.Contains(request.SearchTerm)
                               || x.IsoCode2Char.Contains(request.SearchTerm)
                               || x.IsoCode3Char.Contains(request.SearchTerm)
                               || x.OriginalName.Contains(request.SearchTerm);
@@ -66,11 +66,13 @@ namespace Translation.Service
             List<Language> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _languageRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, x => x.Uid, request.PagingInfo.IsAscending);
+                entities = await _languageRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                                 new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _languageRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, x => x.Id, request.PagingInfo.IsAscending);
+                entities = await _languageRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                new List<OrderByInfo<Language>>() { new OrderByInfo<Language>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
@@ -171,7 +173,7 @@ namespace Translation.Service
             if (!currentUser.IsSuperAdmin)
             {
                 response.SetInvalidBecauseNotSuperAdmin(nameof(User));
-             
+
                 return response;
             }
 
@@ -239,7 +241,7 @@ namespace Translation.Service
             var response = new LanguageRestoreResponse();
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            
+
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {

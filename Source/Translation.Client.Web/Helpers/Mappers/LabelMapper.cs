@@ -3,19 +3,27 @@
 using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Common.Models.DataTransferObjects;
+using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 
 namespace Translation.Client.Web.Helpers.Mappers
 {
     public class LabelMapper
     {
-        public static LabelCreateModel MapLabelCreateModel(ProjectDto dto)
+        public static LabelCreateModel MapLabelCreateModel(ProjectDto dto, ActiveTranslationProvider activeTranslationProvider)
         {
             var model = new LabelCreateModel();
             model.OrganizationUid = dto.OrganizationUid;
             model.ProjectUid = dto.Uid;
             model.ProjectName = dto.Name;
-
+            model.ProjectLanguageName = dto.LanguageName;
+            model.ProjectLanguageUid = dto.LanguageUid;
+            model.ProjectLanguageIconUrl = dto.LanguageIconUrl;
+            model.IsHavingActiveTranslationProvider = activeTranslationProvider != null;
+            if (model.IsHavingActiveTranslationProvider)
+            {
+                model.TranslationProviderName = activeTranslationProvider.Name;
+            }
             model.SetInputModelValues();
             return model;
         }
@@ -94,7 +102,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             var model = new UploadLabelTranslationFromCSVFileModel();
             model.OrganizationUid = label.OrganizationUid;
             model.LabelUid = label.Uid;
-            model.LabelKey= label.Key;
+            model.LabelKey = label.Key;
 
             model.SetInputModelValues();
             return model;
@@ -110,7 +118,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.ProjectLanguageUid = project.LanguageUid;
 
             model.LabelUid = label.Uid;
-            model.LabelKey= label.Key;
+            model.LabelKey = label.Key;
             model.LanguageUid = project.LanguageUid;
             model.LanguageName = project.LanguageName;
             model.SetInputModelValues();
@@ -120,7 +128,6 @@ namespace Translation.Client.Web.Helpers.Mappers
         public static LabelTranslationEditModel MapLabelTranslationEditModel(LabelTranslationDto dto)
         {
             var model = new LabelTranslationEditModel();
-            model.LabelTranslationUid = dto.Uid;
             model.Translation = dto.Translation;
             model.TranslationInput.Value = dto.Translation;
             model.LabelKey = dto.LabelKey;
@@ -128,6 +135,9 @@ namespace Translation.Client.Web.Helpers.Mappers
             model.LanguageIconUrl = dto.LanguageIconUrl;
 
             model.OrganizationUid = dto.OrganizationUid;
+            model.LabelUid = dto.LabelUid;
+            model.LabelTranslationUid = dto.Uid;
+
             model.SetInputModelValues();
 
             return model;

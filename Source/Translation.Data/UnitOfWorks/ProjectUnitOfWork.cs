@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using StandardRepository.Models;
 using StandardRepository.PostgreSQL;
 
 using Translation.Data.Entities.Domain;
@@ -78,8 +79,10 @@ namespace Translation.Data.UnitOfWorks
                 _labelRepository.SetSqlExecutorForTransaction(connection);
                 _labelTranslationRepository.SetSqlExecutorForTransaction(connection);
 
-                var labels = await _labelRepository.SelectAll(x => x.ProjectId == projectId);
-                var labelTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == projectId);
+                var labels = await _labelRepository.SelectAll(x => x.ProjectId == projectId, false,
+                                                              new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Id) });
+                var labelTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == projectId, false,
+                                                                                    new List<OrderByInfo<LabelTranslation>>() { new OrderByInfo<LabelTranslation>(x => x.Id) });
 
                 newProject.LabelTranslationCount = labelTranslations.Count;
                 newProject.LabelCount = labels.Count;

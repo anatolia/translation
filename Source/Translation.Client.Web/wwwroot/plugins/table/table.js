@@ -283,8 +283,8 @@ function handleSelectedRows(btn) {
                     }
                 },
                 function (req) {
-                    let messages = JSON.parse(req.response).join('<br/>');
-                    showPopupMessage(messages);
+                    let messages = JSON.parse(req.response);
+                    showPopupMessage(messages["messages"].join('<br/>'));
                 });
         });
 }
@@ -294,8 +294,8 @@ function handleRow(btn, urlEncodedData, url, onSuccess) {
         function () {
             doPostWithFormUrlEncodedContent(url, urlEncodedData, onSuccess,
                 function (req) {
-                    let messages = JSON.parse(req.response).join('<br/>');
-                    showPopupMessage(messages);
+                    let messages = JSON.parse(req.response);
+                    showPopupMessage(messages["messages"].join('<br/>'));
                 });
         });
 }
@@ -335,8 +335,8 @@ function handlePostAndAppendRow(btn) {
                 if (req.status == 500) {
                     showPopupMessage('server_error');
                 } else {
-                    let messages = JSON.parse(req.response).messages.join('<br/>');
-                    showPopupMessage(messages);
+                    let messages = JSON.parse(req.response).messages;
+                    showPopupMessage(messages["messages"].join('<br/>'));
                 }
             });
     });
@@ -373,7 +373,6 @@ function handleChangeActivationRow(btn, url) {
         });
 }
 
-
 function handleChangeActivationAllRow(btn, url) {
     let row = btn.parentElement.parentElement;
     let table = row.parentElement.parentElement;
@@ -392,15 +391,20 @@ function handleChangeActivationAllRow(btn, url) {
             
             let response = JSON.parse(req.response);
             if (response.isOk === true) {
-                var checkboxses=row.parentElement.querySelectorAll('input[type=checkbox]');
-                checkboxses.forEach(function(box) {
-                    box.checked = false;
-                });
-                var children = row.children[isActiveIndex];
-                let old = children.children[0].checked;
-                let isTrue = old === true;
-                children.children[0].checked = !isTrue;
 
+                var children = row.children[isActiveIndex];
+                var selectedInput = children.children[0];
+                var checkboxses=row.parentElement.querySelectorAll('input[type=checkbox]');
+                checkboxses.forEach(function (box) {
+                    if (box === selectedInput) {
+
+                        let old = children.children[0].checked;
+                        let isTrue = old === true;
+                        children.children[0].checked = !isTrue;
+                    } else {
+                        box.checked = false;
+                    }
+                });
                 hidePopup();
             } else {
                 let messages = JSON.parse(req.response);

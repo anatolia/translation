@@ -42,7 +42,6 @@ namespace Translation.Common.Contracts
         Task<UserLoginLogReadListResponse> GetUserLoginLogs(UserLoginLogReadListRequest request);
         Task<OrganizationLoginLogReadListResponse> GetUserLoginLogsOfOrganization(OrganizationLoginLogReadListRequest request);
         
-        
         CurrentUser GetCurrentUser(CurrentUserRequest request);
 
         Task<bool> LoadOrganizationsToCache();

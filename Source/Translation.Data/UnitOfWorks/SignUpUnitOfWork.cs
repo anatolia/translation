@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using StandardRepository.Helpers;
+using StandardRepository.Models;
 using StandardRepository.PostgreSQL;
 
 using Translation.Data.Entities.Domain;
@@ -90,8 +92,12 @@ namespace Translation.Data.UnitOfWorks
                     var superProject = await _projectRepository.Select(x => x.IsSuperProject);
                     if (superProject.IsExist())
                     {
-                        var labels = await _labelRepository.SelectAll(x => x.ProjectId == superProject.Id);
-                        var labelTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == superProject.Id);
+                        var labels = await _labelRepository.SelectAll(x => x.ProjectId == projectId, false,
+                                                                      new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Id) });
+
+                        var labelTranslations = await _labelTranslationRepository.SelectAll(x => x.ProjectId == projectId, false,
+                                                                                            new List<OrderByInfo<LabelTranslation>>() { new OrderByInfo<LabelTranslation>(x => x.Id) });
+
                         project.LabelCount = labels.Count;
                         organization.ProjectCount++;
                         organization.LabelCount = labels.Count;
@@ -134,7 +140,7 @@ namespace Translation.Data.UnitOfWorks
                         await _organizationRepository.Update(userId, organization);
                     }
                 }
-                
+
                 return (organization,
                         user);
             });

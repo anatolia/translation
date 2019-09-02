@@ -12,7 +12,7 @@ namespace Translation.Client.Web.Helpers
             model.InfoMessages.AddRange(response.InfoMessages);
             model.WarningMessages.AddRange(response.WarningMessages);
             model.SuccessMessages.AddRange(response.SuccessMessages);
-
+            
             model.SetInputModelValues();
         }
     }

@@ -36,7 +36,7 @@ namespace Translation.Data.Factories
             entity.FirstName = request.FirstName;
             entity.LastName = request.LastName;
             entity.Name = MapName(request.FirstName, request.LastName);
-           
+
             entity.IsActive = true;
             entity.IsAdmin = true;
             entity.ObfuscationSalt = salt;
@@ -138,6 +138,8 @@ namespace Translation.Data.Factories
             dto.CreatedAt = entity.CreatedAt;
             dto.LastLoggedInAt = entity.LastLoginAt;
 
+            dto.LabelCount = entity.LabelCount;
+            dto.LabelTranslationCount = entity.LabelTranslationCount;
             dto.InvitedAt = entity.InvitedAt;
             dto.InvitedByUserUid = entity.InvitedByUserUid;
             dto.InvitedByUserName = entity.InvitedByUserName;
@@ -167,7 +169,6 @@ namespace Translation.Data.Factories
             currentUser.IsAdmin = user.IsAdmin;
             currentUser.IsSuperAdmin = user.IsSuperAdmin;
             currentUser.IsActive = user.IsActive;
-
             var currentOrganization = new CurrentOrganization
             {
                 Id = user.OrganizationId,
@@ -179,12 +180,6 @@ namespace Translation.Data.Factories
             currentUser.LanguageIsoCode2Char = isoCode2Char;
 
             return currentUser;
-        }
-
-        public User UpdateEntityForChangeActivation(User entity)
-        {
-            entity.IsActive = !entity.IsActive;
-            return entity;
         }
     }
 }
