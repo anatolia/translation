@@ -461,7 +461,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static TranslationProviderEditModel GetTranslationProviderEditModel()
         {
             var model = new TranslationProviderEditModel();
-            model.TranslationProviderUid = UidOne;
+            model.TranslationProviderUid = UidTwo;
             model.Value = StringOne;
             model.Name = StringTwo;
             model.Description = StringThree;
@@ -1176,6 +1176,7 @@ namespace Translation.Common.Tests.TestHelpers
         {
             var model = new LabelEditModel();
             model.OrganizationUid = UidOne;
+            model.ProjectUid = UidOne;
             model.LabelUid = UidOne;
             model.Key = StringOne;
             model.Description = StringOne;
@@ -1184,14 +1185,14 @@ namespace Translation.Common.Tests.TestHelpers
             return model;
         }
 
-        public static LabelEditModel GetLabelEditModel(Guid organizationUid, Guid labelUid, string key)
+        public static LabelEditModel GetLabelEditModel(Guid organizationUid, Guid projectUid, Guid labelUid, string key)
         {
             var model = new LabelEditModel();
             model.OrganizationUid = organizationUid;
+            model.ProjectUid = projectUid;
             model.LabelUid = labelUid;
             model.Key = key;
             model.Description = StringOne;
-
 
             return model;
         }

@@ -153,7 +153,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             CurrentUser.IsActionSucceed = true;
-            return Redirect($"/Language/Detail/{model.LanguageUid}");
+            return Redirect($"/Language/Detail/{response.Item.Uid}");
         }
 
         [HttpGet]

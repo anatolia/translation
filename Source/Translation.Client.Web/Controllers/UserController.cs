@@ -20,7 +20,7 @@ namespace Translation.Client.Web.Controllers
 {
     public class UserController : BaseController
     {
-        
+
         [HttpGet, AllowAnonymous]
         public IActionResult SignUp()
         {
@@ -316,7 +316,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             CurrentUser.IsActionSucceed = true;
-            return Redirect("/User/Detail/" + model.UserUid);
+            return Redirect($"/User/Detail/{response.Item.Uid}");
         }
 
         [HttpGet]

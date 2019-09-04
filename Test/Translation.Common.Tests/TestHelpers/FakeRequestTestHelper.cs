@@ -1276,7 +1276,7 @@ namespace Translation.Common.Tests.TestHelpers
         {
             var request = GetAllLabelReadListRequest_IsDefaultProjectTrue();
             request.CurrentUserId = Zero;
-            
+
             return request;
         }
 
@@ -1284,7 +1284,7 @@ namespace Translation.Common.Tests.TestHelpers
         {
             var request = GetAllLabelReadListRequest_IsDefaultProjectFalse();
             request.CurrentUserId = Zero;
-            
+
             return request;
         }
 
@@ -1304,16 +1304,16 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static LabelEditRequest GetLabelEditRequest()
         {
-            var request = new LabelEditRequest(CurrentUserId, UidOne, UidOne, StringOne,
+            var request = new LabelEditRequest(CurrentUserId, UidOne, UidOne, UidOne, StringOne,
                                                StringOne);
 
             return request;
         }
 
-        public static LabelEditRequest GetLabelEditRequest(long currentUserId, Guid organizationUid, Guid labelUid,
+        public static LabelEditRequest GetLabelEditRequest(long currentUserId, Guid organizationUid, Guid projectUid, Guid labelUid,
                                                            string labelKey, string description)
         {
-            var request = new LabelEditRequest(currentUserId, organizationUid, labelUid, labelKey,
+            var request = new LabelEditRequest(currentUserId, organizationUid, projectUid, labelUid, labelKey,
                 description);
 
             return request;
@@ -1321,7 +1321,7 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static LabelEditRequest GetLabelEditRequest(Label label)
         {
-            var request = new LabelEditRequest(CurrentUserId, label.OrganizationUid, label.Uid,
+            var request = new LabelEditRequest(CurrentUserId, label.OrganizationUid, label.ProjectUid, label.Uid,
                 label.Key, label.Description);
 
             return request;

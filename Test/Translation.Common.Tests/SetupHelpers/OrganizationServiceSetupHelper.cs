@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 
 using Translation.Common.Contracts;
@@ -11,7 +11,6 @@ using Translation.Common.Models.Requests.User.LoginLog;
 using Translation.Common.Models.Responses.Organization;
 using Translation.Common.Models.Responses.User;
 using Translation.Common.Models.Responses.User.LoginLog;
-using Translation.Common.Models.Shared;
 using static Translation.Common.Tests.TestHelpers.FakeDtoTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
@@ -332,14 +331,16 @@ namespace Translation.Common.Tests.SetupHelpers
 
         public static void Setup_EditOrganization_Returns_OrganizationEditResponse_Success(this Mock<IOrganizationService> service)
         {
+            var item = GetOrganizationDto();
             service.Setup(x => x.EditOrganization(It.IsAny<OrganizationEditRequest>()))
-                   .ReturnsAsync(new OrganizationEditResponse { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new OrganizationEditResponse { Status = ResponseStatus.Success, Item = item });
         }
 
         public static void Setup_EditUser_Returns_UserEditResponse_Success(this Mock<IOrganizationService> service)
         {
+            var item = GetUserDto();
             service.Setup(x => x.EditUser(It.IsAny<UserEditRequest>()))
-                   .ReturnsAsync(new UserEditResponse { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new UserEditResponse { Status = ResponseStatus.Success, Item =  item});
         }
 
         public static void Setup_DeleteUser_Returns_UserDeleteResponse_Success(this Mock<IOrganizationService> service)

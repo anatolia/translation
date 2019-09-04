@@ -69,7 +69,6 @@ namespace Translation.Server.Unit.Tests.Data.Factories
             var project = GetProject();
             var request = GetLabelCloneRequest(label);
 
-
             // act
             var result = LabelFactory.CreateEntityFromRequest(request, label, project);
 

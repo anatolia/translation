@@ -248,6 +248,12 @@ namespace Translation.Service
                 return response;
             }
 
+            if (entity.Name == request.Name && entity.Uid == request.OrganizationUid)
+            {
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
             if (await _organizationRepository.Any(x => x.Name == request.Name && x.Id != currentUser.OrganizationId))
             {
                 response.SetFailedBecauseNameMustBeUnique(nameof(Organization));
@@ -424,7 +430,7 @@ namespace Translation.Service
                         response.Item.OrganizationUid = user.OrganizationUid;
                         response.Item.Name = user.Name;
                         response.Item.Email = user.Email;
-                        
+
                         return response;
                     }
                 }
@@ -641,6 +647,14 @@ namespace Translation.Service
             if (entity.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
+                return response;
+            }
+
+            if (entity.FirstName == request.FirstName && entity.LastName == request.LastName
+                                                  && entity.LanguageUid == request.LanguageUid)
+            {
+                response.Item = _userFactory.CreateDtoFromEntity(entity);
+                response.Status = ResponseStatus.Success;
                 return response;
             }
 

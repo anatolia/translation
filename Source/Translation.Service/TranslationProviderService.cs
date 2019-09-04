@@ -103,6 +103,13 @@ namespace Translation.Service
                 return response;
             }
 
+            if (translationProvider.Value == request.Value && translationProvider.Uid == request.TranslationProviderUid)
+            {
+                response.Item = _translationProviderFactory.CreateDtoFromEntity(translationProvider);
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
             if (await _translationProviderRepository.Any(x => x.Value == request.Value
                                                          && x.Uid != request.TranslationProviderUid))
             {

@@ -51,8 +51,9 @@ namespace Translation.Common.Tests.SetupHelpers
 
         public static void Setup_EditLanguage_Returns_LanguageEditResponse_Success(this Mock<ILanguageService> service)
         {
+            var item = GetLanguageDtoOne();
             service.Setup(x => x.EditLanguage(It.IsAny<LanguageEditRequest>()))
-                   .ReturnsAsync(new LanguageEditResponse { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new LanguageEditResponse { Status = ResponseStatus.Success, Item = item });
         }
 
         public static void Setup_DeleteLanguage_Returns_LanguageDeleteResponse_Success(this Mock<ILanguageService> service)

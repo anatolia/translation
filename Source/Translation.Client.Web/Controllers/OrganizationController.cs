@@ -96,7 +96,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             CurrentUser.IsActionSucceed = true;
-            return Redirect($"/Organization/Detail/{model.OrganizationUid }");
+            return Redirect($"/Organization/Detail/{response.Item.Uid}");
         }
 
         [HttpGet]

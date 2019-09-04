@@ -185,6 +185,15 @@ namespace Translation.Service
             }
 
             var trimName = request.Name.Trim();
+            if (language.Name == trimName && language.IsoCode2Char == request.IsoCode2
+                                           && language.IsoCode3Char == request.IsoCode3
+                                           && language.Uid == request.LanguageUid)
+            {
+                response.Item = _languageFactory.CreateDtoFromEntity(language);
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
             if (await _languageRepository.Any(x => (x.Name == trimName
                                                          || x.IsoCode2Char == request.IsoCode2
                                                          || x.IsoCode3Char == request.IsoCode3) && x.Uid != request.LanguageUid))

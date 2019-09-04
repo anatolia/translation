@@ -817,14 +817,6 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _labelRepository.Any(x => x.Key == request.LabelKey
-                                                && x.ProjectId == label.ProjectId
-                                                && x.Uid == request.LabelUid))
-            {
-                response.Status = ResponseStatus.Success;
-                return response;
-            }
-
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (label.OrganizationId != currentUser.OrganizationId)
             {
@@ -834,7 +826,14 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Id == label.OrganizationId && !x.IsActive))
             {
+                response.Item = _labelFactory.CreateDtoFromEntity(label);
                 response.SetInvalidBecauseNotActive(nameof(Organization));
+                return response;
+            }
+
+            if (label.Key == request.LabelKey)
+            {
+                response.Status = ResponseStatus.Success;
                 return response;
             }
 
@@ -1414,6 +1413,13 @@ namespace Translation.Service
             if (labelTranslation.IsNotExist())
             {
                 response.SetInvalidBecauseNotFound(nameof(LabelTranslation));
+                return response;
+            }
+
+            if (labelTranslation.Translation == request.NewTranslation)
+            {
+                response.Item = _labelTranslationFactory.CreateDtoFromEntity(labelTranslation);
+                response.Status = ResponseStatus.Success;
                 return response;
             }
 

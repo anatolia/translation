@@ -1625,7 +1625,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
 
             // assert
 
-            ((RedirectResult)result).Url.ShouldBe($"/Label/Detail/{EmptyUid}");
+            ((RedirectResult)result).Url.ShouldBe($"/Label/Detail/{OrganizationOneProjectOneLabelOneUid}");
             MockLabelService.Verify_EditTranslation();
         }
 

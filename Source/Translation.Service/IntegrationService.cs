@@ -221,13 +221,21 @@ namespace Translation.Service
                 return response;
             }
 
+            var trimName = request.Name.Trim();
+            if (integration.Name == trimName && integration.Description == request.Description)
+            {
+                response.Item = _integrationFactory.CreateDtoFromEntity(integration);
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
             if (integration.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
             }
 
-            var trimName = request.Name.Trim();
+
             if (await _integrationRepository.Any(x => x.Name == trimName
                                                       && x.OrganizationId == currentUser.OrganizationId
                                                       && x.Uid != request.IntegrationUid))

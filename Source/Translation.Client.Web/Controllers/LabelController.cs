@@ -183,7 +183,7 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            var request = new LabelEditRequest(CurrentUser.Id, model.OrganizationUid, model.LabelUid, model.Key,
+            var request = new LabelEditRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,model.LabelUid, model.Key,
                 model.Description);
             var response = await _labelService.EditLabel(request);
             if (response.Status.IsNotSuccess)
@@ -194,7 +194,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             CurrentUser.IsActionSucceed = true;
-            return Redirect($"/Label/Detail/{model.LabelUid}");
+            return Redirect($"/Label/Detail/{response.Item.Uid}");
         }
 
         [HttpPost,

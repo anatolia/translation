@@ -140,7 +140,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             CurrentUser.IsActionSucceed = true;
-            return Redirect($"/Project/Detail/{ model.ProjectUid}");
+            return Redirect($"/Project/Detail/{response.Item.Uid}");
         }
 
         [HttpPost,

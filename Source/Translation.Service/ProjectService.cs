@@ -259,10 +259,11 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _projectRepository.Any(x => x.Name == request.ProjectName
-                                                  && x.OrganizationId == project.OrganizationId
-                                                  && x.Id == project.Id))
+            if (project.Name == request.ProjectName && project.Slug == request.ProjectSlug
+                                                    && project.Description == request.Description
+                                                    && project.LanguageUid == request.LanguageUid)
             {
+                response.Item = _projectFactory.CreateDtoFromEntity(project);
                 response.Status = ResponseStatus.Success;
                 return response;
             }
