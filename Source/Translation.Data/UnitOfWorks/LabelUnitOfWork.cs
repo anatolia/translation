@@ -37,7 +37,11 @@ namespace Translation.Data.UnitOfWorks
 
         public async Task<bool> DoCreateWork(long currentUserId, Label label)
         {
-            await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
+            var organization = await _organizationRepository.SelectById(label.OrganizationId);
+            var project = await _projectRepository.SelectById(label.ProjectId);
+            var user = await _userRepository.SelectById(currentUserId);
+
+            var result = await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
             {
                 _organizationRepository.SetSqlExecutorForTransaction(connection);
                 _userRepository.SetSqlExecutorForTransaction(connection);
@@ -46,22 +50,19 @@ namespace Translation.Data.UnitOfWorks
 
                 await _labelRepository.Insert(currentUserId, label);
 
-                var organization = await _organizationRepository.SelectById(label.OrganizationId);
                 organization.LabelCount++;
                 await _organizationRepository.Update(currentUserId, organization);
 
-                var project = await _projectRepository.SelectById(label.ProjectId);
                 project.LabelCount++;
                 await _projectRepository.Update(currentUserId, project);
 
-                var user = await _userRepository.SelectById(currentUserId);
                 user.LabelCount++;
                 await _userRepository.Update(currentUserId, user);
 
                 return true;
             });
 
-            return true;
+            return result;
         }
 
         public async Task<bool> DoCreateWorkBulk(long currentUserId, List<Label> labels, List<LabelTranslation> labelTranslationsToInsert,
@@ -104,7 +105,7 @@ namespace Translation.Data.UnitOfWorks
                 }
 
                 var labelList = await _labelRepository.SelectAll(x => x.ProjectId == project.Id, false,
-                                                                 new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Id) });
+                    new List<OrderByInfo<Label>>() { new OrderByInfo<Label>(x => x.Id) });
 
                 for (var i = 0; i < labelList.Count; i++)
                 {
@@ -145,7 +146,11 @@ namespace Translation.Data.UnitOfWorks
 
         public async Task<bool> DoDeleteWork(long currentUserId, Label label)
         {
-            await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
+            var organization = await _organizationRepository.SelectById(label.OrganizationId);
+            var project = await _projectRepository.SelectById(label.ProjectId);
+            var user = await _userRepository.SelectById(currentUserId);
+
+            var result = await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
             {
                 _organizationRepository.SetSqlExecutorForTransaction(connection);
                 _userRepository.SetSqlExecutorForTransaction(connection);
@@ -154,22 +159,19 @@ namespace Translation.Data.UnitOfWorks
 
                 await _labelRepository.Delete(currentUserId, label.Id);
 
-                var organization = await _organizationRepository.SelectById(label.OrganizationId);
                 organization.LabelCount--;
                 await _organizationRepository.Update(currentUserId, organization);
 
-                var project = await _projectRepository.SelectById(label.ProjectId);
                 project.LabelCount--;
                 await _projectRepository.Update(currentUserId, project);
 
-                var user = await _userRepository.SelectById(currentUserId);
                 user.LabelCount--;
                 await _userRepository.Update(currentUserId, user);
 
                 return true;
             });
 
-            return true;
+            return result;
         }
 
         public async Task<bool> DoCloneWork(long currentUserId, long labelId, Label newLabel)
@@ -312,7 +314,12 @@ namespace Translation.Data.UnitOfWorks
 
         public async Task<bool> DoDeleteTranslationWork(long currentUserId, LabelTranslation labelTranslation)
         {
-            await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
+            var organization = await _organizationRepository.SelectById(labelTranslation.OrganizationId);
+            var project = await _projectRepository.SelectById(labelTranslation.ProjectId);
+            var label = await _labelRepository.SelectById(labelTranslation.LabelId);
+            var user = await _userRepository.SelectById(currentUserId);
+
+            var result = await _transactionalExecutor.ExecuteAsync<bool>(async connection =>
             {
                 _organizationRepository.SetSqlExecutorForTransaction(connection);
                 _userRepository.SetSqlExecutorForTransaction(connection);
@@ -322,26 +329,22 @@ namespace Translation.Data.UnitOfWorks
 
                 await _labelTranslationRepository.Delete(currentUserId, labelTranslation.Id);
 
-                var organization = await _organizationRepository.SelectById(labelTranslation.OrganizationId);
                 organization.LabelTranslationCount--;
                 await _organizationRepository.Update(currentUserId, organization);
 
-                var project = await _projectRepository.SelectById(labelTranslation.ProjectId);
                 project.LabelTranslationCount--;
                 await _projectRepository.Update(currentUserId, project);
 
-                var label = await _labelRepository.SelectById(labelTranslation.LabelId);
                 label.LabelTranslationCount--;
                 await _labelRepository.Update(currentUserId, label);
 
-                var user = await _userRepository.SelectById(currentUserId);
                 user.LabelTranslationCount--;
                 await _userRepository.Update(currentUserId, user);
 
                 return true;
             });
 
-            return true;
+            return result;
         }
     }
 }

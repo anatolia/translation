@@ -260,6 +260,15 @@ namespace Translation.Service
             }
 
             if (await _projectRepository.Any(x => x.Name == request.ProjectName
+                                                  && x.OrganizationId == project.OrganizationId
+                                                  && x.Id == project.Id))
+            {
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
+
+            if (await _projectRepository.Any(x => x.Name == request.ProjectName
                                                        && x.OrganizationId == project.OrganizationId
                                                        && x.Id != project.Id))
             {

@@ -131,7 +131,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             CurrentUser.IsActionSucceed = true;
-            return Redirect($"/Integration/Detail/{response.Item.Uid}");
+            return Redirect($"/Integration/Detail/{model.IntegrationUid}");
         }
 
         [HttpPost,

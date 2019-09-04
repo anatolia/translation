@@ -817,6 +817,14 @@ namespace Translation.Service
                 return response;
             }
 
+            if (await _labelRepository.Any(x => x.Key == request.LabelKey
+                                                && x.ProjectId == label.ProjectId
+                                                && x.Uid == request.LabelUid))
+            {
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (label.OrganizationId != currentUser.OrganizationId)
             {

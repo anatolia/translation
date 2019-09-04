@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -17,10 +16,8 @@ using Translation.Common.Contracts;
 using Translation.Common.Helpers;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
-using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Shared;
-using Translation.Data.Entities.Parameter;
 
 namespace Translation.Client.Web.Controllers
 {
@@ -63,7 +60,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LabelMapper.MapLabelCreateModel(response.Item,ActiveTranslationProvider);
+            var model = LabelMapper.MapLabelCreateModel(response.Item, ActiveTranslationProvider);
 
             return View(model);
         }
@@ -78,7 +75,7 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            Guid[] labelTranslationLanguageUidArray = new Guid[] {};
+            Guid[] labelTranslationLanguageUidArray = new Guid[] { };
             if (model.LabelTranslationLanguageUid.IsNotEmpty())
             {
                 var languageUids = model.LabelTranslationLanguageUid.ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
@@ -91,7 +88,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new LabelCreateRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
-                                                 model.Key, model.Description, labelTranslationLanguageUidArray, 
+                                                 model.Key, model.Description, labelTranslationLanguageUidArray,
                                                  model.IsGettingTranslationFromOtherProject);
             var response = await _labelService.CreateLabel(request);
             if (response.Status.IsNotSuccess)
@@ -197,7 +194,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             CurrentUser.IsActionSucceed = true;
-            return Redirect($"/Label/Detail/{response.Item.Uid}");
+            return Redirect($"/Label/Detail/{model.LabelUid}");
         }
 
         [HttpPost,
@@ -321,8 +318,7 @@ namespace Translation.Client.Web.Controllers
                 var item = response.Items[i];
                 var stringBuilder = new StringBuilder();
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append(
-                    $"{result.PrepareLink($"/Label/Detail/{item.Key}", item.Key)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Key}", item.Key)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
@@ -803,7 +799,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             CurrentUser.IsActionSucceed = true;
-            return Redirect($"/Label/Detail/{response.Item.LabelUid}");
+            return Redirect($"/Label/Detail/{model.LabelUid}");
         }
 
         [HttpPost,
@@ -853,24 +849,18 @@ namespace Translation.Client.Web.Controllers
                 var item = response.Items[i];
                 var stringBuilder = new StringBuilder();
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append(
-                    $"{result.PrepareImage($"{item.LanguageIconUrl}", item.LanguageName)} {item.LanguageName}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareImage($"{item.LanguageIconUrl}", item.LanguageName)} {item.LanguageName}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Translation}{DataResult.SEPARATOR}");
-
-                stringBuilder.Append(
-                    $"{result.PrepareLink($"/Label/LabelTranslationEdit/{item.Uid}", Localizer.Localize("edit"), true)}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationEdit/{item.Uid}", Localizer.Localize("edit"), true)}");
 
                 if (CurrentUser.IsSuperAdmin)
                 {
-                    stringBuilder.Append(
-                        $"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}");
-                    stringBuilder.Append(
-                        $"{result.PrepareDeleteButton($"/Label/LabelTranslationDelete")}{DataResult.SEPARATOR}");
+                    stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}");
+                    stringBuilder.Append($"{result.PrepareDeleteButton($"/Label/LabelTranslationDelete")}{DataResult.SEPARATOR}");
                 }
                 else
                 {
-                    stringBuilder.Append(
-                        $"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}{DataResult.SEPARATOR}");
+                    stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}{DataResult.SEPARATOR}");
                 }
 
                 result.Data.Add(stringBuilder.ToString());

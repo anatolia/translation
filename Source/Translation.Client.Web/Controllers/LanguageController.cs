@@ -153,7 +153,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             CurrentUser.IsActionSucceed = true;
-            return Redirect("/Language/List/");
+            return Redirect($"/Language/Detail/{model.LanguageUid}");
         }
 
         [HttpGet]
@@ -309,7 +309,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var result = new DataResult();
-            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "language_name", "2_char_code","3_char_code", "icon", "created_at", "");
+            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "language_name", "2_char_code", "3_char_code", "icon", "created_at", "");
 
             for (var i = 0; i < response.Items.Count; i++)
             {

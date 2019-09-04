@@ -64,7 +64,7 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append($"{result.PrepareLink($"/TranslationProvider/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{result.PrepareChangeAllActivationButton("/Admin/TranslationProviderChangeActivation/")}");
-                stringBuilder.Append($"{result.PrepareLink($"/TranslationProvider/Edit/{item.Uid}", "Edit",true)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/TranslationProvider/Edit/{item.Uid}", "Edit", true)}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
             }
@@ -110,7 +110,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model =TranslationProviderMapper.MapTranslationProviderEditModel(translationProvider.Item);
+            var model = TranslationProviderMapper.MapTranslationProviderEditModel(translationProvider.Item);
 
             return View(model);
         }
@@ -136,7 +136,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             CurrentUser.IsActionSucceed = true;
-            return Redirect($"/TranslationProvider/List");
+            return Redirect($"/TranslationProvider/Detail/{model.TranslationProviderUid}");
         }
 
         [HttpGet]

@@ -126,7 +126,6 @@ namespace Translation.Client.Web.Controllers
             return Json(result);
         }
 
-
         [HttpGet]
         public IActionResult UserList()
         {
