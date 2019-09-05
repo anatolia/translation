@@ -248,6 +248,26 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
+        public async Task IntegrationService_EditIntegration_SameNmeAndDescription_Success()
+        {
+            // arrange
+            var request = GetSameNameAndDescriptionIntegrationEditRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockIntegrationRepository.Setup_Select_Returns_OrganizationOneIntegrationOne();
+
+            // act
+            var result = await SystemUnderTest.EditIntegration(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<IntegrationEditResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockIntegrationRepository.Verify_Select();
+        }
+
+        [Test]
         public async Task IntegrationService_EditIntegration_Failed_NameMustBeUnique()
         {
             // arrange

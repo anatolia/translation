@@ -116,6 +116,23 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
+        public async Task TranslationProviderService_EditTranslationProvider_SameValue_Success()
+        {
+            // arrange
+            var request = GetSameValueTranslationProviderEditRequest();
+            MockTranslationProviderRepository.Setup_Select_Returns_TranslationProviderOne();
+            
+            // act
+            var result = await SystemUnderTest.EditTranslationProvider(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<TranslationProviderEditResponse>(result);
+            MockTranslationProviderRepository.Verify_Select();
+           
+        }
+
+        [Test]
         public async Task TranslationProviderService_EditTranslationProvider_Failed_ProviderAlreadyExist()
         {
             // arrange
