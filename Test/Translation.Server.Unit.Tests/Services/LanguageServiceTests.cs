@@ -196,7 +196,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateLanguage(request);
 
             //assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid,UserNotSuperAdmin);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotSuperAdmin);
             AssertReturnType<LanguageCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -221,6 +221,24 @@ namespace Translation.Server.Unit.Tests.Services
             MockLanguageRepository.Verify_Select();
             MockLanguageRepository.Verify_Any();
             MockLanguageRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task LanguageService_EditLanguage_NotDifferent_Success()
+        {
+            // arrange
+            var request = GetNotDifferentLanguageEditRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockLanguageRepository.Setup_Select_Returns_Language();
+
+            // act
+            var result = await SystemUnderTest.EditLanguage(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<LanguageEditResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockLanguageRepository.Verify_Select();
         }
 
         [Test]
@@ -256,7 +274,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.EditLanguage(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid,UserNotSuperAdmin);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotSuperAdmin);
             AssertReturnType<LanguageEditResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -351,7 +369,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.DeleteLanguage(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid,UserNotSuperAdmin);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotSuperAdmin);
             AssertReturnType<LanguageDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -437,7 +455,7 @@ namespace Translation.Server.Unit.Tests.Services
             var request = GetLanguageRestoreRequest();
             MockLanguageRepository.Setup_Select_Returns_Language();
             MockLanguageRepository.Setup_SelectRevisions_Returns_LanguageRevisionsRevisionTwoInIt();
-           
+
             // act
             var result = await SystemUnderTest.RestoreLanguage(request);
 

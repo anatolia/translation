@@ -216,6 +216,27 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
+        public async Task OrganizationService_EditOrganization_NotDifferent_Success()
+        {
+            // arrange
+            var request = GetNotDifferentOrganizationEditRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_IsOrganizationActive_Returns_False();
+            MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
+
+            // act
+            var result = await SystemUnderTest.EditOrganization(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<OrganizationEditResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_IsOrganizationActive();
+            MockOrganizationRepository.Verify_Select();
+
+        }
+
+        [Test]
         public async Task OrganizationService_EditOrganization_Invalid_CurrentUserNotAdmin()
         {
             // arrange
@@ -993,6 +1014,24 @@ namespace Translation.Server.Unit.Tests.Services
             MockLanguageRepository.Verify_Select();
             MockUserRepository.Verify_Update();
             MockLanguageRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task OrganizationService_EditUser_NotDifferent_Success()
+        {
+            // arrange
+            var request = GetNotDifferentUserEditRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            
+            // act
+            var result = await SystemUnderTest.EditUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<UserEditResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
         }
 
         [Test]

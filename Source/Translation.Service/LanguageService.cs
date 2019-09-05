@@ -186,8 +186,7 @@ namespace Translation.Service
 
             var trimName = request.Name.Trim();
             if (language.Name == trimName && language.IsoCode2Char == request.IsoCode2
-                                           && language.IsoCode3Char == request.IsoCode3
-                                           && language.Uid == request.LanguageUid)
+                                           && language.IsoCode3Char == request.IsoCode3)
             {
                 response.Item = _languageFactory.CreateDtoFromEntity(language);
                 response.Status = ResponseStatus.Success;

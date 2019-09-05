@@ -248,8 +248,9 @@ namespace Translation.Service
                 return response;
             }
 
-            if (entity.Name == request.Name && entity.Uid == request.OrganizationUid)
+            if (entity.Name == request.Name && entity.Description == request.Description)
             {
+                response.Item = _organizationFactory.CreateDtoFromEntity(entity);
                 response.Status = ResponseStatus.Success;
                 return response;
             }

@@ -431,6 +431,26 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
+        public async Task ProjectService_EditProject_NotDifferent_Success()
+        {
+            // arrange
+            var request = GetNotDifferentProjectEditRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
+
+            // act
+            var result = await SystemUnderTest.EditProject(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<ProjectEditResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+            MockProjectRepository.Verify_Select();
+        }
+
+        [Test]
         public async Task ProjectService_EditProject_Invalid_OrganizationNotMatch()
         {
             // arrange
