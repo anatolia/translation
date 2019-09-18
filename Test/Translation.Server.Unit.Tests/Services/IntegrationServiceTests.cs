@@ -60,7 +60,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_GetIntegration_Invalid_IntegrationNotFound()
+        public async Task IntegrationService_GetIntegration_Failed_IntegrationNotFound()
         {
             // arrange
             var request = GetIntegrationReadRequest();
@@ -70,7 +70,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetIntegration(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationNotFound);
             AssertReturnType<IntegrationReadResponse>(result);
             MockIntegrationRepository.Verify_Select();
         }
@@ -132,7 +132,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_GetIntegrationRevisions_Invalid_IntegrationNotFound()
+        public async Task IntegrationService_GetIntegrationRevisions_Failed_IntegrationNotFound()
         {
             // arrange
             var request = GetIntegrationRevisionReadListRequest();
@@ -143,7 +143,7 @@ namespace Translation.Server.Unit.Tests.Services
 
             // assert
 
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationNotFound);
             AssertReturnType<IntegrationRevisionReadListResponse>(result);
             MockIntegrationRepository.Verify_Select();
         }
@@ -169,7 +169,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_CreateIntegration_Failed_IntegrationNameMustBeUnique()
+        public async Task IntegrationService_CreateIntegration_Invalid_IntegrationNameMustBeUnique()
         {
             //arrange
             var request = GetIntegrationCreateRequest();
@@ -181,7 +181,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateIntegration(request);
 
             //assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationNameMustBeUnique);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNameMustBeUnique);
             AssertReturnType<IntegrationCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -268,7 +268,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_EditIntegration_Failed_NameMustBeUnique()
+        public async Task IntegrationService_EditIntegration_Invalid_NameMustBeUnique()
         {
             // arrange
             var request = GetIntegrationEditRequest();
@@ -281,7 +281,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.EditIntegration(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationNameMustBeUnique);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNameMustBeUnique);
             AssertReturnType<IntegrationEditResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -324,7 +324,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_EditIntegration_Invalid_IntegrationNotFound()
+        public async Task IntegrationService_EditIntegration_Failed_IntegrationNotFound()
         {
             // arrange
             var request = GetIntegrationEditRequest();
@@ -337,7 +337,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.EditIntegration(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationNotFound);
             AssertReturnType<IntegrationEditResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -469,7 +469,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_DeleteIntegration_Invalid_IntegrationNotFound()
+        public async Task IntegrationService_DeleteIntegration_Failed_IntegrationNotFound()
         {
             // arrange
             var request = GetIntegrationDeleteRequest();
@@ -481,7 +481,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.DeleteIntegration(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationNotFound);
             AssertReturnType<IntegrationDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -607,7 +607,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_ChangeActivationForIntegration_Invalid_IntegrationNotFound()
+        public async Task IntegrationService_ChangeActivationForIntegration_Failed_IntegrationNotFound()
         {
             // arrange
             var request = GetIntegrationChangeActivationRequest();
@@ -618,7 +618,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.ChangeActivationForIntegration(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationNotFound);
             AssertReturnType<IntegrationChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockIntegrationRepository.Verify_Select();
@@ -705,7 +705,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_RestoreIntegration_Invalid_IntegrationNotFound()
+        public async Task IntegrationService_RestoreIntegration_Failed_IntegrationNotFound()
         {
             // arrange
             var request = GetIntegrationRestoreRequest();
@@ -716,14 +716,14 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RestoreIntegration(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationNotFound);
             AssertReturnType<IntegrationRestoreResponse>(result);
             MockOrganizationRepository.Verify_Any();
             MockIntegrationRepository.Verify_Select();
         }
 
         [Test]
-        public async Task IntegrationService_RestoreIntegration_Invalid_IntegrationRevisionNotFound()
+        public async Task IntegrationService_RestoreIntegration_Failed_IntegrationRevisionNotFound()
         {
             // arrange
             var request = GetIntegrationRestoreRequest();
@@ -734,7 +734,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RestoreIntegration(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationRevisionNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationRevisionNotFound);
             AssertReturnType<IntegrationRestoreResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockIntegrationRepository.Verify_Select();
@@ -797,7 +797,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_CreateIntegrationClient_Invalid_IntegrationNotFound()
+        public async Task IntegrationService_CreateIntegrationClient_Failed_IntegrationNotFound()
         {
             //arrange
             var request = GetIntegrationClientCreateRequest();
@@ -808,7 +808,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateIntegrationClient(request);
 
             //assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationNotFound);
             AssertReturnType<IntegrationClientCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -851,7 +851,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_GetIntegrationClient_Invalid_IntegrationClientNotFound()
+        public async Task IntegrationService_GetIntegrationClient_Failed_IntegrationClientNotFound()
         {
             // arrange
             var request = GetIntegrationClientReadRequest();
@@ -860,7 +860,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetIntegrationClient(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationClientNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationClientNotFound);
             AssertReturnType<IntegrationClientReadResponse>(result);
             MockIntegrationClientRepository.Verify_Select();
         }
@@ -908,7 +908,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_GetIntegrationClients_Invalid_IntegrationNotFound()
+        public async Task IntegrationService_GetIntegrationClients_Failed_IntegrationNotFound()
         {
             // arrange
             var request = GetIntegrationClientReadListRequest();
@@ -918,7 +918,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetIntegrationClients(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationNotFound);
             AssertReturnType<IntegrationClientReadListResponse>(result);
             MockIntegrationRepository.Verify_Select();
         }
@@ -980,7 +980,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_RefreshIntegrationClient_Invalid_IntegrationClientNotFound()
+        public async Task IntegrationService_RefreshIntegrationClient_Failed_IntegrationClientNotFound()
         {
             // arrange
             var request = GetIntegrationClientRefreshRequest();
@@ -992,7 +992,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RefreshIntegrationClient(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationClientNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationClientNotFound);
             AssertReturnType<IntegrationClientRefreshResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1021,7 +1021,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_RefreshIntegrationClient_Invalid_IntegrationNotFound()
+        public async Task IntegrationService_RefreshIntegrationClient_Failed_IntegrationNotFound()
         {
             // arrange
             var request = GetIntegrationClientRefreshRequest();
@@ -1034,7 +1034,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RefreshIntegrationClient(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationNotFound);
             AssertReturnType<IntegrationClientRefreshResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1147,7 +1147,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_DeleteIntegrationClient_Invalid_IntegrationClientNotFound()
+        public async Task IntegrationService_DeleteIntegrationClient_Failed_IntegrationClientNotFound()
         {
             // arrange
             var request = GetIntegrationClientDeleteRequest();
@@ -1159,7 +1159,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.DeleteIntegrationClient(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationClientNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationClientNotFound);
             AssertReturnType<IntegrationClientDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1188,7 +1188,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_DeleteIntegrationClient_Invalid_IntegrationNotFound()
+        public async Task IntegrationService_DeleteIntegrationClient_Failed_IntegrationNotFound()
         {
             // arrange
             var request = GetIntegrationClientDeleteRequest();
@@ -1201,7 +1201,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.DeleteIntegrationClient(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationNotFound);
             AssertReturnType<IntegrationClientDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1292,7 +1292,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_ChangeActivationForIntegrationClient_Invalid_IntegrationClientNotFound()
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_Failed_IntegrationClientNotFound()
         {
             // arrange
             var request = GetIntegrationClientChangeActivationRequest();
@@ -1304,7 +1304,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationClientNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationClientNotFound);
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1332,7 +1332,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_ChangeActivationForIntegrationClient_Invalid_IntegrationNotFound()
+        public async Task IntegrationService_ChangeActivationForIntegrationClient_Failed_IntegrationNotFound()
         {
             // arrange
             var request = GetIntegrationClientChangeActivationRequest();
@@ -1345,7 +1345,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.ChangeActivationForIntegrationClient(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationNotFound);
             AssertReturnType<IntegrationClientChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1416,7 +1416,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_CreateToken_Invalid_IntegrationClientNotFound()
+        public async Task IntegrationService_CreateToken_Failed_IntegrationClientNotFound()
         {
             // arrange
             var request = GetTokenCreateRequest();
@@ -1426,7 +1426,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateToken(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationClientNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationClientNotFound);
             AssertReturnType<TokenCreateResponse>(result);
             MockIntegrationClientRepository.Verify_Select();
         }
@@ -1505,7 +1505,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_CreateTokenWhenUserAuthenticated_Invalid_IntegrationClientNotFound()
+        public async Task IntegrationService_CreateTokenWhenUserAuthenticated_Failed_IntegrationClientNotFound()
         {
             // arrange
             var request = GetTokenGetRequest();
@@ -1515,7 +1515,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateTokenWhenUserAuthenticated(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationClientNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationClientNotFound);
             AssertReturnType<TokenCreateResponse>(result);
             MockIntegrationClientRepository.Verify_Select();
         }
@@ -1599,7 +1599,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_RevokeToken_Invalid_IntegrationClientNotFound()
+        public async Task IntegrationService_RevokeToken_Failed_IntegrationClientNotFound()
         {
             // arrange
             var request = GetTokenRevokeRequest();
@@ -1610,7 +1610,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RevokeToken(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationClientNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationClientNotFound);
             AssertReturnType<TokenRevokeResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockIntegrationClientRepository.Verify_Select();
@@ -1635,7 +1635,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_RevokeToken_Invalid_TokenNotFound()
+        public async Task IntegrationService_RevokeToken_Failed_TokenNotFound()
         {
             // arrange
             var request = GetTokenRevokeRequest();
@@ -1647,7 +1647,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RevokeToken(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, TokenNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, TokenNotFound);
             AssertReturnType<TokenRevokeResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockIntegrationClientRepository.Verify_Select();
@@ -1695,7 +1695,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_ValidateToken_Invalid_ProjectNotFound()
+        public async Task IntegrationService_ValidateToken_Failed_ProjectNotFound()
         {
             // arrange
             var request = GetTokenValidateRequest();
@@ -1705,13 +1705,13 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.ValidateToken(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNotFound);
             AssertReturnType<TokenValidateResponse>(result);
             MockProjectRepository.Verify_Select();
         }
 
         [Test]
-        public async Task IntegrationService_ValidateToken_Invalid_TokenNotFound()
+        public async Task IntegrationService_ValidateToken_Failed_TokenNotFound()
         {
             // arrange
             var request = GetTokenValidateRequest();
@@ -1722,7 +1722,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.ValidateToken(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, TokenNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, TokenNotFound);
             AssertReturnType<TokenValidateResponse>(result);
             MockProjectRepository.Verify_Select();
             MockTokenRepository.Verify_Select();
@@ -1829,7 +1829,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_GetTokenRequestLogsOfIntegration_Invalid_IntegrationNotFound()
+        public async Task IntegrationService_GetTokenRequestLogsOfIntegration_Failed_IntegrationNotFound()
         {
             // arrange
             var request = GetIntegrationTokenRequestLogReadListRequest();
@@ -1839,7 +1839,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetTokenRequestLogsOfIntegration(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, IntegrationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, IntegrationNotFound);
             AssertReturnType<IntegrationTokenRequestLogReadListResponse>(result);
             MockIntegrationRepository.Verify_Select();
         }
@@ -1891,7 +1891,5 @@ namespace Translation.Server.Unit.Tests.Services
             AssertReturnType<AllTokenRequestLogReadListResponse>(result);
             MockTokenRequestLogRepository.Verify_SelectMany();
         }
-
-
     }
 }

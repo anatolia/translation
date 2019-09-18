@@ -299,7 +299,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task AdminService_ValidateSuperAdminUserInvitation_Invalid_UserNotFound()
+        public async Task AdminService_ValidateSuperAdminUserInvitation_Failed_UserNotFound()
         {
             // arrange
             var request = GetAdminInviteValidateRequest();
@@ -309,7 +309,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.ValidateSuperAdminUserInvitation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, UserNotFound);
             AssertReturnType<AdminInviteValidateResponse>(result);
             MockUserRepository.Verify_Select();
         }
@@ -415,7 +415,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task AdminService_AcceptSuperAdminUserInvite_Invalid_UserNotFound()
+        public async Task AdminService_AcceptSuperAdminUserInvite_Failed_UserNotFound()
         {
             // arrange
             var request = GetAdminAcceptInviteRequest();
@@ -425,7 +425,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.AcceptSuperAdminUserInvite(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, UserNotFound);
             AssertReturnType<AdminAcceptInviteResponse>(result);
             MockUserRepository.Verify_Select();
         }
@@ -485,7 +485,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task AdminService_ChangeActivation_Invalid_UserNotFound()
+        public async Task AdminService_ChangeActivation_Failed_UserNotFound()
         {
             // arrange
             var request = GetUserChangeActivationRequest();
@@ -496,7 +496,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.ChangeActivation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, UserNotFound);
             AssertReturnType<UserChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();
@@ -560,7 +560,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task AdminService_OrganizationChangeActivation_Invalid_OrganizationNotFound()
+        public async Task AdminService_OrganizationChangeActivation_Failed_OrganizationNotFound()
         {
             // arrange
             var request = GetOrganizationChangeActivationRequest();
@@ -571,7 +571,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.OrganizationChangeActivation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, OrganizationNotFound);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Select();
         }
@@ -657,7 +657,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task AdminService_TranslationProviderChangeActivation_TranslationProviderNotFound()
+        public async Task AdminService_TranslationProviderChangeActivation_Failed_TranslationProviderNotFound()
         {
             // arrange
             var request = GetTranslationProviderChangeActivationRequest();
@@ -668,7 +668,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.TranslationProviderChangeActivation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, TranslationProviderNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, TranslationProviderNotFound);
             AssertReturnType<TranslationProviderChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockTranslationProviderRepository.Verify_SelectAll();
@@ -753,7 +753,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task AdminService_DemoteToUser_Invalid_UserNotFound()
+        public async Task AdminService_DemoteToUser_Failed_UserNotFound()
         {
             // arrange
             var request = GetAdminDemoteRequest();
@@ -764,7 +764,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.DemoteToUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, UserNotFound);
             AssertReturnType<AdminDemoteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();
@@ -827,7 +827,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task AdminService_UpgradeToAdmin_Invalid_UserNotFound()
+        public async Task AdminService_UpgradeToAdmin_Failed_UserNotFound()
         {
             // arrange
             var request = GetAdminUpgradeRequest();
@@ -838,7 +838,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.UpgradeToAdmin(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, UserNotFound);
             AssertReturnType<AdminUpgradeResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();

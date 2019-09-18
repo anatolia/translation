@@ -41,7 +41,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Language));
+                response.SetFailedBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -104,7 +104,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Language));
+                response.SetFailedBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -148,7 +148,7 @@ namespace Translation.Service
                                                             || x.IsoCode3Char == request.IsoCode3);
             if (result)
             {
-                response.SetFailedBecauseNameMustBeUnique(nameof(Language));
+                response.SetInvalidBecauseNameMustBeUnique(nameof(Language));
                 return response;
             }
 
@@ -180,7 +180,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Language));
+                response.SetFailedBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -229,7 +229,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Language));
+                response.SetFailedBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -253,14 +253,14 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Language));
+                response.SetFailedBecauseNotFound(nameof(Language));
                 return response;
             }
 
             var revisions = await _languageRepository.SelectRevisions(language.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalidBecauseNotFound("language_revision");
+                response.SetFailedBecauseNotFound("language_revision");
                 return response;
             }
 

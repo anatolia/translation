@@ -95,7 +95,7 @@ namespace Translation.Service
             var organization = await _organizationRepository.Select(x => x.Name == request.OrganizationName);
             if (organization.IsExist())
             {
-                response.SetFailedBecauseNameMustBeUnique(nameof(Organization));
+                response.SetInvalidBecauseNameMustBeUnique(nameof(Organization));
                 return response;
             }
 
@@ -197,7 +197,7 @@ namespace Translation.Service
             var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
             if (organization.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Organization));
+                response.SetFailedBecauseNotFound(nameof(Organization));
                 return response;
             }
 
@@ -257,7 +257,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Name == request.Name && x.Id != currentUser.OrganizationId))
             {
-                response.SetFailedBecauseNameMustBeUnique(nameof(Organization));
+                response.SetInvalidBecauseNameMustBeUnique(nameof(Organization));
                 return response;
             }
 
@@ -290,14 +290,14 @@ namespace Translation.Service
             var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
             if (organization.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Organization));
+                response.SetFailedBecauseNotFound(nameof(Organization));
                 return response;
             }
 
             var revisions = await _organizationRepository.SelectRevisions(organization.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalidBecauseRevisionNotFound(nameof(Organization));
+                response.SetFailedBecauseRevisionNotFound(nameof(Organization));
                 return response;
             }
 
@@ -403,7 +403,7 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Email == request.Email);
             if (user.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(User));
+                response.SetFailedBecauseNotFound(nameof(User));
                 return response;
             }
 
@@ -455,7 +455,7 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Email == request.Email);
             if (!user.IsExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(User));
+                response.SetFailedBecauseNotFound(nameof(User));
                 return response;
             }
 
@@ -542,7 +542,7 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Id == request.CurrentUserId);
             if (user.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(User));
+                response.SetFailedBecauseNotFound(nameof(User));
                 return response;
             }
 
@@ -662,7 +662,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Language));
+                response.SetFailedBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -891,7 +891,7 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Uid == request.UserUid);
             if (user.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(User));
+                response.SetFailedBecauseNotFound(nameof(User));
                 return response;
             }
 
@@ -1036,14 +1036,14 @@ namespace Translation.Service
             var user = await _userRepository.Select(x => x.Uid == request.UserUid);
             if (user.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(User));
+                response.SetFailedBecauseNotFound(nameof(User));
                 return response;
             }
 
             var revisions = await _userRepository.SelectRevisions(user.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalidBecauseRevisionNotFound(nameof(User));
+                response.SetFailedBecauseRevisionNotFound(nameof(User));
                 return response;
             }
 

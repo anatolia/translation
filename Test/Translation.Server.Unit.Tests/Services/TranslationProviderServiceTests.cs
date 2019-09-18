@@ -42,7 +42,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task TranslationProviderService_GetTranslationProvider_Failed()
+        public async Task TranslationProviderService_GetTranslationProvider_Failed_TranslationProviderNotFound()
         {
             // arrange
             var request = GetTranslationProviderReadRequest();
@@ -52,7 +52,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetTranslationProvider(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, TranslationProviderNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, TranslationProviderNotFound);
             AssertReturnType<TranslationProviderReadResponse>(result);
             MockTranslationProviderRepository.Verify_Select();
         }
@@ -151,7 +151,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task TranslationProviderService_EditTranslationProviderInvalid_TranslationProviderNotFound()
+        public async Task TranslationProviderService_EditTranslationProvider_Failed_TranslationProviderNotFound()
         {
             // arrange
             var request = GetTranslationProviderEditRequest();
@@ -161,7 +161,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.EditTranslationProvider(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, TranslationProviderNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, TranslationProviderNotFound);
             AssertReturnType<TranslationProviderEditResponse>(result);
             MockTranslationProviderRepository.Verify_Select();
         }

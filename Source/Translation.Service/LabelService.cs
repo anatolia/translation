@@ -79,7 +79,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Project));
+                response.SetFailedBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -97,7 +97,7 @@ namespace Translation.Service
 
             if (await _labelRepository.Any(x => x.Key == request.LabelKey && x.ProjectId == project.Id))
             {
-                response.SetFailedBecauseLabelKeyMustBeUnique(nameof(Label));
+                response.SetInvalidBecauseLabelKeyMustBeUnique(nameof(Label));
                 return response;
             }
 
@@ -214,7 +214,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid && x.IsActive);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Project));
+                response.SetFailedBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -222,7 +222,7 @@ namespace Translation.Service
             var token = await _tokenRepository.Select(x => x.AccessToken == request.Token && x.ExpiresAt > now);
             if (token.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Token));
+                response.SetFailedBecauseNotFound(nameof(Token));
                 return response;
             }
 
@@ -240,7 +240,7 @@ namespace Translation.Service
 
             if (await _labelRepository.Any(x => x.Key == request.LabelKey && x.ProjectId == project.Id))
             {
-                response.SetFailedBecauseLabelKeyMustBeUnique(nameof(Label));
+                response.SetInvalidBecauseLabelKeyMustBeUnique(nameof(Label));
                 return response;
             }
 
@@ -324,7 +324,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Project));
+                response.SetFailedBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -567,7 +567,7 @@ namespace Translation.Service
             var label = await _labelRepository.Select(x => x.Uid == request.LabelUid);
             if (label.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Label));
+                response.SetFailedBecauseNotFound(nameof(Label));
                 return response;
             }
 
@@ -593,7 +593,7 @@ namespace Translation.Service
                                                            && x.Key == request.LabelKey);
             if (label.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Label));
+                response.SetFailedBecauseNotFound(nameof(Label));
                 return response;
             }
 
@@ -609,7 +609,7 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Project));
+                response.SetFailedBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -697,7 +697,7 @@ namespace Translation.Service
             var label = await _labelRepository.Select(x => x.Uid == request.LabelUid);
             if (label.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Label));
+                response.SetFailedBecauseNotFound(nameof(Label));
                 return response;
             }
 
@@ -741,7 +741,7 @@ namespace Translation.Service
                     project = await _projectRepository.Select(x => x.Uid == request.ProjectUid && x.IsActive);
                     if (project.IsNotExist())
                     {
-                        response.SetInvalidBecauseNotFound(nameof(Project));
+                        response.SetFailedBecauseNotFound(nameof(Project));
                         return response;
                     }
 
@@ -761,14 +761,14 @@ namespace Translation.Service
                     var token = await _tokenRepository.Select(x => x.AccessToken == request.Token && x.ExpiresAt > now);
                     if (token.IsNotExist())
                     {
-                        response.SetInvalidBecauseNotFound(nameof(Token));
+                        response.SetFailedBecauseNotFound(nameof(Token));
                         return response;
                     }
 
                     project = await _projectRepository.Select(x => x.Uid == request.ProjectUid && x.IsActive);
                     if (project.IsNotExist())
                     {
-                        response.SetInvalidBecauseNotFound(nameof(Project));
+                        response.SetFailedBecauseNotFound(nameof(Project));
                         return response;
                     }
 
@@ -840,7 +840,7 @@ namespace Translation.Service
             var label = await _labelRepository.Select(x => x.Uid == request.LabelUid);
             if (label.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Label));
+                response.SetFailedBecauseNotFound(nameof(Label));
                 return response;
             }
 
@@ -894,7 +894,7 @@ namespace Translation.Service
             var label = await _labelRepository.Select(x => x.Uid == request.LabelUid);
             if (label.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Label));
+                response.SetFailedBecauseNotFound(nameof(Label));
                 return response;
             }
 
@@ -913,7 +913,7 @@ namespace Translation.Service
 
             if (await _projectRepository.Any(x => x.Id == label.ProjectId && !x.IsActive))
             {
-                response.SetInvalidBecauseNotFound(nameof(Project));
+                response.SetFailedBecauseNotFound(nameof(Project));
                 return response;
             }
 
@@ -937,7 +937,7 @@ namespace Translation.Service
             var label = await _labelRepository.Select(x => x.Uid == request.LabelUid);
             if (label.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Label));
+                response.SetFailedBecauseNotFound(nameof(Label));
                 return response;
             }
 
@@ -997,14 +997,14 @@ namespace Translation.Service
             var project = await _projectRepository.Select(x => x.Uid == request.ProjectUid);
             if (project.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Project));
+                response.SetFailedBecauseNotFound(nameof(Project));
                 return response;
             }
 
             var label = await _labelRepository.Select(x => x.Uid == request.CloningLabelUid);
             if (label.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Label));
+                response.SetFailedBecauseNotFound(nameof(Label));
                 return response;
             }
 
@@ -1016,7 +1016,7 @@ namespace Translation.Service
 
             if (await _labelRepository.Any(x => x.Key == request.LabelKey && x.ProjectUid == request.ProjectUid))
             {
-                response.SetFailedBecauseLabelKeyMustBeUnique(nameof(Label));
+                response.SetInvalidBecauseLabelKeyMustBeUnique(nameof(Label));
                 return response;
             }
 
@@ -1047,14 +1047,14 @@ namespace Translation.Service
             var label = await _labelRepository.Select(x => x.Uid == request.LabelUid);
             if (label.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Label));
+                response.SetFailedBecauseNotFound(nameof(Label));
                 return response;
             }
 
             var revisions = await _labelRepository.SelectRevisions(label.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalidBecauseRevisionNotFound(nameof(Label));
+                response.SetFailedBecauseRevisionNotFound(nameof(Label));
                 return response;
             }
 
@@ -1076,7 +1076,7 @@ namespace Translation.Service
             var label = await _labelRepository.Select(x => x.Uid == request.LabelUid);
             if (label.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Label));
+                response.SetFailedBecauseNotFound(nameof(Label));
                 return response;
             }
 
@@ -1108,7 +1108,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Language));
+                response.SetFailedBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -1132,15 +1132,14 @@ namespace Translation.Service
             return response;
         }
 
-        public async Task<LabelTranslationCreateListResponse> CreateTranslationFromList(
-            LabelTranslationCreateListRequest request)
+        public async Task<LabelTranslationCreateListResponse> CreateTranslationFromList(LabelTranslationCreateListRequest request)
         {
             var response = new LabelTranslationCreateListResponse();
 
             var label = await _labelRepository.Select(x => x.Uid == request.LabelUid);
             if (label.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Label));
+                response.SetFailedBecauseNotFound(nameof(Label));
                 return response;
             }
 
@@ -1196,8 +1195,7 @@ namespace Translation.Service
             return response;
         }
 
-        public async Task<List<LabelTranslation>> AddLabelTranslation(Label label,
-            List<TranslationListInfo> LabelTranslations, LabelTranslationCreateListResponse response)
+        public async Task<List<LabelTranslation>> AddLabelTranslation(Label label, List<TranslationListInfo> LabelTranslations, LabelTranslationCreateListResponse response)
         {
             var languages = await _languageRepository.SelectAll(null, false);
 
@@ -1243,8 +1241,7 @@ namespace Translation.Service
             return translationsToInsert;
         }
 
-        public async Task<Tuple<List<LabelTranslation>, List<LabelTranslation>>> UpdateAndAddLabelTranslation(
-            Label label, List<TranslationListInfo> LabelTranslations, LabelTranslationCreateListResponse response)
+        public async Task<Tuple<List<LabelTranslation>, List<LabelTranslation>>> UpdateAndAddLabelTranslation(Label label, List<TranslationListInfo> LabelTranslations, LabelTranslationCreateListResponse response)
         {
             var languages = await _languageRepository.SelectAll(null, false);
 
@@ -1318,7 +1315,7 @@ namespace Translation.Service
             var labelTranslation = await _labelTranslationRepository.Select(x => x.Uid == request.LabelTranslationUid);
             if (labelTranslation.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(LabelTranslation));
+                response.SetFailedBecauseNotFound(nameof(LabelTranslation));
                 return response;
             }
 
@@ -1331,7 +1328,7 @@ namespace Translation.Service
             var language = await _languageRepository.SelectById(labelTranslation.LanguageId);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Language));
+                response.SetFailedBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -1347,7 +1344,7 @@ namespace Translation.Service
             var label = await _labelRepository.Select(x => x.Uid == request.LabelUid);
             if (label.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Label));
+                response.SetFailedBecauseNotFound(nameof(Label));
                 return response;
             }
 
@@ -1411,8 +1408,7 @@ namespace Translation.Service
             return response;
         }
 
-        public async Task<LabelTranslationRevisionReadListResponse> GetLabelTranslationRevisions(
-            LabelTranslationRevisionReadListRequest request)
+        public async Task<LabelTranslationRevisionReadListResponse> GetLabelTranslationRevisions(LabelTranslationRevisionReadListRequest request)
         {
             var response = new LabelTranslationRevisionReadListResponse();
 
@@ -1421,7 +1417,7 @@ namespace Translation.Service
             var labelTranslation = await _labelTranslationRepository.Select(x => x.Uid == request.LabelTranslationUid);
             if (labelTranslation.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(LabelTranslation));
+                response.SetFailedBecauseNotFound(nameof(LabelTranslation));
                 return response;
             }
 
@@ -1455,7 +1451,7 @@ namespace Translation.Service
             var labelTranslation = await _labelTranslationRepository.Select(x => x.Uid == request.LabelTranslationUid);
             if (labelTranslation.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(LabelTranslation));
+                response.SetFailedBecauseNotFound(nameof(LabelTranslation));
                 return response;
             }
 
@@ -1511,7 +1507,7 @@ namespace Translation.Service
             var labelTranslation = await _labelTranslationRepository.Select(x => x.Uid == request.LabelTranslationUid);
             if (labelTranslation.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(LabelTranslation));
+                response.SetFailedBecauseNotFound(nameof(LabelTranslation));
                 return response;
             }
 
@@ -1551,8 +1547,7 @@ namespace Translation.Service
             return response;
         }
 
-        public async Task<LabelTranslationRestoreResponse> RestoreLabelTranslation(
-            LabelTranslationRestoreRequest request)
+        public async Task<LabelTranslationRestoreResponse> RestoreLabelTranslation(LabelTranslationRestoreRequest request)
         {
             var response = new LabelTranslationRestoreResponse();
 
@@ -1566,14 +1561,14 @@ namespace Translation.Service
             var labelTranslation = await _labelTranslationRepository.Select(x => x.Uid == request.LabelTranslationUid);
             if (labelTranslation.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(LabelTranslation));
+                response.SetFailedBecauseNotFound(nameof(LabelTranslation));
                 return response;
             }
 
             var revisions = await _labelTranslationRepository.SelectRevisions(labelTranslation.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalidBecauseRevisionNotFound(nameof(LabelTranslation));
+                response.SetFailedBecauseRevisionNotFound(nameof(LabelTranslation));
                 return response;
             }
 

@@ -42,7 +42,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LanguageService_GetLanguage_Invalid_LanguageNotFound()
+        public async Task LanguageService_GetLanguage_Failed_LanguageNotFound()
         {
             // arrange
             var request = GetLanguageReadRequest();
@@ -52,7 +52,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetLanguage(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LanguageNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LanguageNotFound);
             AssertReturnType<LanguageReadResponse>(result);
             MockLanguageRepository.Verify_Select();
         }
@@ -113,7 +113,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LanguageService_GetLanguageRevisions_Invalid_LanguageNotFound()
+        public async Task LanguageService_GetLanguageRevisions_Failed_LanguageNotFound()
         {
             //arrange
             var request = GetLanguageRevisionReadListRequest();
@@ -123,7 +123,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetLanguageRevisions(request);
 
             //assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LanguageNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LanguageNotFound);
             AssertReturnType<LanguageRevisionReadListResponse>(result);
             MockLanguageRepository.Verify_Select();
 
@@ -168,7 +168,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LanguageService_CreateLanguage_Failed_NameMustBeUnique()
+        public async Task LanguageService_CreateLanguage_Invalid_NameMustBeUnique()
         {
             //arrange
             var request = GetLanguageCreateRequest();
@@ -179,7 +179,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateLanguage(request);
 
             //assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LanguageNameMustBeUnique);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LanguageNameMustBeUnique);
             AssertReturnType<LanguageCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockLanguageRepository.Verify_Any();
@@ -280,7 +280,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LanguageService_EditLanguage_Invalid_LanguageNotFound()
+        public async Task LanguageService_EditLanguage_Failed_LanguageNotFound()
         {
             // arrange
             var request = GetLanguageEditRequest();
@@ -292,7 +292,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.EditLanguage(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LanguageNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LanguageNotFound);
             AssertReturnType<LanguageEditResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockLanguageRepository.Verify_Select();
@@ -375,7 +375,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LanguageService_DeleteLanguage_Invalid_LanguageNotFound()
+        public async Task LanguageService_DeleteLanguage_Failed_LanguageNotFound()
         {
             // arrange
             var request = GetLanguageDeleteRequest();
@@ -386,7 +386,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.DeleteLanguage(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LanguageNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LanguageNotFound);
             AssertReturnType<LanguageDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockLanguageRepository.Verify_Select();
@@ -433,7 +433,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LanguageService_RestoreLanguage_Invalid_LanguageNotFound()
+        public async Task LanguageService_RestoreLanguage_Failed_LanguageNotFound()
         {
             // arrange
             var request = GetLanguageRestoreRequest();
@@ -443,13 +443,13 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RestoreLanguage(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LanguageNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LanguageNotFound);
             AssertReturnType<LanguageRestoreResponse>(result);
             MockLanguageRepository.Verify_Select();
         }
 
         [Test]
-        public async Task LanguageService_RestoreLanguage_Invalid_LanguageRevisionNotFound()
+        public async Task LanguageService_RestoreLanguage_Failed_LanguageRevisionNotFound()
         {
             // arrange
             var request = GetLanguageRestoreRequest();
@@ -460,7 +460,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RestoreLanguage(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LanguageRevisionNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LanguageRevisionNotFound);
             AssertReturnType<LanguageRestoreResponse>(result);
             MockLanguageRepository.Verify_Select();
             MockLanguageRepository.Verify_SelectRevisions();
