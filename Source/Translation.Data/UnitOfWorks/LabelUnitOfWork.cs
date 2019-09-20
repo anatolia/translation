@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using StandardRepository.Models;
 using StandardRepository.PostgreSQL;
-using Translation.Common.Contracts;
+
 using Translation.Data.Entities.Domain;
 using Translation.Data.Repositories.Contracts;
 using Translation.Data.UnitOfWorks.Contracts;
