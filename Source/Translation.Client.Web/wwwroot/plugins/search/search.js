@@ -18,7 +18,7 @@ function searchWork() {
     }
     lastFilter = filter;
 
-    if (filter == "") {
+    if (filter === "") {
         hide(searchResults);
         txtSearch.removeEventListener("keydown", onUpDownKeyPress);
     } else {
@@ -101,10 +101,7 @@ function onUpDownKeyPress(event) {
     markSelected(results, _index);
 
     if (key === KEY.ENTER) {
-        if (event.target.id === "txtSearch") {
-            openLabelSearchListPage();
-        }
-        else if (_index === results.length - 1) {
+        if (_index === results.length - 1) {
             openLabelSearchListPage();
         } else {
             openLabelDetailPage(results[_index].getAttribute("uid"));
@@ -117,8 +114,8 @@ function markSelected(results, resultIndexToSelect) {
         return;
     }
 
-    for (i = 0; i < results.length; i++) {
-        result = results[i];
+    for (let i = 0; i < results.length; i++) {
+        let result = results[i];
         if (i === resultIndexToSelect) {
             result.classList.add("list-item-selected");
         } else {

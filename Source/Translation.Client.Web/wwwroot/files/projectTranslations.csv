@@ -1,6 +1,135 @@
-﻿label_key,language,translation
-label_key,ru,ключевые метки 
-label_key,tr,anahtar etiketi 
+label_key,language_char_code_2,translation
+welcome_to_translation_service,tr,Çeviri servisine hoş geldiniz!
+welcome_to_translation_service,en,Welcome to the Translation service!
+organization_name,en,Organization Name
+organization_name,tr,Organizasyon Adı
+project_name,en,Project Name
+project_name,tr,Proje Adı
+label_name,en,Label Name
+label_name,tr,Etiket Adı
+home_link,en,Home
+home_link,en,Anasayfa
+admin_list_link,en,Admins
+user_list_link,en,user_list_link
+organization_list_link,en,Organization
+language_list_link,en,language_list_link
+journal_list_link,en,journal_list_link
+user_login_log_list_link,en,user_login_log_list_link
+token_request_log_list_link,en,token_request_log_list_link
+permission_log_list_link,en,permission_log_list_link
+send_email_log_list_link,en,send_email_log_list_link
+invite_user_as_admin_button,en,invite_user_as_admin_button
+invite_new_admin,en,invite_new_admin
+content_access_denied,en,content_access_denied
+organization_link,en,organization_link
+admin_dashboard_link,en,admin_dashboard_link
+>>>>>>> mahaMaster
+integration,en,integration
+integration,tr,bütünleşme
+integration,ru,интеграция
+client_id,en,client id
+client_id,tr,Müşteri Kimliği
+client_id,ru,ID клиента
+create_integration_button,en,create integration button
+create_integration_button,tr,entegrasyon düğmesi oluştur
+create_integration_button,ru,создать кнопку интеграции
+integration_name,en,integration name
+integration_name,tr,entegrasyon adı
+integration_name,ru,имя интеграции
+description,en,description
+description,tr,açıklama
+description,ru,описание
+organization,en,organization
+organization,tr,organizasyon
+organization,ru,организация
+edit_link,en,edit link
+edit_link,tr,bağlantıyı düzenle
+edit_link,ru,редактировать ссылку
+active_tokens_link,en,active tokens link
+active_tokens_link,tr,aktif belirteçler bağlantı
+active_tokens_link,ru,ссылка на активные токены
+revisions_link,en,revisions link
+revisions_link,tr,revizyonlar bağlantısı
+revisions_link,ru,ссылка на ревизии
+delete_button,en,delete button
+delete_button,tr,sil düğmesi
+delete_button,ru,кнопка удаления
+integration_clients,en,integration clients
+integration_clients,tr,entegrasyon müşterileri
+integration_clients,ru,клиенты интеграции
+create_integration_client_link,en,create integration client link
+create_integration_client_link,tr,entegrasyon istemcisi bağlantısı oluştur
+create_integration_client_link,ru,создать интеграционную клиентскую ссылку
+update_integration_button,en,update integration button
+update_integration_button,tr,entegrasyon düğmesini güncelle
+update_integration_button,ru,обновить кнопку интеграции
+cloning_label_key,en,cloning label key
+cloning_label_key,tr,etiket anahtarı klonlama
+cloning_label_key,ru,ключ клонирования метки
+clone_label_button,en,clone label button
+clone_label_button,tr,klon etiket düğmesi
+clone_label_button,ru,кнопка метки клона
+project,en,project
+project,tr,proje
+project,ru,проект
+create_label_button,en,create label button
+create_label_button,tr,etiket düğmesi oluştur
+create_label_button,ru,кнопка создания метки
+create_bulk_button,en,create bulk button
+create_bulk_button,tr,toplu düğme oluştur
+create_bulk_button,ru,создать объемную кнопку
+added_label_count,en,added label count
+added_label_count,tr,eklenen etiket sayısı
+added_label_count,ru,добавлено количество меток
+can_not_added_label_count,en,can not added label count
+can_not_added_label_count,tr,etiket sayısı eklenemiyor
+can_not_added_label_count,ru,нельзя добавить количество меток
+total_label_count,en,total label count
+total_label_count,tr,toplam etiket sayısı
+total_label_count,ru,общее количество меток
+added_label_translation_count,en,added label translation count
+added_label_translation_count,tr,etiket çeviri sayısı eklendi
+added_label_translation_count,ru,добавлен счетчик перевода меток
+can_not_added_label_translation_count,en,can not added label translation count
+can_not_added_label_translation_count,tr,etiket çeviri sayısı eklenemiyor
+can_not_added_label_translation_count,ru,невозможно добавить перевод меток
+uploaded_label_translation_count,en,uploaded label translation count
+uploaded_label_translation_count,tr,yüklenen etiket çeviri sayısı
+uploaded_label_translation_count,ru,количество загруженных меток
+total_rows_processed,en,total rows processed
+total_rows_processed,tr,işlenen toplam satır
+total_rows_processed,ru,общее количество обработанных строк
+label_name,en,label name
+label_name,tr,etiket adı
+label_name,ru,название ярлыка
+label_translation_count,en,label translation count
+label_translation_count,tr,etiket çevirisi sayısı
+label_translation_count,ru,количество переводов меток
+edit_label_link,en,edit label link
+edit_label_link,tr,etiket bağlantısını düzenle
+edit_label_link,ru,изменить ссылку на ярлык
+clone_label_link,en,clone label link
+clone_label_link,tr,etiket bağlantısını klonla
+clone_label_link,ru,ссылка на метку клона
+change_activation_button,en,change activation button
+change_activation_button,tr,aktivasyon düğmesini değiştir
+change_activation_button,ru,изменить кнопку активации
+download_translations_button,en,download translations button
+download_translations_button,tr,çevirileri indir düğmesi
+download_translations_button,ru,кнопка загрузки переводов
+translations,en,translations
+translations,tr,çeviriler
+translations,ru,переводы
+create_label_translation_link,en,create label translation link
+create_label_translation_link,tr,etiket çeviri bağlantısı oluştur
+create_label_translation_link,ru,создать ссылку на перевод метки
+upload_translations_from_csv_link,en,upload translations from csv link
+upload_translations_from_csv_link,tr,csv bağlantısından çeviri yükle
+upload_translations_from_csv_link,ru,загрузить переводы из csv ссылки
+edit_label_button,en,edit label button
+edit_label_button,tr,etiket düğmesini düzenle
+edit_label_button,ru,кнопка редактирования метки
+>>>>>>> invitation_accepted_at-column-added
 label_key,en,label key
 journal_integration_restore,en,journal integration restore
 journal_integration_restore,ru,журнал интеграция восстановить
