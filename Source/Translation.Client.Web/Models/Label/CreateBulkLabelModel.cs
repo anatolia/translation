@@ -31,7 +31,11 @@ namespace Translation.Client.Web.Models.Label
             ProjectNameInput = new HiddenInputModel("ProjectName");
 
             BulkLabelInput = new TextareaInputModel("BulkLabelData", "bulk_label_data");
+<<<<<<< HEAD
             UpdateExistedTranslationsInput = new CheckboxInputModel("UpdateExistedTranslations", "update_existed_translations");
+=======
+            BulkLabelInput.Rows = 21;
+>>>>>>> mahaMaster
         }
 
         public override void SetInputModelValues()

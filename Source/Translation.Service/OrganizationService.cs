@@ -321,13 +321,13 @@ namespace Translation.Service
             }
 
             Expression<Func<Label, bool>> filter = x => x.OrganizationId == organization.Id
-                                                        && x.LabelTranslationCount == 0;
+                                                        && x.LabelTranslationCount < 2;
 
             if (request.SearchTerm.IsNotEmpty())
             {
                 filter = x => x.Name.Contains(request.SearchTerm)
                               && x.OrganizationId == organization.Id
-                              && x.LabelTranslationCount == 0;
+                              && x.LabelTranslationCount < 2;
             }
 
             List<Label> entities;

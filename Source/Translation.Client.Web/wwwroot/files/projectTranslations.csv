@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿label_key,language,translation
 home_link,en,home link
 home_link,tr,ana link
@@ -47,6 +48,33 @@ pending_translations_link,ru,ссылка на ожидающий перевод
 search_list_link,en,search list link
 search_list_link,tr,arama listesi bağlantısı
 search_list_link,ru,ссылка на список поиска
+=======
+﻿label_key,language_char_code_2,translation
+welcome_to_translation_service,tr,Çeviri servisine hoş geldiniz!
+welcome_to_translation_service,en,Welcome to the Translation service!
+organization_name,en,Organization Name
+organization_name,tr,Organizasyon Adı
+project_name,en,Project Name
+project_name,tr,Proje Adı
+label_name,en,Label Name
+label_name,tr,Etiket Adı
+home_link,en,Home
+home_link,en,Anasayfa
+admin_list_link,en,Admins
+user_list_link,en,user_list_link
+organization_list_link,en,Organization
+language_list_link,en,language_list_link
+journal_list_link,en,journal_list_link
+user_login_log_list_link,en,user_login_log_list_link
+token_request_log_list_link,en,token_request_log_list_link
+permission_log_list_link,en,permission_log_list_link
+send_email_log_list_link,en,send_email_log_list_link
+invite_user_as_admin_button,en,invite_user_as_admin_button
+invite_new_admin,en,invite_new_admin
+content_access_denied,en,content_access_denied
+organization_link,en,organization_link
+admin_dashboard_link,en,admin_dashboard_link
+>>>>>>> mahaMaster
 integration,en,integration
 integration,tr,bütünleşme
 integration,ru,интеграция

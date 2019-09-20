@@ -8,9 +8,9 @@
     <span>@Model.InfoText</span>
     }
 </label>
-<textarea id="@Model.Name" name="@Model.Name" @Html.Raw(Model.IsRequired ? "required" : "") rows="@Model.Rows" cols="@Model.Cols">@Model.Value</textarea>
+<textarea id="@Model.Name" name="@Model.Name" @Html.Raw(Model.IsRequired ? "required" : "") rows="@Model.Rows" cols="@Model.Cols" style="border-width: 1px;border-style: solid;border-color: #999;">@Model.Value</textarea>
 
-@if (Model.ErrorMessage.Any())
+    @if (Model.ErrorMessage.Any())
 {
 <ul class="error">
     @for (var i = 0; i < Model.ErrorMessage.Count; i++)
