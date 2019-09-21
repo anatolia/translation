@@ -136,6 +136,7 @@ function translateElement(element) {
             }
         }
     });
+
     let items = element.querySelectorAll('[data-translation]');
     items.forEach(function (item) {
         for (let i = 0; i < labels.length; i++) {
@@ -164,6 +165,10 @@ doGet('/Data/GetCurrentUser', function (req) {
         } else if (req.status === 200
             && req.responseText === null) {
             currentUser = null;
+            window.redirect('/Login');
+        }
+        else if (req.status === 500) {
+            localStorage.clear();
             window.redirect('/Login');
         }
     }
