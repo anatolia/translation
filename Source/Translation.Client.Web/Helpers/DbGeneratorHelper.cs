@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Castle.Windsor;
+using Microsoft.EntityFrameworkCore.Internal;
 using StandardRepository.Helpers;
 using StandardRepository.Models;
 using StandardRepository.PostgreSQL.DbGenerator;
@@ -158,6 +159,11 @@ namespace Translation.Client.Web.Helpers
 
             var labelListInfos = new List<LabelListInfo>();
             var lines = File.ReadAllLines(labelsFilePath, Encoding.UTF8);
+            if (!lines.Any())
+            {
+                return;
+            }
+
             for (var i = 1; i < lines.Length; i++)
             {
                 var values = lines[i].Split(',');
@@ -173,10 +179,8 @@ namespace Translation.Client.Web.Helpers
                     Translation = values[2]
                 });
             }
-
-            var updateExistedTranslations = true;
-
-            var request = new LabelCreateListRequest(project.CreatedBy, project.OrganizationUid, project.Uid, updateExistedTranslations, labelListInfos);
+            
+            var request = new LabelCreateListRequest(project.CreatedBy, project.OrganizationUid, project.Uid, false, labelListInfos);
             var response = labelService.CreateLabelFromList(request).Result;
             if (response.Status.IsNotSuccess)
             {

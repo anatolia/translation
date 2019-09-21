@@ -112,6 +112,7 @@ namespace Translation.Service
 
             var uowResultLabelTranslation = true;
 
+            var labelTranslation = "";
             if (request.LanguageUids.Length != 0)
             {
                 var projectLanguage = await _languageRepository.SelectById(project.LanguageId);
@@ -131,30 +132,27 @@ namespace Translation.Service
 
                 if (request.IsGettingTranslationFromOtherProject)
                 {
-                    var AllExistingTranslations =
-                        await _labelTranslationRepository.SelectAll(x => x.LabelName == label.Name);
-                    if (AllExistingTranslations.Count != 0)
+                    var allExistingTranslations = await _labelTranslationRepository.SelectAll(x => x.LabelName == label.Name);
+                    if (allExistingTranslations.Count != 0)
                     {
-                        Dictionary<string, string> demandedTranslations = new Dictionary<string, string>();
+                        var demandedTranslations = new Dictionary<string, string>();
 
-                        for (int i = 0; i < AllExistingTranslations.Count; i++)
+                        for (var i = 0; i < allExistingTranslations.Count; i++)
                         {
-                            if (!demandedTranslations.ContainsKey(AllExistingTranslations[i].LanguageName) &&
-                                languages.Any(x => x.Name == AllExistingTranslations[i].LanguageName))
+                            if (!demandedTranslations.ContainsKey(allExistingTranslations[i].LanguageName)
+                                && languages.Any(x => x.Name == allExistingTranslations[i].LanguageName))
                             {
-                                demandedTranslations.Add(AllExistingTranslations[i].LanguageName,
-                                    AllExistingTranslations[i].Translation);
+                                demandedTranslations.Add(allExistingTranslations[i].LanguageName, allExistingTranslations[i].Translation);
                             }
                         }
 
                         foreach (var item in demandedTranslations.Keys)
                         {
                             var language = languages.Find(x => x.Name == item);
-                            var labelTranslationEntity =
-                                _labelTranslationFactory.CreateEntity(demandedTranslations[item], addedLabel, language);
-                            uowResultLabelTranslation =
-                                await _labelUnitOfWork.DoCreateTranslationWork(currentUser.Id, labelTranslationEntity);
+                            var labelTranslationEntity = _labelTranslationFactory.CreateEntity(demandedTranslations[item], addedLabel, language);
+                            uowResultLabelTranslation = await _labelUnitOfWork.DoCreateTranslationWork(currentUser.Id, labelTranslationEntity);
                             languages.Remove(language);
+
                             if (!uowResultLabelTranslation)
                             {
                                 continue;
@@ -163,8 +161,7 @@ namespace Translation.Service
                     }
                 }
 
-                var labelTranslation = "";
-                for (int i = 0; i < languages.Count; i++)
+                for (var i = 0; i < languages.Count; i++)
                 {
                     if (projectLanguage.IsoCode2Char == languages[i].IsoCode2Char)
                     {
@@ -172,10 +169,8 @@ namespace Translation.Service
                     }
                     else
                     {
-                        var labelGetTranslatedTextRequest = new LabelGetTranslatedTextRequest(currentUser.Id,
-                            addedLabel.Name, languages[i].IsoCode2Char, projectLanguage.IsoCode2Char);
-                        var labelGetTranslatedTextResponse =
-                            await _textTranslateIntegration.GetTranslatedText(labelGetTranslatedTextRequest);
+                        var labelGetTranslatedTextRequest = new LabelGetTranslatedTextRequest(currentUser.Id, addedLabel.Name, languages[i].IsoCode2Char, projectLanguage.IsoCode2Char);
+                        var labelGetTranslatedTextResponse = await _textTranslateIntegration.GetTranslatedText(labelGetTranslatedTextRequest);
                         if (labelGetTranslatedTextResponse.Status.IsNotSuccess)
                         {
                             response.SetInvalidBecauseNotActive(nameof(TranslationProvider));
@@ -185,10 +180,9 @@ namespace Translation.Service
                         labelTranslation = labelGetTranslatedTextResponse.Item.Name.Replace(",", string.Empty);
                     }
 
-                    var labelTranslationEntity =
-                        _labelTranslationFactory.CreateEntity(labelTranslation, addedLabel, languages[i]);
-                    uowResultLabelTranslation =
-                        await _labelUnitOfWork.DoCreateTranslationWork(currentUser.Id, labelTranslationEntity);
+                    var labelTranslationEntity = _labelTranslationFactory.CreateEntity(labelTranslation, addedLabel, languages[i]);
+                    uowResultLabelTranslation = await _labelUnitOfWork.DoCreateTranslationWork(currentUser.Id, labelTranslationEntity);
+
                     if (!uowResultLabelTranslation)
                     {
                         continue;
@@ -246,12 +240,12 @@ namespace Translation.Service
 
             var label = _labelFactory.CreateEntity(request.LabelKey, project);
             var uowResult = await _labelUnitOfWork.DoCreateWork(token.CreatedBy, label);
+
             if (!uowResult)
             {
                 response.SetFailed();
                 return response;
             }
-
 
             var uowResultLabelTranslation = true;
 
@@ -272,20 +266,17 @@ namespace Translation.Service
                     }
                 }
 
-                var labelTranslation = "";
-
-                for (int i = 0; i < languages.Count; i++)
+                for (var i = 0; i < languages.Count; i++)
                 {
+                    var labelTranslation = "";
                     if (projectLanguage.IsoCode2Char == languages[i].IsoCode2Char)
                     {
                         labelTranslation = addedLabel.Name.Replace("_", " ");
                     }
                     else
                     {
-                        var labelGetTranslatedTextRequest = new LabelGetTranslatedTextRequest(token.CreatedBy,
-                            addedLabel.Name, languages[i].IsoCode2Char, projectLanguage.IsoCode2Char);
-                        var labelGetTranslatedTextResponse =
-                            await _textTranslateIntegration.GetTranslatedText(labelGetTranslatedTextRequest);
+                        var labelGetTranslatedTextRequest = new LabelGetTranslatedTextRequest(token.CreatedBy, addedLabel.Name, languages[i].IsoCode2Char, projectLanguage.IsoCode2Char);
+                        var labelGetTranslatedTextResponse = await _textTranslateIntegration.GetTranslatedText(labelGetTranslatedTextRequest);
                         if (labelGetTranslatedTextResponse.Status.IsNotSuccess)
                         {
                             response.SetInvalidBecauseNotActive(nameof(TranslationProvider));
@@ -295,11 +286,10 @@ namespace Translation.Service
                         labelTranslation = labelGetTranslatedTextResponse.Item.Name.Replace(",", string.Empty);
                     }
 
-                    var labelTranslationEntity =
-                        _labelTranslationFactory.CreateEntity(labelTranslation, addedLabel, languages[i]);
+                    var labelTranslationEntity = _labelTranslationFactory.CreateEntity(labelTranslation, addedLabel, languages[i]);
 
-                    uowResultLabelTranslation =
-                        await _labelUnitOfWork.DoCreateTranslationWork(token.CreatedBy, labelTranslationEntity);
+                    uowResultLabelTranslation = await _labelUnitOfWork.DoCreateTranslationWork(token.CreatedBy, labelTranslationEntity);
+
                     if (!uowResultLabelTranslation)
                     {
                         continue;

@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 using Translation.Common.Helpers;
 using Translation.Client.Web.Models.Admin;
+
 using static Translation.Common.Tests.TestHelpers.FakeModelTestHelper;
 using static Translation.Common.Tests.TestHelpers.AssertViewModelTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
@@ -28,8 +29,7 @@ namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.Admin
         {
             Assert.AreEqual(SystemUnderTest.Title, "admin_invite_title");
         }
-
-
+        
         [Test]
         public void AdminInviteModel_Organization()
         {
@@ -53,6 +53,8 @@ namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.Admin
         {
             AssertInputModel(SystemUnderTest.LastNameInput, "LastName", "last_name", true);
         }
+
+        [Test]
         public void AdminInviteModel_SetInputModelValues()
         {
             // arrange
