@@ -34,6 +34,7 @@ namespace Translation.Data.Entities.Main
         public bool IsSuperAdmin { get; set; }
 
         public DateTime? InvitedAt { get; set; }
+        public DateTime? InvitationAcceptedAt { get; set; }
         public long? InvitedByUserId { get; set; }
         public Guid? InvitedByUserUid { get; set; }
         public string InvitedByUserName { get; set; }

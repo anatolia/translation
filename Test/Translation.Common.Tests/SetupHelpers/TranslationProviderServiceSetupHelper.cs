@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using Castle.Components.DictionaryAdapter;
 using Moq;
 
@@ -17,8 +18,9 @@ namespace Translation.Common.Tests.SetupHelpers
 
         public static void Setup_EditTranslationProvider_Returns_TranslationProviderEditResponse_Success(this Mock<ITranslationProviderService> service)
         {
+            var item = GetTranslationProviderDto();
             service.Setup(x => x.EditTranslationProvider(It.IsAny<TranslationProviderEditRequest>()))
-                .ReturnsAsync(new TranslationProviderEditResponse() { Status = ResponseStatus.Success });
+                .ReturnsAsync(new TranslationProviderEditResponse() { Status = ResponseStatus.Success, Item = item });
         }
 
         public static void Setup_EditTranslationProvider_Returns_TranslationProviderEditResponse_Failed(this Mock<ITranslationProviderService> service)

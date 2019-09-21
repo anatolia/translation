@@ -141,6 +141,7 @@ namespace Translation.Data.Factories
             dto.LabelCount = entity.LabelCount;
             dto.LabelTranslationCount = entity.LabelTranslationCount;
             dto.InvitedAt = entity.InvitedAt;
+            dto.InvitationAcceptedAt = entity.InvitationAcceptedAt;
             dto.InvitedByUserUid = entity.InvitedByUserUid;
             dto.InvitedByUserName = entity.InvitedByUserName;
 

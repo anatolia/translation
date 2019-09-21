@@ -36,6 +36,12 @@ namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.Label
         }
 
         [Test]
+        public void LabelEditModel_ProjectInput()
+        {
+            AssertHiddenInputModel(SystemUnderTest.ProjectInput, "ProjectUid");
+        }
+
+        [Test]
         public void LabelEditModel_LabelInput()
         {
             AssertHiddenInputModel(SystemUnderTest.LabelInput, "LabelUid");
@@ -63,6 +69,7 @@ namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.Label
 
             // assert
             SystemUnderTest.OrganizationInput.Value.ShouldBe(SystemUnderTest.OrganizationUid.ToUidString());
+            SystemUnderTest.ProjectInput.Value.ShouldBe(SystemUnderTest.ProjectUid.ToUidString());
             SystemUnderTest.LabelInput.Value.ShouldBe(SystemUnderTest.LabelUid.ToUidString());
             SystemUnderTest.KeyInput.Value.ShouldBe(SystemUnderTest.Key);
             SystemUnderTest.DescriptionInput.Value.ShouldBe(SystemUnderTest.Description);
@@ -73,14 +80,15 @@ namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.Label
             get
             {
                 yield return new TestCaseData(CaseOne,
-                                              UidOne, UidTwo, StringOne,
+                                              UidOne, UidTwo, UidThree, StringOne,
                                               null,
                                               null,
                                               true);
 
                 yield return new TestCaseData(CaseTwo,
-                                              EmptyUid, EmptyUid, EmptyString,
-                                              new[] { "organization_uid_not_valid",
+                                              EmptyUid, EmptyUid, EmptyUid, EmptyString,
+                                              new[] { "organization_uid_is_not_valid",
+                                                      "project_uid_is_not_valid",
                                                       "label_uid_is_not_valid" },
                                               new[] { "key_required_error_message" },
                                               false);
@@ -89,12 +97,12 @@ namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.Label
 
         [TestCaseSource(nameof(MessageTestCases))]
         public void LabelEditModel_InputErrorMessages(string caseName,
-                                                       Guid organizationUid, Guid labelUid, string key,
+                                                       Guid organizationUid, Guid projectUid, Guid labelUid, string key,
                                                        string[] errorMessages,
                                                        string[] inputErrorMessages,
                                                        bool result)
         {
-            var model = GetLabelEditModel(organizationUid, labelUid, key);
+            var model = GetLabelEditModel(organizationUid, projectUid, labelUid, key);
             model.IsValid().ShouldBe(result);
             model.IsNotValid().ShouldBe(!result);
 

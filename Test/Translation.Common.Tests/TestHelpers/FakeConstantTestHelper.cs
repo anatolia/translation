@@ -117,6 +117,11 @@ namespace Translation.Common.Tests.TestHelpers
         public const string StringNine = "String Nine";
         public const string StringTen = "String Ten";
 
+        public const string LanguageOne = "Language One";
+        public const string LanguageTwo = "Language Two";
+        public const string LanguageOneOriginalName = "Language One Original Name";
+        public const string LanguageTwoOriginalName = "Language Two Original Name";
+            
         public const string StringSixtyFourOne = "bXk=";
         public const string StringSixtyFourTwo = "bXkx";
 

@@ -41,7 +41,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Language));
+                response.SetFailedBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -104,7 +104,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Language));
+                response.SetFailedBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -148,7 +148,7 @@ namespace Translation.Service
                                                             || x.IsoCode3Char == request.IsoCode3);
             if (result)
             {
-                response.SetFailedBecauseNameMustBeUnique(nameof(Language));
+                response.SetInvalidBecauseNameMustBeUnique(nameof(Language));
                 return response;
             }
 
@@ -180,11 +180,19 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Language));
+                response.SetFailedBecauseNotFound(nameof(Language));
                 return response;
             }
 
             var trimName = request.Name.Trim();
+            if (language.Name == trimName && language.IsoCode2Char == request.IsoCode2
+                                           && language.IsoCode3Char == request.IsoCode3)
+            {
+                response.Item = _languageFactory.CreateDtoFromEntity(language);
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+
             if (await _languageRepository.Any(x => (x.Name == trimName
                                                          || x.IsoCode2Char == request.IsoCode2
                                                          || x.IsoCode3Char == request.IsoCode3) && x.Uid != request.LanguageUid))
@@ -221,7 +229,7 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Language));
+                response.SetFailedBecauseNotFound(nameof(Language));
                 return response;
             }
 
@@ -245,14 +253,14 @@ namespace Translation.Service
             var language = await _languageRepository.Select(x => x.Uid == request.LanguageUid);
             if (language.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(Language));
+                response.SetFailedBecauseNotFound(nameof(Language));
                 return response;
             }
 
             var revisions = await _languageRepository.SelectRevisions(language.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
-                response.SetInvalidBecauseNotFound("language_revision");
+                response.SetFailedBecauseNotFound("language_revision");
                 return response;
             }
 

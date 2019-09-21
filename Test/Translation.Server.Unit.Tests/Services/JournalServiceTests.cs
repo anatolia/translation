@@ -60,7 +60,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task JournalService_GetJournalsOfOrganization_Invalid_OrganizationNotFound()
+        public async Task JournalService_GetJournalsOfOrganization_Failed_OrganizationNotFound()
         {
             // arrange
             var request = GetOrganizationJournalReadListRequest();
@@ -70,7 +70,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetJournalsOfOrganization(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, OrganizationNotFound);
             AssertReturnType<JournalReadListResponse>(result);
             MockOrganizationRepository.Verify_Select();
         }
@@ -97,7 +97,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task JournalService_GetJournalsOfUser_Invalid_UserNotFound()
+        public async Task JournalService_GetJournalsOfUser_Failed_UserNotFound()
         {
             // arrange
             var request = GetUserJournalReadListRequest();
@@ -107,7 +107,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetJournalsOfUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, UserNotFound);
             AssertReturnType<JournalReadListResponse>(result);
             MockUserRepository.Verify_Select();
         }

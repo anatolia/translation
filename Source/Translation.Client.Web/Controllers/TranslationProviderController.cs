@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
+
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
 using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
-using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.TranslationProvider;
 using Translation.Common.Contracts;
 using Translation.Common.Helpers;
 using Translation.Common.Models.Requests.Admin;
-using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.TranslationProvider;
 using Translation.Common.Models.Shared;
 
@@ -64,7 +60,7 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append($"{result.PrepareLink($"/TranslationProvider/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{result.PrepareChangeAllActivationButton("/Admin/TranslationProviderChangeActivation/")}");
-                stringBuilder.Append($"{result.PrepareLink($"/TranslationProvider/Edit/{item.Uid}", "Edit",true)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/TranslationProvider/Edit/{item.Uid}", "Edit", true)}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
             }
@@ -110,7 +106,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model =TranslationProviderMapper.MapTranslationProviderEditModel(translationProvider.Item);
+            var model = TranslationProviderMapper.MapTranslationProviderEditModel(translationProvider.Item);
 
             return View(model);
         }
@@ -136,8 +132,8 @@ namespace Translation.Client.Web.Controllers
             }
 
             CurrentUser.IsActionSucceed = true;
-            return Redirect($"/TranslationProvider/List");
-        }
+            return Redirect($"/TranslationProvider/Detail/{response.Item.Uid}");
+    }
 
         [HttpGet]
         public async Task<IActionResult> Detail(Guid id)

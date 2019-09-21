@@ -29,10 +29,22 @@ namespace Translation.Common.Models.Base
             ErrorMessages.Add(ResponseStatus.Invalid.Description);
         }
 
-        public void SetInvalidBecauseNotFound(string entityName = "entity")
+        public void SetInvalidBecauseNameMustBeUnique(string entityName = "entity")
         {
             Status = ResponseStatus.Invalid;
-            ErrorMessages.Add(entityName.ToLowerInvariant() + "_not_found");
+            ErrorMessages.Add(entityName.ToLowerInvariant() + "_name_must_be_unique");
+        }
+
+        public void SetInvalidBecauseSlugMustBeUnique(string entityName = "entity")
+        {
+            Status = ResponseStatus.Invalid;
+            ErrorMessages.Add(entityName.ToLowerInvariant() + "_slug_must_be_unique");
+        }
+
+        public void SetInvalidBecauseLabelKeyMustBeUnique(string entityName = "entity")
+        {
+            Status = ResponseStatus.Invalid;
+            ErrorMessages.Add(entityName.ToLowerInvariant() + "_key_must_be_unique");
         }
 
         public void SetInvalidBecauseNotSuperAdmin(string entityName = "entity")
@@ -59,34 +71,22 @@ namespace Translation.Common.Models.Base
             ErrorMessages.Add(entityName.ToLowerInvariant() + "_has_children");
         }
 
-        public void SetInvalidBecauseRevisionNotFound(string entityName = "entity")
-        {
-            Status = ResponseStatus.Invalid;
-            ErrorMessages.Add(entityName.ToLowerInvariant() + "_revision_not_found");
-        }
-
         public void SetFailed()
         {
             Status = ResponseStatus.Failed;
             ErrorMessages.Add(ResponseStatus.Failed.Description);
         }
 
-        public void SetFailedBecauseNameMustBeUnique(string entityName = "entity")
+        public void SetFailedBecauseNotFound(string entityName = "entity")
         {
             Status = ResponseStatus.Failed;
-            ErrorMessages.Add(entityName.ToLowerInvariant() + "_name_must_be_unique");
+            ErrorMessages.Add(entityName.ToLowerInvariant() + "_not_found");
         }
 
-        public void SetFailedBecauseSlugMustBeUnique(string entityName = "entity")
+        public void SetFailedBecauseRevisionNotFound(string entityName = "entity")
         {
             Status = ResponseStatus.Failed;
-            ErrorMessages.Add(entityName.ToLowerInvariant() + "_slug_must_be_unique");
-        }
-
-        public void SetFailedBecauseLabelKeyMustBeUnique(string entityName = "entity")
-        {
-            Status = ResponseStatus.Failed;
-            ErrorMessages.Add(entityName.ToLowerInvariant() + "_key_must_be_unique");
+            ErrorMessages.Add(entityName.ToLowerInvariant() + "_revision_not_found");
         }
     }
 

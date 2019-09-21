@@ -23,11 +23,11 @@ namespace Translation.Common.Tests.TestHelpers
         public static UserDto GetUserDto()
         {
             var dto = new UserDto();
-            dto.OrganizationUid = UidOne;
-            dto.OrganizationName = StringOne;
+            dto.OrganizationUid = OrganizationOneUid;
+            dto.OrganizationName = OrganizationOneName;
 
-            dto.Uid = UidTwo;
-            dto.Name = StringTwo;
+            dto.Uid = OrganizationOneUserOneUid;
+            dto.Name = OrganizationOneUserOneName;
 
             dto.FirstName = StringThree;
             dto.LastName = StringFour;
@@ -54,12 +54,15 @@ namespace Translation.Common.Tests.TestHelpers
         public static ProjectDto GetProjectDto()
         {
             var dto = new ProjectDto();
-            dto.Uid = UidOne;
-            dto.Name = StringOne;
 
-            dto.OrganizationUid = UidTwo;
-            dto.OrganizationName = StringTwo;
+            dto.OrganizationUid = OrganizationOneUid;
+            dto.OrganizationName = StringOne;
 
+            dto.Uid = OrganizationOneProjectOneUid;
+            dto.Name = OrganizationOneProjectOneName;
+            dto.Url = HttpsUrl;
+            dto.Slug = OrganizationOneProjectOneSlug;
+           
             dto.LabelCount = One;
             dto.LabelTranslationCount = Two;
 
@@ -75,7 +78,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static OrganizationDto GetOrganizationDto()
         {
             var dto = new OrganizationDto();
-            dto.Uid = UidOne;
+            dto.Uid = OrganizationOneUid;
             dto.Name = StringOne;
             dto.CreatedAt = DateTimeOne;
             dto.Description = StringTwo;

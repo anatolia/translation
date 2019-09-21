@@ -32,6 +32,8 @@ namespace Translation.Client.Web.Models.Label
 
             BulkLabelInput = new TextareaInputModel("BulkLabelData", "bulk_label_data");
             UpdateExistedTranslationsInput = new CheckboxInputModel("UpdateExistedTranslations", "update_existed_translations");
+
+            BulkLabelInput.Rows = 21;
         }
 
         public override void SetInputModelValues()

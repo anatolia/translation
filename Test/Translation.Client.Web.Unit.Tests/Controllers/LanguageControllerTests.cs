@@ -248,7 +248,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             var result = await SystemUnderTest.Edit(model);
 
             // assert
-            ((RedirectResult)result).Url.ShouldBe("/Language/List/");
+            ((RedirectResult)result).Url.ShouldBe($"/Language/Detail/{UidOne}");
             MockHostingEnvironment.Verify_WebRootPath();
             MockLanguageService.Verify_EditLanguage();
         }
@@ -265,7 +265,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             var result = await SystemUnderTest.Edit(model);
 
             // assert
-            ((RedirectResult)result).Url.ShouldBe("/Language/List/");
+            ((RedirectResult)result).Url.ShouldBe($"/Language/Detail/{UidOne}");
             MockHostingEnvironment.Verify_WebRootPath();
             MockLanguageService.Verify_EditLanguage();
         }

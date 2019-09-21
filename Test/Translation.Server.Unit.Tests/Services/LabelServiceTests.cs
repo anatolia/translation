@@ -58,6 +58,40 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
+        public async Task LabelService_CreateLabel__LabelCreateRequest_FromOtherProject_Success()
+        {
+            // arrange
+            var request = GetFromOtherProjectLabelCreateRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockProjectRepository.Setup_Select_Returns_OrganizationOneProjectOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            MockLabelRepository.Setup_Any_Returns_False();
+            MockLabelUnitOfWork.Setup_DoCreateWork_Returns_True();
+            MockLanguageRepository.Setup_SelectById_Returns_Language();
+            MockLabelRepository.Setup_Select_Returns_OrganizationTwoProjectOneLabelOne();
+            MockLanguageRepository.Setup_Select_Returns_Language_SameIsoCode2();
+            MockLabelTranslationRepository.Setup_SelectAll_Returns_LabelTranslations();
+            MockLabelUnitOfWork.Setup_DoCreateTranslationWork_Returns_True();
+
+            // act
+            var result = await SystemUnderTest.CreateLabel(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<LabelCreateResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockProjectRepository.Verify_Select();
+            MockOrganizationRepository.Verify_Any();
+            MockLabelRepository.Verify_Any();
+            MockLabelUnitOfWork.Verify_DoCreateWork();
+            MockLanguageRepository.Verify_SelectById();
+            MockLabelRepository.Verify_Select();
+            MockLanguageRepository.Verify_Select();
+            MockLabelTranslationRepository.Verify_SelectAll();
+            MockLabelUnitOfWork.Verify_DoCreateTranslationWork();
+        }
+
+        [Test]
         public async Task LabelService_CreateLabel__LabelCreateRequest_DifferentIsoCode2_Success()
         {
             // arrange
@@ -163,7 +197,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_CreateLabel__LabelCreateRequest_Invalid_ProjectNotFound()
+        public async Task LabelService_CreateLabel__LabelCreateRequest_Failed_ProjectNotFound()
         {
             // arrange
             var request = GetLabelCreateRequest();
@@ -174,7 +208,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNotFound);
             AssertReturnType<LabelCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
@@ -253,7 +287,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_CreateLabel__LabelCreateRequest_Failed_LabelKeyMustBeUnique()
+        public async Task LabelService_CreateLabel__LabelCreateRequest_Invalid_LabelKeyMustBeUnique()
         {
             // arrange
             var request = GetLabelCreateRequest();
@@ -266,7 +300,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelKeyMustBeUnique);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelKeyMustBeUnique);
             AssertReturnType<LabelCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockProjectRepository.Verify_Select();
@@ -422,7 +456,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_CreateLabel_LabelCreateWithTokenRequest_Invalid_ProjectNotFound()
+        public async Task LabelService_CreateLabel_LabelCreateWithTokenRequest_Failed_ProjectNotFound()
         {
             // arrange
             var request = GetLabelCreateWithTokenRequest();
@@ -432,13 +466,13 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNotFound);
             AssertReturnType<LabelCreateResponse>(result);
             MockProjectRepository.Verify_Select();
         }
 
         [Test]
-        public async Task LabelService_CreateLabel_LabelCreateWithTokenRequest_Invalid_TokenNotFound()
+        public async Task LabelService_CreateLabel_LabelCreateWithTokenRequest_Failed_TokenNotFound()
         {
             // arrange
             var request = GetLabelCreateWithTokenRequest();
@@ -449,7 +483,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, TokenNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, TokenNotFound);
             AssertReturnType<LabelCreateResponse>(result);
             MockProjectRepository.Verify_Select();
             MockTokenRepository.Verify_Select();
@@ -494,7 +528,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_CreateLabel_LabelCreateWithTokenRequest_Failed_LabelKeyMustBeUnique()
+        public async Task LabelService_CreateLabel_LabelCreateWithTokenRequest_Invalid_LabelKeyMustBeUnique()
         {
             // arrange
             var request = GetLabelCreateWithTokenRequest();
@@ -507,7 +541,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, "label_key_must_be_unique");
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, "label_key_must_be_unique");
             AssertReturnType<LabelCreateResponse>(result);
             MockProjectRepository.Verify_Select();
             MockTokenRepository.Verify_Select();
@@ -626,7 +660,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_CreateLabelFromList_Invalid_ProjectNotFound()
+        public async Task LabelService_CreateLabelFromList_Failed_ProjectNotFound()
         {
             // arrange
             var request = GetLabelCreateListRequestUpdateTrue();
@@ -636,7 +670,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateLabelFromList(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNotFound);
             AssertReturnType<LabelCreateListResponse>(result);
             MockProjectRepository.Verify_Select();
         }
@@ -738,7 +772,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_GetLabel_Invalid_LabelNotFound()
+        public async Task LabelService_GetLabel_Failed_LabelNotFound()
         {
             // arrange
             var request = GetLabelReadRequest();
@@ -749,7 +783,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelNotFound);
             AssertReturnType<LabelReadResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockLabelRepository.Verify_Select();
@@ -791,7 +825,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_GetLabelByKey_Invalid_LabelNotFound()
+        public async Task LabelService_GetLabelByKey_Failed_LabelNotFound()
         {
             // arrange
             var request = GetLabelReadByKeyRequest();
@@ -802,7 +836,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetLabelByKey(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelNotFound);
             AssertReturnType<LabelReadByKeyResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockLabelRepository.Verify_Select();
@@ -825,7 +859,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_GetLabels_Invalid_ProjectNotFound()
+        public async Task LabelService_GetLabels_Failed_ProjectNotFound()
         {
             // arrange
             var request = GetLabelReadListRequest();
@@ -834,7 +868,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetLabels(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNotFound);
             AssertReturnType<LabelReadListResponse>(result);
             MockProjectRepository.Verify_Select();
         }
@@ -923,7 +957,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_GetLabelRevisions_Invalid_LabelNotFound()
+        public async Task LabelService_GetLabelRevisions_Failed_LabelNotFound()
         {
             // arrange
             var request = GetLabelRevisionReadListRequest();
@@ -933,7 +967,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetLabelRevisions(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelNotFound);
             AssertReturnType<LabelRevisionReadListResponse>(result);
             MockLabelRepository.Verify_Select();
         }
@@ -983,7 +1017,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_GetLabelsWithTranslations_CurrentUserId_Invalid_ProjectNotFound()
+        public async Task LabelService_GetLabelsWithTranslations_CurrentUserId_Failed_ProjectNotFound()
         {
             // arrange
             var request = GetAllLabelReadListRequest_IsDefaultProjectFalse();
@@ -993,7 +1027,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetLabelsWithTranslations(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNotFound);
             AssertReturnType<AllLabelReadListResponse>(result);
             MockProjectRepository.Verify_Select();
 
@@ -1018,7 +1052,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_GetLabelsWithTranslations_CurrentUserIdZero_Invalid_TokenNotFound()
+        public async Task LabelService_GetLabelsWithTranslations_CurrentUserIdZero_Failed_TokenNotFound()
         {
             // arrange
             var request = GetAllLabelReadListRequest_IsDefaultProjectFalseAndCurrentUserIdZero();
@@ -1028,13 +1062,13 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetLabelsWithTranslations(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, TokenNotFound);
             AssertReturnType<AllLabelReadListResponse>(result);
             MockTokenRepository.Verify_Select();
         }
 
         [Test]
-        public async Task LabelService_GetLabelsWithTranslations_CurrentUserIdZero_Invalid_ProjectNotFound()
+        public async Task LabelService_GetLabelsWithTranslations_CurrentUserIdZero_Failed_ProjectNotFound()
         {
             // arrange
             var request = GetAllLabelReadListRequest_IsDefaultProjectFalseAndCurrentUserIdZero();
@@ -1045,7 +1079,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetLabelsWithTranslations(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNotFound);
             AssertReturnType<AllLabelReadListResponse>(result);
             MockProjectRepository.Verify_Select();
             MockTokenRepository.Verify_Select();
@@ -1112,9 +1146,27 @@ namespace Translation.Server.Unit.Tests.Services
             MockLabelRepository.Verify_Any();
             MockLabelRepository.Verify_Update();
         }
+        [
+            Test]
+        public async Task LabelService_EditLabel_SameLabelKey_Success()
+        {
+            // arrange
+            var request = GetSameLabelKeyLabelEditRequest();
+            MockLabelRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+
+            // act
+            var result = await SystemUnderTest.EditLabel(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<LabelEditResponse>(result);
+            MockLabelRepository.Verify_Select();
+            MockOrganizationRepository.Verify_Any();
+        }
 
         [Test]
-        public async Task LabelService_EditLabel_Invalid_LabelNotFound()
+        public async Task LabelService_EditLabel_Failed_LabelNotFound()
         {
             // arrange
             var request = GetLabelEditRequest();
@@ -1124,7 +1176,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.EditLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelNotFound);
             AssertReturnType<LabelEditResponse>(result);
             MockLabelRepository.Verify_Select();
         }
@@ -1229,7 +1281,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_ChangeActivation_Invalid_LabelNotFound()
+        public async Task LabelService_ChangeActivation_Failed_LabelNotFound()
         {
             // arrange
             var request = GetLabelChangeActivationRequest();
@@ -1239,7 +1291,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.ChangeActivation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelNotFound);
             AssertReturnType<LabelChangeActivationResponse>(result);
             MockLabelRepository.Verify_Select();
         }
@@ -1283,7 +1335,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_ChangeActivation_Invalid_ProjectNotFound()
+        public async Task LabelService_ChangeActivation_Failed_ProjectNotFound()
         {
             // arrange
             var request = GetLabelChangeActivationRequest();
@@ -1296,7 +1348,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.ChangeActivation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNotFound);
             AssertReturnType<LabelChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockLabelRepository.Verify_Select();
@@ -1353,7 +1405,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_DeleteLabel_Invalid_LabelNotFound()
+        public async Task LabelService_DeleteLabel_Failed_LabelNotFound()
         {
             // arrange
             var request = GetLabelDeleteRequest();
@@ -1363,7 +1415,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.DeleteLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelNotFound);
             AssertReturnType<LabelDeleteResponse>(result);
             MockLabelRepository.Verify_Select();
         }
@@ -1529,7 +1581,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_CloneLabel_Invalid_LabelNotFound()
+        public async Task LabelService_CloneLabel_Failed_LabelNotFound()
         {
             // arrange
             var request = GetLabelCloneRequest();
@@ -1542,7 +1594,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CloneLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelNotFound);
             AssertReturnType<LabelCloneResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1551,7 +1603,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_CloneLabel_Invalid_ProjectNotFound()
+        public async Task LabelService_CloneLabel_Failed_ProjectNotFound()
         {
             // arrange
             var request = GetLabelCloneRequest();
@@ -1564,7 +1616,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CloneLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, ProjectNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, ProjectNotFound);
             AssertReturnType<LabelCloneResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1608,7 +1660,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CloneLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelKeyMustBeUnique);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelKeyMustBeUnique);
             AssertReturnType<LabelCloneResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1682,7 +1734,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_RestoreLabel_Invalid_LabelNotFound()
+        public async Task LabelService_RestoreLabel_Failed_LabelNotFound()
         {
             // arrange
             var request = GetLabelRestoreRequestRevisionOneInIt();
@@ -1693,14 +1745,14 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RestoreLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelNotFound);
             AssertReturnType<LabelRestoreResponse>(result);
             MockOrganizationRepository.Verify_Any();
             MockLabelRepository.Verify_Select();
         }
 
         [Test]
-        public async Task LabelService_RestoreLabel_Invalid_LabelRevisionNotFound()
+        public async Task LabelService_RestoreLabel_Failed_LabelRevisionNotFound()
         {
             // arrange
             var request = GetLabelRestoreRequestRevisionTwoInIt();
@@ -1712,7 +1764,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RestoreLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelRevisionNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelRevisionNotFound);
             AssertReturnType<LabelRestoreResponse>(result);
             MockOrganizationRepository.Verify_Any();
             MockLabelRepository.Verify_Select();
@@ -1768,7 +1820,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_CreateTranslation_Invalid_LabelNotFound()
+        public async Task LabelService_CreateTranslation_Failed_LabelNotFound()
         {
             // arrange
             var request = GetLabelTranslationCreateRequest();
@@ -1778,7 +1830,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateTranslation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelNotFound);
             AssertReturnType<LabelTranslationCreateResponse>(result);
             MockLabelRepository.Verify_Select();
         }
@@ -1854,7 +1906,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_CreateTranslation_Invalid_LanguageNotFound()
+        public async Task LabelService_CreateTranslation_Failed_LanguageNotFound()
         {
             // arrange
             var request = GetLabelTranslationCreateRequest();
@@ -1867,7 +1919,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateTranslation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LanguageNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LanguageNotFound);
             AssertReturnType<LabelTranslationCreateResponse>(result);
             MockLabelRepository.Verify_Select();
             MockOrganizationRepository.Verify_Any();
@@ -1980,7 +2032,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_CreateTranslationFromList_Invalid_LabelNotFound()
+        public async Task LabelService_CreateTranslationFromList_Failed_LabelNotFound()
         {
             // arrange
             var request = GetLabelTranslationCreateListRequest();
@@ -1990,7 +2042,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateTranslationFromList(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelNotFound);
             AssertReturnType<LabelTranslationCreateListResponse>(result);
             MockLabelRepository.Verify_Select();
         }
@@ -2110,7 +2162,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_GetTranslation_Invalid_LabelTranslationNotFound()
+        public async Task LabelService_GetTranslation_Failed_LabelTranslationNotFound()
         {
             // arrange
             var request = GetLabelTranslationReadRequest();
@@ -2120,7 +2172,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetTranslation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelTranslationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelTranslationNotFound);
             AssertReturnType<LabelTranslationReadResponse>(result);
             MockLabelTranslationRepository.Verify_Select();
         }
@@ -2142,7 +2194,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_GetTranslation_Invalid_LanguageNotFound()
+        public async Task LabelService_GetTranslation_Failed_LanguageNotFound()
         {
             // arrange
             var request = GetLabelTranslationReadRequest();
@@ -2153,7 +2205,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetTranslation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LanguageNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LanguageNotFound);
             AssertReturnType<LabelTranslationReadResponse>(result);
             MockLabelTranslationRepository.Verify_Select();
             MockLanguageRepository.Verify_SelectById();
@@ -2223,7 +2275,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_GetTranslations_Invalid_LabelNotFound()
+        public async Task LabelService_GetTranslations_Failed_LabelNotFound()
         {
             // arrange
             var request = GetLabelTranslationReadListRequest();
@@ -2233,7 +2285,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetTranslations(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelNotFound);
             AssertReturnType<LabelTranslationReadListResponse>(result);
             MockLabelRepository.Verify_Select();
         }
@@ -2257,7 +2309,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_GetLabelTranslationRevisions_Invalid_LabelTranslationNotFound()
+        public async Task LabelService_GetLabelTranslationRevisions_Failed_LabelTranslationNotFound()
         {
             // arrange
             var request = GetLabelTranslationRevisionReadListRequest();
@@ -2267,7 +2319,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetLabelTranslationRevisions(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelTranslationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelTranslationNotFound);
             AssertReturnType<LabelTranslationRevisionReadListResponse>(result);
             MockLabelTranslationRepository.Verify_Select();
         }
@@ -2297,7 +2349,23 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_EditTranslation_Invalid_LabelTranslationNotFound()
+        public async Task LabelService_EditTranslation_SameTranslation_Success()
+        {
+            // arrange
+            var request = GetSameTranslationLabelTranslationEditRequest();
+            MockLabelTranslationRepository.Setup_Select_Returns_OrganizationOneProjectOneLabelOneLabelTranslationOne();
+
+            // act
+            var result = await SystemUnderTest.EditTranslation(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<LabelTranslationEditResponse>(result);
+            MockLabelTranslationRepository.Verify_Select();
+        }
+
+        [Test]
+        public async Task LabelService_EditTranslation_Failed_LabelTranslationNotFound()
         {
             // arrange
             var request = GetLabelTranslationEditRequest();
@@ -2307,7 +2375,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.EditTranslation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelTranslationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelTranslationNotFound);
             AssertReturnType<LabelTranslationEditResponse>(result);
             MockLabelTranslationRepository.Verify_Select();
         }
@@ -2437,7 +2505,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_DeleteTranslation_Invalid_LabelTranslationNotFound()
+        public async Task LabelService_DeleteTranslation_Failed_LabelTranslationNotFound()
         {
             // arrange
             var request = GetLabelTranslationDeleteRequest();
@@ -2447,7 +2515,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.DeleteTranslation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelTranslationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelTranslationNotFound);
             AssertReturnType<LabelTranslationDeleteResponse>(result);
             MockLabelTranslationRepository.Verify_Select();
         }
@@ -2591,7 +2659,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task LabelService_RestoreLabelTranslation_Invalid_LabelTranslationNotFound()
+        public async Task LabelService_RestoreLabelTranslation_Failed_LabelTranslationNotFound()
         {
             // arrange
             var request = GetLabelTranslationRestoreRequest();
@@ -2602,7 +2670,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RestoreLabelTranslation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelTranslationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelTranslationNotFound);
             AssertReturnType<LabelTranslationRestoreResponse>(result);
             MockOrganizationRepository.Verify_Any();
             MockLabelTranslationRepository.Verify_Select();
@@ -2621,7 +2689,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RestoreLabelTranslation(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LabelTranslationRevisionNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LabelTranslationRevisionNotFound);
             AssertReturnType<LabelTranslationRestoreResponse>(result);
             MockOrganizationRepository.Verify_Any();
             MockLabelTranslationRepository.Verify_Select();

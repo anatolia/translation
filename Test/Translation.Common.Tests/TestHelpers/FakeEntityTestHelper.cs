@@ -97,7 +97,7 @@ namespace Translation.Common.Tests.TestHelpers
             integration.Id = OrganizationOneIntegrationOneId;
             integration.Uid = OrganizationOneIntegrationOneUid;
             integration.Name = OrganizationOneIntegrationOneName;
-
+            integration.Description = OrganizationOneIntegrationOneName;
             integration.CreatedAt = DateTimeOne;
             integration.IsActive = BooleanTrue;
 
@@ -420,6 +420,7 @@ namespace Translation.Common.Tests.TestHelpers
             project.OrganizationUid = OrganizationOneUid;
             project.OrganizationName = OrganizationOneName;
 
+            project.Description = StringOne;
             project.IsActive = BooleanTrue;
             project.Url = HttpUrl;
             project.CreatedAt = DateTimeOne;
@@ -605,6 +606,8 @@ namespace Translation.Common.Tests.TestHelpers
             user.Id = OrganizationOneUserOneId;
             user.Uid = OrganizationOneUserOneUid;
             user.Name = OrganizationOneUserOneName;
+            user.FirstName = OrganizationOneUserOneName;
+            user.LastName = OrganizationOneUserOneName;
 
             user.Email = OrganizationOneUserOneEmail;
             user.IsActive = BooleanTrue;
@@ -845,7 +848,7 @@ namespace Translation.Common.Tests.TestHelpers
             label.Uid = OrganizationOneProjectOneLabelOneUid;
             label.Name = OrganizationOneProjectOneLabelOneName;
             label.Key = OrganizationOneProjectOneLabelOneKey;
-
+            label.Description = StringOne;
             label.IsActive = BooleanTrue;
 
             return label;
@@ -916,6 +919,8 @@ namespace Translation.Common.Tests.TestHelpers
             labelTranslation.Translation = StringOne;
             labelTranslation.IsActive = BooleanTrue;
             labelTranslation.LanguageId = LongOne;
+            labelTranslation.LanguageName = StringOne;
+
             return labelTranslation;
         }
 
@@ -966,10 +971,11 @@ namespace Translation.Common.Tests.TestHelpers
             labelTranslation.LabelUid = OrganizationOneProjectOneLabelOneUid;
             labelTranslation.LabelName = OrganizationOneProjectOneLabelOneName;
 
-            labelTranslation.Id = OrganizationOneProjectOneLabelOneId;
-            labelTranslation.Uid = OrganizationOneProjectOneLabelOneUid;
-            labelTranslation.Name = OrganizationOneProjectOneLabelOneName;
-
+            labelTranslation.Id = OrganizationOneProjectOneLabelOneLabelTranslationOneId;
+            labelTranslation.Uid = UidTwo;
+            labelTranslation.Name = OrganizationOneProjectOneLabelOneLabelTranslationOneName;
+            labelTranslation.Translation = OrganizationOneProjectOneLabelOneLabelTranslationOneName;
+            labelTranslation.Description = StringOne;
             labelTranslation.IsActive = BooleanTrue;
 
             return labelTranslation;
@@ -1033,11 +1039,11 @@ namespace Translation.Common.Tests.TestHelpers
         public static Language GetLanguageOne()
         {
             var language = new Language();
-            language.Name = StringOne;
+            language.Name = LanguageOne;
             language.Id = LongOne;
             language.Uid = UidOne;
 
-            language.OriginalName = StringOne;
+            language.OriginalName = LanguageOneOriginalName;
             language.IsoCode2Char = IsoCode2One;
             language.IsoCode3Char = IsoCode3One;
             language.IconUrl = StringOne;
@@ -1056,14 +1062,16 @@ namespace Translation.Common.Tests.TestHelpers
         public static Language GetLanguageTwo()
         {
             var language = new Language();
-            language.Name = "Language Two";
+            language.Name = LanguageTwo;
             language.Id = LongTwo;
             language.Uid = UidTwo;
 
-            language.OriginalName = "Language Two Original Name";
+            language.OriginalName = LanguageTwoOriginalName;
             language.IsoCode2Char = IsoCode2Two;
             language.IsoCode3Char = IsoCode3Two;
             language.IconUrl = StringTwo;
+            language.Description = StringTwo;
+
             return language;
         }
 

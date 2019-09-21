@@ -72,6 +72,7 @@ namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.User
             AssertInputModel(SystemUnderTest.IsTermsAcceptedInput, "IsTermsAccepted", "accept_terms", true);
         }
 
+        [Test]
         public void SignUpModel_SetInputModelValues()
         {
             // arrange
@@ -89,7 +90,6 @@ namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.User
             SystemUnderTest.IsTermsAcceptedInput.Value.ShouldBe(SystemUnderTest.IsTermsAccepted);
             SystemUnderTest.LanguageInput.Value.ShouldBe(SystemUnderTest.LanguageUid.ToUidString());
             SystemUnderTest.LanguageInput.Text.ShouldBe(SystemUnderTest.LanguageName);
-
         }
 
         public static IEnumerable MessageTestCases
