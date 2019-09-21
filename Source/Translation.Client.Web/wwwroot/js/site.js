@@ -186,3 +186,67 @@ if (labels == null
 } else {
     translateScreen();
 }
+
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace("active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+function SecretField(element, order) {
+    this.el = element;
+    this.order = order;
+    this.isVisible = false;
+    this.text = this.el.innerText;
+    this.uniqueId = this.el.parentElement.getAttribute('data-uid') + this.order;
+    this.el.setAttribute('data-id', this.uniqueId);
+
+    this.getStars = function (countOfStars) {
+        return "*".repeat(countOfStars);
+    }
+
+    this.getButton = function (type) {
+        return "<span class='secretButton' id='" + this.uniqueId + "'>" + type + "</span>";
+    }
+
+    this.getSecretSpan = function () {
+        return "<span class='secretSpan'>" + this.getStars(5) + "</span>";
+    }
+
+    this.enableButtons = function () {
+        var button = document.querySelector('.secretButton[id="' + this.uniqueId + '"]');
+
+        button.addEventListener('click', () => {
+            if (this.isVisible) {
+                this.hide();
+            } else {
+                this.show();
+            }
+        });
+    }
+
+    this.hide = function () {
+        this.el.innerHTML = this.getSecretSpan();
+        this.el.innerHTML += this.getButton('show');
+        this.isVisible = false;
+        this.enableButtons();
+    }
+
+    this.show = function () {
+        this.el.innerHTML = this.text;
+        this.el.innerHTML += this.getButton('hide');
+        this.isVisible = true;
+        this.enableButtons();
+    }
+}
+
+var element = document.getElementsByClassName("content");
+var secretField = new SecretField(elemenet, 0);
+secretField.hide();
