@@ -851,16 +851,16 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{result.PrepareImage($"{item.LanguageIconUrl}", item.LanguageName)} {item.LanguageName}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Translation}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationEdit/{item.Uid}", Localizer.Localize("edit"), true)}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationEdit/{item.Uid}", "edit", true)}");
 
                 if (CurrentUser.IsSuperAdmin)
                 {
-                    stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}");
+                    stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", "revisions_link", true)}");
                     stringBuilder.Append($"{result.PrepareDeleteButton($"/Label/LabelTranslationDelete")}{DataResult.SEPARATOR}");
                 }
                 else
                 {
-                    stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}{DataResult.SEPARATOR}");
+                    stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", "revisions_link", true)}{DataResult.SEPARATOR}");
                 }
 
                 result.Data.Add(stringBuilder.ToString());

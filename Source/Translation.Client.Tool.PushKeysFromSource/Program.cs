@@ -61,7 +61,6 @@ namespace Translation.Client.Tool.PushKeysFromSource
             var items = new List<string>();
 
             GetLabelKeysFromViews(Directory.GetFiles(projectFolder, "*.cshtml", SearchOption.AllDirectories), items);
-            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Localize\\(\\\")(.*)(?=\\\"\\),)");
             GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Add\\(\\\")(.*)(?=\\\"\\))");
             GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.AddHeaders\\(\\\")(.*)(?=\\\"\\))");
             GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.PrepareButton\\(\\\")(.*)(?=\\\"\\)})");

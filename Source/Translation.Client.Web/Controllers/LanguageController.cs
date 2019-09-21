@@ -188,7 +188,7 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append($"{item.IsoCode2}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsoCode3}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{result.PrepareImage($"{item.IconPath}", item.OriginalName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink("/Language/Edit/" + item.Uid, Localizer.Localize("edit"), true)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink("/Language/Edit/" + item.Uid, "edit", true)}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
             }
