@@ -18,20 +18,6 @@ namespace Translation.Common.Tests.TestHelpers
 {
     public class AssertViewModelTestHelper
     {
-
-        public static void AssertRequiredInput(InputModel input)
-        {
-            Assert.IsTrue(input.IsRequired);
-            Assert.IsNotEmpty(input.Name);
-            Assert.IsNotEmpty(input.LabelKey);
-        }
-
-        public static void AssertInput(InputModel input)
-        {
-            Assert.IsNotEmpty(input.Name);
-            Assert.IsNotEmpty(input.LabelKey);
-        }
-
         public static void AssertInputErrorMessagesOfView<T>(IActionResult result, T model) where T : BaseModel
         {
             AssertViewWithModel<T>(result);
@@ -47,12 +33,6 @@ namespace Translation.Common.Tests.TestHelpers
                 var message = messages[i];
                 model.InputErrorMessages.ShouldContain(message);
             }
-        }
-
-        public static void AssertInputErrorMessagesForInvalidOrFailedResponse<T>(IActionResult result) where T : BaseModel
-        {
-            var messages = ((T)((ViewResult)result).Model).InputErrorMessages;
-            messages.Any(x => x == StringOne).ShouldBeTrue();
         }
 
         public static void AssertErrorMessagesForInvalidOrFailedResponse<T>(IActionResult result) where T : BaseModel
@@ -153,15 +133,6 @@ namespace Translation.Common.Tests.TestHelpers
             result.ShouldNotBeNull();
         }
 
-        public static void AssertViewAccessDenied<T>(RedirectResult result)
-        {
-            var controller = new BaseController(null, null, null,null);
-            var redirectAccessDenied = controller.RedirectToAccessDenied();
-
-            result.ShouldNotBeNull();
-            result.Url.ShouldBe(redirectAccessDenied.Url);
-        }
-
         public static void AssertViewAccessDenied(IActionResult result)
         {
             var controller = new BaseController(null, null, null,null);
@@ -171,15 +142,6 @@ namespace Translation.Common.Tests.TestHelpers
             ((RedirectResult)result).Url.ShouldBe(redirectAccessDenied.Url);
         }
 
-        public static void AssertViewRedirectToHome<T>(RedirectResult result)
-        {
-            var controller = new BaseController(null, null, null, null);
-            var redirectToHome = controller.RedirectToHome();
-
-            result.ShouldNotBeNull();
-            result.Url.ShouldBe(redirectToHome.Url);
-        }
-
         public static void AssertViewRedirectToHome(IActionResult result)
         {
             var controller = new BaseController(null, null, null,null);
@@ -187,24 +149,6 @@ namespace Translation.Common.Tests.TestHelpers
 
             result.ShouldNotBeNull();
             ((RedirectResult)result).Url.ShouldBe(redirectToHome.Url);
-        }
-
-        public static void AssertViewForbid<T>(ForbidResult result)
-        {
-            var controller = new BaseController(null, null, null, null);
-            var forbid = controller.Forbid();
-
-            result.ShouldNotBeNull();
-            result.ShouldBeAssignableTo(forbid.GetType());
-        }
-
-        public static void AssertViewNotFound<T>(NotFoundResult result)
-        {
-            var controller = new BaseController(null, null, null, null);
-            var notFound = controller.NotFound();
-
-            result.ShouldNotBeNull();
-            result.ShouldBeAssignableTo(notFound.GetType());
         }
 
         public static void AssertView<T>(RedirectToActionResult result, string actionName)
@@ -249,7 +193,6 @@ namespace Translation.Common.Tests.TestHelpers
             pagingInfo.TotalItemCount.ShouldBe(totalItemCountOfPagingInfo);
         }
 
-
         public static void AssertHiddenInputModel(HiddenInputModel input, string name, string value = "")
         {
             input.ShouldNotBeNull();
@@ -290,23 +233,6 @@ namespace Translation.Common.Tests.TestHelpers
             input.LabelKey.ShouldBe(labelKey);
             input.IsRequired.ShouldBe(isRequired);
             input.Value.ShouldBe(value);
-        }
-
-        public static void AssertSelectInputModel(SelectInputModel input, string name, string textFieldName,
-                                                  string labelKey, string dataUrl, string parentId = "",
-                                                  bool isRequired = true, bool isMultiple = false, bool isAddNewEnabled = false,
-                                                  string addNewUrl = "")
-        {
-            input.ShouldNotBeNull();
-            input.Name.ShouldBe(name);
-            input.TextFieldName.ShouldBe(textFieldName);
-            input.LabelKey.ShouldBe(labelKey);
-            input.DataUrl.ShouldBe(dataUrl);
-            input.Parent.ShouldBe(parentId);
-            input.IsRequired.ShouldBe(isRequired);
-            input.IsMultiple.ShouldBe(isMultiple);
-            input.IsAddNewEnabled.ShouldBe(isAddNewEnabled);
-            input.AddNewUrl.ShouldBe(addNewUrl);
         }
 
         public static void AssertSelectInputModel(SelectInputModel input, string name, string labelKey, string dataUrl, bool required = false, string addNewUrl = "")
