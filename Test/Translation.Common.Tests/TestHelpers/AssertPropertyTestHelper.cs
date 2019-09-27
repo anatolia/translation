@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+
 using Shouldly;
+
 using Translation.Common.Models.Base;
 
 namespace Translation.Common.Tests.TestHelpers

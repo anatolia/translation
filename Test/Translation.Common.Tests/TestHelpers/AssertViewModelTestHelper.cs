@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
+
 using NUnit.Framework;
 using Shouldly;
+
 using Translation.Client.Web.Controllers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.InputModels;
 using Translation.Common.Models.Shared;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
-using static Translation.Common.Tests.TestHelpers.AssertViewModelTestHelper;
 
 namespace Translation.Common.Tests.TestHelpers
 {

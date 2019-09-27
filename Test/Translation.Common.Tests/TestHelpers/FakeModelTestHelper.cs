@@ -1,5 +1,7 @@
 using System;
+
 using Microsoft.AspNetCore.Http;
+
 using Translation.Client.Web.Models;
 using Translation.Client.Web.Models.Admin;
 using Translation.Client.Web.Models.Data;
@@ -14,7 +16,6 @@ using Translation.Client.Web.Models.Token;
 using Translation.Client.Web.Models.TranslationProvider;
 using Translation.Client.Web.Models.User;
 using Translation.Common.Models.Shared;
-using Translation.Data.Entities.Domain;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
 

@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Translation.Common.Helpers;
 
 namespace Translation.Common.Tests.TestHelpers
