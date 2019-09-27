@@ -1,29 +1,23 @@
 ﻿@model LabelDetailModel
 
 <label data-translation="label_name">label_name</label>
-<h1>@Model.Key</h1>
+<div>@Model.Key</div>
 
-<div>
-    <label data-translation="description">description</label>
-    @Model.Description
+<label data-translation="description">description</label>
+<div>@Model.Description</div>
+
+<label data-translation="organization">organization</label>
+<a href="/Organization/Detail/">@Model.OrganizationName</a>
+
+<label data-translation="project">project</label>
+<a href="/Project/Detail/@Model.ProjectUid">@Model.ProjectName</a>
+
+<label data-translation="label_translation_count">label_translation_count</label>
+<div>@Model.LabelTranslationCount</div>
+
+<div class="detail-checkbox">
+    <partial name="Components/_Checkbox" model="@Model.IsActiveInput" />
 </div>
-
-<div>
-    <label data-translation="organization">organization</label>
-    <a href="/Organization/Detail/">@Model.OrganizationName</a>
-</div>
-
-<div>
-    <label data-translation="project">project</label>
-    <a href="/Project/Detail/@Model.ProjectUid">@Model.ProjectName</a>
-</div>
-
-<div>
-    <label data-translation="label_translation_count">label_translation_count</label>
-    @Model.LabelTranslationCount
-</div>
-
-<partial name="Components/_Checkbox" model="@Model.IsActiveInput" />
 
 <div class="bottom-links">
     <a href="/Label/Edit/@Model.LabelUid" data-translation="edit_label_link">edit_label_link</a>
@@ -54,10 +48,14 @@
     </form>
 </div>
 
-<h2 data-translation="translations">translations</h2>
-<div class="tbl">
-    <a href="/Label/LabelTranslationCreate/@Model.LabelUid" data-translation="create_label_translation_link">create_label_translation_link</a>
-    <a href="/Label/UploadLabelTranslationFromCSVFile/@Model.LabelUid" data-translation="upload_translations_from_csv_link">upload_translations_from_csv_link</a>
-    <table data-result="/Label/LabelTranslationListData/@Model.LabelUid"></table>
+<div class="tab-header">
+    <button class="active" data-translation="translations">translations</button>
+</div>
+<div class="tab-body">
+    <div class="tbl">
+        <a href="/Label/LabelTranslationCreate/@Model.LabelUid" data-translation="create_label_translation_link">create_label_translation_link</a>
+        <a href="/Label/UploadLabelTranslationFromCSVFile/@Model.LabelUid" data-translation="upload_translations_from_csv_link">upload_translations_from_csv_link</a>
+        <table data-result="/Label/LabelTranslationListData/@Model.LabelUid"></table>
+    </div>
 </div>
 
