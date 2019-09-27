@@ -1,13 +1,15 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.Windsor;
+
 using Microsoft.AspNetCore.Hosting;
+
 using Moq;
+
 using Translation.Common.Contracts;
 using Translation.Common.Helpers;
-using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
 using Translation.Data.UnitOfWorks.Contracts;
-using Translation.Common.Tests.SetupHelpers;
+
 
 namespace Translation.Common.Tests
 {
@@ -55,7 +57,6 @@ namespace Translation.Common.Tests
             MockHostingEnvironment = new Mock<IHostingEnvironment>();
 
             #region Repository
-
             MockIntegrationClientRepository = new Mock<IIntegrationClientRepository>();
             MockIntegrationRepository = new Mock<IIntegrationRepository>();
             MockJournalRepository = new Mock<IJournalRepository>();
@@ -93,27 +94,7 @@ namespace Translation.Common.Tests
 
             Container.Register(Component.For<CryptoHelper>());
 
-            #region Factory
-
-            Container.Register(Component.For<IntegrationClientFactory>());
-            Container.Register(Component.For<IntegrationFactory>());
-            Container.Register(Component.For<JournalFactory>());
-            Container.Register(Component.For<LabelFactory>());
-            Container.Register(Component.For<LabelTranslationFactory>());
-            Container.Register(Component.For<LanguageFactory>());
-            Container.Register(Component.For<OrganizationFactory>());
-            Container.Register(Component.For<ProjectFactory>());
-            Container.Register(Component.For<SendEmailLogFactory>());
-            Container.Register(Component.For<TokenFactory>());
-            Container.Register(Component.For<TokenRequestLogFactory>());
-            Container.Register(Component.For<UserFactory>());
-            Container.Register(Component.For<UserLoginLogFactory>());
-            Container.Register(Component.For<TranslationProviderFactory>());
-
-            #endregion
-
             #region Repository
-
             Container.Register(Component.For<IIntegrationClientRepository>().Instance(MockIntegrationClientRepository.Object));
             Container.Register(Component.For<IIntegrationRepository>().Instance(MockIntegrationRepository.Object));
             Container.Register(Component.For<IJournalRepository>().Instance(MockJournalRepository.Object));
@@ -130,23 +111,14 @@ namespace Translation.Common.Tests
             Container.Register(Component.For<ITranslationProviderRepository>().Instance(MockTranslationProviderRepository.Object));
             #endregion
 
-            #region UnitOfWork
+            Container.Register(Component.For<ITextTranslateIntegration>().Instance(MockTextTranslateIntegration.Object));
 
+            #region UnitOfWork
             Container.Register(Component.For<ILabelUnitOfWork>().Instance(MockLabelUnitOfWork.Object));
             Container.Register(Component.For<ILogOnUnitOfWork>().Instance(MockLogOnUnitOfWork.Object));
             Container.Register(Component.For<IProjectUnitOfWork>().Instance(MockProjectUnitOfWork.Object));
             Container.Register(Component.For<ISignUpUnitOfWork>().Instance(MockSignUpUnitOfWork.Object));
-
             #endregion
-
-            #region Setup For Cache
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
-            MockOrganizationRepository.Setup_SelectById_Returns_OrganizationOne();
-            MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
-            #endregion
-
-            Container.Register(Component.For<ITextTranslateIntegration>().Instance(MockTextTranslateIntegration.Object));
         }
     }
 }

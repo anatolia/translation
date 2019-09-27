@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +8,8 @@ using Shouldly;
 using Translation.Client.Web.Controllers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.TranslationProvider;
-using Translation.Common.Tests.SetupHelpers;
-using static Translation.Common.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
+using Translation.Client.Web.Unit.Tests.ServiceSetupHelpers;
+using static Translation.Client.Web.Unit.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Common.Tests.TestHelpers.AssertViewModelTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeModelTestHelper;
