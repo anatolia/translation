@@ -1,27 +1,19 @@
 ﻿@model LanguageDetailModel
 
 <label data-translation="language_name">language_name</label>
-<h1>@Model.Name</h1>
+<div>@Model.Name</div>
 
-<div>
-    <label data-translation="original_name">original_name</label>
-    @Model.OriginalName
-</div>
+<label data-translation="original_name">original_name</label>
+<div>@Model.OriginalName</div>
 
-<div>
-    <label data-translation="iso_code_2">iso_code_2</label>
-    @Model.IsoCode2
-</div>
+<label data-translation="iso_code_2">iso_code_2</label>
+<div>@Model.IsoCode2</div>
 
-<div>
-    <label data-translation="iso_code_3">iso_code_3</label>
-    @Model.IsoCode3
-</div>
+<label data-translation="iso_code_3">iso_code_3</label>
+<div>@Model.IsoCode3</div>
 
-<div>
-    <label data-translation="description">description</label>
-    @Model.Description
-</div>
+<label data-translation="description">description</label>
+<div>@Model.Description</div>
 
 <div class="bottom-links">
     <a href="/Language/Edit/@Model.LanguageUid" data-translation="edit_link">edit_link</a>

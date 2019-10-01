@@ -1,17 +1,13 @@
 ﻿@model IntegrationDetailModel
 
 <label data-translation="integration_name">integration_name</label>
-<h1>@Model.Name</h1>
+<div>@Model.Name</div>
 
-<div>
-    <label data-translation="description">description</label>
-    @Model.Description
-</div>
+<label data-translation="description">description</label>
+<div>@Model.Description</div>
 
-<div>
-    <label data-translation="organization">organization</label>
-    <a href="/Organization/Detail/@Model.OrganizationUid">@Model.OrganizationName</a>
-</div>
+<label data-translation="organization">organization</label>
+<a href="/Organization/Detail/@Model.OrganizationUid">@Model.OrganizationName</a>
 
 <div class="bottom-links">
     <a href="/Integration/Edit/@Model.IntegrationUid" data-translation="edit_link">edit_link</a>
@@ -28,18 +24,22 @@
     </button>
 </div>
 
-<h2 data-translation="integration_clients">integration_clients</h2>
-<div class="tbl">
-    <button type="button" style="margin-top: 5px;"
-            data-translation="create_integration_client_link"
-            data-confirm-title="create_integration_client_confirm_title"
-            data-confirm-content="create_integration_client_confirm_content"
-            data-url="/Integration/ClientCreate/"
-            data-prm="id=@Model.IntegrationUid"
-            onclick="handlePostAndAppendRow(this)">
-        create_integration_client_link
-    </button>
-    <table data-result="/Integration/ClientListData/@Model.IntegrationUid"></table>
+<div class="tab-header">
+    <button data-translation="integration_clients" class="active">integration_clients</button>
+</div>
+<div class="tab-body">
+    <div class="tbl">
+    <button type="button"
+                data-translation="create_integration_client_link"
+                data-confirm-title="create_integration_client_confirm_title"
+                data-confirm-content="create_integration_client_confirm_content"
+                data-url="/Integration/ClientCreate/"
+                data-prm="id=@Model.IntegrationUid"
+                onclick="handlePostAndAppendRow(this)">
+            create_integration_client_link
+        </button>
+        <table data-result="/Integration/ClientListData/@Model.IntegrationUid"></table>
+    </div>
 </div>
 
 @section Scripts {
