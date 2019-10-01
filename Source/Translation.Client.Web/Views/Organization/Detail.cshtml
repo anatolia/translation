@@ -1,35 +1,41 @@
 ﻿@model OrganizationDetailModel
 
 <label data-translation="organization_name">organization_name</label>
-<h1>@Model.Name</h1>
+<div>@Model.Name</div>
 
-<div>
-    <label data-translation="description">description</label>
-    @Model.Description
-</div>
+<label data-translation="description">description</label>
+<div>@Model.Description</div>
 
 <div class="bottom-links">
     <a href="/Organization/Edit/" data-translation="organization_edit_link">organization_edit_link</a>
     <a href="/Organization/JournalList/" data-translation="journals_link">journals_link</a>
     <a href="/Organization/Revisions/@Model.OrganizationUid" data-translation="revisions_link">revisions_link</a>
 </div>
-
-<h2 data-translation="projects">projects</h2>
-<div class="tbl">
-    <a href="/Project/Create" data-translation="create_project_link">create_project_link</a>
-    <table data-result="/Organization/ProjectListData/@Model.OrganizationUid"></table>
+<div class="tab-header">
+    <button class="tablinks active" onclick="openTab(event, 'projects')">projects</button>
+    <button class="tablinks" onclick="openTab(event, 'users')">users</button>
+    <button class="tablinks" onclick="openTab(event, 'integrations')">integrations</button>
 </div>
+<div class="tab-body">
+    <div id="projects" class="tab-content">
+        <div class="tbl">
+            <a href="/Project/Create" data-translation="create_project_link">create_project_link</a>
+            <table data-result="/Organization/ProjectListData/@Model.OrganizationUid"></table>
+        </div>
+    </div>
 
-<h2 data-translation="users">users</h2>
-<div class="tbl">
-    <a href="/User/Invite/@Model.OrganizationUid" data-translation="invite_user_link">invite_user_link</a>
-    <a href="/Organization/UserLoginLogList/" data-translation="user_login_logs_link">user_login_logs_link</a>
-    <table data-result="/Organization/UserListData/@Model.OrganizationUid"></table>
-</div>
-
-<h2 data-translation="integrations">integrations</h2>
-<div class="tbl">
-    <a href="/Integration/Create/" data-translation="integration_create_link">integration_create_link</a>
-    <a href="/Organization/TokenRequestLogList/" data-translation="token_request_logs_link">token_request_logs_link</a>
-    <table data-result="/Organization/IntegrationListData/@Model.OrganizationUid"></table>
+    <div id="users" class="tab-content">
+        <div class="tbl">
+            <a href="/User/Invite/@Model.OrganizationUid" data-translation="invite_user_link">invite_user_link</a>
+            <a href="/Organization/UserLoginLogList/" data-translation="user_login_logs_link">user_login_logs_link</a>
+            <table data-result="/Organization/UserListData/@Model.OrganizationUid"></table>
+        </div>
+    </div>
+    <div id="integrations" class="tab-content">
+        <div class="tbl">
+            <a href="/Integration/Create/" data-translation="integration_create_link">integration_create_link</a>
+            <a href="/Organization/TokenRequestLogList/" data-translation="token_request_logs_link">token_request_logs_link</a>
+            <table data-result="/Organization/IntegrationListData/@Model.OrganizationUid"></table>
+        </div>
+    </div>
 </div>
