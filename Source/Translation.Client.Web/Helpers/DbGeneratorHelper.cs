@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
-using Castle.Windsor;
-using Microsoft.EntityFrameworkCore.Internal;
+
+using Autofac;
 using StandardRepository.Helpers;
 using StandardRepository.Models;
 using StandardRepository.PostgreSQL.DbGenerator;
@@ -24,7 +25,7 @@ namespace Translation.Client.Web.Helpers
 {
     public class DbGeneratorHelper
     {
-        public static void Generate(WindsorContainer container, string webRootPath)
+        public static void Generate(ILifetimeScope container, string webRootPath)
         {
             var connectionSettings = container.Resolve<ConnectionSettings>();
             var adminSettings = container.Resolve<AdminSettings>();

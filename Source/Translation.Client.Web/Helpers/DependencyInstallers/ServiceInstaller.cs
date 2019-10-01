@@ -1,21 +1,23 @@
-﻿using Castle.MicroKernel.Registration;
-using Castle.MicroKernel.SubSystems.Configuration;
-using Castle.Windsor;
+﻿using System.Reflection;
+
+using Autofac;
 
 using Translation.Service;
 using Translation.Service.Managers;
 
+using Module = Autofac.Module;
+
 namespace Translation.Client.Web.Helpers.DependencyInstallers
 {
-    public class ServiceInstaller : IWindsorInstaller
+    public class ServiceInstaller : Module
     {
-        public void Install(IWindsorContainer container, IConfigurationStore store)
+        protected override void Load(ContainerBuilder builder)
         {
-            container.Register(Component.For<CacheManager>());
+            builder.RegisterType<CacheManager>();
 
-            container.Register(Classes.FromAssemblyContaining(typeof(OrganizationService))
-                                      .Where(x => x.Name.EndsWith("Service"))
-                                      .WithService.DefaultInterfaces().LifestyleTransient());
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(OrganizationService)))
+                   .Where(t => t.Name.EndsWith("Service"))
+                   .AsImplementedInterfaces();
         }
     }
 }

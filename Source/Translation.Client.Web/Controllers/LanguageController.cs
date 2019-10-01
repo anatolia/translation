@@ -20,10 +20,10 @@ namespace Translation.Client.Web.Controllers
 {
     public class LanguageController : BaseController
     {
-        private readonly IHostingEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
         private readonly ILanguageService _languageService;
 
-        public LanguageController(IHostingEnvironment environment,
+        public LanguageController(IWebHostEnvironment environment,
                                   ILanguageService languageService)
         {
             _environment = environment;

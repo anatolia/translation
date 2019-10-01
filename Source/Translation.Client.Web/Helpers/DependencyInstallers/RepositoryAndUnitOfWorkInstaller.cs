@@ -1,23 +1,25 @@
-﻿using Castle.MicroKernel.Registration;
-using Castle.MicroKernel.SubSystems.Configuration;
-using Castle.Windsor;
+﻿using System.Reflection;
 
-using Translation.Data.Repositories.Contracts;
-using Translation.Data.UnitOfWorks.Contracts;
+using Autofac;
+
+using Translation.Data.Repositories;
+using Translation.Data.UnitOfWorks;
+
+using Module = Autofac.Module;
 
 namespace Translation.Client.Web.Helpers.DependencyInstallers
 {
-    public class RepositoryAndUnitOfWorkInstaller : IWindsorInstaller
+    public class RepositoryAndUnitOfWorkInstaller : Module
     {
-        public void Install(IWindsorContainer container, IConfigurationStore store)
+        protected override void Load(ContainerBuilder builder)
         {
-            container.Register(Classes.FromAssemblyContaining(typeof(IOrganizationRepository))
-                                      .Where(x => x.Name.EndsWith("Repository"))
-                                      .WithService.DefaultInterfaces().LifestyleTransient());
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(OrganizationRepository)))
+                   .Where(t => t.Name.EndsWith("Repository"))
+                   .AsImplementedInterfaces();
 
-            container.Register(Classes.FromAssemblyContaining(typeof(ISignUpUnitOfWork))
-                                      .Where(x => x.Name.EndsWith("UnitOfWork"))
-                                      .WithService.DefaultInterfaces().LifestyleTransient());
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(SignUpUnitOfWork)))
+                   .Where(t => t.Name.EndsWith("UnitOfWork"))
+                   .AsImplementedInterfaces();
         }
     }
 }

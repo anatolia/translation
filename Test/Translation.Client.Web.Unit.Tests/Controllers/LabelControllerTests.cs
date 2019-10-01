@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Mvc;
+
 using NUnit.Framework;
 using Shouldly;
 
@@ -11,6 +11,7 @@ using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Common.Tests.SetupHelpers;
+
 using static Translation.Common.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Common.Tests.TestHelpers.AssertViewModelTestHelper;
@@ -47,7 +48,6 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
          TestCase(ChangeActivationAction, new[] { typeof(Guid), typeof(Guid) }, typeof(HttpPostAttribute)),
          TestCase(UploadLabelFromCSVFileAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(UploadLabelFromCSVFileAction, new[] { typeof(LabelUploadFromCSVModel) }, typeof(HttpPostAttribute)),
-         TestCase(DownloadSampleCSVFileForBulkLabelUploadAction, new Type[] { }, typeof(HttpGetAttribute)),
          TestCase(CreateBulkLabelAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(CreateBulkLabelAction, new[] { typeof(CreateBulkLabelModel) }, typeof(HttpPostAttribute)),
          TestCase(TranslateAction, new[] { typeof(string), typeof(Guid), typeof(Guid) }, typeof(HttpGetAttribute)),
@@ -60,7 +60,6 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
          TestCase(LabelTranslationListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
          TestCase(UploadLabelTranslationFromCSVFileAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(UploadLabelTranslationFromCSVFileAction, new[] { typeof(UploadLabelTranslationFromCSVFileModel) }, typeof(HttpPostAttribute)),
-         TestCase(DownloadSampleCSVFileForBulkLabelTranslationUploadAction, new Type[] { }, typeof(HttpGetAttribute)),
          TestCase(DownloadTranslationsAction, new[] { typeof(Guid) }, typeof(HttpPostAttribute)),
          TestCase(RestoreLabelTranslationAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute)),
          TestCase(LabelTranslationRevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
@@ -1088,32 +1087,6 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
         }
 
         [Test]
-        public void DownloadSampleCSVFileForBulkLabelUpload_GET()
-        {
-            // arrange
-            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
-
-            // act
-            var result = SystemUnderTest.DownloadSampleCSVFileForBulkLabelUpload();
-
-            // assert
-            AssertView<FileResult>(result);
-        }
-
-        [Test]
-        public void DownloadSampleCSVFileForBulkLabelUpload_GET_NotFound()
-        {
-            // arrange
-            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath_NotExists();
-
-            // act
-            var result = SystemUnderTest.DownloadSampleCSVFileForBulkLabelUpload();
-
-            // assert
-            AssertView<NotFoundResult>(result);
-        }
-
-        [Test]
         public async Task CreateBulkLabel_GET()
         {
             // arrange
@@ -1924,32 +1897,6 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
 
             // assert
             AssertInputErrorMessagesOfView(result, model);
-        }
-
-        [Test]
-        public void DownloadSampleCSVFileForBulkLabelTranslationUpload_GET()
-        {
-            // arrange
-            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath();
-
-            // act
-            var result = SystemUnderTest.DownloadSampleCSVFileForBulkLabelTranslationUpload();
-
-            // assert
-            AssertView<FileResult>(result);
-        }
-
-        [Test]
-        public void DownloadSampleCSVFileForBulkLabelTranslationUpload_GET_NotFound()
-        {
-            // arrange
-            MockHostingEnvironment.Setup_WebRootPath_Returns_TestWebRootPath_NotExists();
-
-            // act
-            var result = SystemUnderTest.DownloadSampleCSVFileForBulkLabelTranslationUpload();
-
-            // assert
-            AssertView<NotFoundResult>(result);
         }
 
         [Test]

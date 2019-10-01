@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Configuration;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -6,99 +8,44 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-using Castle.Facilities.AspNetCore;
-using Castle.Windsor;
-
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.ProjectModel;
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.DependencyInstallers;
+using Translation.Common.Contracts;
+using Translation.Integrations;
+using Translation.Integrations.Providers;
+using Translation.Service.Managers;
 
 namespace Translation.Client.Web
 {
     public class Startup
     {
-        public IConfigurationRoot Configuration { get; }
-        private IHostingEnvironment CurrentEnvironment { get; set; }
-        private WindsorContainer Container { get; } = new WindsorContainer();
+        public ILifetimeScope AutofacContainer { get; private set; }
+        public IConfiguration Configuration { get; }
 
-        public Startup()
+        public Startup(IConfiguration configuration)
         {
-            var configurationBuilder = new ConfigurationBuilder();
-            Configuration = configurationBuilder.Build();
+            Configuration = configuration;
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void ConfigureServices(IServiceCollection services)
         {
-            CurrentEnvironment = env;
+            services.AddControllersWithViews();
 
-            var forwardingOptions = new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto };
-            forwardingOptions.KnownNetworks.Clear();
-            forwardingOptions.KnownProxies.Clear();
-            app.UseForwardedHeaders(forwardingOptions);
+            services.AddResponseCaching();
 
-            app.UseStaticFiles();
-            app.UseResponseCaching();
-
-            if (env.IsDevelopment())
+            services.Configure<ForwardedHeadersOptions>(x =>
             {
-                app.UseDeveloperExceptionPage();
-                app.UseHttpsRedirection();
-            }
-            else
-            {
-                app.UseExceptionHandler(x =>
-                {
-                    x.Run(async (context) =>
-                    {
-                        var feature = context.Features.Get<IExceptionHandlerPathFeature>();
-
-                        var exceptionHelper = new ExceptionLogHelper();
-                        exceptionHelper.LogException(feature.Error, CurrentEnvironment.ContentRootPath);
-
-                        await Task.Run(() => context.Response.Redirect("/views/error.html"));
-                    });
-                });
-            }
-
-            app.UseAuthentication();
-            app.UseMvc(x => { x.MapRoute("default", "{controller=Home}/{action=Index}/{id?}"); });
-            app.UseMvc(x => { x.MapRoute("label", "{controller=Home}/{action=Index}/{project?}/{label?}"); });
-
-            Container.Install(new SettingAndHelperInstaller());
-            Container.Install(new FactoryAndMapperInstaller());
-            Container.Install(new RepositoryAndUnitOfWorkInstaller());
-            Container.Install(new ServiceInstaller());
-            Container.Install(new IntegrationsInstaller());
-
-            DbGeneratorHelper.Generate(Container, env.WebRootPath);
-        }
-
-        public IServiceProvider ConfigureServices(IServiceCollection services)
-        {
-            services.AddMvcCore(x =>
-            {
-                // SSL/TLS termination in production is managed at proxy server (NGINX)
-                if (CurrentEnvironment.IsDevelopment())
-                {
-                    x.Filters.Add(new RequireHttpsAttribute());
-                }
-
-                x.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            })
-            .AddViews()
-            .AddJsonFormatters()
-            .AddRazorViewEngine()
-            .AddAuthorization();
-
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-                // we do this because we trust the network
-                options.KnownNetworks.Clear();
-                options.KnownProxies.Clear();
+                x.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                // we can do this when we trust the network
+                x.KnownNetworks.Clear();
+                x.KnownProxies.Clear();
             });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -113,12 +60,71 @@ namespace Translation.Client.Web
                         x.ExpireTimeSpan = TimeSpan.FromHours(8);
                         x.LoginPath = "/User/LogOn";
                         x.LogoutPath = "/User/LogOff";
-                        x.AccessDeniedPath = "/Home/AccessDenied";
+                        x.AccessDeniedPath = "/User/AccessDenied";
                     });
+        }
 
-            services.AddResponseCaching();
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule(new SettingAndHelperInstaller());
+            builder.RegisterModule(new FactoryAndMapperInstaller());
+            builder.RegisterModule(new RepositoryAndUnitOfWorkInstaller());
+            builder.RegisterModule(new ServiceInstaller());
+            builder.RegisterModule(new IntegrationsInstaller());
 
-            return services.AddWindsor(Container);
+            var cacheManager = AutofacContainer.Resolve<CacheManager>();
+            var googleTranslateProvider = AutofacContainer.ResolveNamed<ITextTranslateProvider>(nameof(GoogleTranslateProvider));
+            var yandexTranslateProvider = AutofacContainer.ResolveNamed<ITextTranslateProvider>(nameof(YandexTranslateProvider));
+            builder.RegisterInstance(new TextTranslateIntegration(cacheManager, googleTranslateProvider, yandexTranslateProvider));
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            AutofacContainer = app.ApplicationServices.GetAutofacRoot();
+
+            DbGeneratorHelper.Generate(AutofacContainer, env.WebRootPath);
+
+            var forwardingOptions = new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto };
+            forwardingOptions.KnownNetworks.Clear();
+            forwardingOptions.KnownProxies.Clear();
+            app.UseForwardedHeaders(forwardingOptions);
+
+            app.UseStaticFiles();
+
+            if (env.IsDevelopment()
+                || ConfigurationManager.AppSettings["UseDeveloperExceptionPage"] == "true")
+            {
+                app.UseDeveloperExceptionPage();
+
+                if (env.IsDevelopment())
+                {
+                    app.UseHttpsRedirection();
+                }
+            }
+            else
+            {
+                app.UseExceptionHandler(x =>
+                {
+                    x.Run(async (context) =>
+                    {
+                        var feature = context.Features.Get<IExceptionHandlerPathFeature>();
+
+                        var exceptionHelper = new ExceptionLogHelper();
+                        exceptionHelper.LogException(feature.Error, env.ContentRootPath);
+
+                        await Task.Run(() => context.Response.Redirect("/views/error.html"));
+                    });
+                });
+            }
+
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("label", "{controller=Home}/{action=Index}/{project?}/{label?}");
+            });
         }
     }
 }

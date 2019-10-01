@@ -6,8 +6,8 @@
  4.Get a free API key and Keep this file.
  5.You(Super Admin) will use this API key as TranslationProvider value editing Super admin dashboard translation_providers link
   */
+
 using System.Collections.Generic;
-using System.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -21,13 +21,15 @@ namespace Translation.Integrations.Providers
     public class YandexTranslateProvider : ITextTranslateProvider
     {
         private readonly ITranslationProviderRepository _translationProviderRepository;
+        public string Name { get; }
         public string YandexTranslationApiKey { get; set; }
         private string RequestUrl { get; set; }
-        public string Name { get; set; }
+
         public YandexTranslateProvider(ITranslationProviderRepository translationProviderRepository)
         {
             _translationProviderRepository = translationProviderRepository;
-            Name = "yandex";
+
+            Name = nameof(YandexTranslateProvider);
         }
 
         public void CreateClient()

@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="StandardCache" Version="1.0.1" />
-    <PackageReference Include="StandardRepository" Version="1.0.1.15" />
-    <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.1.15" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="StandardCache" Version="1.0.2" />
+    <PackageReference Include="StandardRepository" Version="1.0.2" />
+    <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.2" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
   </ItemGroup>
 
   <ItemGroup>
