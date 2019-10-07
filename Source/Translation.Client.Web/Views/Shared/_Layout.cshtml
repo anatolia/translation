@@ -7,35 +7,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@Model?.Title / @ConstantHelper.APP_NAME</title>
 
-    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <a href="/">@ConstantHelper.APP_NAME</a>
+    <header class="header">
+        <div class="background-blue">
+            <a href="/" class="background-blue">
+                <span class="nav-brand">@ConstantHelper.APP_NAME</span>
+            </a>
 
-        @if (User.Identity.IsAuthenticated)
-        {
-        <div style="float: right">
-            <form action="/User/LogOff" method="post">
-                @Html.AntiForgeryToken()
-                <button type="submit" data-translation="log_off">log_off</button>
-            </form>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <ul class="header-components background-blue">
+                    <li>
+                        <form action="/User/LogOff" method="post">
+                            @Html.AntiForgeryToken()
+                            <select class="account background-blue" id="myList" onchange="this.form.submit()">
+                                <option selected data-translation="Adminstration">Account</option>
+                                <option data-translation="log_off">log_off</option>
+                            </select>
+                        </form>
+                    </li>
+
+                    <li>
+                        <input type="text" id="txtSearch" class="textsearch" name="txtSearch" placeholder="" value="" onkeyup="searchWork()" />
+                        <div id="searchResults" name="searchResults" class="search-content">
+                            <a href="#" id="allSearchListLink" name="allSearchListLink" data-translation="label_search_list_link" onclick="openLabelSearchListPage()">label_search_list_link</a>
+                        </div>
+                    </li>
+                </ul>
+            }
         </div>
-        <div class="search">
-            <input type="text" id="txtSearch" name="txtSearch" placeholder="search label key" value="" onkeyup="searchWork()" />
-            <div id="searchResults" name="searchResults" class="search-content">
-                <a href="#" id="allSearchListLink" name="allSearchListLink" data-translation="label_search_list_link" onclick="openLabelSearchListPage()">label_search_list_link</a>
-            </div>
-        </div>
-        }
+
     </header>
 
     @if (!User.Identity.IsAuthenticated)
     {
-    <div style="float: right;margin-top: -55px;margin-right: 55px;">
-        <a href="/User/LogOn" data-translation="log_on_link">log_on_link</a>
-        <a href="/User/SignUp" data-translation="sign_up_link">sign_up_link</a>
-    </div>
+        <div class="register-links background-blue">
+            <a class="background-blue" href="/User/LogOn" data-translation="log_on_link">log on</a>
+            <a class="background-blue" href="/User/SignUp" data-translation="sign_up_link">sign up</a>
+        </div>
     }
 
     <main role="main">

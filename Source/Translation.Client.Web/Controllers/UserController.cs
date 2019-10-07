@@ -10,6 +10,7 @@ using Translation.Client.Web.Helpers.ActionFilters;
 using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.User;
+using Translation.Common.Contracts;
 using Translation.Common.Helpers;
 using Translation.Common.Models.Requests.Journal;
 using Translation.Common.Models.Requests.Organization;
@@ -20,7 +21,14 @@ namespace Translation.Client.Web.Controllers
 {
     public class UserController : BaseController
     {
-        
+        public UserController(IOrganizationService organizationService, 
+                              IJournalService journalService, 
+                              ILanguageService languageService, 
+                              ITranslationProviderService translationProviderService) : base(organizationService, journalService, languageService, translationProviderService)
+        {
+
+        }
+
         [HttpGet, AllowAnonymous]
         public IActionResult SignUp()
         {
@@ -316,7 +324,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             CurrentUser.IsActionSucceed = true;
-            return Redirect("/User/Detail/" + model.UserUid);
+            return Redirect($"/User/Detail/{response.Item.Uid}");
         }
 
         [HttpGet]
@@ -606,5 +614,6 @@ namespace Translation.Client.Web.Controllers
             return Json(model);
         }
 
+      
     }
 }

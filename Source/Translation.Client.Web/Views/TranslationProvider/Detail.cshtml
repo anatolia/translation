@@ -1,11 +1,11 @@
 ﻿@model TranslationProviderDetailModel
 
 <label data-translation="translation_provider_name">translation_provider_name</label>
-<h1>@Model.Name</h1>
+<div>@Model.Name</div>
 
 <div>
     <label data-translation="description">description</label>
-    @Model.Description
+    <div>@Model.Description</div>
 </div>
 
 <div class="bottom-links">
@@ -13,71 +13,20 @@
     <a href="/TranslationProvider/list" data-translation="translation_providers_link">translation_providers_link</a>
 </div>
 
-<h2 data-translation="translation_provider_info">translation_provider_info</h2>
+<div data-translation="translation_provider_info">translation_provider_info</div>
 
 <div>
     <label class="content" data-translation="translation_provider_value_content">translation_provider_value_content</label>
     <div id="api-value">@Model.Value</div>
 </div>
 
-
-
 @section Scripts {
     <script>
-        function SecretField(element, order) {
-            this.el = element;
-            this.order = order;
-            this.isVisible = false;
-            this.text = this.el.innerText;
-            this.uniqueId = this.el.parentElement.getAttribute('data-uid') + this.order;
-            this.el.setAttribute('data-id', this.uniqueId);
-
-            this.getStars = function (countOfStars) {
-                return "*".repeat(countOfStars);
-            }
-
-            this.getButton = function (type) {
-                return "<span class='secretButton' id='" + this.uniqueId + "'>" + type + "</span>";
-            }
-
-            this.getSecretSpan = function () {
-                return "<span class='secretSpan'>" + this.getStars(5) + "</span>";
-            }
-
-            this.enableButtons = function () {
-                var button = document.querySelector('.secretButton[id="' + this.uniqueId + '"]');
-
-                button.addEventListener('click', () => {
-                    if (this.isVisible) {
-                        this.hide();
-                    } else {
-                        this.show();
-                    }
-                });
-            }
-
-            this.hide = function () {
-                this.el.innerHTML = this.getSecretSpan();
-                this.el.innerHTML += this.getButton(' show');
-                this.isVisible = false;
-                this.enableButtons();
-            }
-
-            this.show = function () {
-                this.el.innerHTML = this.text;
-                this.el.innerHTML += this.getButton(' hide');
-                this.isVisible = true;
-                this.enableButtons();
-            }
-        }
-
         var element = document.getElementById("api-value");
-
         var tableChangeInterval = setInterval(() => {
             clearInterval(tableChangeInterval);
             var secretField = new SecretField(element, 1);
             secretField.hide();
         }, 5);
-
     </script>
 }

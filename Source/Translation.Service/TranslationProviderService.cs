@@ -41,7 +41,7 @@ namespace Translation.Service
             var provider = await _translationProviderRepository.Select(x => x.Uid == request.TranslationProviderUid);
             if (provider.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(TranslationProvider));
+                response.SetFailedBecauseNotFound(nameof(TranslationProvider));
                 return response;
             }
 
@@ -99,7 +99,14 @@ namespace Translation.Service
             var translationProvider = await _translationProviderRepository.Select(x => x.Uid == request.TranslationProviderUid);
             if (translationProvider.IsNotExist())
             {
-                response.SetInvalidBecauseNotFound(nameof(TranslationProvider));
+                response.SetFailedBecauseNotFound(nameof(TranslationProvider));
+                return response;
+            }
+
+            if (translationProvider.Value == request.Value)
+            {
+                response.Item = _translationProviderFactory.CreateDtoFromEntity(translationProvider);
+                response.Status = ResponseStatus.Success;
                 return response;
             }
 

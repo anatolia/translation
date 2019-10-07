@@ -2,23 +2,22 @@
     display: block;
     margin: 1px;
     font-size: 13px;
-    line-height: 21px;
+    line-height: 13px;
     padding: 5px;
-    border: 1px solid #999;
     width: auto;
-    margin-right: 8px;
-    margin-top: 21px;
+    margin-right: 13px;
+    margin-top: 13px;
     box-sizing: border-box;
     background-image: url('searchicon.png');
     background-position: 14px 12px;
     background-repeat: no-repeat;
     font-size: 16px;
-    padding: 14px 20px 12px 45px;
+    padding: 14px 3px 12px 45px;
     border: none;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #999;
 
     &:focus {
-        outline: 3px solid #ddd;
+        outline: 1px solid #999;
     }
 }
 
@@ -29,6 +28,8 @@
 
     a {
         font-size: 12px;
+        margin-top: 5px;
+        margin-bottom: 5px;
 
         &:hover {
             background-color: #ddd;
@@ -44,7 +45,7 @@
 .search-content {
     display: none;
     position: absolute;
-    background-color: #f6f6f6;
+    //background-color: #f6f6f6;
     min-width: 230px;
     overflow: auto;
     border: 1px solid #ddd;
@@ -52,9 +53,13 @@
 
     a {
         color: black;
-        padding: 12px 16px;
+        padding: 2px 21px;
         text-decoration: none;
         display: block;
+    }
+
+    #allSearchListLink {
+        color: blue;
     }
 }
 
@@ -62,9 +67,6 @@
     background-color: #ddd;
 }
 
-#allSearchListLink {
-    color: blue;
-}
 
 .show {
     display: block;

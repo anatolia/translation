@@ -1,9 +1,14 @@
-﻿function getSelect(name) { return document.getElementById('select-' + name); }
+﻿function getSelect(name, parent) {
+    if (!parent) parent = document;
+    return parent.querySelector('#select-' + name);
+}
+
 function hasClass(element, className) { return (' ' + element.className + ' ').indexOf(' ' + className + ' ') > -1; }
+
 function trimSearchTerm(term, selectContent) {
 
     let items = selectContent.childNodes;
-    for (var i = 0, l = items.length; i < l; i++) {
+    for (let i = 0, l = items.length; i < l; i++) {
         if (items[i]
             && items[i].innerText) {
             if (items[i].innerText.toLowerCase() === term.trim().toLowerCase()) {
@@ -15,23 +20,40 @@ function trimSearchTerm(term, selectContent) {
     return term.trim().toLowerCase().replace(/<br>/g, '').replace(/&nbsp;/g, '');
 }
 
-let theSelectChangeEvent = new Event('theSelectChange');
+let theSelectChangeEvent = new Event('theSelectChange', { bubbles: true });
 function onSelectChange(name, onChange) {
-    var s = typeof name === 'string' ? getSelect(name) : name;
-    s.addEventListener('theSelectChange', function (e) {
+    const select = typeof name === 'string' ? getSelect(name) : name;
+
+    select.addEventListener('theSelectChange', function (e) {
+        if (typeof name === 'string') {
+            if (name !== select.dataset.valueField) {
+                return;
+            }
+        }
+
+        onChange(select, select.dataset.value, select.dataset.text);
+    });
+}
+
+let theSelectClearEvent = new Event('theSelectClear');
+let theSelectInitEvent = new Event('theSelectInit');
+
+function onSelectClear(name, onClear) {
+    let s = typeof name === 'string' ? getSelect(name) : name;
+    s.addEventListener('theSelectClear', function (e) {
         if (typeof name === 'string') {
             if (name !== s.dataset.valueField) {
                 return;
             }
         }
 
-        onChange(s, s.dataset.value, s.dataset.text);
+        onClear(s, s.dataset.value, s.dataset.text);
     });
 }
 
-let theSelectInitEvent = new Event('theSelectInit');
+theSelectInitEvent = new Event('theSelectInit');
 function onSelectInit(name, cb) {
-    var s = typeof name === 'string' ? getSelect(name) : name;
+    let s = typeof name === 'string' ? getSelect(name) : name;
     s.addEventListener('theSelectInit', function (e) {
         if (typeof name === 'string') {
             if (name !== s.dataset.valueField) {
@@ -51,9 +73,21 @@ let theValueSeparator = ',';
 let refreshSelect = () => { };
 let initSelects = () => { };
 let initSingleSelect = () => { };
+let setSingleSelect = () => { };
 let resetSingleSelect = () => { };
+let initSelectContentFromJson = () => { };
+let clearSelect = () => { };
+let clearSelectContent = () => { };
+let clearMultipleSelectContent = () => { };
+let selectDataCache = {};
+let onChangeSelect = () => { };
+let onClearSelect = () => { };
+let resetSelectWithoutCloning = () => { };
 
-function createSelectElement(name, url, typeClass, contentType, value, text, isSetFirstItem, parent) {
+function createSelectElement(name, urlOrData, typeClass, contentType, value, text, isSetFirstItem, parent, initValue, onChange, isIconsVisible = false, iconFontSize = 20, onClear, confirmBeforeChange = false, confirmBeforeClear = false, checkForEmptyElementBeforeChange = '', emptyElementPropertyToCheck = '') {
+    if (!typeClass) { typeClass = ['single-select']; }
+    if (typeClass === 'radio-select') { typeClass = ['radio-select', 'single-select']; }
+    if (typeof typeClass === 'string') { typeClass = [typeClass]; }
     let theSelect = document.createElement('div');
     theSelect.id = 'select-' + name;
     theSelect.name = 'select-' + name;
@@ -62,12 +96,29 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
     theSelect.dataset.textField = name + 'Name';
     theSelect.dataset.value = value || '';
     theSelect.dataset.text = text || '';
-    theSelect.dataset.url = url;
+    if (typeof urlOrData === 'string') {
+        theSelect.dataset.url = urlOrData;
+    } else if (urlOrData) {//[{text: string, value: string}]
+        const jsonDataUid = `data-json-${guid()}`;
+        theSelect.dataset.url = 'data-json';
+        theSelect.dataset.json = jsonDataUid;
+        selectDataCache[jsonDataUid] = { responseText: JSON.stringify(urlOrData) };
+    }
     theSelect.dataset.parent = parent || '';
     theSelect.dataset.setFirstItem = isSetFirstItem === true ? theTrue : false;
     theSelect.dataset.type = contentType === undefined ? 'text' : contentType;
+    theSelect.dataset.isIconsVisible = !!isIconsVisible + '';
+    theSelect.dataset.iconFontSize = iconFontSize + 'px';
+    theSelect.dataset.confirmBeforeChange = confirmBeforeChange;
+    theSelect.dataset.confirmBeforeClear = confirmBeforeClear;
+    theSelect.dataset.checkForEmptyElementBeforeChange = checkForEmptyElementBeforeChange;
+    theSelect.dataset.emptyElementPropertyToCheck = emptyElementPropertyToCheck;
     theSelect.classList.add('select');
-    theSelect.classList.add(typeClass === undefined ? 'single-select' : typeClass);
+    theSelect.classList.add(...typeClass);
+    initValue && setSingleSelect(theSelect, initValue);
+    onChange && onSelectChange(theSelect, onChange);
+    onClear && onSelectClear(theSelect, onClear);
+
     return theSelect;
 }
 
@@ -78,57 +129,75 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
     let allSelects = document.querySelectorAll('div.select');
 
     refreshSelect = function (s, cb) {
-        if (s.dataset.value === ''
-            && s.dataset.text === ''
-            && s.dataset.setFirstItem === theTrue) {
-            doGet(s.dataset.url + '?take=' + loadCount, function (req) {
-                selectDataFiller(s, req);
-                if (cb) cb();
-            });
+        if (hasClass(s, 'radio-select')) {
+            if (s.dataset.setFirstItem === theTrue) {
+                getSelectData(s, s.dataset.url + '?take=' + loadCount, function (req) {
+                    selectDataFiller(s, req);
+                    if (cb) cb();
+                });
+            }
         } else {
-            selectDataFiller(s);
-            if (cb) cb();
+            if (s.dataset.value === ''
+                && s.dataset.text === ''
+                && s.dataset.setFirstItem === theTrue) {
+                getSelectData(s, s.dataset.url + '?take=' + loadCount, function (req) {
+                    selectDataFiller(s, req);
+                    if (cb) cb();
+                });
+            } else {
+                selectDataFiller(s);
+                if (cb) cb();
+            }
         }
     };
 
     function selectDataFiller(s, req) {
         let json = [];
-        if (req != undefined) { json = JSON.parse(req.responseText); }
+        if (req !== undefined) { json = JSON.parse(req.responseText); }
 
-        if (hasClass(s, 'single-select')) { initSingleSelect(s, json); }
-        else if (hasClass(s, 'multiple-select')) { initMultipleSelect(s, json); }
+        if (hasClass(s, 'radio-select')) {
+            initRadioSelect(s, json);
+        } else {
+            if (hasClass(s, 'single-select')) { initSingleSelect(s, json); } else if (hasClass(s, 'multiple-select')) { initMultipleSelect(s, json); }
+        }
     }
 
     function toggleSelectContent(selectButton) {
+        let settingsParent = getParent(selectButton, 'ra-settings-wrapper');
         let theSelect = selectButton.closest('.select');
         if (hasClass(theSelect, 'show')) {
             theSelect.classList.remove('show');
+            if (settingsParent) {
+                settingsParent.style.overflow = 'hidden';
+            }
         } else if (!hasClass(theSelect, 'disabled')) {
             theSelect.classList.add('show');
-
+            if (settingsParent) {
+                settingsParent.style.overflow = 'initial';
+            }
             let parentValue = '';
 
             if (theSelect.dataset.parent !== ''
                 && theSelect.dataset.parent !== undefined) {
                 let parent = getSelect(theSelect.dataset.parent);
 
-                if (parent != undefined
-                    && parent.dataset.value != undefined) {
+                if (parent !== undefined && parent !== null
+                    && parent.dataset.value !== undefined) {
                     parentValue = parent.dataset.value;
                 }
             }
 
             let lastUid = '';
-            var itemCount = theSelect.lastElementChild.childElementCount;
-            if (theSelect.lastElementChild.childNodes != undefined
-                && theSelect.lastElementChild.childNodes[itemCount] != undefined
+            let itemCount = theSelect.lastElementChild.childElementCount;
+            if (theSelect.lastElementChild.childNodes !== undefined
+                && theSelect.lastElementChild.childNodes[itemCount] !== undefined
                 && itemCount > 0) {
                 lastUid = theSelect.lastElementChild.childNodes[itemCount].getAttribute('value');
             }
 
             let url = theSelect.dataset.url;
             if (url) {
-                doGet(url + '?take=' + loadCount + '&parent=' + parentValue + '&lastUid=' + lastUid, function (req) {
+                getSelectData(theSelect, url + '?take=' + loadCount + '&parent=' + parentValue + '&lastUid=' + lastUid, function (req) {
                     let json = JSON.parse(req.responseText);
                     updateSelectContent(theSelect, json);
                 });
@@ -137,23 +206,23 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
     }
 
     function initSelectItems(selectContent, item, type, theSelect) {
-        var texts = getElement(theSelect.dataset.textField).getAttribute('value');
+        let texts = theSelect.querySelector('#' + theSelect.dataset.textField).getAttribute('value');
         if (texts && texts.indexOf(item.text) >= 0) return null;
 
         let items = selectContent.childNodes;
-        for (var i = 0, l = items.length; i < l; i++) {
+        for (let i = 0, l = items.length; i < l; i++) {
             if (items[i].innerHTML === item.text) {
                 return null;
             }
         }
 
         let selectItem = createElement('div');
-        selectItem.className = "select-item";
+        selectItem.className = 'select-item';
 
         if (type === 'content') {
             selectItem.classList.add('content-item');
             let img = createElement('img');
-            img.className = "select-item-image";
+            img.className = 'select-item-image';
             img.setAttribute('src', item.image);
             let selectItemText = createElement('label');
             selectItemText.className = 'select-item-text';
@@ -162,6 +231,7 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
             selectItem.appendChild(selectItemText);
         } else {
             selectItem.innerHTML = item.text;
+            selectItem.setAttribute('title', item.text);
         }
 
         selectItem.setAttribute('value', item.value);
@@ -170,22 +240,26 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
     }
 
     function reFillChildsData(value, parentName) {
-        allSelects.forEach(function (s) {
+        const childrenSelects = document.querySelectorAll(`.select[data-parent='${parentName}']`);
+        childrenSelects.forEach(function (s) {
             if (s.dataset.parent !== parentName) { return; }
 
             let url = s.dataset.url + '?take=' + loadCount + '&parent=' + value;
             if (!urlArray.includes(url)) {
                 urlArray.push(url);
-                doGet(url, function (req) {
-                    s.innerHTML = '';
-                    selectDataFiller(s, req);
-                });
             }
+            let select = s;
+            getSelectData(s, url, function (req) {
+                s.innerHTML = '';
+                s.dataset.text = '';
+                s.dataset.value = '';
+                selectDataFiller(select, req);
+            });
         });
     }
 
     function addSelectContent(selectContent) {
-        //visible height + pixel scrolled = total height 
+        //visible height + pixel scrolled = total height
         if (selectContent.offsetHeight + selectContent.scrollTop >= selectContent.scrollHeight) {
             let theSelect = selectContent.closest('.select');
             let parentId = theSelect.dataset.parent;
@@ -206,23 +280,22 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
 
             if (parentId) {
                 let parent = getSelect(parentId);
-                if (parent != undefined) {
+                if (parent !== undefined) {
                     getUrl += '&parent=' + parent.dataset.value;
                 }
             }
 
             if (!urlArray.includes(getUrl)) {
                 urlArray.push(getUrl);
-                doGet(getUrl, function (req) {
+                getSelectData(theSelect, getUrl, function (req) {
                     let json = JSON.parse(req.responseText);
                     let type = theSelect.dataset.type;
                     for (let i = 0; i < json.length; i++) {
                         let selectItem = initSelectItems(selectContent, json[i], type, theSelect);
-                        if (selectItem != null) {
+                        if (selectItem !== null) {
                             selectItem.onclick = function () {
-                                if (hasClass(theSelect, 'single-select')) { onClickSingleSelectItem(this); }
-                                else { onClickMultipleSelectItem(this); }
-                            }
+                                if (hasClass(theSelect, 'single-select')) { onClickSingleSelectItem(this); } else { onClickMultipleSelectItem(this); }
+                            };
                         }
                     }
                 });
@@ -236,20 +309,19 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
         if (updateItem.length === 0 && selectContent.childElementCount === 0) {
             selectContent.innerHTML = ' ';
             let noItem = createElement('div');
-            noItem.style.padding = "5px";
-            noItem.style.color = "grey";
-            noItem.innerHTML = "no_item";
-            noItem.dataset.translation = "no_item";
+            noItem.style.padding = '5px';
+            noItem.style.color = 'grey';
+            noItem.innerHTML = 'no_item';
+            noItem.dataset.translation = 'no_item';
             selectContent.appendChild(noItem);
         }
 
         for (let i = 0; i < updateItem.length; i++) {
             let selectItem = initSelectItems(selectContent, updateItem[i], theSelect.dataset.type, theSelect);
-            if (selectItem != null) {
+            if (selectItem !== null) {
                 selectItem.onclick = function () {
-                    if (hasClass(theSelect, 'single-select')) { onClickSingleSelectItem(this); }
-                    else if (hasClass(theSelect, 'multiple-select')) { onClickMultipleSelectItem(this); }
-                }
+                    if (hasClass(theSelect, 'single-select')) { onClickSingleSelectItem(this); } else if (hasClass(theSelect, 'multiple-select')) { onClickMultipleSelectItem(this); }
+                };
             }
         }
     }
@@ -262,17 +334,17 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
         let searchTerm = trimSearchTerm(selectInput.innerHTML, selectContent);
 
         // input empty and press backspace block request
-        if (oldSearchTerm.length == 0 && event.keyCode == 8) {
+        if (oldSearchTerm.length === 0 && event.keyCode === 8) {
             return;
         }
         // prevent request when pressed up arrow, down arrow, enter,
-        if (event.keyCode == 38 ||
-            event.keyCode == 40 ||
-            event.keyCode == 13 ||
-            searchTerm.length == 1) { return; }
+        if (event.keyCode === 38 ||
+            event.keyCode === 40 ||
+            event.keyCode === 13 ||
+            searchTerm.length === 1) { return; }
 
         //prevent request when input value is not changed when press enter
-        if (oldSearchTerm == selectInput.innerHTML) {
+        if (oldSearchTerm === selectInput.innerHTML) {
             isNotChanged = true;
             return;
         }
@@ -290,15 +362,15 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
         let url = theSelect.dataset.url + '?q=' + searchTerm + '&take=' + loadCount;
         if (parentId) {
             let parent = getSelect('select-' + parentId);
-            if (parent != undefined
-                && parent.dataset.value != undefined) {
+            if (parent !== undefined
+                && parent.dataset.value !== undefined) {
                 url += '&parent=' + parent.dataset.value;
             }
         }
-        // send request 
+        // send request
         if (!urlArray.includes(url)) {
             urlArray.push(url);
-            doGet(url, function (req) {
+            getSelectData(theSelect, url, function (req) {
                 let updateItems = JSON.parse(req.responseText);
                 if (theSelect.querySelector('.loader')) { theSelect.querySelector('.loader').remove(); }
                 clearContent(theSelect);
@@ -308,30 +380,55 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
     }
 
     // Single Select Functions
+    setSingleSelect = function (theSelect, value, isSilent) {
+        if (theSelect.dataset.value === value) return;
+        if (!theSelect.dataset.url || theSelect.dataset.url === "undefined") return;
+
+        getSelectData(theSelect, theSelect.dataset.url + '?take=' + loadCount, function (req) {
+            const json = JSON.parse(req.responseText);
+            updateSelectContent(theSelect, json);
+
+            const item = theSelect.querySelector('[value="' + value + '"]');
+            if (item) {
+                onClickSingleSelectItem(item, isSilent);
+            } else if (theSelect.dataset.setFirstItem === theTrue) {
+                const $firstItem = theSelect.querySelectorAll('.select-content [value]')[0];
+                $firstItem && onClickSingleSelectItem($firstItem, isSilent);
+            } else {
+                clearSelect(theSelect);
+            }
+        });
+    };
+
     resetSingleSelect = function (theSelect) {
         theSelect.dataset.value = '';
         theSelect.dataset.text = '';
+        theSelect.removeAttribute('data-is-valid');
 
         //clone select without children to empty inner html and remove any previous listeners
         let selectClone = theSelect.cloneNode(false);
         theSelect.parentNode.replaceChild(selectClone, theSelect);
 
         return selectClone;
-    }
+    };
 
     initSingleSelect = function (theSelect, json) {
-        if (theSelect.querySelector('div.select-button') == null) {
-            initSingleSelectButton(theSelect, json);
-            if (theSelect.dataset.detail === theTrue) {
-                initSingleSelectInfo(theSelect, theSelect.dataset.detailUrl);
+        return new Promise((resolve, reject) => {
+            if (!hasClass(theSelect, 'radio-select') && theSelect.querySelector('div.select-button') === null) {
+                initSingleSelectButton(theSelect, json);
+                if (theSelect.dataset.detail === theTrue) {
+                    initSingleSelectInfo(theSelect, theSelect.dataset.detailUrl);
+                }
+                initSingleSelectContent(theSelect, json);
+
+                resolve(1);
             }
-            initSingleSelectContent(theSelect, json);
-        }
-    }
+        });
+    };
 
     function initSingleSelectButton(theSelect, json) {
         let selectButton = createElement('div');
-        selectButton.className = "select-button";
+        selectButton.className = 'select-button';
 
         let uidInput = createElement('input');
         uidInput.setAttribute('type', 'hidden');
@@ -344,17 +441,17 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
         textInput.name = theSelect.dataset.textField;
 
         let selectButtonInput = createElement('div');
-        selectButtonInput.className = "select-button-input";
+        selectButtonInput.className = 'select-button-input';
         selectButtonInput.setAttribute('contenteditable', theTrue);
-        let clearSelectButton = createButton('x', clearSelect);
-        clearSelectButton.className = "clear-select-button";
+        let clearSelectButton = createButton('x', onClearButtonClick);
+        clearSelectButton.className = 'clear-select-button';
         selectButton.innerHTML = '';
         selectButton.appendChild(uidInput);
         selectButton.appendChild(textInput);
         selectButton.appendChild(selectButtonInput);
         selectButton.appendChild(clearSelectButton);
         theSelect.appendChild(selectButton);
-        if (json == undefined && theSelect.dataset.value === '') {
+        if (json === undefined && theSelect.dataset.value === '') {
             selectButton.classList.add('disabled');
             return;
         }
@@ -370,16 +467,7 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
             textInput.value = theSelect.dataset.text;
         } else {
             if (theSelect.dataset.setFirstItem === theTrue) {
-                if (json.length > 0) {
-                    selectButtonInput.innerHTML = json[0].text;
-                    uidInput.value = json[0].value;
-                    textInput.value = json[0].text;
-                    theSelect.dataset.value = json[0].value;
-                    theSelect.dataset.text = json[0].text;
-                    theSelect.dispatchEvent(theSelectChangeEvent);
-
-                    reFillChildsData(json[0].value, theSelect.dataset.valueField);
-                }
+                setSingleSelect(theSelect);
             }
         }
 
@@ -387,41 +475,48 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
         // show content when input
         selectButtonInput.onkeydown = function (e) {
             let theSelect = this.closest('.select');
-            theSelect.classList.add('show');
-            oldSearchTerm = this.innerHTML;
-            // when click backspace with empty content
-            if (e.keyCode == 13) {
-                document.execCommand('insertHTML', false, '');
-                // prevent the default behaviour of return key pressed
-                return false;
+            if (!theSelect.classList.contains('disabled')) {
+                theSelect.classList.add('show');
+                oldSearchTerm = this.innerHTML;
+                // when click backspace with empty content
+                if (e.keyCode === 13) {
+                    document.execCommand('insertHTML', false, '');
+                    // prevent the default behaviour of return key pressed
+                    return false;
+                }
             }
-        }
+            else {
+                e.preventDefault();
+            }
+        };
         // filter text
         selectButtonInput.onkeyup = function (e) {
             e.preventDefault();
-            searchSelectContent(this, e);
-        }
+            if (!theSelect.classList.contains('disabled')) {
+                searchSelectContent(this, e);
+            }
+        };
     }
 
     function initSingleSelectInfo(parent, detailUrl) {
         // Create Info Btn
         let infoBtn = createElement('button');
-        infoBtn.className = "select-item-info-btn";
+        infoBtn.className = 'select-item-info-btn';
         infoBtn.innerHTML = 'i';
         parent.querySelector('.select-button').appendChild(infoBtn);
 
         // Create Info Popup
         let infoWrapper = createElement('div');
-        infoWrapper.className = "select-info-wrapper";
+        infoWrapper.className = 'select-info-wrapper';
         let closePopover = createElement('button');
-        closePopover.className = "close-popover-btn";
-        closePopover.innerHTML = "x";
+        closePopover.className = 'close-popover-btn';
+        closePopover.innerHTML = 'x';
         infoWrapper.appendChild(closePopover);
-        closePopover.onclick = function () { infoWrapper.classList.remove('show'); }
+        closePopover.onclick = function () { infoWrapper.classList.remove('show'); };
         let infoHeader = createElement('div');
-        infoHeader.className = "select-info-header";
+        infoHeader.className = 'select-info-header';
         let infoImg = createElement('img');
-        infoImg.className = "select-info-img";
+        infoImg.className = 'select-info-img';
         let infoTitle = createElement('label');
         infoTitle.className = 'select-info-title';
         infoHeader.appendChild(infoImg);
@@ -440,7 +535,7 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
                 infoImg.setAttribute('src', 'url');
                 infoTitle.innerHTML = 'select item text';
             }
-        }
+        };
         // Show popup when click info button
         infoBtn.onclick = function (e) {
             e.preventDefault();
@@ -453,32 +548,68 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
             strHTML += '<img class="select-item-image" src="' + 'Sample' + '">';
             strHTML += '<label class="select-item-text">' + 'sample text' + '</label>';
             strHTML += '</div>';
-            showPopup("Detail", strHTML, true, function () { });
-        }
+            showPopup('Detail', strHTML, true, function () { });
+        };
     }
 
     function initSingleSelectContent(parent, json) {
         let selectContent = createElement('div');
-        selectContent.className = "select-content";
-        if (json != undefined) {
+        selectContent.className = 'select-content';
+        if (json !== undefined) {
             for (let i = 0; i < json.length; i++) {
                 let selectItem = initSelectItems(selectContent, json[i], parent.dataset.type, parent);
-                if (selectItem != null) {
-                    selectItem.onclick = function () { onClickSingleSelectItem(this); }
+                if (selectItem !== null) {
+                    selectItem.onclick = function () { onClickSingleSelectItem(this); };
                 }
             }
         }
 
         parent.appendChild(selectContent);
 
-        selectContent.onscroll = function () { addSelectContent(this); }
+        selectContent.onscroll = function () { addSelectContent(this); };
     }
 
-    function onClickSingleSelectItem(item) {
-        let theSelect = item.closest('.select');
+    function confirmBeforeChange(theSelect, item, isSilent) {
+        const
+            popup = createDiv({
+                'class': 'confirm-popup',
+                'data-translate': 'are_you_sure_to_change_the_value',
+            }, 'are_you_sure_to_change_the_value');
 
-        var theValue = item.getAttribute('value');
-        var theText = item.innerHTML;
+        if (!theSelect.querySelector('.confirm-popup')) {
+            theSelect.appendChild(popup);
+        }
+
+        const
+            buttonsWrap = createDiv({
+                'class': 'confirm-popup-buttons',
+            }),
+            buttonDelete = createElement('button', {
+                'class': 'red',
+                'data-translate': 'change',
+            }, 'change'),
+            buttonCancel = createElement('button', {
+                'class': 'green',
+                'data-translate': 'cancel',
+            }, 'cancel');
+
+        buttonsWrap.appendChild(buttonDelete);
+        buttonsWrap.appendChild(buttonCancel);
+        popup.appendChild(buttonsWrap);
+
+        buttonDelete.addEventListener('click', () => {
+            popup.remove();
+            onChangeSelect(theSelect, item, isSilent);
+        });
+        buttonCancel.addEventListener('click', () => {
+            popup.remove();
+        });
+    }
+
+    onChangeSelect = (theSelect, item, isSilent) => {
+        // let theSelect = item.closest('.select');
+        let theValue = item.getAttribute('value');
+        let theText = item.innerHTML;
 
         if (theSelect.dataset.type === 'content') {
             theText = item.querySelector('.select-item-text').innerHTML;
@@ -487,54 +618,35 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
             theSelect.querySelector('.select-button-input').innerHTML = theText;
         }
 
-        getElement(theSelect.dataset.valueField).setAttribute('value', theValue);
-        getElement(theSelect.dataset.textField).setAttribute('value', theText);
+        theSelect.querySelector('#' + theSelect.dataset.valueField).setAttribute('value', theValue);
+        theSelect.querySelector('#' + theSelect.dataset.textField).setAttribute('value', theText);
         theSelect.dataset.value = theValue;
         theSelect.dataset.text = theText;
 
-        reFillChildsData(theValue, theSelect.dataset.valueField);
+        reFillChildsData(theValue, theSelect.dataset.name);
 
-        theSelect.dispatchEvent(theSelectChangeEvent);
+        if (!isSilent) theSelect.dispatchEvent(theSelectChangeEvent);
         theSelect.classList.remove('show');
     }
 
-    function clearSelect(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        let theSelect = this.closest('.select');
-        let selectButton = theSelect.querySelector('.select-button');
-        let selectButtonInput = selectButton.querySelector('.select-button-input');
-        selectButtonInput.innerHTML = '';
-        theSelect.dataset.value = '';
-        theSelect.dataset.text = '';
-        getElement(theSelect.dataset.valueField).value = '';
-        getElement(theSelect.dataset.textField).value = '';
+    function onClickSingleSelectItem(item, isSilent) {
+        let theSelect = item.closest('.select');
 
-        // Refills the data
-        let parentId;
-        let parentName = theSelect.dataset.valueField;
-        allSelects.forEach(function (s) {
-            if (s.dataset.valueField == theSelect.dataset.parent) {
-                parentId = s.querySelector(theSelect.dataset.valueField).getAttribute('value');
+        let emptyCheck = '';
+        if (theSelect.dataset.checkForEmptyElementBeforeChange) {
+            const $ele = document.querySelectorAll(theSelect.dataset.checkForEmptyElementBeforeChange),
+                prop = theSelect.dataset.emptyElementPropertyToCheck ? theSelect.dataset.emptyElementPropertyToCheck : 'textContent';
+            if ($ele && $ele.length) {
+                for (const ele of $ele) {
+                    emptyCheck += ele[prop];
+                }
             }
-            // If parent cleared, clear child select also
-            if (s.dataset.parent == parentName) {
-                s.querySelector('.select-button').classList.add('disabled');
-                s.querySelector('.select-button-input').innerHTML = ' ';
-                s.querySelector('.select-content').innerHTML = ' ';
-            }
-        });
-
-        let url = theSelect.dataset.url + '?q=' + '&take=' + loadCount;
-        if (parentId != undefined) {
-            url += '&parent=' + parentId;
         }
 
-        if (!urlArray.includes(url)) {
-            doGet(url, function (req) {
-                let json = JSON.parse(req.responseText);
-                updateSelectContent(theSelect, json);
-            });
+        if (theSelect.dataset.confirmBeforeChange === "true" && theSelect.dataset.value !== '' && emptyCheck !== '') {
+            confirmBeforeChange(theSelect, item, isSilent);
+        } else {
+            onChangeSelect(theSelect, item, isSilent);
         }
     }
 
@@ -546,9 +658,9 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
 
     function initMultipleSelectButton(theSelect) {
         let selectButton = createElement('div');
-        selectButton.className = "select-button";
+        selectButton.className = 'select-button';
         let selectButtonInput = createElement('div');
-        selectButtonInput.className = "select-button-input";
+        selectButtonInput.className = 'select-button-input';
         selectButtonInput.setAttribute('contenteditable', theTrue);
         selectButton.appendChild(selectButtonInput);
 
@@ -564,6 +676,11 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
         textInput.name = theSelect.dataset.textField;
         textInput.value = theSelect.dataset.text;
 
+        let clearSelectButton = createButton('x', clearMultipleSelect);
+        clearSelectButton.className = "clear-select-button";
+
+        selectButton.appendChild(clearSelectButton);
+
         selectButton.appendChild(uidInput);
         selectButton.appendChild(textInput);
         theSelect.appendChild(selectButton);
@@ -573,7 +690,7 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
             let names = theSelect.dataset.text.split(theValueSeparator);
             names.forEach(function (theText, index) {
                 let activeItem = createElement('div');
-                activeItem.className = "active-item";
+                activeItem.className = 'active-item';
                 activeItem.setAttribute('draggable', theTrue);
                 activeItem.setAttribute('data-value', values[index]);
                 let activeItemText = createElement('span');
@@ -581,7 +698,7 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
                 activeItem.id = theSelect.dataset.valueField + '-' + activeItemText.innerHTML;
 
                 let removeItem = createButton('x', removeMultipleItem);
-                removeItem.className = "remove-active-item";
+                removeItem.className = 'remove-active-item';
                 activeItem.appendChild(activeItemText);
                 activeItem.appendChild(removeItem);
                 selectButton.insertBefore(activeItem, selectButtonInput);
@@ -602,9 +719,9 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
                 // prevent the default behaviour of return key pressed
                 return false;
             }
-            if (!this.innerHTML && e.keyCode == 8) {
+            if (!this.innerHTML && e.keyCode === 8) {
                 let prev = this.previousSibling;
-                if (prev && prev.className == 'active-item') {
+                if (prev && prev.className === 'active-item') {
                     let itemText = prev.querySelector('span').innerHTML;
                     prev.remove();
                     let type = theSelect.dataset.type;
@@ -621,21 +738,21 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
                     }
                 }
             }
-        }
+        };
         selectButtonInput.onkeyup = function (e) {
             e.preventDefault();
             searchSelectContent(this, e);
-        }
+        };
     }
 
     function initMultipleSelectContent(parent, json) {
         // Select content
         let type = parent.dataset.type;
         let selectContent = createElement('div');
-        selectContent.className = "select-content";
+        selectContent.className = 'select-content';
         for (let i = 0; i < json.length; i++) {
             let selectItem = initSelectItems(selectContent, json[i], type, parent);
-            if (selectItem != null) {
+            if (selectItem !== null) {
                 selectItem.onmouseover = function () {
                     let selectItems = selectContent.querySelectorAll('.select-item');
                     for (let j = 0; j < selectItems.length; j++) {
@@ -644,13 +761,13 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
                         }
                     }
                     this.classList.add('hover');
-                }
-                selectItem.onclick = function () { onClickMultipleSelectItem(this); }
+                };
+                selectItem.onclick = function () { onClickMultipleSelectItem(this); };
             }
         }
         parent.appendChild(selectContent);
 
-        selectContent.onscroll = function () { addSelectContent(selectContent); }
+        selectContent.onscroll = function () { addSelectContent(selectContent); };
     }
 
     function onClickMultipleSelectItem(item) {
@@ -660,7 +777,7 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
         let parent = theSelect.querySelector('.select-button');
         let selectInput = parent.querySelector('.select-button-input');
         let activeItem = createElement('div');
-        activeItem.className = "active-item";
+        activeItem.className = 'active-item';
         activeItem.setAttribute('draggable', theTrue);
         let activeItemText = createElement('span');
         if (theSelect.dataset.type === 'content') {
@@ -669,9 +786,9 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
             activeItemText.innerHTML = item.innerHTML;
         }
         activeItem.id = theSelect.dataset.valueField + '-' + activeItemText.innerHTML;
-
+        activeItem.value = item.getAttribute('value');
         let removeItem = createButton('x', removeMultipleItem);
-        removeItem.className = "remove-active-item";
+        removeItem.className = 'remove-active-item';
         activeItem.appendChild(activeItemText);
         activeItem.appendChild(removeItem);
         parent.insertBefore(activeItem, selectInput);
@@ -684,12 +801,12 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
 
     function appendValueToSelect(theSelect, selectedItemValue, selectedItemText) {
         let oldValue = getElement(theSelect.dataset.valueField).getAttribute('value');
-        if (oldValue != null) {
+        if (oldValue !== null && oldValue !== undefined && oldValue !== '') {
             selectedItemValue = oldValue + theValueSeparator + selectedItemValue;
         }
 
         let oldText = getElement(theSelect.dataset.textField).getAttribute('value');
-        if (oldText != null) {
+        if (oldText !== null && oldText !== undefined && oldText !== '') {
             selectedItemText = oldText + theValueSeparator + selectedItemText;
         }
 
@@ -704,7 +821,7 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
         let activeItem = this.closest('.active-item');
 
         let itemText = activeItem.querySelector('span').innerHTML;
-        let itemValue = activeItem.getAttribute('data-value');
+        let itemValue = activeItem.value;
 
         let texts = getElement(theSelect.dataset.textField).getAttribute('value');
         let values = getElement(theSelect.dataset.valueField).getAttribute('value');
@@ -725,18 +842,167 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
             }
         }
     }
-
+    
     function clearContent(theSelect) {
         let selectContent = theSelect.querySelector('.select-content');
         selectContent.innerHTML = '';
     }
 
-    document.addEventListener('click',
-        function (e) {
-            let activeSelect = document.querySelector('.select.show');
-            if (activeSelect && activeSelect.contains(e.target) === false) {
-                activeSelect.classList.remove('show');
+    function onClearButtonClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const theSelect = e.target.closest('.select');
+        if (!theSelect.classList.contains("disabled"))
+            clearSelect(theSelect);
+    }
+
+    function confirmBeforeClear(theSelect) {
+        const
+            popup = createDiv({
+                'class': 'confirm-popup',
+                'data-translate': 'are_you_sure_to_clear_this_field',
+            }, 'are_you_sure_to_clear_this_field');
+
+        if (!theSelect.querySelector('.confirm-popup')) {
+            theSelect.appendChild(popup);
+        }
+
+        const
+            buttonsWrap = createDiv({
+                'class': 'confirm-popup-buttons',
+            }),
+            buttonDelete = createElement('button', {
+                'class': 'red',
+                'data-translate': 'delete',
+            }, 'clear'),
+            buttonCancel = createElement('button', {
+                'class': 'green',
+                'data-translate': 'cancel',
+            }, 'cancel');
+
+        buttonsWrap.appendChild(buttonDelete);
+        buttonsWrap.appendChild(buttonCancel);
+        popup.appendChild(buttonsWrap);
+
+        buttonDelete.addEventListener('click', () => {
+            popup.remove();
+            onClearSelect(theSelect);
+        });
+        buttonCancel.addEventListener('click', () => {
+            popup.remove();
+        });
+    }
+
+    clearSelect = (theSelect) => {
+        if (theSelect.dataset.confirmBeforeClear === "true" && theSelect.dataset.value !== '') {
+            confirmBeforeClear(theSelect);
+        } else {
+            onClearSelect(theSelect);
+        }
+    }
+
+    onClearSelect = (theSelect) => {
+        let selectButton = theSelect.querySelector('.select-button');
+        if (!selectButton) return;
+        let selectButtonInput = selectButton.querySelector('.select-button-input');
+        selectButtonInput.innerHTML = '';
+        theSelect.dataset.value = '';
+        theSelect.dataset.text = '';
+        getElement(theSelect.dataset.valueField).value = '';
+        getElement(theSelect.dataset.textField).value = '';
+
+        // Refills the data
+        let parentId;
+        let parentName = theSelect.dataset.valueField;
+        allSelects.forEach(function (s) {
+            if (s.dataset.valueField === theSelect.dataset.parent) {
+                parentId = getElement(theSelect.dataset.valueField).getAttribute('value');
             }
+            // If parent cleared, clear child select also
+            if (s.dataset.parent === parentName) {
+                if (hasClass(s, 'radio-select')) {
+                    s.querySelector('.select-radio-items').innerHTML = ' ';
+                } else {
+                    let sSbtn = s.querySelector('.select-button');
+                    if (sSbtn) {
+                        s.querySelector('.select-button-input').innerHTML = '';
+                        s.querySelector('.select-content').innerHTML = '';
+                        s.dataset.value = '';
+                        s.dataset.text = '';
+                    }
+                }
+            }
+        });
+
+        if (theSelect.classList.contains('disabled')) {
+            return;
+        }
+
+        let url = theSelect.dataset.url + '?q=' + '&take=' + loadCount;
+        if (parentId !== undefined) {
+            url += '&parent=' + parentId;
+        }
+
+        if (!urlArray.includes(url)) {
+            doGet(url, function (req) {
+                let json = JSON.parse(req.responseText);
+                updateSelectContent(theSelect, json);
+            });
+        }
+
+        theSelect.dispatchEvent(theSelectClearEvent);
+    }
+
+    function clearMultipleSelect(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        let theSelect = this.closest('.select');
+
+        let uidInput = theSelect.querySelector(`#${theSelect.dataset.valueField}`);
+        let nameInput = theSelect.querySelector(`#${theSelect.dataset.textField}`);
+        if (uidInput) {
+            uidInput.value = '';
+        }
+        if (nameInput) {
+            nameInput.value = '';
+        }
+
+        let items = theSelect.querySelectorAll('.remove-active-item');
+
+        items.forEach(function (val) {
+            val.click();
+        });
+    }
+
+    clearMultipleSelectContent = (theSelect) => {
+        let uidInput = theSelect.querySelector(`#${theSelect.dataset.valueField}`);
+        let nameInput = theSelect.querySelector(`#${theSelect.dataset.textField}`);
+        if (uidInput) {
+            uidInput.value = '';
+        }
+        if (nameInput) {
+            nameInput.value = '';
+        }
+
+        let items = theSelect.querySelectorAll('.remove-active-item');
+
+        items.forEach(function (val) {
+            val.click();
+        });
+    }
+
+    document.addEventListener("click",
+
+        function (e) {
+            let activeSelects = document.querySelectorAll('.select.show');
+            activeSelects.forEach(s => {
+                if (s !== getParent(e.target, 'select')) {
+                    s.classList.remove('show');
+                }
+            });
+
             let activePopover = document.querySelector('.select-info-wrapper.show');
             if (activePopover && activePopover.contains(e.target) === false) {
                 activePopover.classList.remove('show');
@@ -745,6 +1011,7 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
 
     document.addEventListener('keyup',
         function (e) {
+            allSelects = document.querySelectorAll('div.select');
             let activeSelect;
             for (let i = 0; i < allSelects.length; i++) {
                 if (hasClass(allSelects[i], 'show')) {
@@ -760,7 +1027,7 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
                     if (hasClass(activeSelectItems[i], 'hover')) { currentSelectItemId = i; }
                 }
                 // Up arrow key
-                if (e.keyCode == 38) {
+                if (e.keyCode === 38) {
                     e.preventDefault();
                     if (currentSelectItemId - 1 >= 0) {
                         activeSelectContent.scrollTop -= activeSelectItems[currentSelectItemId].offsetHeight;
@@ -769,7 +1036,7 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
                     }
                 }
                 // Down arrow key
-                if (e.keyCode == 40) {
+                if (e.keyCode === 40) {
                     e.preventDefault();
                     if (currentSelectItemId + 1 < activeSelectItems.length) {
                         if (currentSelectItemId === -1) {
@@ -781,25 +1048,56 @@ function createSelectElement(name, url, typeClass, contentType, value, text, isS
                         }
                     }
                 }
-                // Press enter key 
+                // Press enter key
                 if (e.keyCode === 13
                     && activeSelectItems[currentSelectItemId]
                     && hasClass(activeSelectItems[currentSelectItemId], 'active') === false
                     && isNotChanged === false) {
-                    if (hasClass(activeSelect, 'single-select')) { onClickSingleSelectItem(activeSelectItems[currentSelectItemId]); }
-                    else if (hasClass(activeSelect, 'multiple-select')) { onClickMultipleSelectItem(activeSelectItems[currentSelectItemId]); }
+                    if (hasClass(activeSelect, 'single-select')) { onClickSingleSelectItem(activeSelectItems[currentSelectItemId]); } else if (hasClass(activeSelect, 'multiple-select')) { onClickMultipleSelectItem(activeSelectItems[currentSelectItemId]); }
                 }
             }
         },
         false);
+
+    const getSelectData = (select, url, cb) => {
+        if (selectDataCache[url]) {
+            setTimeout(() => {
+                cb(selectDataCache[url]);
+            }, 4);
+        } else if (select.dataset.json) {
+            cb(selectDataCache[select.dataset.json]);
+        } else {
+            doGet(url, (res) => {
+                selectDataCache[url] = res;
+                cb(res);
+            });
+        }
+    };
 
     initSelects = function () {
         document.querySelectorAll('div.select').forEach(function (s) {
             refreshSelect(s, () => {
                 s.dataset.is_init_done = 'true';
                 s.dispatchEvent(theSelectInitEvent);
-            });
+            })
         });
+    };
+
+    initSelectContentFromJson = function (theSelect, json) {
+        const jsonDataUid = `data-json-${guid()}`;
+        theSelect.dataset.url = 'data-json';
+        theSelect.dataset.json = jsonDataUid;
+        window.selectDataCache[jsonDataUid] = {
+            responseText: JSON.stringify(json),
+        };
+        refreshSelect(theSelect);
+    };
+
+    resetSelectWithoutCloning = function (theSelect) {
+        theSelect.dataset.value = '';
+        theSelect.dataset.text = '';
+        clearChildren(theSelect);
+        return theSelect;
     };
 
     initSelects();

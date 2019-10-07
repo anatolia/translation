@@ -243,7 +243,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             var result = await SystemUnderTest.Edit(model);
 
             // assert
-            ((RedirectResult)result).Url.ShouldBe($"/TranslationProvider/List");
+            ((RedirectResult)result).Url.ShouldBe($"/TranslationProvider/Detail/{UidTwo}");
             MockTranslationProviderService.Verify_EditTranslationProvider();
         }
 

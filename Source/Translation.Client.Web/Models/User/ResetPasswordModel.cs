@@ -21,7 +21,7 @@ namespace Translation.Client.Web.Models.User
 
         public ResetPasswordModel()
         {
-            Title = Localizer.Localize("reset_password_title");
+            Title = "reset_password_title";
 
             TokenInput = new HiddenInputModel("Token");
             EmailInput = new HiddenInputModel("Email");

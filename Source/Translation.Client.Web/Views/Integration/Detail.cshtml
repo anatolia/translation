@@ -1,17 +1,13 @@
 ﻿@model IntegrationDetailModel
 
 <label data-translation="integration_name">integration_name</label>
-<h1>@Model.Name</h1>
+<div>@Model.Name</div>
 
-<div>
-    <label data-translation="description">description</label>
-    @Model.Description
-</div>
+<label data-translation="description">description</label>
+<div>@Model.Description</div>
 
-<div>
-    <label data-translation="organization">organization</label>
-    <a href="/Organization/Detail/@Model.OrganizationUid">@Model.OrganizationName</a>
-</div>
+<label data-translation="organization">organization</label>
+<a href="/Organization/Detail/@Model.OrganizationUid">@Model.OrganizationName</a>
 
 <div class="bottom-links">
     <a href="/Integration/Edit/@Model.IntegrationUid" data-translation="edit_link">edit_link</a>
@@ -28,69 +24,26 @@
     </button>
 </div>
 
-<h2 data-translation="integration_clients">integration_clients</h2>
-<div class="tbl">
-    <button type="button" style="margin-top: 5px;"
-            data-translation="create_integration_client_link"
-            data-confirm-title="create_integration_client_confirm_title"
-            data-confirm-content="create_integration_client_confirm_content"
-            data-url="/Integration/ClientCreate/"
-            data-prm="id=@Model.IntegrationUid"
-            onclick="handlePostAndAppendRow(this)">
-        create_integration_client_link
-    </button>
-    <table data-result="/Integration/ClientListData/@Model.IntegrationUid"></table>
+<div class="tab-header">
+    <button data-translation="integration_clients" class="active">integration_clients</button>
+</div>
+<div class="tab-body">
+    <div class="tbl">
+    <button type="button"
+                data-translation="create_integration_client_link"
+                data-confirm-title="create_integration_client_confirm_title"
+                data-confirm-content="create_integration_client_confirm_content"
+                data-url="/Integration/ClientCreate/"
+                data-prm="id=@Model.IntegrationUid"
+                onclick="handlePostAndAppendRow(this)">
+            create_integration_client_link
+        </button>
+        <table data-result="/Integration/ClientListData/@Model.IntegrationUid"></table>
+    </div>
 </div>
 
 @section Scripts {
     <script>
-        function SecretField(element, order) {
-            this.el = element;
-            this.order = order;
-            this.isVisible = false;
-            this.text = this.el.innerText;
-            this.uniqueId = this.el.parentElement.getAttribute('data-uid') + this.order;
-            this.el.setAttribute('data-id', this.uniqueId);
-
-            this.getStars = function (countOfStars) {
-                return "*".repeat(countOfStars);
-            }
-
-            this.getButton = function (type) {
-                return "<span class='secretButton' id='" + this.uniqueId + "'>" + type + "</span>";
-            }
-
-            this.getSecretSpan = function () {
-                return "<span class='secretSpan'>" + this.getStars(5) + "</span>";
-            }
-
-            this.enableButtons = function () {
-                var button = document.querySelector('.secretButton[id="' + this.uniqueId + '"]');
-
-                button.addEventListener('click', () => {
-                    if (this.isVisible) {
-                        this.hide();
-                    } else {
-                        this.show();
-                    }
-                });
-            }
-
-            this.hide = function () {
-                this.el.innerHTML = this.getSecretSpan();
-                this.el.innerHTML += this.getButton('show');
-                this.isVisible = false;
-                this.enableButtons();
-            }
-
-            this.show = function () {
-                this.el.innerHTML = this.text;
-                this.el.innerHTML += this.getButton('hide');
-                this.isVisible = true;
-                this.enableButtons();
-            }
-        }
-
         var tableChangeInterval = setInterval(() => {
             var table = document.getElementsByTagName('table')[0];
             var rows = table.querySelectorAll('tr');

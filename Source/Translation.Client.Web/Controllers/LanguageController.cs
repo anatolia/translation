@@ -20,15 +20,9 @@ namespace Translation.Client.Web.Controllers
 {
     public class LanguageController : BaseController
     {
-        private readonly IHostingEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
         private readonly ILanguageService _languageService;
 
-        public LanguageController(IHostingEnvironment environment,
-                                  ILanguageService languageService)
-        {
-            _environment = environment;
-            _languageService = languageService;
-        }
 
         [HttpGet]
         public IActionResult Create()
@@ -153,7 +147,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             CurrentUser.IsActionSucceed = true;
-            return Redirect("/Language/List/");
+            return Redirect($"/Language/Detail/{response.Item.Uid}");
         }
 
         [HttpGet]
@@ -188,7 +182,7 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append($"{item.IsoCode2}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsoCode3}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{result.PrepareImage($"{item.IconPath}", item.OriginalName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink("/Language/Edit/" + item.Uid, Localizer.Localize("edit"), true)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink("/Language/Edit/" + item.Uid, "edit", true)}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
             }
@@ -309,7 +303,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var result = new DataResult();
-            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "language_name", "2_char_code","3_char_code", "icon", "created_at", "");
+            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "language_name", "2_char_code", "3_char_code", "icon", "created_at", "");
 
             for (var i = 0; i < response.Items.Count; i++)
             {
@@ -331,6 +325,12 @@ namespace Translation.Client.Web.Controllers
             }
 
             return Json(result);
+        }
+
+        public LanguageController(IOrganizationService organizationService, IJournalService journalService, ILanguageService languageService, ITranslationProviderService translationProviderService, IWebHostEnvironment environment) : base(organizationService, journalService, languageService, translationProviderService)
+        {
+            _languageService = languageService;
+            _environment = environment;
         }
     }
 }

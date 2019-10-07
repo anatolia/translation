@@ -1,6 +1,4 @@
-﻿@keyframes
-
-"fadeIn" {
+﻿@keyframes "fadeIn" {
     from {
         opacity: 0;
     }
@@ -9,10 +7,8 @@
         opacity: 1;
     }
 }
-/* Loader */
-@keyframes
 
-"spin" {
+@keyframes "spin" {
     0% {
         transform: rotate(0deg);
     }
@@ -21,7 +17,8 @@
         transform: rotate(360deg);
     }
 }
-/* Overlay Style */
+
+
 .select {
     position: relative;
     width: calc(34% + 10px);
@@ -179,7 +176,9 @@
         align-items: center;
 
         .select-item-image {
-            width: 8%;
+            height:auto;
+            width: 13%;
+            padding-left:8px;
             background: transparent;
         }
 
@@ -225,14 +224,6 @@
     width: 20px;
     height: 20px;
     animation: spin 1s linear infinite;
-}
-
-.radio-select {
-    width: 600px;
-
-    .select-info-wrapper {
-        right: -365px;
-    }
 }
 
 .overlay {

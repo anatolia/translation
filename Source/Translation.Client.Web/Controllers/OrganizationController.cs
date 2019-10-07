@@ -26,12 +26,7 @@ namespace Translation.Client.Web.Controllers
         private readonly IIntegrationService _integrationService;
         private readonly IProjectService _projectService;
 
-        public OrganizationController(IIntegrationService integrationService,
-                                      IProjectService projectService)
-        {
-            _integrationService = integrationService;
-            _projectService = projectService;
-        }
+
 
         [HttpGet]
         public IActionResult Detail(Guid id)
@@ -96,7 +91,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             CurrentUser.IsActionSucceed = true;
-            return Redirect($"/Organization/Detail/{model.OrganizationUid }");
+            return Redirect($"/Organization/Detail/{response.Item.Uid}");
         }
 
         [HttpGet]
@@ -324,7 +319,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var result = new DataResult();
-            result.AddHeaders("user_name", "email", "invited_at", "last_logged_in_at", "is_active", "created_at");
+            result.AddHeaders("user_name", "email", "invited_at", "invitation_accepted_at", "last_logged_in_at", "is_active", "created_at");
 
             for (var i = 0; i < response.Items.Count; i++)
             {
@@ -334,6 +329,7 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Email}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{GetDateTimeAsString(item.InvitedAt)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{GetDateTimeAsString(item.InvitationAcceptedAt)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{GetDateTimeAsString(item.LastLoggedInAt)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
@@ -555,6 +551,12 @@ namespace Translation.Client.Web.Controllers
             result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
+        }
+
+        public OrganizationController(IOrganizationService organizationService, IJournalService journalService, ILanguageService languageService, ITranslationProviderService translationProviderService, IIntegrationService integrationService, IProjectService projectService) : base(organizationService, journalService, languageService, translationProviderService)
+        {
+            _integrationService = integrationService;
+            _projectService = projectService;
         }
     }
 }

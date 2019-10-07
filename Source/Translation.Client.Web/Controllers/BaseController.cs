@@ -25,12 +25,7 @@ namespace Translation.Client.Web.Controllers
         public IJournalService JournalService { get; set; }
         public ILanguageService LanguageService { get; set; }
         public ITranslationProviderService TranslationProviderService { get; set; }
-
-        public BaseController()
-        {
-
-        }
-
+        
         public BaseController(IOrganizationService organizationService,
                               IJournalService journalService,
                               ILanguageService languageService,

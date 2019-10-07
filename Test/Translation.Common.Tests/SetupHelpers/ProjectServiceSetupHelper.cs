@@ -75,8 +75,9 @@ namespace Translation.Common.Tests.SetupHelpers
 
         public static void Setup_EditProject_Returns_ProjectEditResponse_Success(this Mock<IProjectService> service)
         {
+            var item = GetProjectDto();
             service.Setup(x => x.EditProject(It.IsAny<ProjectEditRequest>()))
-                   .ReturnsAsync(new ProjectEditResponse { Status = ResponseStatus.Success });
+                   .ReturnsAsync(new ProjectEditResponse { Status = ResponseStatus.Success , Item = item});
         }
 
         public static void Setup_DeleteProject_Returns_ProjectDeleteResponse_Success(this Mock<IProjectService> service)

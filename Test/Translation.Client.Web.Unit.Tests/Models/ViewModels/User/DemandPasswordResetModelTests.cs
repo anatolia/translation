@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 
 using NUnit.Framework;
 using Shouldly;
 
 using Translation.Client.Web.Models.User;
-using Translation.Common.Helpers;
 using static Translation.Common.Tests.TestHelpers.FakeModelTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Common.Tests.TestHelpers.AssertViewModelTestHelper;
@@ -64,7 +62,7 @@ namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.User
                                                       "email_is_not_valid_error_message"},
                                               false);
 
-                yield return new TestCaseData(CaseTwo,
+                yield return new TestCaseData(CaseThree,
                                               StringOne,
                                               null,
                                               new[] { "email_is_not_valid_error_message" },

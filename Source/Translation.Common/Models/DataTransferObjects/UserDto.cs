@@ -19,6 +19,7 @@ namespace Translation.Common.Models.DataTransferObjects
         public DateTime? LastLoggedInAt { get; set; }
 
         public DateTime? InvitedAt { get; set; }
+        public DateTime? InvitationAcceptedAt { get; set; }
         public Guid? InvitedByUserUid { get; set; }
         public string InvitedByUserName { get; set; }
 

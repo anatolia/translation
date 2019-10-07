@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 using Translation.Client.Web.Helpers;
@@ -17,33 +15,17 @@ using Translation.Common.Contracts;
 using Translation.Common.Helpers;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
-using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Shared;
-using Translation.Data.Entities.Parameter;
 
 namespace Translation.Client.Web.Controllers
 {
     public class LabelController : BaseController
     {
-        private readonly IHostingEnvironment _environment;
-        private readonly ILanguageService _languageService;
         private readonly ITextTranslateIntegration _textTranslateIntegration;
         private readonly IProjectService _projectService;
         private readonly ILabelService _labelService;
 
-        public LabelController(IHostingEnvironment environment,
-                               ILanguageService languageService,
-                               ITextTranslateIntegration textTranslateIntegration,
-                               IProjectService projectService,
-                               ILabelService labelService)
-        {
-            _environment = environment;
-            _languageService = languageService;
-            _textTranslateIntegration = textTranslateIntegration;
-            _projectService = projectService;
-            _labelService = labelService;
-        }
 
         #region Label
 
@@ -63,7 +45,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LabelMapper.MapLabelCreateModel(response.Item,ActiveTranslationProvider);
+            var model = LabelMapper.MapLabelCreateModel(response.Item, ActiveTranslationProvider);
 
             return View(model);
         }
@@ -78,7 +60,7 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            Guid[] labelTranslationLanguageUidArray = new Guid[] {};
+            Guid[] labelTranslationLanguageUidArray = new Guid[] { };
             if (model.LabelTranslationLanguageUid.IsNotEmpty())
             {
                 var languageUids = model.LabelTranslationLanguageUid.ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
@@ -91,7 +73,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new LabelCreateRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,
-                                                 model.Key, model.Description, labelTranslationLanguageUidArray, 
+                                                 model.Key, model.Description, labelTranslationLanguageUidArray,
                                                  model.IsGettingTranslationFromOtherProject);
             var response = await _labelService.CreateLabel(request);
             if (response.Status.IsNotSuccess)
@@ -186,7 +168,7 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            var request = new LabelEditRequest(CurrentUser.Id, model.OrganizationUid, model.LabelUid, model.Key,
+            var request = new LabelEditRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid, model.LabelUid, model.Key,
                 model.Description);
             var response = await _labelService.EditLabel(request);
             if (response.Status.IsNotSuccess)
@@ -321,8 +303,7 @@ namespace Translation.Client.Web.Controllers
                 var item = response.Items[i];
                 var stringBuilder = new StringBuilder();
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append(
-                    $"{result.PrepareLink($"/Label/Detail/{item.Key}", item.Key)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Key}", item.Key)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
@@ -548,22 +529,7 @@ namespace Translation.Client.Web.Controllers
             CurrentUser.IsActionSucceed = true;
             return View("UploadLabelFromCSVFileDone", doneModel);
         }
-
-        [HttpGet]
-        public IActionResult DownloadSampleCSVFileForBulkLabelUpload()
-        {
-            var labelsFilePath = Path.Combine(_environment.WebRootPath, "files", "uploadLabelCsvTemplate.csv");
-
-            if (System.IO.File.Exists(labelsFilePath))
-            {
-                var lines = System.IO.File.ReadAllText(labelsFilePath, Encoding.UTF8);
-
-                return File(Encoding.UTF8.GetBytes(lines), "text/csv", "uploadLabelCsvTemplate.csv");
-            }
-
-            return NotFound();
-        }
-
+        
         [HttpGet]
         public async Task<IActionResult> CreateBulkLabel(Guid id)
         {
@@ -803,7 +769,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             CurrentUser.IsActionSucceed = true;
-            return Redirect($"/Label/Detail/{response.Item.LabelUid}");
+            return Redirect($"/Label/Detail/{model.LabelUid}");
         }
 
         [HttpPost,
@@ -853,24 +819,18 @@ namespace Translation.Client.Web.Controllers
                 var item = response.Items[i];
                 var stringBuilder = new StringBuilder();
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append(
-                    $"{result.PrepareImage($"{item.LanguageIconUrl}", item.LanguageName)} {item.LanguageName}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareImage($"{item.LanguageIconUrl}", item.LanguageName)} {item.LanguageName}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Translation}{DataResult.SEPARATOR}");
-
-                stringBuilder.Append(
-                    $"{result.PrepareLink($"/Label/LabelTranslationEdit/{item.Uid}", Localizer.Localize("edit"), true)}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationEdit/{item.Uid}", "edit", true)}");
 
                 if (CurrentUser.IsSuperAdmin)
                 {
-                    stringBuilder.Append(
-                        $"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}");
-                    stringBuilder.Append(
-                        $"{result.PrepareDeleteButton($"/Label/LabelTranslationDelete")}{DataResult.SEPARATOR}");
+                    stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", "revisions_link", true)}");
+                    stringBuilder.Append($"{result.PrepareDeleteButton($"/Label/LabelTranslationDelete")}{DataResult.SEPARATOR}");
                 }
                 else
                 {
-                    stringBuilder.Append(
-                        $"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", Localizer.Localize("revisions_link"), true)}{DataResult.SEPARATOR}");
+                    stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", "revisions_link", true)}{DataResult.SEPARATOR}");
                 }
 
                 result.Data.Add(stringBuilder.ToString());
@@ -964,21 +924,6 @@ namespace Translation.Client.Web.Controllers
 
             CurrentUser.IsActionSucceed = true;
             return View("UploadLabelTranslationFromCSVFileDone", doneModel);
-        }
-
-        [HttpGet]
-        public IActionResult DownloadSampleCSVFileForBulkLabelTranslationUpload()
-        {
-            var labelsFilePath = Path.Combine(_environment.WebRootPath, "files", "uploadTranslationCsvTemplate.csv");
-
-            if (System.IO.File.Exists(labelsFilePath))
-            {
-                var lines = System.IO.File.ReadAllText(labelsFilePath, Encoding.UTF8);
-
-                return File(Encoding.UTF8.GetBytes(lines), "text/csv", "uploadTranslationCsvTemplate.csv");
-            }
-
-            return NotFound();
         }
 
         [HttpPost,
@@ -1110,5 +1055,12 @@ namespace Translation.Client.Web.Controllers
         }
 
         #endregion
+
+        public LabelController(IOrganizationService organizationService, IJournalService journalService, ILanguageService languageService, ITranslationProviderService translationProviderService, ITextTranslateIntegration textTranslateIntegration, IProjectService projectService, ILabelService labelService) : base(organizationService, journalService, languageService, translationProviderService)
+        {
+            _textTranslateIntegration = textTranslateIntegration;
+            _projectService = projectService;
+            _labelService = labelService;
+        }
     }
 }

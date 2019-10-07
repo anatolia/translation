@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.InputModels;
 using Translation.Common.Helpers;
@@ -45,7 +45,7 @@ namespace Translation.Client.Web.Models.Label
             ProjectLanguageIconUrlInput = new HiddenInputModel("ProjectLanguageIconUrl");
             KeyInput = new InputModel("Key", "key", true);
             DescriptionInput = new LongInputModel("Description", "description");
-            LabelTranslationLanguagesInput = new SelectInputModel("LabelTranslationLanguage", "labelTranslationLanguage", "/Language/SelectData");
+            LabelTranslationLanguagesInput = new SelectInputModel("LabelTranslationLanguage", "label_translation_language", "/Language/SelectData");
             LabelTranslationLanguagesInput.IsMultiple = true;
             LabelTranslationLanguagesInput.InfoText = "selected_languages_will_have_translated_by_provider_automatically";
             IsGettingTranslationFromOtherProjectInput = new CheckboxInputModel("IsGettingTranslationFromOtherProject", "is_getting_translation_from_other_project");

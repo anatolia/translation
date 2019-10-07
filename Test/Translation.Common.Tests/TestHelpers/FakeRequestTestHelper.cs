@@ -427,6 +427,14 @@ namespace Translation.Common.Tests.TestHelpers
             return request;
         }
 
+        public static IntegrationEditRequest GetSameNameAndDescriptionIntegrationEditRequest()
+        {
+            var request = new IntegrationEditRequest(CurrentUserId, OrganizationOneIntegrationOneUid, OrganizationOneIntegrationOneName,
+                                                     OrganizationOneIntegrationOneName);
+
+            return request;
+        }
+
         public static IntegrationEditRequest GetIntegrationEditRequest(long currentUserId, Guid integrationUid, string name,
                                                                        string description)
         {
@@ -499,6 +507,15 @@ namespace Translation.Common.Tests.TestHelpers
             var request = new ProjectEditRequest(CurrentUserId, OrganizationOneUid, UidOne,
                                                  StringOne, HttpUrl, StringOne,
                                                  StringOne, UidOne);
+
+            return request;
+        }
+
+        public static ProjectEditRequest GetNotDifferentProjectEditRequest()
+        {
+            var request = new ProjectEditRequest(CurrentUserId, OrganizationOneUid, OrganizationOneProjectOneUid,
+                OrganizationOneProjectOneName, HttpUrl, StringOne,
+                OrganizationOneProjectOneSlug, UidOne);
 
             return request;
         }
@@ -777,6 +794,13 @@ namespace Translation.Common.Tests.TestHelpers
         }
 
         public static TranslationProviderEditRequest GetTranslationProviderEditRequest()
+        {
+            var request = new TranslationProviderEditRequest(CurrentUserId, UidOne, StringTwo, StringThree);
+
+            return request;
+        }
+
+        public static TranslationProviderEditRequest GetSameValueTranslationProviderEditRequest()
         {
             var request = new TranslationProviderEditRequest(CurrentUserId, UidOne, StringOne, StringTwo);
 
@@ -1081,6 +1105,14 @@ namespace Translation.Common.Tests.TestHelpers
             return request;
         }
 
+        public static LabelCreateRequest GetFromOtherProjectLabelCreateRequest()
+        {
+            var request = new LabelCreateRequest(CurrentUserId, UidOne, UidOne,
+                                                 StringOne, StringOne, GuidArrayOne, BooleanTrue);
+
+            return request;
+        }
+
         public static LabelCreateRequest GetLabelCreateRequestLanguagesUidsZero()
         {
             var request = new LabelCreateRequest(CurrentUserId, UidOne, UidOne,
@@ -1276,7 +1308,7 @@ namespace Translation.Common.Tests.TestHelpers
         {
             var request = GetAllLabelReadListRequest_IsDefaultProjectTrue();
             request.CurrentUserId = Zero;
-            
+
             return request;
         }
 
@@ -1284,7 +1316,7 @@ namespace Translation.Common.Tests.TestHelpers
         {
             var request = GetAllLabelReadListRequest_IsDefaultProjectFalse();
             request.CurrentUserId = Zero;
-            
+
             return request;
         }
 
@@ -1304,16 +1336,22 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static LabelEditRequest GetLabelEditRequest()
         {
-            var request = new LabelEditRequest(CurrentUserId, UidOne, UidOne, StringOne,
-                                               StringOne);
-
+            var request = new LabelEditRequest(CurrentUserId, UidOne, UidTwo,
+                                              UidThree, StringOne, StringTwo);
             return request;
         }
 
-        public static LabelEditRequest GetLabelEditRequest(long currentUserId, Guid organizationUid, Guid labelUid,
+        public static LabelEditRequest GetSameLabelKeyLabelEditRequest()
+        {
+            var request = new LabelEditRequest(CurrentUserId, OrganizationOneUid, OrganizationOneProjectOneUid,
+                                              OrganizationOneProjectOneLabelOneUid, OrganizationOneProjectOneLabelOneKey, StringOne);
+            return request;
+        }
+
+        public static LabelEditRequest GetLabelEditRequest(long currentUserId, Guid organizationUid, Guid projectUid, Guid labelUid,
                                                            string labelKey, string description)
         {
-            var request = new LabelEditRequest(currentUserId, organizationUid, labelUid, labelKey,
+            var request = new LabelEditRequest(currentUserId, organizationUid, projectUid, labelUid, labelKey,
                 description);
 
             return request;
@@ -1321,7 +1359,7 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static LabelEditRequest GetLabelEditRequest(Label label)
         {
-            var request = new LabelEditRequest(CurrentUserId, label.OrganizationUid, label.Uid,
+            var request = new LabelEditRequest(CurrentUserId, label.OrganizationUid, label.ProjectUid, label.Uid,
                 label.Key, label.Description);
 
             return request;
@@ -1514,7 +1552,13 @@ namespace Translation.Common.Tests.TestHelpers
         {
             var request = new LabelTranslationEditRequest(CurrentUserId, UidOne, UidOne,
                                                           StringOne);
+            return request;
+        }
 
+        public static LabelTranslationEditRequest GetSameTranslationLabelTranslationEditRequest()
+        {
+            var request = new LabelTranslationEditRequest(CurrentUserId, OrganizationOneUid, UidTwo,
+                                                          OrganizationOneProjectOneLabelOneLabelTranslationOneName);
             return request;
         }
 
@@ -1644,6 +1688,15 @@ namespace Translation.Common.Tests.TestHelpers
             return request;
         }
 
+        public static LanguageEditRequest GetNotDifferentLanguageEditRequest()
+        {
+            var request = new LanguageEditRequest(CurrentUserId, UidTwo, LanguageTwo,
+                                                  LanguageTwoOriginalName, IsoCode2Two, IsoCode3Two,
+                                                  StringTwo, StringTwo);
+
+            return request;
+        }
+
         public static LanguageEditRequest GetLanguageEditRequest(long currentUserId, Guid languageUid, string name,
                                                                  string originalName, string isoCode2, string isoCode3,
                                                                  string icon, string description)
@@ -1759,6 +1812,14 @@ namespace Translation.Common.Tests.TestHelpers
         public static OrganizationEditRequest GetOrganizationEditRequest()
         {
             var request = new OrganizationEditRequest(CurrentUserId, UidOne, StringOne,
+                                                      StringOne);
+
+            return request;
+        }
+
+        public static OrganizationEditRequest GetNotDifferentOrganizationEditRequest()
+        {
+            var request = new OrganizationEditRequest(CurrentUserId, OrganizationOneUid, OrganizationOneName,
                                                       StringOne);
 
             return request;
@@ -2027,6 +2088,14 @@ namespace Translation.Common.Tests.TestHelpers
         public static UserEditRequest GetUserEditRequest()
         {
             var request = new UserEditRequest(CurrentUserId, UidOne, StringOne, StringOne, UidOne);
+
+            return request;
+        }
+
+        public static UserEditRequest GetNotDifferentUserEditRequest()
+        {
+            var request = new UserEditRequest(CurrentUserId, OrganizationOneUserOneUid, OrganizationOneUserOneName,
+                                              OrganizationOneUserOneName, UidOne);
 
             return request;
         }

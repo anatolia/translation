@@ -5,7 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+
 using Newtonsoft.Json;
+
 using Translation.Client.Tool.PushKeysFromSource.Models;
 
 namespace Translation.Client.Tool.PushKeysFromSource
@@ -18,6 +20,7 @@ namespace Translation.Client.Tool.PushKeysFromSource
             if (string.IsNullOrWhiteSpace(serviceUrl))
             {
                 Console.WriteLine("please define service url in app.config");
+                Console.Read();
                 return;
             }
 
@@ -25,6 +28,7 @@ namespace Translation.Client.Tool.PushKeysFromSource
             if (string.IsNullOrWhiteSpace(clientId))
             {
                 Console.WriteLine("please define client id in app.config");
+                Console.Read();
                 return;
             }
 
@@ -32,6 +36,7 @@ namespace Translation.Client.Tool.PushKeysFromSource
             if (string.IsNullOrWhiteSpace(clientSecret))
             {
                 Console.WriteLine("please define client secret in app.config");
+                Console.Read();
                 return;
             }
 
@@ -39,6 +44,7 @@ namespace Translation.Client.Tool.PushKeysFromSource
             if (string.IsNullOrWhiteSpace(projectUid))
             {
                 Console.WriteLine("please define project uid in app.config");
+                Console.Read();
                 return;
             }
 
@@ -46,6 +52,7 @@ namespace Translation.Client.Tool.PushKeysFromSource
             if (string.IsNullOrWhiteSpace(projectFolder))
             {
                 Console.WriteLine("please define project folder in app.config");
+                Console.Read();
                 return;
             }
 
@@ -53,6 +60,7 @@ namespace Translation.Client.Tool.PushKeysFromSource
             if (string.IsNullOrWhiteSpace(languageIsoCodes))
             {
                 Console.WriteLine("please define languages Iso Code2 Char in app.config");
+                Console.Read();
                 return;
             }
 
@@ -61,7 +69,6 @@ namespace Translation.Client.Tool.PushKeysFromSource
             var items = new List<string>();
 
             GetLabelKeysFromViews(Directory.GetFiles(projectFolder, "*.cshtml", SearchOption.AllDirectories), items);
-            GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Localize\\(\\\")(.*)(?=\\\"\\),)");
             GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.Add\\(\\\")(.*)(?=\\\"\\))");
             GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.AddHeaders\\(\\\")(.*)(?=\\\"\\))");
             GetLabelKeys(Directory.GetFiles(projectFolder, "*.cs", SearchOption.AllDirectories), items, "(?<=.PrepareButton\\(\\\")(.*)(?=\\\"\\)})");

@@ -68,7 +68,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task OrganizationService_CreateOrganizationWithAdmin_Failed_OrganizationNameMustBeUnique()
+        public async Task OrganizationService_CreateOrganizationWithAdmin_Invalid_OrganizationNameMustBeUnique()
         {
             // arrange
             var request = GetSignUpRequest();
@@ -79,7 +79,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateOrganizationWithAdmin(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, OrganizationNameMustBeUnique);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNameMustBeUnique);
             AssertReturnType<SignUpResponse>(result);
             MockUserRepository.Verify_Select();
             MockOrganizationRepository.Verify_Select();
@@ -180,7 +180,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task OrganizationService_GetOrganizationRevisions_Invalid_OrganizationNotFound()
+        public async Task OrganizationService_GetOrganizationRevisions_Failed_OrganizationNotFound()
         {
             // arrange
             var request = GetOrganizationRevisionReadListRequest();
@@ -190,7 +190,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetOrganizationRevisions(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, OrganizationNotFound);
             AssertReturnType<OrganizationRevisionReadListResponse>(result);
             MockOrganizationRepository.Verify_Select();
         }
@@ -213,6 +213,27 @@ namespace Translation.Server.Unit.Tests.Services
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
             MockOrganizationRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task OrganizationService_EditOrganization_NotDifferent_Success()
+        {
+            // arrange
+            var request = GetNotDifferentOrganizationEditRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_IsOrganizationActive_Returns_False();
+            MockOrganizationRepository.Setup_Select_Returns_OrganizationOne();
+
+            // act
+            var result = await SystemUnderTest.EditOrganization(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<OrganizationEditResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_IsOrganizationActive();
+            MockOrganizationRepository.Verify_Select();
+
         }
 
         [Test]
@@ -263,7 +284,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.EditOrganization(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, OrganizationNameMustBeUnique);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNameMustBeUnique);
             AssertReturnType<OrganizationEditResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_IsOrganizationActive();
@@ -349,7 +370,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task OrganizationService_RestoreOrganization_Invalid_OrganizationNotFound()
+        public async Task OrganizationService_RestoreOrganization_Failed_OrganizationNotFound()
         {
             // arrange
             var request = GetOrganizationRestoreRequest();
@@ -360,14 +381,14 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RestoreOrganization(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, OrganizationNotFound);
             AssertReturnType<OrganizationRestoreResponse>(result);
             MockOrganizationRepository.Verify_Any();
             MockOrganizationRepository.Verify_Select();
         }
 
         [Test]
-        public async Task OrganizationService_RestoreOrganization_Invalid_OrganizationRevisionNotFound()
+        public async Task OrganizationService_RestoreOrganization_Failed_OrganizationRevisionNotFound()
         {
             // arrange
             var request = GetOrganizationRestoreRequest();
@@ -379,7 +400,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RestoreOrganization(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationRevisionNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, OrganizationRevisionNotFound);
             AssertReturnType<OrganizationRestoreResponse>(result);
             MockOrganizationRepository.Verify_Any();
             MockOrganizationRepository.Verify_Select();
@@ -538,7 +559,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task OrganizationService_LogOn_Invalid_UserNotFound()
+        public async Task OrganizationService_LogOn_Failed_UserNotFound()
         {
             // arrange
             var request = GetLogOnRequest();
@@ -548,7 +569,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.LogOn(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, UserNotFound);
             AssertReturnType<LogOnResponse>(result);
             MockUserRepository.Verify_Select();
         }
@@ -606,7 +627,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task OrganizationService_DemandPasswordReset_Invalid_UserNotFound()
+        public async Task OrganizationService_DemandPasswordReset_Failed_UserNotFound()
         {
             // arrange
             var request = GetDemandPasswordResetRequest();
@@ -616,7 +637,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.DemandPasswordReset(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, UserNotFound);
             AssertReturnType<DemandPasswordResetResponse>(result);
             MockUserRepository.Verify_Select();
         }
@@ -812,7 +833,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task OrganizationService_ChangePassword_Invalid_UserNotFound()
+        public async Task OrganizationService_ChangePassword_Failed_UserNotFound()
         {
             // arrange
             var request = GetPasswordChangeRequest();
@@ -822,7 +843,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.ChangePassword(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, UserNotFound);
             AssertReturnType<PasswordChangeResponse>(result);
             MockUserRepository.Verify_Select();
         }
@@ -996,6 +1017,24 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
+        public async Task OrganizationService_EditUser_NotDifferent_Success()
+        {
+            // arrange
+            var request = GetNotDifferentUserEditRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
+            MockOrganizationRepository.Setup_Any_Returns_False();
+            
+            // act
+            var result = await SystemUnderTest.EditUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
+            AssertReturnType<UserEditResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockOrganizationRepository.Verify_Any();
+        }
+
+        [Test]
         public async Task OrganizationService_EditUser_Failed()
         {
             // arrange
@@ -1071,7 +1110,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_EditUser_Invalid_IntegrationNotFound()
+        public async Task IntegrationService_EditUser_Failed_IntegrationNotFound()
         {
             // arrange
             var request = GetUserEditRequest();
@@ -1083,7 +1122,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.EditUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, LanguageNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, LanguageNotFound);
             AssertReturnType<UserEditResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1495,7 +1534,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task OrganizationService_GetUserRevisions_Invalid_UserNotFound()
+        public async Task OrganizationService_GetUserRevisions_Failed_UserNotFound()
         {
             // arrange
             var request = GetUserRevisionReadListRequest();
@@ -1505,7 +1544,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetUserRevisions(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, UserNotFound);
             AssertReturnType<UserRevisionReadListResponse>(result);
             MockUserRepository.Verify_Select();
         }
@@ -1677,7 +1716,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task OrganizationService_RestoreUser_Invalid_UserNotFound()
+        public async Task OrganizationService_RestoreUser_Failed_UserNotFound()
         {
             // arrange
             var request = GetUserRestoreRequest(OrganizationOneUserOneUid, One);
@@ -1689,7 +1728,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RestoreUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, UserNotFound);
             AssertReturnType<UserRestoreResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
@@ -1697,7 +1736,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task OrganizationService_RestoreUser_Invalid_UserRevisionNotFound()
+        public async Task OrganizationService_RestoreUser_Failed_UserRevisionNotFound()
         {
             // arrange
             var request = GetUserRestoreRequest(OrganizationOneUserOneUid, One);
@@ -1710,7 +1749,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.RestoreUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserRevisionNotFound);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, UserRevisionNotFound);
             AssertReturnType<UserRestoreResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Any();
