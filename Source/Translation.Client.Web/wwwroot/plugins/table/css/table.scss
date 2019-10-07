@@ -1,6 +1,7 @@
 ﻿.tbl {
     margin-bottom: 13px;
     min-height: 111px;
+    background-color: white;
 
     input {
         display: inline;
@@ -11,23 +12,39 @@
         margin-bottom: 8px;
     }
 
+    a {
+        display: inline;
+        color: #37BFF2;
+        background-color: white;
+
+        &:hover {
+            color: #007BA4;
+        }
+    }
+
+    button {
+        display: inline;
+        font-size: 11px;
+        line-height: 10px;
+        margin-left: 5px;
+        margin-top: 3px;
+    }
+
     table {
         border-collapse: collapse;
         margin-top: 8px;
         margin-bottom: 34px;
-        width: 89%;
+        width: 100%;
+        background-color: white;
 
         thead {
             th {
-                background: #84cae6;
-                padding: 5px;
+                background: #3698D9;
+                color: white;
+                padding: 12px;
                 margin: 0;
-                border-bottom: 2px solid #222;
-                text-align: left;
-
-                &:last-child {
-                    text-align: right;
-                }
+                border-right: 1px solid white;
+                text-align: center;
             }
         }
 
@@ -35,12 +52,16 @@
             a {
                 margin: 3px;
                 color: #333;
+                background-color: white;
             }
 
             tr {
                 td {
-                    padding: 3px;
+                    padding: 7px;
                     padding-left: 8px;
+                    background-color: white;
+                    text-align: center;
+                    border-bottom: 1px solid #F2F2F3;
                     vertical-align: middle;
 
                     input {
@@ -72,19 +93,19 @@
                     background-color: #f2f2f2;
                 }
             }
+
+            tr:nth-child(even) td {
+                background-color: #f2f2f2;
+
+                a, span {
+                    background-color: #f2f2f2;
+                }
+            }
         }
 
         .selectable {
             width: 34px;
         }
-    }
-
-    button {
-        display: inline;
-        font-size: 11px;
-        line-height: 10px;
-        margin-left: 5px;
-        margin-top: 3px;
     }
 }
 

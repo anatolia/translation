@@ -72,10 +72,14 @@ namespace Translation.Client.Web
             builder.RegisterModule(new ServiceInstaller());
             builder.RegisterModule(new IntegrationsInstaller());
 
-            var cacheManager = AutofacContainer.Resolve<CacheManager>();
-            var googleTranslateProvider = AutofacContainer.ResolveNamed<ITextTranslateProvider>(nameof(GoogleTranslateProvider));
-            var yandexTranslateProvider = AutofacContainer.ResolveNamed<ITextTranslateProvider>(nameof(YandexTranslateProvider));
-            builder.RegisterInstance(new TextTranslateIntegration(cacheManager, googleTranslateProvider, yandexTranslateProvider));
+            builder.Register<ITextTranslateIntegration>(x =>
+            {
+                var googleTranslateProvider = x.Resolve<GoogleTranslateProvider>();
+                var yandexTranslateProvider = x.Resolve<YandexTranslateProvider>();
+                var cacheManager = x.Resolve<CacheManager>();
+
+                return new TextTranslateIntegration(cacheManager, googleTranslateProvider, yandexTranslateProvider);
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
