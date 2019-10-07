@@ -32,7 +32,7 @@
 
 /*  scroll bar Handle on hover */
 
-main {    
+main {
     width: 89%;
     margin: 34px auto;
     background-color: white;
@@ -56,6 +56,13 @@ main {
         margin-top: 3px;
         margin-bottom: 5px;
         background-color: white;
+
+        &.detail-flag {
+            height: 34px;
+            margin-top: 3px;
+            margin-bottom: 5px;
+            padding-left:0px;
+        }
     }
 
     ul li {
