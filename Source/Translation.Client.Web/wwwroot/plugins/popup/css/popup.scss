@@ -7,7 +7,7 @@
     height: 100vh;
     z-index: 2023;
     display: none;
-    opacity: .80;
+    opacity: .8;
     transition: all 1s ease-in-out;
 }
 
@@ -20,7 +20,7 @@
     height: 100vh;
     z-index: 2023;
     display: none;
-    opacity: .80;
+    opacity: .8;
     transition: all 1s ease-in-out;
     z-index: 4023;
 }
@@ -40,11 +40,9 @@
     transform: translate(-50%, -50%);
     transition: all 1s ease-in-out;
 
-    div {
-        button {
-            float: left;
-            margin: 5px;
-        }
+    div button {
+        float: left;
+        margin: 5px;
     }
 }
 
@@ -65,21 +63,13 @@
     z-index: 5023;
     text-align: center;
 
-    div {
-        button {
-            float: left;
-            margin: 5px;
-        }
+    div button {
+        float: left;
+        margin: 5px;
     }
 }
 
-#btnHidePopup {
-    float: right;
-    margin-top: -8px;
-    padding-top: 3px;
-}
-
-#btnHidePopupMessage {
+#btnHidePopup, #btnHidePopupMessage {
     float: right;
     margin-top: -8px;
     padding-top: 3px;

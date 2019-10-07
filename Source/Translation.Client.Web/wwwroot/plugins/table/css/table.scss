@@ -22,12 +22,8 @@
         }
     }
 
-    button {
-        display: inline;
-        font-size: 11px;
-        line-height: 10px;
-        margin-left: 5px;
-        margin-top: 3px;
+    &.search-table {
+        width: 60%;       
     }
 
     table {
@@ -35,17 +31,15 @@
         margin-top: 8px;
         margin-bottom: 34px;
         width: 100%;
-        background-color: white;
+        background-color: white;       
 
-        thead {
-            th {
-                background: #3698D9;
-                color: white;
-                padding: 12px;
-                margin: 0;
-                border-right: 1px solid white;
-                text-align: center;
-            }
+        thead th {
+            background: #3698D9;
+            color: white;
+            padding: 12px;
+            margin: 0;
+            border-right: 1px solid white;
+            text-align: center;
         }
 
         tbody {
@@ -53,45 +47,6 @@
                 margin: 3px;
                 color: #333;
                 background-color: white;
-            }
-
-            tr {
-                td {
-                    padding: 7px;
-                    padding-left: 8px;
-                    background-color: white;
-                    text-align: center;
-                    border-bottom: 1px solid #F2F2F3;
-                    vertical-align: middle;
-
-                    input {
-                        margin: 2px;
-                    }
-
-                    .secretSpan {
-                        float: left;
-                        margin-top: 4px;
-                    }
-
-                    .secretButton {
-                        margin-left: 5px;
-                        text-decoration: underline;
-                        cursor: pointer;
-                    }
-
-                    &:last-child {
-                        text-align: right;
-                    }
-                }
-
-                img {
-                    width: 55px;
-                    vertical-align: middle;
-                }
-
-                &:nth-child(even) {
-                    background-color: #f2f2f2;
-                }
             }
 
             tr:nth-child(even) td {
@@ -102,12 +57,66 @@
                 }
             }
         }
+    }
+}
+
+tbody tr td {
+    padding: 7px;
+    padding-left: 8px;
+    background-color: white;
+    text-align: center;
+    border-bottom: 1px solid #F2F2F3;
+}
+
+.tbl {
+    table {
+        tbody tr {
+            td {
+                input {
+                    margin: 2px;
+                }
+
+                .secretSpan {
+                    float: left;
+                    background-color: white;
+                    margin-top: 4px;
+                }
+
+                .secretButton {
+                    margin-left: 5px;
+                    text-decoration: underline;
+                    cursor: pointer;
+                    background-color: white;
+                }
+            }
+
+            img {
+                width: 55px;
+                vertical-align: middle;
+            }
+
+            &:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+        }
 
         .selectable {
             width: 34px;
         }
     }
+
+    button {
+        display: inline;
+        font-size: 11px;
+        line-height: 10px;
+        margin-left: 5px;
+        margin-top: 5px;
+    }
 }
+
+/*.tbl table tbody tr td:last-child {
+          text-align: right
+      }*/
 
 .pagination {
     margin-top: -34px;
