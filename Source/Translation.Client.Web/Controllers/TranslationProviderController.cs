@@ -22,6 +22,15 @@ namespace Translation.Client.Web.Controllers
         private readonly ITranslationProviderService _translationProviderService;
         private readonly IAdminService _adminService;
 
+        public TranslationProviderController(IOrganizationService organizationService,
+                                             IJournalService journalService,
+                                             ILanguageService languageService,
+                                             ITranslationProviderService translationProviderService,
+                                             IAdminService adminService) : base(organizationService, journalService, languageService, translationProviderService)
+        {
+            _translationProviderService = translationProviderService;
+            _adminService = adminService;
+        }
 
         [HttpGet]
         public ViewResult List()
@@ -147,12 +156,6 @@ namespace Translation.Client.Web.Controllers
 
             var model = TranslationProviderMapper.MapTranslationProviderDetailModel(response.Item);
             return View(model);
-        }
-
-        public TranslationProviderController(IOrganizationService organizationService, IJournalService journalService, ILanguageService languageService, ITranslationProviderService translationProviderService, IAdminService adminService) : base(organizationService, journalService, languageService, translationProviderService)
-        {
-            _translationProviderService = translationProviderService;
-            _adminService = adminService;
-        }
+        }       
     }
 }

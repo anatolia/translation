@@ -34,6 +34,7 @@ namespace Translation.Client.Web.Controllers
             OrganizationService = organizationService;
             JournalService = journalService;
             TranslationProviderService = translationProviderService;
+            LanguageService = languageService;
         }
 
         private List<LanguageDto> _languages;

@@ -22,7 +22,14 @@ namespace Translation.Client.Web.Controllers
     public class IntegrationController : BaseController
     {
         private readonly IIntegrationService _integrationService;
-
+        public IntegrationController(IOrganizationService organizationService,
+                                     IJournalService journalService,
+                                     ILanguageService languageService,
+                                     ITranslationProviderService translationProviderService,
+                                     IIntegrationService integrationService) : base(organizationService, journalService, languageService, translationProviderService)
+        {
+            _integrationService = integrationService;
+        }
 
         [HttpGet]
         public IActionResult Create(Guid id)
@@ -508,11 +515,6 @@ namespace Translation.Client.Web.Controllers
             result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
-        }
-
-        public IntegrationController(IOrganizationService organizationService, IJournalService journalService, ILanguageService languageService, ITranslationProviderService translationProviderService, IIntegrationService integrationService) : base(organizationService, journalService, languageService, translationProviderService)
-        {
-            _integrationService = integrationService;
-        }
+        }      
     }
 }

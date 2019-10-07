@@ -26,7 +26,18 @@ namespace Translation.Client.Web.Controllers
         private readonly IProjectService _projectService;
         private readonly ILabelService _labelService;
 
-
+        public LabelController(IOrganizationService organizationService,
+                               IJournalService journalService,
+                               ILanguageService languageService,
+                               ITranslationProviderService translationProviderService,
+                               ITextTranslateIntegration textTranslateIntegration,
+                               IProjectService projectService,
+                               ILabelService labelService) : base(organizationService, journalService, languageService, translationProviderService)
+        {
+            _textTranslateIntegration = textTranslateIntegration;
+            _projectService = projectService;
+            _labelService = labelService;
+        }
         #region Label
 
         [HttpGet]
@@ -1054,13 +1065,6 @@ namespace Translation.Client.Web.Controllers
             return Json(result);
         }
 
-        #endregion
-
-        public LabelController(IOrganizationService organizationService, IJournalService journalService, ILanguageService languageService, ITranslationProviderService translationProviderService, ITextTranslateIntegration textTranslateIntegration, IProjectService projectService, ILabelService labelService) : base(organizationService, journalService, languageService, translationProviderService)
-        {
-            _textTranslateIntegration = textTranslateIntegration;
-            _projectService = projectService;
-            _labelService = labelService;
-        }
+        #endregion      
     }
 }

@@ -26,7 +26,16 @@ namespace Translation.Client.Web.Controllers
         private readonly IIntegrationService _integrationService;
         private readonly IProjectService _projectService;
 
-
+        public OrganizationController(IOrganizationService organizationService,
+                                      IJournalService journalService,
+                                      ILanguageService languageService,
+                                      ITranslationProviderService translationProviderService,
+                                      IIntegrationService integrationService,
+                                      IProjectService projectService) : base(organizationService, journalService, languageService, translationProviderService)
+        {
+            _integrationService = integrationService;
+            _projectService = projectService;
+        }
 
         [HttpGet]
         public IActionResult Detail(Guid id)
@@ -551,12 +560,6 @@ namespace Translation.Client.Web.Controllers
             result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
-        }
-
-        public OrganizationController(IOrganizationService organizationService, IJournalService journalService, ILanguageService languageService, ITranslationProviderService translationProviderService, IIntegrationService integrationService, IProjectService projectService) : base(organizationService, journalService, languageService, translationProviderService)
-        {
-            _integrationService = integrationService;
-            _projectService = projectService;
-        }
+        }       
     }
 }

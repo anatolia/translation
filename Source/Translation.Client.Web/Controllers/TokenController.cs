@@ -14,8 +14,15 @@ namespace Translation.Client.Web.Controllers
     public class TokenController : BaseController
     {
         private readonly IIntegrationService _integrationService;
+        public TokenController(IOrganizationService organizationService,
+                               IJournalService journalService,
+                               ILanguageService languageService,
+                               ITranslationProviderService translationProviderService,
+                               IIntegrationService integrationService) : base(organizationService, journalService, languageService, translationProviderService)
+        {
+            _integrationService = integrationService;
+        }
 
-        
         [HttpPost,
          JournalFilter(Message = "journal_token_revoke")]
         public async Task<IActionResult> Revoke(Guid tokenUid, Guid clientUid)
@@ -96,11 +103,6 @@ namespace Translation.Client.Web.Controllers
             };
 
             return Json(model);
-        }
-
-        public TokenController(IOrganizationService organizationService, IJournalService journalService, ILanguageService languageService, ITranslationProviderService translationProviderService, IIntegrationService integrationService) : base(organizationService, journalService, languageService, translationProviderService)
-        {
-            _integrationService = integrationService;
-        }
+        }      
     }
 }
