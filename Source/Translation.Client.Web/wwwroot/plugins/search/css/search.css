@@ -44,12 +44,11 @@
     padding: 2px 21px;
     text-decoration: none;
     display: block; }
+  .search-content #allSearchListLink {
+    color: blue; }
 
 .list-item-selected {
   background-color: #ddd; }
-
-#allSearchListLink {
-  color: blue; }
 
 .show {
   display: block; }

@@ -3,7 +3,7 @@
     margin: 1px;
     font-size: 13px;
     line-height: 13px;
-    padding: 5px;    
+    padding: 5px;
     width: auto;
     margin-right: 13px;
     margin-top: 13px;
@@ -28,8 +28,8 @@
 
     a {
         font-size: 12px;
-        margin-top:5px;
-        margin-bottom:5px;
+        margin-top: 5px;
+        margin-bottom: 5px;
 
         &:hover {
             background-color: #ddd;
@@ -57,15 +57,16 @@
         text-decoration: none;
         display: block;
     }
+
+    #allSearchListLink {
+        color: blue;
+    }
 }
 
 .list-item-selected {
     background-color: #ddd;
 }
 
-#allSearchListLink {
-    color: blue;
-}
 
 .show {
     display: block;

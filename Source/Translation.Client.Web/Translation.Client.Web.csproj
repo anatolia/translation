@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\site.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\site.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCaching" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
@@ -44,6 +52,7 @@
     <None Include="Views\User\ValidateEmail.cshtml" />
     <None Include="Views\User\ValidateEmailDone.cshtml" />
     <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\js\site.min.js" />
   </ItemGroup>
 
   <ItemGroup>
