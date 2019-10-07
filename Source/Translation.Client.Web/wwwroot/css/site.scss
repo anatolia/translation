@@ -192,11 +192,6 @@ footer {
     color: #3d839f; 
   } */
 
-.textsearch {
-    margin-top: -3px;
-    height: 37px;
-    padding: 16px 12px 4px 55px;
-}
 
 h1 {
     font-size: 29px;
@@ -822,30 +817,6 @@ tbody tr td {
     }
 }
 
-#txtSearch {
-    display: block;
-    font-size: 13px;
-    line-height: 21px;
-    border: 1px solid #999;
-    width: auto;
-    box-sizing: border-box;
-    background-image: url("../plugins/search/css/searchicon.png");
-    background-position: 10px 9px;
-    background-repeat: no-repeat;
-    background-color: white;
-    font-size: 16px;
-    padding: 14px 20px 12px 45px;
-    border: none;
-    border-bottom: 1px solid #ddd;
-    position: absolute;
-    top: 7px;
-    right: 4px;
-
-    &:focus {
-        outline: 3px solid #ddd;
-    }
-}
-
 .search {
     position: relative;
     display: inline-block;
@@ -865,30 +836,6 @@ tbody tr td {
     }
 }
 
-.search-content {
-    display: none;
-    position: absolute;
-    right: 4px;
-    top: 41px;
-    min-width: 400px;
-    overflow: auto;
-    border: 1px solid #F2F2F2;
-    z-index: 1;
-    box-shadow: -4px 8px 16px -3px #888888;
-
-    a {
-        color: #000;
-        padding: 12px 16px;
-        text-decoration: none;
-        background-color: white;
-        text-align: right;
-        text-transform: lowercase;
-        display: block;
-        margin: 0;
-        border-bottom: 1px solid #F0F8FE;
-    }
-}
-
 .search-table {
     width: 60%;
 }
@@ -903,10 +850,4 @@ tbody tr td {
 
 .show {
     display: block;
-}
-
-.searchResults {
-    overflow: scroll;
-    overflow-x: hidden;
-    overflow-y: scroll;
 }
