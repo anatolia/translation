@@ -24,6 +24,16 @@ namespace Translation.Client.Web.Controllers
         private readonly IProjectService _projectService;
         private readonly ILabelService _labelService;
 
+        public ProjectController(IOrganizationService organizationService,
+                                 IJournalService journalService,
+                                 ILanguageService languageService,
+                                 ITranslationProviderService translationProviderService,
+                                 ILabelService labelService,
+                                 IProjectService projectService) : base(organizationService, journalService, languageService, translationProviderService)
+        {
+            _labelService = labelService;
+            _projectService = projectService;
+        }
 
         [HttpGet]
         public IActionResult Create(Guid id)
@@ -278,7 +288,7 @@ namespace Translation.Client.Web.Controllers
                 var item = response.Items[i];
                 var stringBuilder = new StringBuilder();
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Key}", item.Key)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Key)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
@@ -501,12 +511,6 @@ namespace Translation.Client.Web.Controllers
             model.IsOk = true;
             CurrentUser.IsActionSucceed = true;
             return Json(model);
-        }
-
-        public ProjectController(IOrganizationService organizationService, IJournalService journalService, ILanguageService languageService, ITranslationProviderService translationProviderService, ILabelService labelService, IProjectService projectService) : base(organizationService, journalService, languageService, translationProviderService)
-        {
-            _labelService = labelService;
-            _projectService = projectService;
-        }
+        }        
     }
 }

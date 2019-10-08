@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@Model?.Title / @ConstantHelper.APP_NAME</title>
 
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
 </head>
 <body>
     <header class="header">
@@ -30,8 +30,8 @@
                     </li>
 
                     <li>
-                        <input type="text" id="txtSearch" class="textsearch" name="txtSearch" placeholder="" value="" onkeyup="searchWork()" />
-                        <div id="searchResults" name="searchResults" class="search-content">
+                        <input type="text" id="txtSearch" name="txtSearch" placeholder="" value="" onkeyup="searchWork()" />
+                        <div id="searchResults" name="searchResults">
                             <a href="#" id="allSearchListLink" name="allSearchListLink" data-translation="label_search_list_link" onclick="openLabelSearchListPage()">label_search_list_link</a>
                         </div>
                     </li>
