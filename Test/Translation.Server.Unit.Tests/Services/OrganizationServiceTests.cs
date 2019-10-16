@@ -147,7 +147,7 @@ namespace Translation.Server.Unit.Tests.Services
         {
             // arrange
             var request = GetOrganizationReadListRequestForSelectMany();
-            MockOrganizationRepository.Setup_SelectAfter_Returns_Organizations();
+            MockOrganizationRepository.Setup_SelectMany_Returns_Organizations();
             MockOrganizationRepository.Setup_Count_Returns_Ten();
 
             // act
