@@ -1076,7 +1076,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var result = new DataResult();
-            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "label_translation_name", "created_at", "");
+            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "label_translation", "created_at", "");
 
             for (var i = 0; i < response.Items.Count; i++)
             {
@@ -1088,7 +1088,7 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{GetDateTimeAsString(revisionItem.RevisionedAt)}{DataResult.SEPARATOR}");
                 stringBuilder.Append(
-                    $"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
+                    $"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Translation)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
                 stringBuilder.Append(
                     $"{result.PrepareRestoreButton("restore", "/Label/RestoreLabelTranslation/", "/Label/LabelTranslationDetail")}{DataResult.SEPARATOR}");
