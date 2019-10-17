@@ -53,6 +53,7 @@ namespace Translation.Client.Web.Helpers.Mappers
         {
             var model = new LabelEditModel();
             model.OrganizationUid = dto.OrganizationUid;
+            model.ProjectUid = dto.ProjectUid;
 
             model.LabelUid = dto.Uid;
             model.Key = dto.Key;
