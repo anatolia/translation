@@ -2142,7 +2142,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             var result = SystemUnderTest.LabelTranslationRevisionsData(UidOne);
 
             // assert
-            AssertViewAndHeaders(result, new[] { "revision", "revisioned_by", "revisioned_at", "label_translation_name", "created_at", "" });
+            AssertViewAndHeaders(result, new[] { "revision", "revisioned_by", "revisioned_at", "label_translation", "created_at", "" });
             MockLabelService.Verify_GetLabelTranslationRevisions();
         }
 
