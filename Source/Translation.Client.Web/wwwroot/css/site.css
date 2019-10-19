@@ -13,13 +13,17 @@
 
 /* scroll bar Track */
 ::-webkit-scrollbar-track {
-  background: white; }
+  background: white; 
+}
 
 /*  scroll bar Handle */
 ::-webkit-scrollbar-thumb {
-  background: #3698D9; }
+  background: #3698D9; 
+}
+
   ::-webkit-scrollbar-thumb:hover {
-    background: #555; }
+    background: #555; 
+  }
 
 /*  scroll bar Handle on hover */
 main {
@@ -347,36 +351,62 @@ button[type=submit] {
 
 .select {
   position: relative;
-  width: calc(34% + 10px);
+  /*width: calc(34% + 10px);*/
   min-height: 31px;
   border: 1px solid #808080;
-  margin-top: 8px; }
+  margin-top: 8px; 
+}
   .select div {
     min-height: unset; }
     .select div .active-item {
-      margin-right: 4px;
-      display: flex; }
+        padding: 2px;
+        margin: 4px;
+        display: flex;
+        border: 1px solid #278fb2;
+    }
       .select div .active-item .remove-active-item {
         height: 17px;
         width: 15px;
-        margin: 4px;
+        margin: 2px;
         padding: 0px;
         font-size: 12px;
         color: white;
-        background-color: indianred; }
-    .select div span {
-      margin-top: 0px;
-      margin-right: 3px;
-      padding: 2px; }
+        background-color: indianred; 
+        border: 1px solid white;
+        transition: all 0.3s ease;
+      }
+
+        .select div .active-item .remove-active-item:hover {
+            color: indianred;
+            background: white;
+            border: 1px solid indianred;
+        }
+
+
+        .select div span {
+            margin-top: 0px;
+            margin-right: 3px;
+            padding: 2px;
+        }
   .select .select-button {
     position: relative;
     cursor: pointer;
     display: flex;
-    overflow: scroll; }
+    /*overflow-y: scroll; */
+  }
+  .multiple-select .select-button{
+      overflow: unset;
+
+  }
+    .select.custom-select {
+        min-height: unset;
+        width: 34%;
+        padding: 5px 5px;
+    }
     .select .select-button .select-button-input {
       display: inline-block;
       min-width: 100px;
-      min-height: 18px;
+      min-height: unset;
       border: none;
       vertical-align: middle; }
       .select .select-button .select-button-input:focus {
@@ -446,17 +476,24 @@ button[type=submit] {
     width: 100%;
     border: 1px solid #808080;
     max-height: 120px;
-    overflow-y: auto;
+    overflow-y: unset;
     animation: fadeIn 1s;
     scrollbar-color: #999 #f1f1f1;
-    scrollbar-width: thin; }
+    scrollbar-width: thin; 
+  }
+
     .select .select-content::-webkit-scrollbar {
       width: 10px; }
+    
     .select .select-content::-webkit-scrollbar-track {
-      background: white; }
+      background: white; 
+    }
+
     .select .select-content::-webkit-scrollbar-thumb {
       cursor: pointer;
-      background: #999; }
+      background: #999; 
+    }
+
     .select .select-content .select-item {
       padding: 5px;
       transition: .3s all;
@@ -471,7 +508,7 @@ button[type=submit] {
     display: flex;
     align-items: center; }
     .select .select-item.content-item .select-item-image {
-      width: 8%;
+      width: auto;
       background: transparent; }
     .select .select-item.content-item .select-item-text {
       margin-left: 10px;
@@ -679,3 +716,12 @@ tbody tr td {
   overflow: scroll;
   overflow-x: hidden;
   overflow-y: scroll; }
+
+.multiple-select .active-item > span {
+    padding: 4px 2px 0px;
+    color: #278fb2;
+}
+
+.detail-flag{
+    padding-left: 0;
+}
