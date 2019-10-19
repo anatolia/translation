@@ -44,7 +44,8 @@
       background-color: white;
       text-align: center;
       border-bottom: 1px solid #F2F2F3;
-      vertical-align: middle; }
+      vertical-align: middle;
+    }
       .tbl table tbody tr td input {
         margin: 2px; }
       .tbl table tbody tr td .secretSpan {
@@ -57,8 +58,11 @@
       .tbl table tbody tr td:last-child {
         text-align: right; }
     .tbl table tbody tr img {
-      width: 55px;
-      vertical-align: middle; }
+        width: 55px;
+        vertical-align: middle;
+        padding-left: 0;
+        border: 1px solid #daf6ff;
+    }
     .tbl table tbody tr:nth-child(even) {
       background-color: #f2f2f2; }
     .tbl table tbody tr:nth-child(even) td {
