@@ -25,25 +25,22 @@ namespace Translation.Common.Enumerations
             return DisplayName;
         }
 
-        public static List<T> GetAll<T>()
-               where T : Enumeration
+        public static List<T> GetAll<T>() where T : Enumeration
         {
-            var fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
-            return fields.Select(f => f.GetValue(null)).Cast<T>().ToList();
+            return typeof(T)
+                .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+                .Select(f => f.GetValue(null))
+                .Cast<T>()
+                .ToList();
         }
 
         public override bool Equals(object obj)
         {
             var otherValue = obj as Enumeration;
-            if (otherValue == null)
-            {
-                return false;
-            }
 
-            var typeMatches = GetType() == obj.GetType();
-            var valueMatches = Value.Equals(otherValue.Value);
-
-            return typeMatches && valueMatches;
+            return otherValue == null 
+                   ? false 
+                   : GetType() == obj.GetType() && Value.Equals(otherValue.Value);
         }
 
         public override int GetHashCode()
@@ -53,41 +50,25 @@ namespace Translation.Common.Enumerations
 
         public static bool IsValueNotValid<T>(int value) where T : Enumeration
         {
-            var fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
-            for (var i = 0; i < fields.Length; i++)
-            {
-                var field = fields[i];
-                if (field.GetValue(null).ToString() == FromValue<T>(value).ToString())
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return !typeof(T)
+                .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+                .Any(x => x.GetValue(null).ToString() == FromValue<T>(value).ToString());
         }
 
         public static T FromValue<T>(int value) where T : Enumeration
         {
-            var matchingItem = Parse<T, int>(value, "value", item => item.Value == value);
-            return matchingItem;
+            return Parse<T, int>(value, "value", item => item.Value == value);
         }
 
         public static T FromDisplayName<T>(string displayName) where T : Enumeration
         {
-            var matchingItem = Parse<T, string>(displayName, "display name", item => item.DisplayName == displayName);
-            return matchingItem;
+            return Parse<T, string>(displayName, "display name", item => item.DisplayName == displayName);
         }
 
         private static T Parse<T, K>(K value, string description, Func<T, bool> predicate) where T : Enumeration
         {
-            var matchingItem = GetAll<T>().FirstOrDefault(predicate);
-            if (matchingItem == null)
-            {
-                var message = $"'{value}' is not a valid {description} in {typeof(T)}";
-                throw new ApplicationException(message);
-            }
-
-            return matchingItem;
+            return GetAll<T>().FirstOrDefault(predicate) 
+                   ?? throw new ApplicationException($"'{value}' is not a valid {description} in {typeof(T)}");
         }
 
         public int CompareTo(object other)

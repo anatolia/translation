@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-
 using Translation.Common.Contracts;
 using Translation.Common.Enumerations;
 using Translation.Common.Models.Requests.Label;
@@ -13,38 +13,36 @@ namespace Translation.Integrations
     public class TextTranslateIntegration : ITextTranslateIntegration
     {
         private readonly CacheManager _cacheManager;
-
         private Dictionary<string, ITextTranslateProvider> TranslateProviders { get; set; }
         private ActiveTranslationProvider ActiveTranslationProvider { get; set; }
 
-        public TextTranslateIntegration(CacheManager cacheManager, params ITextTranslateProvider[] textTranslateProvider)
+        public TextTranslateIntegration(
+            CacheManager cacheManager,
+            params ITextTranslateProvider[] textTranslateProvider)
         {
             _cacheManager = cacheManager;
-
-            TranslateProviders = new Dictionary<string, ITextTranslateProvider>();
-
-            for (var i = 0; i < textTranslateProvider.Length; i++)
-            {
-                TranslateProviders.Add(textTranslateProvider[i].Name, textTranslateProvider[i]);
-            }
+            TranslateProviders = textTranslateProvider.ToDictionary(x => x.Name, x => x);
         }
 
         public async Task<LabelGetTranslatedTextResponse> GetTranslatedText(LabelGetTranslatedTextRequest request)
         {
-            var response = new LabelGetTranslatedTextResponse();
-
             ActiveTranslationProvider = _cacheManager.GetCachedActiveTranslationProvider(true);
 
-            if (ActiveTranslationProvider == null)
-            {
-                response.Status = ResponseStatus.Failed;
-                return response;
-            }
-
-            response.Item.Name = await TranslateProviders[ActiveTranslationProvider.Name].TranslateText(request.TextToTranslate, request.TargetLanguageIsoCode2, request.SourceLanguageIsoCode2);
-
-            response.Status = ResponseStatus.Success;
-            return response;
+            return ActiveTranslationProvider == null
+                ? new LabelGetTranslatedTextResponse {Status = ResponseStatus.Failed}
+                : new LabelGetTranslatedTextResponse
+                {
+                    Status = ResponseStatus.Success,
+                    Item =
+                    {
+                        Name = await TranslateProviders[ActiveTranslationProvider.Name]
+                            .TranslateText(
+                                request.TextToTranslate, 
+                                request.TargetLanguageIsoCode2,
+                                request.SourceLanguageIsoCode2)
+                            .ConfigureAwait(false)
+                    }
+                };
         }
     }
 }

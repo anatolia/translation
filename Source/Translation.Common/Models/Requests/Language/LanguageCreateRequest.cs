@@ -12,41 +12,20 @@ namespace Translation.Common.Models.Requests.Language
         public string Icon { get; }
         public string Description { get; }
 
-        public LanguageCreateRequest(long currentUserId, string name, string originalName, string isoCode2,
-                                     string isoCode3, string icon, string description) : base(currentUserId)
+        public LanguageCreateRequest(
+            long currentUserId, 
+            string name, 
+            string originalName, 
+            string isoCode2,
+            string isoCode3, 
+            string icon, 
+            string description) : base(currentUserId)
         {
-            if (name.IsEmpty())
-            {
-                ThrowArgumentException(nameof(name), name);
-            }
-
-            if (originalName.IsEmpty())
-            {
-                ThrowArgumentException(nameof(originalName), originalName);
-            }
-
-            if (isoCode2.IsEmpty()
-                || isoCode2.Length != 2)
-            {
-                ThrowArgumentException(nameof(isoCode2), isoCode2);
-            }
-
-            if (isoCode3.IsEmpty()
-                || isoCode3.Length != 3)
-            {
-                ThrowArgumentException(nameof(isoCode3), isoCode3);
-            }
-
-            if (icon.IsEmpty())
-            {
-                ThrowArgumentException(nameof(icon), icon);
-            }
-
-            Name = name;
-            OriginalName = originalName;
-            IsoCode2 = isoCode2;
-            IsoCode3 = isoCode3;
-            Icon = icon;
+            Name = name.ThrowIfNullOrEmpty(nameof(name));
+            OriginalName = originalName.ThrowIfNullOrEmpty(nameof(originalName));
+            IsoCode2 = isoCode2.ThrowIfNullOrEmpty(nameof(name), isoCode2.Length != 2);
+            IsoCode3 = isoCode3.ThrowIfNullOrEmpty(nameof(name), isoCode3.Length != 3);
+            Icon = icon.ThrowIfNullOrEmpty(nameof(icon));
             Description = description;
         }
     }
