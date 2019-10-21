@@ -16,14 +16,9 @@
  14.You(Super Admin) will use this JSON file as TranslationProvider value editing Super admin dashboard translation_providers link
   */
 
-using System.Configuration;
-using System.IO;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Translation.V2;
-using Newtonsoft.Json.Linq;
-using StandardRepository.Helpers;
 using Translation.Common.Contracts;
 using Translation.Data.Repositories.Contracts;
 
