@@ -1286,7 +1286,8 @@ namespace Translation.Common.Tests.TestHelpers
             var root = "";
             var currentDirectory = Directory.GetCurrentDirectory();
             var dirList = currentDirectory.Split("\\");
-            for (int i = 0; i < dirList.Length; i++)
+
+            for (var i = 0; i < dirList.Length; i++)
             {
                 var dir = dirList[i];
                 if (dir != "Translation")

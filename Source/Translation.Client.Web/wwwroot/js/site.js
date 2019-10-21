@@ -1,6 +1,55 @@
 ﻿function getPathFromUrl(url) { return url.split("?")[0]; }
 function clearChildren(element) { while (element.firstChild) { element.removeChild(element.firstChild); } }
+
+
+function createDiv(attributes, text) {
+    return createElement('div', attributes, text);
+}
+
+function createButton(attributes, text) {
+    return createElement('button', attributes, text);
+}
+
 function createElement(tag) { return document.createElement(tag); }
+function createElement(tag, attributes, text) {
+    let $element = document.createElement(tag);
+    if (attributes) {
+        for (let key of Object.keys(attributes)) {
+            $element.setAttribute(key, attributes[key]);
+        }
+    }
+    if (text !== undefined && text !== null) {
+        $element.innerHTML = text;
+    }
+    return $element;
+}
+
+function getParent(element, parentClass) {
+    let targetParent = false;
+    try {
+        let parent = element.parentNode;
+        while (parent) {
+            if (parent.classList.contains(parentClass)) {
+                targetParent = parent;
+                break;
+            }
+            parent = parent.parentNode;
+        }
+    } catch (error) {
+
+    }
+
+    return targetParent;
+}
+
+ function guid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+
 function getElement(id) { return document.getElementById(id); }
 function getValue(id) { return document.getElementById(id).value; }
 function getAntiForgeryTokenFromLayout() { return document.getElementsByName('__RequestVerificationToken')[0].value; }
@@ -246,7 +295,3 @@ function SecretField(element, order) {
         this.enableButtons();
     }
 }
-
-var element = document.getElementsByClassName("content");
-var secretField = new SecretField(elemenet, 0);
-secretField.hide();

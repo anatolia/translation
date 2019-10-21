@@ -2,12 +2,17 @@
 using Microsoft.AspNetCore.Mvc;
 
 using Translation.Client.Web.Models;
+using Translation.Common.Contracts;
 
 namespace Translation.Client.Web.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController()        {
+        public HomeController(IOrganizationService organizationService,
+                              IJournalService journalService,
+                              ILanguageService languageService,
+                              ITranslationProviderService translationProviderService) : base(organizationService, journalService, languageService, translationProviderService)
+        {
         }
 
         [HttpGet]

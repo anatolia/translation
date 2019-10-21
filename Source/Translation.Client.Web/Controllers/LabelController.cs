@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 using Translation.Client.Web.Helpers;
@@ -23,25 +22,22 @@ namespace Translation.Client.Web.Controllers
 {
     public class LabelController : BaseController
     {
-        private readonly IHostingEnvironment _environment;
-        private readonly ILanguageService _languageService;
         private readonly ITextTranslateIntegration _textTranslateIntegration;
         private readonly IProjectService _projectService;
         private readonly ILabelService _labelService;
 
-        public LabelController(IHostingEnvironment environment,
+        public LabelController(IOrganizationService organizationService,
+                               IJournalService journalService,
                                ILanguageService languageService,
+                               ITranslationProviderService translationProviderService,
                                ITextTranslateIntegration textTranslateIntegration,
                                IProjectService projectService,
-                               ILabelService labelService)
+                               ILabelService labelService) : base(organizationService, journalService, languageService, translationProviderService)
         {
-            _environment = environment;
-            _languageService = languageService;
             _textTranslateIntegration = textTranslateIntegration;
             _projectService = projectService;
             _labelService = labelService;
         }
-
         #region Label
 
         [HttpGet]
@@ -183,7 +179,7 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            var request = new LabelEditRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid,model.LabelUid, model.Key,
+            var request = new LabelEditRequest(CurrentUser.Id, model.OrganizationUid, model.ProjectUid, model.LabelUid, model.Key,
                 model.Description);
             var response = await _labelService.EditLabel(request);
             if (response.Status.IsNotSuccess)
@@ -544,22 +540,7 @@ namespace Translation.Client.Web.Controllers
             CurrentUser.IsActionSucceed = true;
             return View("UploadLabelFromCSVFileDone", doneModel);
         }
-
-        [HttpGet]
-        public IActionResult DownloadSampleCSVFileForBulkLabelUpload()
-        {
-            var labelsFilePath = Path.Combine(_environment.WebRootPath, "files", "uploadLabelCsvTemplate.csv");
-
-            if (System.IO.File.Exists(labelsFilePath))
-            {
-                var lines = System.IO.File.ReadAllText(labelsFilePath, Encoding.UTF8);
-
-                return File(Encoding.UTF8.GetBytes(lines), "text/csv", "uploadLabelCsvTemplate.csv");
-            }
-
-            return NotFound();
-        }
-
+        
         [HttpGet]
         public async Task<IActionResult> CreateBulkLabel(Guid id)
         {
@@ -956,21 +937,6 @@ namespace Translation.Client.Web.Controllers
             return View("UploadLabelTranslationFromCSVFileDone", doneModel);
         }
 
-        [HttpGet]
-        public IActionResult DownloadSampleCSVFileForBulkLabelTranslationUpload()
-        {
-            var labelsFilePath = Path.Combine(_environment.WebRootPath, "files", "uploadTranslationCsvTemplate.csv");
-
-            if (System.IO.File.Exists(labelsFilePath))
-            {
-                var lines = System.IO.File.ReadAllText(labelsFilePath, Encoding.UTF8);
-
-                return File(Encoding.UTF8.GetBytes(lines), "text/csv", "uploadTranslationCsvTemplate.csv");
-            }
-
-            return NotFound();
-        }
-
         [HttpPost,
          JournalFilter(Message = "journal_label_download_translations")]
         public async Task<IActionResult> DownloadTranslations(Guid id)
@@ -1099,6 +1065,6 @@ namespace Translation.Client.Web.Controllers
             return Json(result);
         }
 
-        #endregion
+        #endregion      
     }
 }

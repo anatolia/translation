@@ -14,8 +14,11 @@ namespace Translation.Client.Web.Controllers
     public class TokenController : BaseController
     {
         private readonly IIntegrationService _integrationService;
-
-        public TokenController(IIntegrationService integrationService)
+        public TokenController(IOrganizationService organizationService,
+                               IJournalService journalService,
+                               ILanguageService languageService,
+                               ITranslationProviderService translationProviderService,
+                               IIntegrationService integrationService) : base(organizationService, journalService, languageService, translationProviderService)
         {
             _integrationService = integrationService;
         }
@@ -100,6 +103,6 @@ namespace Translation.Client.Web.Controllers
             };
 
             return Json(model);
-        }
+        }      
     }
 }

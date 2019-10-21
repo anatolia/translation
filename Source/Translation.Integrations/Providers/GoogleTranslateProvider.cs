@@ -17,8 +17,10 @@
   */
 
 using System.Threading.Tasks;
+
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Translation.V2;
+
 using Translation.Common.Contracts;
 using Translation.Data.Repositories.Contracts;
 
@@ -27,14 +29,15 @@ namespace Translation.Integrations.Providers
     public class GoogleTranslateProvider : ITextTranslateProvider
     {
         private readonly ITranslationProviderRepository _translationProviderRepository;
+        public string Name { get; }
         public string GoogleApplicationCredentialsFile { get; set; }
         public TranslationClient Client { get; set; }
-        public string Name { get; set; }
+
         public GoogleTranslateProvider(ITranslationProviderRepository translationProviderRepository)
         {
             _translationProviderRepository = translationProviderRepository;
 
-            Name = "google";
+            Name = nameof(GoogleTranslateProvider);
         }
 
         public void CreateClient()
@@ -42,10 +45,7 @@ namespace Translation.Integrations.Providers
             var provider = _translationProviderRepository.Select(x => x.Name == Name).Result;
             GoogleApplicationCredentialsFile = provider.Value;
 
-            GoogleCredential googleCredential;
-
-            googleCredential = GoogleCredential.FromJson(GoogleApplicationCredentialsFile).CreateScoped();
-
+            GoogleCredential googleCredential = GoogleCredential.FromJson(GoogleApplicationCredentialsFile).CreateScoped();
             Client = TranslationClient.Create(googleCredential);
         }
 

@@ -22,8 +22,11 @@ namespace Translation.Client.Web.Controllers
         private readonly ITranslationProviderService _translationProviderService;
         private readonly IAdminService _adminService;
 
-        public TranslationProviderController(ITranslationProviderService translationProviderService,
-            IAdminService adminService)
+        public TranslationProviderController(IOrganizationService organizationService,
+                                             IJournalService journalService,
+                                             ILanguageService languageService,
+                                             ITranslationProviderService translationProviderService,
+                                             IAdminService adminService) : base(organizationService, journalService, languageService, translationProviderService)
         {
             _translationProviderService = translationProviderService;
             _adminService = adminService;
@@ -153,6 +156,6 @@ namespace Translation.Client.Web.Controllers
 
             var model = TranslationProviderMapper.MapTranslationProviderDetailModel(response.Item);
             return View(model);
-        }
+        }       
     }
 }
