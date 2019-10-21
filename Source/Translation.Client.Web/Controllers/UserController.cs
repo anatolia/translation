@@ -401,7 +401,7 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            var request = new UserAcceptInviteRequest(model.Token, model.Email, model.FirstName, model.LastName, model.Password,model.LanguageName,model.LanguageUid);
+            var request = new UserAcceptInviteRequest(model.Token, model.Email, model.FirstName, model.LastName, model.Password, model.LanguageName, model.LanguageUid);
 
             var response = await OrganizationService.AcceptInvitation(request);
             if (response.Status.IsNotSuccess)
