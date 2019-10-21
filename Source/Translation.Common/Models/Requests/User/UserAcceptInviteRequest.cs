@@ -11,9 +11,12 @@ namespace Translation.Common.Models.Requests.User
         public string FirstName { get; }
         public string LastName { get; }
         public string Password { get; }
+        public Guid LanguageUid { get; }
+        public string LanguageName { get; }
 
         public UserAcceptInviteRequest(Guid token, string email, string firstName,
-                                       string lastName, string password)
+                                       string lastName, string password, string languageName,
+                                       Guid languageUid)
         {
             if (token.IsEmptyGuid())
             {
@@ -40,11 +43,22 @@ namespace Translation.Common.Models.Requests.User
                 ThrowArgumentException(nameof(password), "");
             }
 
+            if (languageUid.IsEmptyGuid())
+            {
+                ThrowArgumentException(nameof(languageUid), languageUid);
+            }
+            if (languageName.IsEmpty())
+            {
+                ThrowArgumentException(nameof(languageName), languageName);
+            }
+
             Token = token;
             Email = email;
             FirstName = firstName;
             LastName = lastName;
             Password = password;
+            LanguageUid = languageUid;
+            LanguageName = languageName;
         }
     }
 }

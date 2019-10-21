@@ -796,6 +796,8 @@ namespace Translation.Service
                 user.LastName = request.LastName;
                 user.InvitationAcceptedAt = DateTime.UtcNow;
                 user.PasswordHash = _cryptoHelper.Hash(request.Password, user.ObfuscationSalt);
+                user.LanguageUid = request.LanguageUid;
+                user.LanguageName = request.LanguageName;
 
                 //todo:send welcome email
 
