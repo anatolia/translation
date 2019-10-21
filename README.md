@@ -1,18 +1,13 @@
-Translation
-============
----
+# Translation
 ## Introduction
 1. Presentation  
 2. Installs  
 3. Cloning Project  
 4. DataBase Setup  
 5. Last Settings
----
 ## Presentation
----
->Translation is a project that writed with c#. We kept to Patterns of Enterprice Application Architecture on this project. ...
+Translation is a project that writed with c#. We kept to Patterns of Enterprice Application Architecture on this project. ...
 ## Installs
----
 1. Visual Studio  2019 Community - https://visualstudio.microsoft.com (required)
 >
 >* Choose ASP.NET and wep development in VS Workloads during installation
@@ -27,7 +22,6 @@ Translation
 8. [ReSharper](https://www.jetbrains.com/resharper/]) and [JetBrains account](https://account.jetbrains.com)
 9. [GitKraken](https://www.gitkraken.com) or other git app  
 ## Cloning Project  
----
 1. After Git installed create a [Github](https://github.com) account.  
 2. Create a file on your PC to cloning the project  
 3. Fork project to your account from [here](https://github.com/anatolia/translation)  
@@ -40,7 +34,6 @@ Translation
 ![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/git_pictures/4_git.png)
 ![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/git_pictures/5_git.png)
 ## DataBase Setup  
----
 1. After PostgreSQL and PgAdmin have setuped exe files enter PgAdmin.  
 2. Right click the **Servers** and go to "Create" to "Server".  
 ![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/db_pictures/first-pgAdmin4.png)
@@ -58,7 +51,6 @@ Translation
 ![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/db_pictures/seventh-pgAdmin4.png)
 10. Save Login/Group Role infos. 
 ## Last Settings
----
 1. Open project in Visual Studio  
 ![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/set_picture/1_set.png)  
 2. Right Click to **Translation.Client.Web** and go to **Preferences** at bottom  
@@ -70,7 +62,6 @@ Translation
 >* Second, paste "http://localhost:10005" end of your URL
 >* At last **https://localhost:58255;http://localhost:10005**
 >* Your port will be different from **58255** , don't change it.  
-
->![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/set_picture/3_set.png)  
+![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/set_picture/3_set.png)  
 
  
