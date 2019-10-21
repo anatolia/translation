@@ -62,11 +62,23 @@ namespace Translation.Client.Web.Models.TranslationProvider
                 InputErrorMessages.AddRange(ValueInput.ErrorMessage);
             }
 
-            if (!Value.StartsWith("{") || !Value.EndsWith("}") || !Value.StartsWith("trns") )
+            if (Name == "google" && (!Value.StartsWith("{") || !Value.EndsWith("}")))
             {
-                ValueInput.ErrorMessage.Add("translation_provider_api_Informations_not_valid"); 
                 ValueInput.ErrorMessage.Add("google_api_must_place_between_{_}");
+                InputErrorMessages.AddRange(ValueInput.ErrorMessage);
+            }
+
+            if (Name == "yandex" && !Value.StartsWith("trns"))
+            {
                 ValueInput.ErrorMessage.Add("yandex_api_key_must_start_with_trns");
+                InputErrorMessages.AddRange(ValueInput.ErrorMessage);
+            }               
+
+            if (Name=="google"&&(!Value.Contains("type") || !Value.Contains("project_id") || !Value.Contains("private_key_id") ||
+                                 !Value.Contains("private_key") || !Value.Contains("client_email") || !Value.Contains("client_id") ||
+                                 !Value.Contains("auth_uri")  || !Value.Contains("token_uri") || !Value.Contains("auth_uri"))) 
+            {
+                ValueInput.ErrorMessage.Add("api_Informations_format_not_valid");
                 InputErrorMessages.AddRange(ValueInput.ErrorMessage);
             }
         }
