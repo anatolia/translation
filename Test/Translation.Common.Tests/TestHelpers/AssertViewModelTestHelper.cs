@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 
-using NUnit.Framework;
 using Shouldly;
 
 using Translation.Client.Web.Controllers;
