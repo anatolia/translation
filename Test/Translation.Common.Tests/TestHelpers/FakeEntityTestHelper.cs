@@ -1283,23 +1283,9 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static string GetTestWebRootPath()
         {
-            var root = "";
             var currentDirectory = Directory.GetCurrentDirectory();
-            var dirList = currentDirectory.Split("\\");
-            for (int i = 0; i < dirList.Length; i++)
-            {
-                var dir = dirList[i];
-                if (dir != "Translation")
-                {
-                    root = Path.Combine(root, dir);
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            var webRootPath = Path.Combine(root, "Translation", "Test", "Translation.Common.Tests", "wwwtestroot");
+            
+            var webRootPath = Path.Combine(currentDirectory, "wwwtestroot");
             return webRootPath;
         }
 

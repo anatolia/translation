@@ -466,18 +466,19 @@ namespace Translation.Common.Tests.TestHelpers
             model.Value = StringOne;
             model.Name = StringTwo;
             model.Description = StringThree;
+            model.GoogleDescriptionLink = HttpUrl;
 
             return model;
         }
 
-        public static TranslationProviderEditModel GetTranslationProviderEditModel(Guid translationProviderUid, string value, string name, string description)
+        public static TranslationProviderEditModel GetTranslationProviderEditModel(Guid translationProviderUid, string value, string name, string description, string googleDescriptionLink)
         {
             var model = new TranslationProviderEditModel();
             model.TranslationProviderUid = translationProviderUid;
             model.Value = value;
             model.Name = name;
             model.Description = description;
-
+            model.GoogleDescriptionLink = googleDescriptionLink;
             return model;
         }
 

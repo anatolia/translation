@@ -2156,15 +2156,16 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static UserAcceptInviteRequest GetUserAcceptInviteRequest()
         {
-            var request = new UserAcceptInviteRequest(UidOne, EmailOne, StringOne, StringOne, PasswordOne);
+            var request = new UserAcceptInviteRequest(UidOne, EmailOne, StringOne, StringOne, PasswordOne, StringOne,UidOne);
 
             return request;
         }
 
         public static UserAcceptInviteRequest GetUserAcceptInviteRequest(Guid token, string email, string firstName,
-                                                                         string lastName, string password)
+                                                                         string lastName, string password, string languageName,
+                                                                         Guid languageUid)
         {
-            var request = new UserAcceptInviteRequest(token, email, firstName, lastName, password);
+            var request = new UserAcceptInviteRequest(token, email, firstName, lastName, password, languageName, languageUid);
 
             return request;
         }

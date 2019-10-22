@@ -1,6 +1,7 @@
 ﻿.tbl {
     margin-bottom: 13px;
     min-height: 111px;
+    background-color: white;
 
     input {
         display: inline;
@@ -11,66 +12,91 @@
         margin-bottom: 8px;
     }
 
+    a {
+        display: inline;
+        color: #37BFF2;
+        background-color: white;
+
+        &:hover {
+            color: #007BA4;
+        }
+    }
+
+    &.search-table {
+        width: 60%;       
+    }
+
     table {
         border-collapse: collapse;
         margin-top: 8px;
         margin-bottom: 34px;
-        width: 89%;
+        width: 100%;
+        background-color: white;       
 
-        thead {
-            th {
-                background: #84cae6;
-                padding: 5px;
-                margin: 0;
-                border-bottom: 2px solid #222;
-                text-align: left;
-
-                &:last-child {
-                    text-align: right;
-                }
-            }
+        thead th {
+            background: #3698D9;
+            color: white;
+            padding: 12px;
+            margin: 0;
+            border-right: 1px solid white;
+            text-align: center;
         }
 
         tbody {
             a {
                 margin: 3px;
                 color: #333;
+                background-color: white;
             }
 
-            tr {
-                td {
-                    padding: 3px;
-                    padding-left: 8px;
-                    vertical-align: middle;
+            tr:nth-child(even) td {
+                background-color: #f2f2f2;
 
-                    input {
-                        margin: 2px;
-                    }
-
-                    .secretSpan {
-                        float: left;
-                        margin-top: 4px;
-                    }
-
-                    .secretButton {
-                        margin-left: 5px;
-                        text-decoration: underline;
-                        cursor: pointer;
-                    }
-
-                    &:last-child {
-                        text-align: right;
-                    }
-                }
-
-                img {
-                    width: 55px;
-                    vertical-align: middle;
-                }
-
-                &:nth-child(even) {
+                a, span {
                     background-color: #f2f2f2;
                 }
+            }
+        }
+    }
+}
+
+tbody tr td {
+    padding: 7px;
+    padding-left: 8px;
+    background-color: white;
+    text-align: center;
+    border-bottom: 1px solid #F2F2F3;
+}
+
+.tbl {
+    table {
+        tbody tr {
+            td {
+                input {
+                    margin: 2px;
+                }
+
+                .secretSpan {
+                    float: left;
+                    background-color: white;
+                    margin-top: 4px;
+                }
+
+                .secretButton {
+                    margin-left: 5px;
+                    text-decoration: underline;
+                    cursor: pointer;
+                    background-color: white;
+                }
+            }
+
+            img {
+                width: 55px;
+                vertical-align: middle;
+            }
+
+            &:nth-child(even) {
+                background-color: #f2f2f2;
             }
         }
 
@@ -84,9 +110,13 @@
         font-size: 11px;
         line-height: 10px;
         margin-left: 5px;
-        margin-top: 3px;
+        margin-top: 5px;
     }
 }
+
+/*.tbl table tbody tr td:last-child {
+          text-align: right
+      }*/
 
 .pagination {
     margin-top: -34px;

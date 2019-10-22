@@ -1,9 +1,9 @@
-﻿using Castle.MicroKernel.Registration;
-using Castle.Windsor;
 
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 
 using Moq;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
 
 using Translation.Common.Contracts;
 using Translation.Common.Helpers;
@@ -13,12 +13,11 @@ using Translation.Data.UnitOfWorks.Contracts;
 
 namespace Translation.Common.Tests
 {
-
     public class BaseTests
     {
         public IWindsorContainer Container { get; set; }
 
-        protected Mock<IHostingEnvironment> MockHostingEnvironment { get; set; }
+        protected Mock<IWebHostEnvironment> MockHostingEnvironment { get; set; }
 
         protected Mock<IIntegrationClientRepository> MockIntegrationClientRepository { get; set; }
         protected Mock<IIntegrationRepository> MockIntegrationRepository { get; set; }
@@ -34,8 +33,6 @@ namespace Translation.Common.Tests
         protected Mock<IUserLoginLogRepository> MockUserLoginLogRepository { get; set; }
         protected Mock<IUserRepository> MockUserRepository { get; set; }
         protected Mock<ITranslationProviderRepository> MockTranslationProviderRepository { get; set; }
-
-
 
         protected Mock<ILabelUnitOfWork> MockLabelUnitOfWork { get; set; }
         protected Mock<ILogOnUnitOfWork> MockLogOnUnitOfWork { get; set; }
@@ -54,7 +51,7 @@ namespace Translation.Common.Tests
         {
             Container = new WindsorContainer();
 
-            MockHostingEnvironment = new Mock<IHostingEnvironment>();
+            MockHostingEnvironment = new Mock<IWebHostEnvironment>();
 
             #region Repository
             MockIntegrationClientRepository = new Mock<IIntegrationClientRepository>();
@@ -90,7 +87,7 @@ namespace Translation.Common.Tests
         public void ConfigureIocContainer()
         {
 
-            Container.Register(Component.For<IHostingEnvironment>().Instance(MockHostingEnvironment.Object).LifestyleTransient());
+            Container.Register(Component.For<IWebHostEnvironment>().Instance(MockHostingEnvironment.Object).LifestyleTransient());
 
             Container.Register(Component.For<CryptoHelper>());
 

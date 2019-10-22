@@ -17,8 +17,12 @@ namespace Translation.Client.Web.Controllers
         private readonly IIntegrationService _integrationService;
         private readonly ILabelService _labelService;
 
-        public DataController(IIntegrationService integrationService,
-                              ILabelService labelService)
+        public DataController(IOrganizationService organizationService,
+                              IJournalService journalService,
+                              ILanguageService languageService,
+                              ITranslationProviderService translationProviderService,
+                              IIntegrationService integrationService,
+                              ILabelService labelService) : base(organizationService, journalService, languageService, translationProviderService)
         {
             _integrationService = integrationService;
             _labelService = labelService;

@@ -5,17 +5,16 @@
         <span data-translation="@Model.LabelKey">@Model.LabelKey</span>
         @if (Model.InfoText.IsNotEmpty())
         {
-            <span class="info-text" data-translation="@Model.InfoText">@Model.InfoText</span>
+            <span class="info-text" data-translation="@Model.InfoText"></span>
         }
         @if (Model.IsAddNewEnabled)
         {
             <a href="@Model.AddNewUrl" target="_blank" class="plus">+</a>
         }
     </label>
-    <div class="select @(Model.IsMultiple ? "multiple-select" : "single-select") @(Model.IsAllOptionsVisible ? "radio-select" : string.Empty)"
+    <div class="select @(Model.IsMultiple ? "multiple-select" : "single-select")"
          id="select-@Model.Name" name="select-@Model.Name" data-value-field="@Model.Name" data-text-field="@Model.TextFieldName"
          data-type="@(Model.IsOptionTypeContent ? "content" : "text")"
-         data-detail="@Model.IsHavingDetailInfo" data-detail-url="@Model.DetailInfoDataUrl"
          data-url="@Model.DataUrl"
          data-parent="@Model.Parent"
          data-set-first-item="@Model.IsSetFirstItem"

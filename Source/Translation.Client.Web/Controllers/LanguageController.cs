@@ -20,14 +20,17 @@ namespace Translation.Client.Web.Controllers
 {
     public class LanguageController : BaseController
     {
-        private readonly IHostingEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
         private readonly ILanguageService _languageService;
 
-        public LanguageController(IHostingEnvironment environment,
-                                  ILanguageService languageService)
+        public LanguageController(IOrganizationService organizationService,
+                                  IJournalService journalService,
+                                  ILanguageService languageService,
+                                  ITranslationProviderService translationProviderService,
+                                  IWebHostEnvironment environment) : base(organizationService, journalService, languageService, translationProviderService)
         {
-            _environment = environment;
             _languageService = languageService;
+            _environment = environment;
         }
 
         [HttpGet]
@@ -331,6 +334,6 @@ namespace Translation.Client.Web.Controllers
             }
 
             return Json(result);
-        }
+        }       
     }
 }
