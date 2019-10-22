@@ -10,12 +10,14 @@ using Translation.Client.Web.Controllers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.LabelTranslation;
-using Translation.Common.Tests.SetupHelpers;
+using Translation.Client.Web.Unit.Tests.ServiceSetupHelpers;
+using Translation.Common.Tests.CommonForServiceAndController;
 
-using static Translation.Common.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Common.Tests.TestHelpers.AssertViewModelTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeModelTestHelper;
+using static Translation.Client.Web.Unit.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
+
 
 namespace Translation.Client.Web.Unit.Tests.Controllers
 {
@@ -2088,7 +2090,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             var result = SystemUnderTest.LabelTranslationRevisionsData(UidOne);
 
             // assert
-            AssertViewAndHeaders(result, new[] { "revision", "revisioned_by", "revisioned_at", "label_translation_name", "created_at", "" });
+            AssertViewAndHeaders(result, new[] { "revision", "revisioned_by", "revisioned_at", "label_translation", "created_at", "" });
             MockLabelService.Verify_GetLabelTranslationRevisions();
         }
 

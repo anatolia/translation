@@ -9,8 +9,8 @@ using Translation.Client.Web.Models.Label;
 using Translation.Common.Helpers;
 using static Translation.Common.Tests.TestHelpers.FakeModelTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
-using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
 using static Translation.Common.Tests.TestHelpers.AssertViewModelTestHelper;
+using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.Label
 {

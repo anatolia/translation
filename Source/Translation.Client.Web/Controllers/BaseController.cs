@@ -51,7 +51,6 @@ namespace Translation.Client.Web.Controllers
             }
         }
 
-
         private CurrentUser _currentUser;
         public CurrentUser CurrentUser
         {
@@ -83,7 +82,6 @@ namespace Translation.Client.Web.Controllers
                 return _activeTranslationProvider;
             }
         }
-
 
         public RedirectResult RedirectToHome()
         {

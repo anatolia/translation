@@ -1,7 +1,6 @@
 ﻿function getPathFromUrl(url) { return url.split("?")[0]; }
 function clearChildren(element) { while (element.firstChild) { element.removeChild(element.firstChild); } }
 
-
 function createDiv(attributes, text) {
     return createElement('div', attributes, text);
 }

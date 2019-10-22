@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Translation.Common.Tests\Translation.Common.Tests.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UnitOfWorkSetupHelper\" />
+  </ItemGroup>
+
 </Project>

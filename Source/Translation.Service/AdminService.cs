@@ -520,7 +520,7 @@ namespace Translation.Service
                 return response;
             }
 
-            user.IsSuperAdmin = true;
+            user.IsAdmin = true;
             var result = await _userRepository.Update(request.CurrentUserId, user);
             if (result)
             {

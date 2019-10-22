@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+
 using Microsoft.AspNetCore.Http;
+
 using Moq;
-using NUnit.Framework;
+
 using StandardRepository.Models.Entities;
+
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
 using Translation.Common.Models.Shared;
@@ -504,14 +507,6 @@ namespace Translation.Common.Tests.TestHelpers
             return organization;
         }
 
-        public static Organization GetOrganizationOneNotActive()
-        {
-            var organization = GetOrganizationOne();
-            organization.IsActive = BooleanTrue;
-
-            return organization;
-        }
-
         public static Organization GetOrganizationTwo()
         {
             var organization = new Organization();
@@ -524,16 +519,6 @@ namespace Translation.Common.Tests.TestHelpers
             organization.ObfuscationKey = StringSixtyFourOne;
 
             organization.IsActive = BooleanTrue;
-
-            return organization;
-        }
-
-        public static CurrentOrganization GetCurrentOrganizationTwo()
-        {
-            var organization = new CurrentOrganization();
-            organization.Id = OrganizationTwoId;
-            organization.Uid = OrganizationTwoUid;
-            organization.Name = OrganizationTwoName;
 
             return organization;
         }
@@ -648,16 +633,6 @@ namespace Translation.Common.Tests.TestHelpers
             return user;
         }
 
-        public static User GetOrganizationOneUserOneForSuccessChangePassword()
-        {
-            var user = GetOrganizationOneUserOne();
-            user.Email = EmailOne;
-            user.ObfuscationSalt = StringSixtyFourOne;
-            user.PasswordHash = PasswordHashOne;
-
-            return user;
-        }
-
         public static User GetOrganizationOneUserOnePasswordResetRequestedAtTwoDaysBefore()
         {
             var user = GetOrganizationOneUserOne();
@@ -694,13 +669,6 @@ namespace Translation.Common.Tests.TestHelpers
         {
             var user = GetOrganizationOneUserOne();
             user.IsActive = BooleanFalse;
-
-            return user;
-        }
-
-        public static User GetOrganizationOneUserOneNotValid()
-        {
-            var user = new User();
 
             return user;
         }
@@ -810,29 +778,6 @@ namespace Translation.Common.Tests.TestHelpers
             return label;
         }
 
-        public static Label GetLabelNotExist()
-        {
-            var label = GetLabel();
-            label.Id = Zero;
-
-            return label;
-        }
-
-        public static Label GetLabelNotActive()
-        {
-            var label = GetLabel();
-            label.IsActive = BooleanFalse;
-
-            return label;
-        }
-
-        public static Label GetLabelNotValid()
-        {
-            var label = new Label();
-
-            return label;
-        }
-
         public static Label GetOrganizationOneProjectOneLabelOne()
         {
             var label = new Label();
@@ -891,13 +836,6 @@ namespace Translation.Common.Tests.TestHelpers
             return label;
         }
 
-        public static Label GetOrganizationOneProjectOneLabelOneNotValid()
-        {
-            var label = new Label();
-
-            return label;
-        }
-
         public static LabelTranslation GetLabelTranslation()
         {
             var labelTranslation = new LabelTranslation();
@@ -931,29 +869,6 @@ namespace Translation.Common.Tests.TestHelpers
             list.Add(GetOrganizationOneProjectOneLabelOneLabelTranslationOne());
 
             return list;
-        }
-
-        public static LabelTranslation GetLabelTranslationNotExist()
-        {
-            var labelTranslation = GetLabelTranslation();
-            labelTranslation.Id = Zero;
-
-            return labelTranslation;
-        }
-
-        public static LabelTranslation GetLabelTranslationNotActive()
-        {
-            var labelTranslation = GetLabelTranslation();
-            labelTranslation.IsActive = BooleanFalse;
-
-            return labelTranslation;
-        }
-
-        public static LabelTranslation GetLabelTranslationNotValid()
-        {
-            var labelTranslation = new LabelTranslation();
-
-            return labelTranslation;
         }
 
         public static LabelTranslation GetOrganizationOneProjectOneLabelOneLabelTranslationOne()
@@ -1017,13 +932,6 @@ namespace Translation.Common.Tests.TestHelpers
         {
             var labelTranslation = GetOrganizationOneProjectOneLabelOneLabelTranslationOne();
             labelTranslation.IsActive = BooleanFalse;
-
-            return labelTranslation;
-        }
-
-        public static LabelTranslation GetOrganizationOneProjectOneLabelOneLabelTranslationOneNotValid()
-        {
-            var labelTranslation = new LabelTranslation();
 
             return labelTranslation;
         }
@@ -1172,20 +1080,6 @@ namespace Translation.Common.Tests.TestHelpers
             var revision = new EntityRevision<Label>();
             revision.Id = LongOne;
             revision.Revision = One;
-            revision.RevisionedAt = DateTimeOne;
-            revision.Entity = GetOrganizationOneProjectOneLabelOne();
-
-            list.Add(revision);
-
-            return list;
-        }
-
-        public static List<EntityRevision<Label>> GetOrganizationOneProjectOneLabelOneRevisionsRevisionTwoInIt()
-        {
-            var list = new List<EntityRevision<Label>>();
-            var revision = new EntityRevision<Label>();
-            revision.Id = LongOne;
-            revision.Revision = Two;
             revision.RevisionedAt = DateTimeOne;
             revision.Entity = GetOrganizationOneProjectOneLabelOne();
 
@@ -1389,24 +1283,9 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static string GetTestWebRootPath()
         {
-            var root = "";
             var currentDirectory = Directory.GetCurrentDirectory();
-            var dirList = currentDirectory.Split("\\");
-
-            for (var i = 0; i < dirList.Length; i++)
-            {
-                var dir = dirList[i];
-                if (dir != "translation")
-                {
-                    root = Path.Combine(root, dir);
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            var webRootPath = Path.Combine(root, "translation", "Test", "Translation.Common.Tests", "wwwtestroot");
+            
+            var webRootPath = Path.Combine(currentDirectory, "wwwtestroot");
             return webRootPath;
         }
 
