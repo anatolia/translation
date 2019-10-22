@@ -1378,6 +1378,7 @@ namespace Translation.Server.Unit.Tests.Services
             var request = GetUserAcceptInviteRequest();
             MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneInvitedAtOneDayBefore();
             MockUserRepository.Setup_Update_Success();
+            MockLanguageRepository.Setup_Select_Returns_Language();
             MockOrganizationRepository.Setup_Update_Success();
 
             // act
@@ -1388,6 +1389,7 @@ namespace Translation.Server.Unit.Tests.Services
             AssertReturnType<UserAcceptInviteResponse>(result);
             MockUserRepository.Verify_Select();
             MockUserRepository.Verify_Update();
+            MockLanguageRepository.Verify_Select();
             MockOrganizationRepository.Verify_Update();
         }
 
@@ -1429,6 +1431,7 @@ namespace Translation.Server.Unit.Tests.Services
             // arrange
             var request = GetUserAcceptInviteRequest();
             MockUserRepository.Setup_Select_Returns_OrganizationOneUserOneInvitedAtOneDayBefore();
+            MockLanguageRepository.Setup_Select_Returns_Language();
             MockUserRepository.Setup_Update_Success();
             MockOrganizationRepository.Setup_Update_Failed();
 
@@ -1439,6 +1442,7 @@ namespace Translation.Server.Unit.Tests.Services
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed);
             AssertReturnType<UserAcceptInviteResponse>(result);
             MockUserRepository.Verify_Select();
+            MockLanguageRepository.Verify_Select();
             MockUserRepository.Verify_Update();
             MockOrganizationRepository.Verify_Update();
         }
