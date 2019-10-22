@@ -160,5 +160,11 @@ namespace Translation.Common.Tests.TestHelpers
         public const string CaseTwo = "Case Two";
         public const string CaseThree = "Case Three";
         public const string CaseFour = "Case Four";
+
+        public const string GoogleName = "google";
+        public const string YandexName = "yandex";
+        public const string GoogleKey = "{ type project_id private_key_id private_key client_email client_id auth_uri token_uri auth_provider_x509_cert_url client_x509_cert_url }";
+        public const string YandexKey = "trns";
+
     }
 }
