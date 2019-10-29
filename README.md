@@ -5,7 +5,7 @@
 3. Cloning Project  
 4. DataBase Setup  
 5. Last Settings  
-6. The Patterns
+6. Naming Conventions and Terminology
 ## Presentation
 Translation is a project that writed with c#. We kept to Patterns of Enterprice Application Architecture on this project. ...
 ## Installs for Windows Envinroment
@@ -37,7 +37,7 @@ Translation is a project that writed with c#. We kept to Patterns of Enterprice 
 ## DataBase Setup  
 1. After PostgreSQL and PgAdmin have setuped exe files enter PgAdmin.  
 2. Right click the **Servers** and go to "Create" to "Server".  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/db_pictures/first-pgAdmin4.png)
+![image](/home/parknet/Work/anatolia/translation/Installation/db_pictures/first-pgAdmin4.png  "")
 3. Give a name for your server on **General** tab.
 4. Enter Host name: "localhost", Port:"5432", Maintenance database: "postgres", Username: "postgres" on **Connection** tab.  
 ![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/db_pictures/second-pgAdmin4.png)
@@ -54,7 +54,7 @@ Translation is a project that writed with c#. We kept to Patterns of Enterprice 
 ## Last Settings
 1. Open project in Visual Studio  
 ![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/set_picture/1_set.png)  
-2. Right Click to **Translation.Client.Web** and go to **Preferences** at bottom  
+2. Right Click to **Translation.Client.Web** and go to **Properties** at bottom  
 ![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/set_picture/2_set.png)  
 3. Select **Debug** to edit **App URL:**  
 ![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/set_picture/3_set.png)  
@@ -66,8 +66,7 @@ Translation is a project that writed with c#. We kept to Patterns of Enterprice 
 ## Naming Conventions and Terminology  
 We built this project as enterprise application architecture. 
 Using patterns in project was described for you can comprehend as soon as possible. 
-Translaion project is consist of four main part. 
-
+Translaion project is consist of four main part.  
 1. Client
 2. Server 
 3. Common
@@ -76,29 +75,55 @@ Translaion project is consist of four main part.
 ### Client  
 Client side was designed with MVC(**Model**-**View**-**Controller**) pattern. 
 In addition to this  we added **Helpers** part that includes out of MVC to describe other function in Enterprise Architecture.  
-1. Models (view models)  
+  
+1. #### Models (view models)  
    Models contain data using for transfering between controller and view components. 
    This data is isolated from other components and logic transactions.
    
-2. Views  
+2. #### Views  
    Views contain all UI(User Interface) logic of application to present data to the user.  
 
-3. Controllers  
+3. #### Controllers  
    Controllers contain complex logic to process all the business logic 
    to manipulate data using Models and interact with the Views to render the output.   
 
-4. Mappers  
+4. #### Mappers  
    Mappers create a **Model** that required to View using **Response** came from **Server** side in **Controller**.  
    It is a insulating layer between **Server** and **Client**.  
 
 ### Common  
-This folder contains comman models used by both side(Client and Server) for communication
-these models consists of;  
-1. Data Transfer Object (DTO)  
+This folder contains files used by both side(Client and Server) for communication.  
+
+1. #### Data Transfer Object (DTO)  
    DTO is a model that restrains to carry needless data to Server from Client. It is used as a part of **Response**.
    We use DTO not to send all data in **Model**.
    
+2. #### Requests  
+   **Request** is a model that using for send Client's requests to Server side.
 
+3. #### Responses  
+   **Response** is a model that using for send Server's response to Client side.  
+   
+4. #### Service Interface  
+   This interfaces uses in controllers with dependency injection to send request to Server and to get Response from Server.  
+   
+### Server  
+Server consist of components that work with Data Base(DB).   
+
+1. #### Entities (domain Models)  
+    These models creates Data Base. All information came from **Client** is saved as entity to DB.  
+    
+2. #### Factories  
+   Factory is a mapper that using to moves data between objects and DB.It convert **Request** that came from Client to entity.  
+   
+3.  #### Repositories  
+   Repository is layer that ensure to mediates between DB and **Server**. It allow us to operation without using SQL command.  
+
+4.  #### Unit of Work  
+   Unit of Work maintains a list of objects affected by a business transaction and coordinates the writing out of changes and the resolution of concurrency problems  
+  
+5. #### Services  
+   Every service has a set fo operation that ensure response  to own controller.it is a layer that doing DB transaction.
 
 
 
