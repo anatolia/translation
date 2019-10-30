@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using Shouldly;
+
 using Translation.Common.Models.Base;
 using Translation.Common.Models.DataTransferObjects;
 using static Translation.Common.Tests.TestHelpers.AssertPropertyTestHelper;
@@ -23,7 +24,6 @@ namespace Translation.Common.Tests.Models.DataTransferObjects
             AssertGuidProperty(properties, "AccessToken", dto.AccessToken);
             AssertDateTimeProperty(properties, "ExpiresAt",dto.ExpiresAt);
             AssertStringProperty(properties, "IP", dto.IP);
-
         }
     }
 }

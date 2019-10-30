@@ -20,37 +20,42 @@
   <ItemGroup>
     <Content Include="wwwtestroot\files\index.html">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="wwwtestroot\files\uploadLabelCsvTemplate.csv">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="wwwtestroot\files\uploadTranslationCsvTemplate.csv">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Castle.Windsor" Version="5.0.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
-    <PackageReference Include="Moq" Version="4.13.0" />
+    <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
     <PackageReference Include="Shouldly" Version="3.0.2" />
-    <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Source\Translation.Client.Web\Translation.Client.Web.csproj" />
     <ProjectReference Include="..\..\Source\Translation.Common\Translation.Common.csproj" />
+    <ProjectReference Include="..\..\Source\Translation.Data\Translation.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="wwwtestroot\images\flags\empty.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="wwwtestroot\images\flags\index.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="wwwtestroot\images\flags\tr.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="wwwtestroot\images\index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

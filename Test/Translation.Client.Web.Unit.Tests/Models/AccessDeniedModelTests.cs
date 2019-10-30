@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 
 using Translation.Client.Web.Models;
-using static Translation.Common.Tests.TestHelpers.FakeModelTestHelper;
+using static Translation.Client.Web.Unit.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Client.Web.Unit.Tests.Models
 {

@@ -4,27 +4,35 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Castle.MicroKernel.Registration;
+using Castle.Windsor;
+
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
+
 using Moq;
 
 using Translation.Client.Web.Controllers;
+using Translation.Client.Web.Unit.Tests.TestHelpers;
 using Translation.Common.Contracts;
 using Translation.Common.Models.Requests.User;
-using Translation.Common.Tests;
 using Translation.Common.Tests.TestFakes;
 using Translation.Service.Managers;
+
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
-using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Client.Web.Unit.Tests.Controllers
 {
-    public class ControllerBaseTests : BaseTests
+    public class ControllerBaseTests
     {
+        public IWindsorContainer Container { get; set; }
+
+        protected Mock<IWebHostEnvironment> MockHostingEnvironment { get; set; }
+
         public Mock<IOrganizationService> MockOrganizationService { get; set; }
         public Mock<IIntegrationService> MockIntegrationService { get; set; }
         public Mock<IAdminService> MockAdminService { get; set; }
@@ -34,10 +42,15 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
         public Mock<IJournalService> MockJournalService { get; set; }
         public Mock<ITranslationProviderService> MockTranslationProviderService { get; set; }
 
-        protected new void Refresh()
-        {
-            base.Refresh();
+        public Mock<ITextTranslateIntegration> MockTextTranslateIntegration { get; set; }
 
+        protected void InitializeComponents()
+        {
+            Container = new WindsorContainer();
+
+            MockHostingEnvironment = new Mock<IWebHostEnvironment>();
+
+            #region Services
             MockOrganizationService = new Mock<IOrganizationService>();
             MockIntegrationService = new Mock<IIntegrationService>();
             MockAdminService = new Mock<IAdminService>();
@@ -46,8 +59,14 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockLabelService = new Mock<ILabelService>();
             MockJournalService = new Mock<IJournalService>();
             MockTranslationProviderService = new Mock<ITranslationProviderService>();
-          
-            SetupCurrentUser();
+            #endregion
+
+            MockTextTranslateIntegration = new Mock<ITextTranslateIntegration>();
+        }
+
+        public void ConfigureIocContainer()
+        {
+            Container.Register(Component.For<IWebHostEnvironment>().Instance(MockHostingEnvironment.Object).LifestyleTransient());
 
             Container.Register(Component.For<IOrganizationService>().Instance(MockOrganizationService.Object).LifestyleTransient());
             Container.Register(Component.For<IIntegrationService>().Instance(MockIntegrationService.Object).LifestyleTransient());
@@ -57,7 +76,14 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             Container.Register(Component.For<ILabelService>().Instance(MockLabelService.Object).LifestyleTransient());
             Container.Register(Component.For<IJournalService>().Instance(MockJournalService.Object).LifestyleTransient());
             Container.Register(Component.For<ITranslationProviderService>().Instance(MockTranslationProviderService.Object).LifestyleTransient());
+            Container.Register(Component.For<ITextTranslateIntegration>().Instance(MockTextTranslateIntegration.Object).LifestyleTransient());
+        }
 
+        protected void Refresh()
+        {
+            InitializeComponents();
+            ConfigureIocContainer();
+            SetupCurrentUser();
 
             Container.Register(Component.For<AdminController>().LifestyleTransient());
             Container.Register(Component.For<DataController>().LifestyleTransient());
@@ -70,14 +96,13 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             Container.Register(Component.For<TokenController>().LifestyleTransient());
             Container.Register(Component.For<UserController>().LifestyleTransient());
             Container.Register(Component.For<TranslationProviderController>().LifestyleTransient());
-          
 
             Container.Register(Component.For<CacheManager>());
         }
 
         private void SetupCurrentUser()
         {
-            MockOrganizationService.Setup(x => x.GetCurrentUser(It.IsAny<CurrentUserRequest>())).Returns(GetOrganizationOneCurrentUserOne());
+            MockOrganizationService.Setup(x => x.GetCurrentUser(It.IsAny<CurrentUserRequest>())).Returns(FakeModelTestHelper.GetOrganizationOneCurrentUserOne());
         }
 
         public static void SetControllerContext(Controller controller)

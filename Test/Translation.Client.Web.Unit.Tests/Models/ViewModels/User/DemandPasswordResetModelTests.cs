@@ -4,9 +4,9 @@ using NUnit.Framework;
 using Shouldly;
 
 using Translation.Client.Web.Models.User;
-using static Translation.Common.Tests.TestHelpers.FakeModelTestHelper;
+using static Translation.Client.Web.Unit.Tests.TestHelpers.FakeModelTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
-using static Translation.Common.Tests.TestHelpers.AssertViewModelTestHelper;
+using static Translation.Client.Web.Unit.Tests.TestHelpers.AssertViewModelTestHelper;
 
 namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.User
 {

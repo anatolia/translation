@@ -150,11 +150,6 @@ footer {
     margin-right: 5px;
     color: #3d839f; 
   } */
-.textsearch {
-  margin-top: -3px;
-  height: 37px;
-  padding: 16px 12px 4px 55px; }
-
 h1 {
   font-size: 29px;
   margin-bottom: 21px;
@@ -711,11 +706,6 @@ tbody tr td {
 
 .show {
   display: block; }
-
-.searchResults {
-  overflow: scroll;
-  overflow-x: hidden;
-  overflow-y: scroll; }
 
 .multiple-select .active-item > span {
     padding: 4px 2px 0px;

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
+
 using NUnit.Framework;
 using Shouldly;
+
 using Translation.Common.Models.Requests.Project;
 using static Translation.Common.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
@@ -11,7 +13,6 @@ namespace Translation.Common.Tests.Models.Requests.Project
     [TestFixture]
     public class ProjectReadRequestTests
     {
-      
         [Test]
         public void ProjectReadRequest_Constructor()
         {

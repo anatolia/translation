@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Translation.Common.Helpers;
 
 namespace Translation.Common.Tests.TestHelpers
@@ -59,9 +60,6 @@ namespace Translation.Common.Tests.TestHelpers
         public const string OrganizationTwoUserOneName = "Organization Two User One";
         public const string OrganizationTwoUserOneEmail = "organizationtwouserone@gmail.com";
 
-        public const string OrganizationTwoSuperAdminUserOneName = "Organization Two Super Admin User One";
-        public const string OrganizationTwoSuperAdminUserOneEmail = "organizationtwosuperadminuserone@gmail.com";
-
         public const long OrganizationTwoIntegrationOneId = 1168161649L;
         public static Guid OrganizationTwoIntegrationOneUid => new Guid("110dadde-a4bd-4f53-abcb-fb6a1c69a7b8");
         public const string OrganizationTwoIntegrationOneName = "Organization Two Integration One";
@@ -75,27 +73,15 @@ namespace Translation.Common.Tests.TestHelpers
         public static Guid UidTwo => new Guid("5bb6cdd7-b5d1-4cf0-98c9-9bc68fa940c3");
         public static Guid UidThree => new Guid("f5fb877e-6191-4ad0-9d0f-b6f28e182423");
         public static Guid UidFour => new Guid("8b1229b2-9c01-4d8e-802f-f0deab66e4b0");
-        public static Guid UidFive => new Guid("e253c697-9261-4815-8542-4e1622c2db2b");
-        public static Guid UidSix => new Guid("81e4c578-c604-4e9d-94d6-d641f334c045");
-        public static Guid UidSeven => new Guid("fad11c2c-245c-4916-ad3f-a1524023a206");
-        public static Guid UidEight => new Guid("dce48409-3bd8-4c91-b258-f4025201e7a9");
-        public static Guid UidNine => new Guid("d4fcd9a0-2390-4a0d-be65-7de0356e5b46");
-        public static Guid UidTen => new Guid("ec8fd3bb-693c-4f87-880f-a19fac1de0cf");
 
         public static Guid[] GuidArrayZero = { };
         public static Guid[] GuidArrayOne = { UidOne };
-        public static Guid[] GuidArrayTwo = { UidOne, UidTwo };
         public static string GuidStringTwo = UidOne + "," + UidTwo;
 
         public static DateTime DateTimeOne => new DateTime(2019, 01, 01, 09, 00, 00);
         public static DateTime DateTimeTwo => new DateTime(2019, 01, 02, 18, 00, 00);
-        public static DateTime DateTimeThree => new DateTime(2019, 01, 03, 09, 00, 00);
-        public static DateTime DateTimeFour => new DateTime(2019, 01, 04, 09, 00, 00);
-        public static DateTime DateTimeFive => new DateTime(2019, 01, 05, 09, 00, 00);
-        public static DateTime DateTimeSix => new DateTime(2019, 01, 06, 09, 00, 00);
         public static DateTime DateTimeOneMinuteBefore => DateTime.UtcNow.AddMinutes(-1);
         public static DateTime DateTimeFiveMinutesBefore => DateTime.UtcNow.AddMinutes(-5);
-        public static DateTime DateTimeOneHourBefore => DateTime.UtcNow.AddHours(-1);
         public static DateTime DateTimeTwoHoursBefore => DateTime.UtcNow.AddHours(-2);
         public static DateTime DateTimeOneDayBefore => DateTime.UtcNow.AddDays(-1);
         public static DateTime DateTimeTwoDaysBefore => DateTime.UtcNow.AddDays(-2);
@@ -103,7 +89,6 @@ namespace Translation.Common.Tests.TestHelpers
 
         public const string EmptySlug = "";
         public const string SlugOne = "slug_one";
-        public const string SlugTwo = "slug_two";
 
         public const string EmptyString = "";
         public const string StringOne = "String One";
@@ -114,8 +99,6 @@ namespace Translation.Common.Tests.TestHelpers
         public const string StringSix = "String Six";
         public const string StringSeven = "String Seven";
         public const string StringEight = "String Eight";
-        public const string StringNine = "String Nine";
-        public const string StringTen = "String Ten";
 
         public const string LanguageOne = "Language One";
         public const string LanguageTwo = "Language Two";
@@ -126,30 +109,15 @@ namespace Translation.Common.Tests.TestHelpers
         public const string StringSixtyFourTwo = "bXkx";
 
         public static string PasswordHashOne => new CryptoHelper().Hash(PasswordOne, StringSixtyFourOne);
-        public static string PasswordHashTwo => new CryptoHelper().Hash(PasswordTwo, StringSixtyFourTwo);
 
-        public const int MinusOne = -1;
-        public const int MinusTwo = -2;
         public const int Zero = 0;
         public const int One = 1;
         public const int Two = 2;
         public const int Three = 3;
         public const int Four = 4;
-        public const int Five = 5;
-        public const int Six = 6;
-        public const int Seven = 7;
-        public const int Eight = 8;
         public const int Nine = 9;
         public const int Ten = 10;
         public const int OneHundred = 100;
-
-        public const double MinusDoubleOne = -1.04;
-        public const double MinusDoubleTwo = -2.04;
-        public const double MinusDoubleThree = -3.04;
-
-        public const double DoubleOne = 1.04;
-        public const double DoubleTwo = 2.04;
-        public const double DoubleThree = 3.04;
 
         public const long LongZero = 0L;
         public const long LongOne = 2147483649L;
@@ -157,10 +125,6 @@ namespace Translation.Common.Tests.TestHelpers
 
         public const bool BooleanTrue = true;
         public const bool BooleanFalse = false;
-
-        public const string DateFormatOne = "2019-01-16";
-        public const string DateFormatTwo = "2019-01-17";
-        public const string DateFormatThree = "2019-01-18";
 
         public const string InvalidPassword = "invalid-password";
         public const string PasswordOne = "PasswordOne+-2019*";
@@ -170,20 +134,14 @@ namespace Translation.Common.Tests.TestHelpers
         public const string EmptyUidString = "00000000-0000-0000-0000-000000000000";
         public const string UidStringOne = "ee4c5b8a-3498-4a7d-a9c8-74e86075853c";
         public const string UidStringTwo = "b64c5b8a-3498-4a7d-a9c8-74e86075853c";
-        public const string UidStringThree = "1f6f9edc-4da4-444f-82dd-e089c9ebd68d";
 
         public const string InvalidEmail = "invalid-email";
         public const string EmailOne = "test@test.com";
-        public const string EmailTwo = "test_1@test_1.com";
-        public const string EmailThree = "test_2@test_2.com";
 
         public const string InvalidUrl = "invalid_url";
         public const string HttpUrl = "http://turkiye.gov.tr";
-        public const string HttpWwwUrl = "http://www.turkiye.gov.tr";
-        public const string ShortHttpUrl = "http://aka.ms";
         public const string HttpsUrl = "https://turkiye.gov.tr";
-        public const string HttpsWwwUrl = "https://www.turkiye.gov.tr";
-        public const string ShortHttpsUrl = "https://aka.ms";
+       
 
         public const string IpOne = "85.201.85.116";
         public const string IpTwo = "87.204.85.116";
@@ -202,35 +160,11 @@ namespace Translation.Common.Tests.TestHelpers
         public const string CaseTwo = "Case Two";
         public const string CaseThree = "Case Three";
         public const string CaseFour = "Case Four";
-        public const string CaseFive = "Case Five";
-        public const string CaseSix = "Case Six";
-        public const string CaseSeven = "Case Seven";
-        public const string CaseEight = "Case Eight";
-        public const string CaseNine = "Case Nine";
-        public const string CaseTen = "Case Ten";
-        public const string CaseEleven = "Case Eleven";
-        public const string CaseTwelve = "Case Twelve";
-        public const string CaseThirteen = "Case Thirten";
 
-        public const string LanguagesIsoCode2Char = "tr";
+        public const string GoogleName = "google";
+        public const string YandexName = "yandex";
+        public const string GoogleKey = "{ type project_id private_key_id private_key client_email client_id auth_uri token_uri auth_provider_x509_cert_url client_x509_cert_url }";
+        public const string YandexKey = "trns";
 
-        public static string GetNewEmail()
-        {
-            return Guid.NewGuid().ToUidString() + "@email.com";
-        }
-
-        public static Guid GetStringAsGuid(string uid)
-        {
-            if (uid.IsNotUid())
-            {
-                return Guid.Empty;
-            }
-            return new Guid(uid);
-        }
-
-        public static string GetUidAsString(Guid uid)
-        {
-            return uid.ToString("D").ToLowerInvariant();
-        }
     }
 }

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+<<<<<<< HEAD
+    <add key="DbHost"  value="localhost" />
+    <add key="DbName"  value="service_translation" />
+    <add key="DbUser"  value="local_user" />
+    <add key="DbPass"  value="1234" />
+
+    <add key="SuperAdminEmail"  value="info+translation@dahusoft.com" />
+    <add key="SuperAdminFirstName"  value="Super" />
+    <add key="SuperAdminLastName"  value="Admin" />
+    <add key="SuperAdminPass"  value="Admin+-2019*" />
+                                                                                                                                            
+    <add key="PostmarkKey"  value="" />
+    <add key="PostmarkEmail"  value="info+system@dahusoft.com" />
+
+    <add key="Logging"  value="false" />
+
+    <!--TRANSLATE_PROVIDER_TYPE determines TranslateProviderType.
+        Translate provider suggests an outo translated text
+        creating a label translate.
+        It is google by default.
+        TranslateProviderType: google, yandex.-->
+    <add key="TRANSLATE_PROVIDER_TYPE"  value="google" />
+    <add key="GOOGLE_APPLICATION_CREDENTIALS_FILE"  value="Translation-99b9688ce4dd.json" />
+    <add key="YANDEX_TRANSLATE_API_KEY"  value="trnsl.1.1.20190801T113533Z.e001d56ceb5ba46a.c7226b7c4a139bfa2449e83c69d1a2e4cbaa1f09" />
+
+=======
+    <add key="DbHost"  value="_DBCONN_" />
+    <add key="DbName"  value="_DBNAME_" />
+    <add key="DbUser"  value="_DBUSER_" />
+    <add key="DbPass"  value="_DBPASS_" />
+    <add key="DbPort"  value="_DBPORT_" />
+
+    <add key="SuperAdminEmail"  value="super@admin.com" />
+    <add key="SuperAdminFirstName"  value="Super" />
+    <add key="SuperAdminLastName"  value="Admin" />
+    <add key="SuperAdminPass"  value="_SUPERP_" />
+
+    <add key="PostmarkKey"  value="" />
+    <add key="PostmarkEmail"  value="info+system@dahusoft.com" />
+
+    <add key="Logging"  value="false" />
+>>>>>>> 1c1d13d6ce0d9220b3a11e5bfa86b52f99a18494
+  </appSettings>
+</configuration>

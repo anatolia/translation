@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using Translation.Common.Models.DataTransferObjects;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 
@@ -7,7 +7,6 @@ namespace Translation.Common.Tests.TestHelpers
 {
     public class FakeDtoTestHelper
     {
-
         public static TranslationProviderDto GetTranslationProviderDto()
         {
             var dto = new TranslationProviderDto();
@@ -326,7 +325,5 @@ namespace Translation.Common.Tests.TestHelpers
 
             return dto;
         }
-
-
     }
 }
