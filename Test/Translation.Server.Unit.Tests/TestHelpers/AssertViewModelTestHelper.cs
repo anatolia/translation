@@ -11,25 +11,6 @@ namespace Translation.Server.Unit.Tests.TestHelpers
 {
     public class AssertViewModelTestHelper
     {
-        public static void AssertViewWithModel<T>(IActionResult result)
-        {
-            result.ShouldNotBeNull();
-            var viewResult = ((ViewResult)result);
-            viewResult.ViewName.ShouldBeNull();
-            viewResult.Model.ShouldNotBeNull();
-            viewResult.Model.ShouldBeAssignableTo<T>();
-        }
-
-        public static void AssertViewWithModelAndMessage<T>(string viewName, IActionResult result)
-        {
-            result.ShouldNotBeNull();
-            var viewResult = ((ViewResult)result);
-            viewResult.ViewName.ShouldNotBeNull();
-            viewResult.Model.ShouldNotBeNull();
-            viewResult.Model.ShouldBeAssignableTo<T>();
-            viewResult.ViewName.ShouldBe(viewName);
-        }
-
         public static void AssertView<T>(ViewResult result)
         {
             result.ShouldNotBeNull();
@@ -108,23 +89,6 @@ namespace Translation.Server.Unit.Tests.TestHelpers
             pagingInfo.LastUid.ShouldBe(info.LastUid);
             pagingInfo.IsAscending.ShouldBe(info.IsAscending);
             pagingInfo.TotalItemCount.ShouldBe(totalItemCountOfPagingInfo);
-        }
-
-        public static void AssertMessages(List<string> modelErrorMessages, string[] errorMessages)
-        {
-            modelErrorMessages.ShouldNotBeNull();
-
-            if (errorMessages == null)
-            {
-                modelErrorMessages.Count.ShouldBe(0);
-            }
-            else
-            {
-                for (int i = 0; i < modelErrorMessages.Count; i++)
-                {
-                    modelErrorMessages.Contains(errorMessages[i]).ShouldBeTrue();
-                }
-            }
         }
     }
 }
