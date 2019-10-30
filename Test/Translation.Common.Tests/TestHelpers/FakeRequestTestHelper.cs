@@ -21,8 +21,8 @@ using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
 using Translation.Data.Entities.Parameter;
+
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
-using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Common.Tests.TestHelpers
 {
@@ -1764,9 +1764,9 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static SignUpRequest GetSignUpRequest(Organization organization)
         {
-            var user = GetUser();
-            var request = new SignUpRequest(organization.Name, user.FirstName, user.LastName,
-                                            user.Email, PasswordOne, GetClientLogInfo());
+            var request = new SignUpRequest(organization.Name, OrganizationOneUserOneName, 
+                                            OrganizationOneName, OrganizationOneUserOneEmail,
+                                            PasswordOne, GetClientLogInfo());
 
             return request;
         }
@@ -2156,7 +2156,7 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static UserAcceptInviteRequest GetUserAcceptInviteRequest()
         {
-            var request = new UserAcceptInviteRequest(UidOne, EmailOne, StringOne, StringOne, PasswordOne, StringOne,UidOne);
+            var request = new UserAcceptInviteRequest(UidOne, EmailOne, StringOne, StringOne, PasswordOne, StringOne, UidOne);
 
             return request;
         }
@@ -2261,6 +2261,79 @@ namespace Translation.Common.Tests.TestHelpers
             request.SearchTerm = StringOne;
 
             return request;
+        }
+
+        public static PagingInfo GetPagingInfoForSelectAfter()
+        {
+            var pagingInfo = new PagingInfo();
+            pagingInfo.Skip = Zero;
+            pagingInfo.Take = OneHundred;
+            pagingInfo.IsAscending = BooleanTrue;
+            pagingInfo.LastUid = UidOne;
+            pagingInfo.TotalItemCount = Ten;
+
+            return pagingInfo;
+        }
+
+        public static PagingInfo GetPagingInfoForSelectMany()
+        {
+            var pagingInfo = new PagingInfo();
+            pagingInfo.Skip = One;
+            pagingInfo.Take = OneHundred;
+            pagingInfo.IsAscending = BooleanTrue;
+            pagingInfo.TotalItemCount = Ten;
+            pagingInfo.LastUid = UidOne;
+            pagingInfo.TotalItemCount = Ten;
+
+            return pagingInfo;
+
+        }
+
+        public static LabelListInfo GetLabelListInfo()
+        {
+            var labelListInfo = new LabelListInfo();
+            labelListInfo.LabelKey = StringOne;
+            labelListInfo.LanguageIsoCode2 = IsoCode2One;
+            labelListInfo.Translation = StringOne;
+
+            return labelListInfo;
+        }
+
+        public static List<LabelListInfo> GetLabelListInfoList()
+        {
+
+            var labelListInfoList = new List<LabelListInfo>();
+            labelListInfoList.Add(GetLabelListInfo());
+
+            return labelListInfoList;
+        }
+
+        public static List<TranslationListInfo> GetTranslationListInfoList()
+        {
+
+            var labelListInfoList = new List<TranslationListInfo>();
+            labelListInfoList.Add(GetTranslationListInfo());
+
+            return labelListInfoList;
+        }
+
+        public static TranslationListInfo GetTranslationListInfo()
+        {
+            var translationListInfo = new TranslationListInfo();
+            translationListInfo.LanguageIsoCode2 = IsoCode2One;
+            translationListInfo.Translation = StringOne;
+
+            return translationListInfo;
+        }
+
+        public static ClientLogInfo GetClientLogInfo()
+        {
+            var clientLogInfo = new ClientLogInfo();
+            clientLogInfo.Country = StringOne;
+            clientLogInfo.City = StringOne;
+            clientLogInfo.Ip = IpOne;
+
+            return clientLogInfo;
         }
     }
 }
