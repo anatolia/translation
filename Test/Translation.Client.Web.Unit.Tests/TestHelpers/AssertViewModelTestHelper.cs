@@ -3,17 +3,17 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
-
 using Shouldly;
 
 using Translation.Client.Web.Controllers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.InputModels;
 using Translation.Common.Models.Shared;
-using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
-using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
 
-namespace Translation.Common.Tests.TestHelpers
+using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Common.Tests.TestHelpers.FakeRequestTestHelper;
+
+namespace Translation.Client.Web.Unit.Tests.TestHelpers
 {
     public class AssertViewModelTestHelper
     {

@@ -12,10 +12,9 @@ using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Client.Web.Unit.Tests.ServiceSetupHelpers;
 using Translation.Common.Tests.CommonForServiceAndController;
-
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
-using static Translation.Common.Tests.TestHelpers.AssertViewModelTestHelper;
-using static Translation.Common.Tests.TestHelpers.FakeModelTestHelper;
+using static Translation.Client.Web.Unit.Tests.TestHelpers.AssertViewModelTestHelper;
+using static Translation.Client.Web.Unit.Tests.TestHelpers.FakeModelTestHelper;
 using static Translation.Client.Web.Unit.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 
 

@@ -1,6 +1,8 @@
 using System;
+using System.IO;
 
 using Microsoft.AspNetCore.Http;
+using Moq;
 
 using Translation.Client.Web.Models;
 using Translation.Client.Web.Models.Admin;
@@ -16,10 +18,11 @@ using Translation.Client.Web.Models.Token;
 using Translation.Client.Web.Models.TranslationProvider;
 using Translation.Client.Web.Models.User;
 using Translation.Common.Models.Shared;
-using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
-using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
 
-namespace Translation.Common.Tests.TestHelpers
+using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
+
+
+namespace Translation.Client.Web.Unit.Tests.TestHelpers
 {
     public class FakeModelTestHelper
     {
@@ -612,7 +615,7 @@ namespace Translation.Common.Tests.TestHelpers
         }
 
         public static LanguageCreateModel GetLanguageEditModel(string name, string originalName, string isoCode2,
-            string isoCode3, IFormFile icon)
+                                                               string isoCode3, IFormFile icon)
         {
             var model = new LanguageCreateModel();
             model.Name = name;
@@ -1500,6 +1503,106 @@ namespace Translation.Common.Tests.TestHelpers
             model.Platform = StringOne;
             model.PlatformVersion = StringOne;
             return model;
+        }
+
+        public static IFormFile GetCsvFile(int csvFileLength)
+        {
+            var mockFormFile = new Mock<IFormFile>();
+            var content = GenerateCsvContent(csvFileLength);
+            var memoryStream = new MemoryStream();
+            var streamWriter = new StreamWriter(memoryStream);
+            streamWriter.Write((string) content);
+            streamWriter.Flush();
+            memoryStream.Position = 0;
+            mockFormFile.Setup(x => x.OpenReadStream()).Returns(memoryStream);
+            mockFormFile.Setup(x => x.FileName).Returns("test.csv");
+            mockFormFile.Setup(x => x.Length).Returns(csvFileLength);
+
+            return mockFormFile.Object;
+        }
+
+        public static IFormFile GetIcon()
+        {
+            var mockFormFile = new Mock<IFormFile>();
+            mockFormFile.Setup(x => x.FileName).Returns("test.png");
+            mockFormFile.Setup(x => x.ContentType).Returns("image/png");
+
+            return mockFormFile.Object;
+        }
+
+        public static IFormFile GetIconNotContentType()
+        {
+            var mockFormFile = new Mock<IFormFile>();
+            mockFormFile.Setup(x => x.FileName).Returns("test.png");
+            mockFormFile.Setup(x => x.ContentType).Returns("not/image/png");
+
+            return mockFormFile.Object;
+        }
+
+        public static IFormFile GetInvalidIcon()
+        {
+            var mockFormFile = new Mock<IFormFile>();
+            mockFormFile.Setup(x => x.FileName).Returns("test.png");
+            mockFormFile.Setup(x => x.ContentType).Returns("");
+
+            return mockFormFile.Object;
+        }
+
+        public static string GenerateCsvContent(int length)
+        {
+            var content = "";
+            for (int i = 1; i <= length; i++)
+            {
+                content += "a";
+                if (i < length)
+                {
+                    content += ",";
+                }
+                else if (i == length)
+                {
+                    content += "\n";
+                }
+            }
+            content += content;
+
+            return content;
+        }
+
+        public static string GetTestWebRootPath()
+        {
+            var currentDirectory = Directory.GetCurrentDirectory();
+
+            var webRootPath = Path.Combine(currentDirectory, "wwwtestroot");
+            return webRootPath;
+        }
+
+        public static string GetTestWebRootPathNotExists()
+        {
+            return Path.Combine("notwwwtestroot");
+        }
+
+        private static CurrentOrganization GetCurrentOrganizationOne()
+        {
+            var organization = new CurrentOrganization();
+            organization.Id = OrganizationOneId;
+            organization.Uid = OrganizationOneUid;
+            organization.Name = OrganizationOneName;
+
+            return organization;
+        }
+
+        public static CurrentUser GetOrganizationOneCurrentUserOne()
+        {
+            var currentOrganization = GetCurrentOrganizationOne();
+            var user = new CurrentUser();
+            user.Organization = currentOrganization;
+            user.Id = OrganizationOneUserOneId;
+            user.Uid = OrganizationOneUserOneUid;
+            user.Name = OrganizationOneUserOneName;
+            user.Email = OrganizationOneUserOneEmail;
+            user.IsActive = BooleanTrue;
+
+            return user;
         }
     }
 }

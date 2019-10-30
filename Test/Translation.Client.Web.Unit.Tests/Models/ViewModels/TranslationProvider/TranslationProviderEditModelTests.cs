@@ -7,8 +7,8 @@ using Shouldly;
 using Translation.Client.Web.Models.TranslationProvider;
 using Translation.Common.Helpers;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
-using static Translation.Common.Tests.TestHelpers.AssertViewModelTestHelper;
-using static Translation.Common.Tests.TestHelpers.FakeModelTestHelper;
+using static Translation.Client.Web.Unit.Tests.TestHelpers.AssertViewModelTestHelper;
+using static Translation.Client.Web.Unit.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.TranslationProvider
 {

@@ -11,9 +11,9 @@ using Translation.Common.Models.Requests.User.LoginLog;
 using Translation.Common.Models.Responses.Organization;
 using Translation.Common.Models.Responses.User;
 using Translation.Common.Models.Responses.User.LoginLog;
+using Translation.Common.Models.Shared;
 using static Translation.Common.Tests.TestHelpers.FakeDtoTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
-using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Client.Web.Unit.Tests.ServiceSetupHelpers
 {
@@ -172,6 +172,19 @@ namespace Translation.Client.Web.Unit.Tests.ServiceSetupHelpers
         {
             service.Setup(x => x.GetCurrentUser(It.IsAny<CurrentUserRequest>()))
                 .Returns(GetOrganizationTwoCurrentSuperAdminUser());
+        }
+
+        public static CurrentUser GetOrganizationTwoCurrentSuperAdminUser()
+        {
+            var user = new CurrentUser();
+            user.Id = OrganizationTwoUserOneId;
+            user.Uid = OrganizationTwoUserOneUid;
+            user.Name = OrganizationTwoUserOneName;
+            user.Email = OrganizationTwoUserOneEmail;
+            user.IsActive = BooleanTrue;
+            user.IsSuperAdmin = BooleanTrue;
+
+            return user;
         }
 
         public static void Verify_GetCurrentUser(this Mock<IOrganizationService> service)
