@@ -1,12 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-
 using Microsoft.AspNetCore.Http;
-
 using Moq;
-
 using StandardRepository.Models.Entities;
-
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
 using Translation.Common.Models.Shared;
@@ -14,8 +10,9 @@ using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
 using Translation.Data.Entities.Parameter;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
+using static Translation.Common.Tests.TestHelpers.FakeRequestTestHelper;
 
-namespace Translation.Common.Tests.TestHelpers
+namespace Translation.Server.Unit.Tests.TestHelpers
 {
     public class FakeEntityTestHelper
     {
@@ -744,19 +741,6 @@ namespace Translation.Common.Tests.TestHelpers
             return user;
         }
 
-        public static CurrentUser GetOrganizationTwoCurrentSuperAdminUser()
-        {
-            var user = new CurrentUser();
-            user.Id = OrganizationTwoUserOneId;
-            user.Uid = OrganizationTwoUserOneUid;
-            user.Name = OrganizationTwoUserOneName;
-            user.Email = OrganizationTwoUserOneEmail;
-            user.IsActive = BooleanTrue;
-            user.IsSuperAdmin = BooleanTrue;
-
-            return user;
-        }
-
         public static Label GetLabel()
         {
             var label = new Label();
@@ -1088,79 +1072,6 @@ namespace Translation.Common.Tests.TestHelpers
             return list;
         }
 
-        public static PagingInfo GetPagingInfoForSelectAfter()
-        {
-            var pagingInfo = new PagingInfo();
-            pagingInfo.Skip = Zero;
-            pagingInfo.Take = OneHundred;
-            pagingInfo.IsAscending = BooleanTrue;
-            pagingInfo.LastUid = UidOne;
-            pagingInfo.TotalItemCount = Ten;
-
-            return pagingInfo;
-        }
-
-        public static PagingInfo GetPagingInfoForSelectMany()
-        {
-            var pagingInfo = new PagingInfo();
-            pagingInfo.Skip = One;
-            pagingInfo.Take = OneHundred;
-            pagingInfo.IsAscending = BooleanTrue;
-            pagingInfo.TotalItemCount = Ten;
-            pagingInfo.LastUid = UidOne;
-            pagingInfo.TotalItemCount = Ten;
-
-            return pagingInfo;
-
-        }
-
-        public static LabelListInfo GetLabelListInfo()
-        {
-            var labelListInfo = new LabelListInfo();
-            labelListInfo.LabelKey = StringOne;
-            labelListInfo.LanguageIsoCode2 = IsoCode2One;
-            labelListInfo.Translation = StringOne;
-
-            return labelListInfo;
-        }
-
-        public static List<LabelListInfo> GetLabelListInfoList()
-        {
-
-            var labelListInfoList = new List<LabelListInfo>();
-            labelListInfoList.Add(GetLabelListInfo());
-
-            return labelListInfoList;
-        }
-
-        public static List<TranslationListInfo> GetTranslationListInfoList()
-        {
-
-            var labelListInfoList = new List<TranslationListInfo>();
-            labelListInfoList.Add(GetTranslationListInfo());
-
-            return labelListInfoList;
-        }
-
-        public static TranslationListInfo GetTranslationListInfo()
-        {
-            var translationListInfo = new TranslationListInfo();
-            translationListInfo.LanguageIsoCode2 = IsoCode2One;
-            translationListInfo.Translation = StringOne;
-
-            return translationListInfo;
-        }
-
-        public static ClientLogInfo GetClientLogInfo()
-        {
-            var clientLogInfo = new ClientLogInfo();
-            clientLogInfo.Country = StringOne;
-            clientLogInfo.City = StringOne;
-            clientLogInfo.Ip = IpOne;
-
-            return clientLogInfo;
-        }
-
         public static Journal GetJournal()
         {
             var journal = new Journal();
@@ -1216,82 +1127,6 @@ namespace Translation.Common.Tests.TestHelpers
             var user = GetUser();
 
             return (uowResult, organization, user);
-        }
-
-        public static IFormFile GetCsvFile(int csvFileLength)
-        {
-            var mockFormFile = new Mock<IFormFile>();
-            var content = GenerateCsvContent(csvFileLength);
-            var memoryStream = new MemoryStream();
-            var streamWriter = new StreamWriter(memoryStream);
-            streamWriter.Write(content);
-            streamWriter.Flush();
-            memoryStream.Position = 0;
-            mockFormFile.Setup(x => x.OpenReadStream()).Returns(memoryStream);
-            mockFormFile.Setup(x => x.FileName).Returns("test.csv");
-            mockFormFile.Setup(x => x.Length).Returns(csvFileLength);
-
-            return mockFormFile.Object;
-        }
-
-        public static string GenerateCsvContent(int length)
-        {
-            var content = "";
-            for (int i = 1; i <= length; i++)
-            {
-                content += "a";
-                if (i < length)
-                {
-                    content += ",";
-                }
-                else if (i == length)
-                {
-                    content += "\n";
-                }
-            }
-            content += content;
-
-            return content;
-        }
-
-        public static IFormFile GetIcon()
-        {
-            var mockFormFile = new Mock<IFormFile>();
-            mockFormFile.Setup(x => x.FileName).Returns("test.png");
-            mockFormFile.Setup(x => x.ContentType).Returns("image/png");
-
-            return mockFormFile.Object;
-        }
-
-        public static IFormFile GetIconNotContentType()
-        {
-            var mockFormFile = new Mock<IFormFile>();
-            mockFormFile.Setup(x => x.FileName).Returns("test.png");
-            mockFormFile.Setup(x => x.ContentType).Returns("not/image/png");
-
-            return mockFormFile.Object;
-        }
-
-        public static IFormFile GetInvalidIcon()
-        {
-            var mockFormFile = new Mock<IFormFile>();
-            mockFormFile.Setup(x => x.FileName).Returns("test.png");
-            mockFormFile.Setup(x => x.ContentType).Returns("");
-
-            return mockFormFile.Object;
-        }
-
-        public static string GetTestWebRootPath()
-        {
-            var currentDirectory = Directory.GetCurrentDirectory();
-            
-            var webRootPath = Path.Combine(currentDirectory, "wwwtestroot");
-            return webRootPath;
-        }
-
-        public static string GetTestWebRootPathNotExists()
-        {
-            return Path.Combine("notwwwtestroot");
         }
     }
 }

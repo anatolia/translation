@@ -2,7 +2,7 @@
 using Shouldly;
 
 using Translation.Data.Factories;
-using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
+using static Translation.Server.Unit.Tests.TestHelpers.FakeEntityTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 

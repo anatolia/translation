@@ -8,7 +8,7 @@ using StandardRepository.Models;
 
 using Translation.Data.Entities.Main;
 using Translation.Data.Repositories.Contracts;
-using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
+using static Translation.Server.Unit.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Server.Unit.Tests.RepositorySetupHelpers
 {

@@ -3,7 +3,7 @@
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
 using Translation.Data.UnitOfWorks.Contracts;
-using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
+using static Translation.Server.Unit.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Server.Unit.Tests.UnitOfWorkSetupHelper
 {
