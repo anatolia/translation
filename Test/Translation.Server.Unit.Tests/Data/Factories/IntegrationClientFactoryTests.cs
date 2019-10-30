@@ -3,7 +3,7 @@ using Shouldly;
 
 using Translation.Common.Helpers;
 using Translation.Data.Factories;
-using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
+using static Translation.Server.Unit.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Server.Unit.Tests.Data.Factories
 {

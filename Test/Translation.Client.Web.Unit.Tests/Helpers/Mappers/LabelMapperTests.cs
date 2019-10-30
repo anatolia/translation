@@ -5,7 +5,7 @@ using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.LabelTranslation;
 using static Translation.Common.Tests.TestHelpers.FakeDtoTestHelper;
-using static Translation.Common.Tests.TestHelpers.FakeModelTestHelper;
+using static Translation.Client.Web.Unit.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Client.Web.Unit.Tests.Helpers.Mappers
 {

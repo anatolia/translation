@@ -12,9 +12,10 @@ using Translation.Common.Models.Responses.User.LoginLog;
 using Translation.Common.Models.Shared;
 using Translation.Server.Unit.Tests.RepositorySetupHelpers;
 using Translation.Server.Unit.Tests.UnitOfWorkSetupHelper;
+
 using static Translation.Common.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
-using static Translation.Common.Tests.TestHelpers.AssertViewModelTestHelper;
+using static Translation.Server.Unit.Tests.TestHelpers.AssertViewModelTestHelper;
 using static Translation.Server.Unit.Tests.TestHelpers.AssertResponseTestHelper;
 
 namespace Translation.Server.Unit.Tests.Services
