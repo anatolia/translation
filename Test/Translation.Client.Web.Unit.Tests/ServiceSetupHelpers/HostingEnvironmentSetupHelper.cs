@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 
 using Moq;
-using  static Translation.Client.Web.Unit.Tests.TestHelpers.FakeModelTestHelper;
+
+using static Translation.Client.Web.Unit.Tests.TestHelpers.FakeModelTestHelper;
 
 namespace Translation.Client.Web.Unit.Tests.ServiceSetupHelpers
 {
