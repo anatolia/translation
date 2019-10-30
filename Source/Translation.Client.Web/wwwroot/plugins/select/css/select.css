@@ -143,30 +143,18 @@
         display: none; }
       .select .select-content .select-item.hover {
         background-color: #F0F8FE; }
-    .select .select-item.content-item {
-        display: flex;
-        align-items: center;
-        background-color:#f7f7f7;
-        border-bottom: 1px solid #ddd;
-    }
-
+  .select .select-item.content-item {
+    display: flex;
+    align-items: center; }
     .select .select-item.content-item .select-item-image {
       width: auto;
       background: transparent; }
     .select .select-item.content-item .select-item-text {
       margin-left: 10px;
-      background: transparent; 
-    }
+      background: transparent; }
 
-    .select .select-item.content-item:hover{
-        background: #ddd;
-    }
-
-
-
-    .single-select .select-button {
-        display: flex;
-    }
+.single-select .select-button {
+  display: flex; }
   .single-select .select-button .select-button-input {
     width: 100%; 
     line-height: 20px;
