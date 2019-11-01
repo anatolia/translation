@@ -9,6 +9,7 @@
 *.userosscache
 *.sln.docstates
 *.orig
+*.css.orig
 
 Source/Translation.Client.Web/App.config
 
