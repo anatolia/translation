@@ -26,14 +26,14 @@ Translation is a project that writed with c#. We kept to Patterns of Enterprice 
 1. After Git installed create a [Github](https://github.com) account.  
 2. Create a file on your PC to cloning the project  
 3. Fork project to your account from [here](https://github.com/anatolia/translation)  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/git_pictures/1_git.png)
+![Image](Doc/Installation/git_pictures/1_git.png)
 4. Clone the project address from your github repository  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/git_pictures/2_git.png)
+![Image](Doc/Installation/git_pictures/2_git.png)
 5. Open your file that created before, and right click inside the file to open the **Git Bash**  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/git_pictures/3_git.png)
+![Image](Doc/Installation/git_pictures/3_git.png)
 6. Write **git clone** and paste the project address that had copied before on Git Bash Command Line  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/git_pictures/4_git.png)
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/git_pictures/5_git.png)
+![Image](Doc/Installation/git_pictures/4_git.png)
+![Image](Doc/Installation/git_pictures/5_git.png)
 ## DataBase Setup  
 1. After PostgreSQL and PgAdmin have setuped exe files enter PgAdmin.  
 2. Right click the **Servers** and go to "Create" to "Server".  
