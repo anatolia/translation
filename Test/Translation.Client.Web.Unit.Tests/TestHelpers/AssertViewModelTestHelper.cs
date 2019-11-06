@@ -3,18 +3,16 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
-
-using NUnit.Framework;
 using Shouldly;
 
 using Translation.Client.Web.Controllers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.InputModels;
 using Translation.Common.Models.Shared;
-using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
-using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
 
-namespace Translation.Common.Tests.TestHelpers
+using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
+
+namespace Translation.Client.Web.Unit.Tests.TestHelpers
 {
     public class AssertViewModelTestHelper
     {
@@ -157,12 +155,6 @@ namespace Translation.Common.Tests.TestHelpers
             result.ActionName.ShouldBe(actionName);
         }
 
-        public static void AssertReturnType<T>(T result)
-        {
-            result.ShouldNotBeNull();
-            result.ShouldBeAssignableTo<T>();
-        }
-
         public static void AssertPagingInfo(JsonResult result)
         {
             var pagingInfo = new PagingInfo();
@@ -171,26 +163,6 @@ namespace Translation.Common.Tests.TestHelpers
             resultValue.PagingInfo.Type.ShouldBe(PagingInfo.PAGE_NUMBERS);
             resultValue.PagingInfo.Take.ShouldBe(pagingInfo.Take);
             resultValue.PagingInfo.Skip.ShouldBe(pagingInfo.Skip);
-        }
-
-        public static void AssertPagingInfoForSelectAfter(PagingInfo info, int totalItemCountOfPagingInfo)
-        {
-            var pagingInfo = GetPagingInfoForSelectAfter();
-            pagingInfo.Skip.ShouldBe(info.Skip);
-            pagingInfo.Take.ShouldBe(info.Take);
-            pagingInfo.LastUid.ShouldBe(info.LastUid);
-            pagingInfo.IsAscending.ShouldBe(info.IsAscending);
-            pagingInfo.TotalItemCount.ShouldBe(totalItemCountOfPagingInfo);
-        }
-
-        public static void AssertPagingInfoForSelectMany(PagingInfo info, int totalItemCountOfPagingInfo)
-        {
-            var pagingInfo = GetPagingInfoForSelectMany();
-            pagingInfo.Skip.ShouldBe(info.Skip);
-            pagingInfo.Take.ShouldBe(info.Take);
-            pagingInfo.LastUid.ShouldBe(info.LastUid);
-            pagingInfo.IsAscending.ShouldBe(info.IsAscending);
-            pagingInfo.TotalItemCount.ShouldBe(totalItemCountOfPagingInfo);
         }
 
         public static void AssertHiddenInputModel(HiddenInputModel input, string name, string value = "")

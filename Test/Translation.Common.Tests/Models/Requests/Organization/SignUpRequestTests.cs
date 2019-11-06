@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections;
+
 using NUnit.Framework;
 using Shouldly;
+
 using Translation.Common.Models.Requests.Organization;
 using Translation.Common.Models.Shared;
-using Translation.Common.Tests.TestHelpers;
+
 using static Translation.Common.Tests.TestHelpers.FakeRequestTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
-using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
 
 namespace Translation.Common.Tests.Models.Requests.Organization
 {

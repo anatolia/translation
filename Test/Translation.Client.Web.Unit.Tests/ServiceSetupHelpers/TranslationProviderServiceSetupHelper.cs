@@ -7,7 +7,7 @@ using Translation.Common.Enumerations;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.TranslationProvider;
 using Translation.Common.Models.Responses.TranslationProvider;
-using static Translation.Common.Tests.TestHelpers.FakeModelTestHelper;
+using static Translation.Client.Web.Unit.Tests.TestHelpers.FakeModelTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeDtoTestHelper;
 
 namespace Translation.Client.Web.Unit.Tests.ServiceSetupHelpers

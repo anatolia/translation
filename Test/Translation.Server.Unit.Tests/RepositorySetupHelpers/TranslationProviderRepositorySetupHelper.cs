@@ -8,14 +8,13 @@ using StandardRepository.Models;
 
 using Translation.Data.Entities.Domain;
 using Translation.Data.Repositories.Contracts;
-using static Translation.Common.Tests.TestHelpers.FakeEntityTestHelper;
+using static Translation.Server.Unit.Tests.TestHelpers.FakeEntityTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 
 namespace Translation.Server.Unit.Tests.RepositorySetupHelpers
 {
     public static class TranslationProviderRepositorySetupHelper
     {
-
         public static void Setup_Update_Success(this Mock<ITranslationProviderRepository> repository)
         {
             repository.Setup(x => x.Update(It.IsAny<long>(),
@@ -158,6 +157,5 @@ namespace Translation.Server.Unit.Tests.RepositorySetupHelpers
                                                It.IsAny<bool>(),
                                                It.IsAny<List<OrderByInfo<TranslationProvider>>>()));
         }
-
     }
 }

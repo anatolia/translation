@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
 
 using Translation.Client.Web.Models.Organization;
-using static Translation.Common.Tests.TestHelpers.FakeModelTestHelper;
-using static Translation.Common.Tests.TestHelpers.AssertViewModelTestHelper;
+using static Translation.Client.Web.Unit.Tests.TestHelpers.FakeModelTestHelper;
+using static Translation.Client.Web.Unit.Tests.TestHelpers.AssertViewModelTestHelper;
 
 namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.Organization
 {
