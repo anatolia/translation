@@ -96,7 +96,11 @@ Translation is a project that writed with c#. We kept to Patterns of Enterprice 
   
 >* At last **https://localhost:14435;http://localhost:10005**  
   
-![Image](Doc/Installation/set_picture/3_set.png)  
+![Image](Doc/Installation/set_picture/4_set.png)  
+
+5. Match your DataBase infos in your App.config file under the Translation.Client.Web  
+  
+  ![Image](Doc/Installation/set_picture/5_set.png)
   
 ## Naming Conventions and Terminology  
 We built this project as enterprise application architecture. 
