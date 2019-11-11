@@ -55,7 +55,7 @@
         position: relative;
         cursor: pointer;
         display: flex;
-        overflow: scroll;
+        overflow-y: scroll;
 
         .select-button-input {
             display: inline-block;
