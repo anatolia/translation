@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 
@@ -103,6 +104,39 @@ namespace Translation.Common.Helpers
         public static bool IsNotBasicDataUploadExtension(this string text)
         {
             return !IsBasicDataUploadExtension(text);
+        }
+
+        public static string ToBase64(this byte[] text)
+        {
+            return Convert.ToBase64String(text);
+        }
+
+        public static byte[] FromBase64(this string text)
+        {
+            return Convert.FromBase64CharArray(text.ToCharArray(), 0, text.Length);
+        }
+
+        public static T ThrowIfNullOrEmpty<T>(this T obj, string message = "", bool condition = false)
+        {
+            return obj == null || condition
+                ? throw new ArgumentNullException(message)
+                : obj is string && (obj as string).IsEmpty() 
+                    ? throw new ArgumentNullException(message) 
+                    : obj;
+        }
+
+        public static long ThrowIfWrongId(this long id, string name = "")
+        {
+            return id < 1
+                ? throw new ArgumentException(name.IsEmpty() ? id.ToString() : $"{name} => {id}")
+                : id;
+        }
+
+        public static Guid ThrowIfWrongUid(this Guid guid, string name = "")
+        {
+            return guid.IsEmptyGuid()
+                ? throw new ArgumentException(name.IsEmpty() ? guid.ToString() : $"{name} => {guid}")
+                : guid;
         }
     }
 }

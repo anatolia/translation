@@ -1,7 +1,5 @@
-﻿using System;
-using System.ComponentModel;
-using System.Configuration;
-using System.Threading.Tasks;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -11,10 +9,9 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.ProjectModel;
+using System;
+using System.Configuration;
+using System.Threading.Tasks;
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.DependencyInstallers;
 using Translation.Common.Contracts;
@@ -49,19 +46,19 @@ namespace Translation.Client.Web
             });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                    .AddCookie(x =>
-                    {
-                        x.Cookie.Name = ConstantHelper.APP_NAME;
-                        x.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                        x.Cookie.SameSite = SameSiteMode.Strict;
-                        x.Cookie.HttpOnly = true;
-                        x.Cookie.IsEssential = true;
-                        x.SlidingExpiration = true;
-                        x.ExpireTimeSpan = TimeSpan.FromHours(8);
-                        x.LoginPath = "/User/LogOn";
-                        x.LogoutPath = "/User/LogOff";
-                        x.AccessDeniedPath = "/User/AccessDenied";
-                    });
+                .AddCookie(x =>
+                {
+                    x.Cookie.Name = ConstantHelper.APP_NAME;
+                    x.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    x.Cookie.SameSite = SameSiteMode.Strict;
+                    x.Cookie.HttpOnly = true;
+                    x.Cookie.IsEssential = true;
+                    x.SlidingExpiration = true;
+                    x.ExpireTimeSpan = TimeSpan.FromHours(8);
+                    x.LoginPath = "/User/LogOn";
+                    x.LogoutPath = "/User/LogOff";
+                    x.AccessDeniedPath = "/User/AccessDenied";
+                });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -88,7 +85,8 @@ namespace Translation.Client.Web
 
             DbGeneratorHelper.Generate(AutofacContainer, env.WebRootPath);
 
-            var forwardingOptions = new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto };
+            var forwardingOptions = new ForwardedHeadersOptions
+                {ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto};
             forwardingOptions.KnownNetworks.Clear();
             forwardingOptions.KnownProxies.Clear();
             app.UseForwardedHeaders(forwardingOptions);
@@ -111,10 +109,10 @@ namespace Translation.Client.Web
                 {
                     x.Run(async (context) =>
                     {
-                        var feature = context.Features.Get<IExceptionHandlerPathFeature>();
-
-                        var exceptionHelper = new ExceptionLogHelper();
-                        exceptionHelper.LogException(feature.Error, env.ContentRootPath);
+                        new ExceptionLogHelper()
+                            .LogException(
+                                context.Features.Get<IExceptionHandlerPathFeature>().Error, 
+                                env.ContentRootPath);
 
                         await Task.Run(() => context.Response.Redirect("/views/error.html"));
                     });

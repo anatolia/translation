@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Translation.Common.Helpers
 {
@@ -11,11 +11,11 @@ namespace Translation.Common.Helpers
         public int GetRandomNumber()
         {
             var byteArray = new byte[4];
-            var provider = new RNGCryptoServiceProvider();
-            provider.GetBytes(byteArray);
-
-            var randomNumber = BitConverter.ToInt32(byteArray, 0);
-            return Math.Abs(randomNumber);
+            using (var provider = new RNGCryptoServiceProvider())
+            {
+                provider.GetBytes(byteArray);
+                return Math.Abs(BitConverter.ToInt32(byteArray, 0));
+            }
         }
 
         public byte[] GetRandomData(int bits)
@@ -46,17 +46,17 @@ namespace Translation.Common.Helpers
 
         public string GetKeyAsString()
         {
-            return Convert.ToBase64String(GetKey());
+            return GetKey().ToBase64();
         }
 
         public string GetIVAsString()
         {
-            return Convert.ToBase64String(GetIV());
+            return GetIV().ToBase64();
         }
 
         public string GetSaltAsString()
         {
-            return Convert.ToBase64String(GetSalt());
+            return GetSalt().ToBase64();
         }
 
         public string ConvertToString(byte[] text)
@@ -71,15 +71,19 @@ namespace Translation.Common.Helpers
 
         public string Hash(string text, string salt)
         {
-            var hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(text, ConvertToByteArray(salt), KeyDerivationPrf.HMACSHA512, 28657, 256 / 8));
-            return hashed;
+            return Convert.ToBase64String(
+                KeyDerivation.Pbkdf2(
+                    text,
+                    salt.FromBase64(),
+                    KeyDerivationPrf.HMACSHA512,
+                    28657,
+                    256 / 8));
         }
 
         public string Encrypt(string text, byte[] key, byte[] iv)
         {
             ValidateParameters(text, key, iv);
-
-            var textInBytes = ConvertToByteArray(Convert.ToBase64String(Encoding.UTF8.GetBytes(text)));
+            var textInBytes = Encoding.UTF8.GetBytes(text).ToBase64().FromBase64();
             byte[] result;
             using (var aes = Aes.Create())
             {
@@ -89,29 +93,25 @@ namespace Translation.Common.Helpers
                 aes.IV = iv;
 
                 using (var encryptor = aes.CreateEncryptor(key, iv))
+                using (var to = new MemoryStream())
+                using (var writer = new CryptoStream(to, encryptor, CryptoStreamMode.Write))
                 {
-                    using (var to = new MemoryStream())
-                    {
-                        using (var writer = new CryptoStream(to, encryptor, CryptoStreamMode.Write))
-                        {
-                            writer.Write(textInBytes, 0, textInBytes.Length);
-                            writer.FlushFinalBlock();
-                            result = to.ToArray();
-                        }
-                    }
+                    writer.Write(textInBytes, 0, textInBytes.Length);
+                    writer.FlushFinalBlock();
+                    result = to.ToArray();
                 }
 
                 aes.Clear();
             }
 
-            return ConvertToString(result);
+            return result.ToBase64();
         }
 
         public string Decrypt(string text, byte[] key, byte[] iv)
         {
             ValidateParameters(text, key, iv);
 
-            var textInBytes = ConvertToByteArray(text);
+            var textInBytes = text.FromBase64();
             byte[] result;
             int decryptedByteCount;
             using (var aes = Aes.Create())
@@ -124,23 +124,21 @@ namespace Translation.Common.Helpers
                 try
                 {
                     using (var decryptor = aes.CreateDecryptor(key, iv))
+                    using (var from = new MemoryStream(textInBytes))
+                    using (var reader = new CryptoStream(from, decryptor, CryptoStreamMode.Read))
                     {
-                        using (var from = new MemoryStream(textInBytes))
-                        {
-                            using (var reader = new CryptoStream(from, decryptor, CryptoStreamMode.Read))
-                            {
-                                result = new byte[textInBytes.Length];
-                                decryptedByteCount = reader.Read(result, 0, result.Length);
-                            }
-                        }
+                        result = new byte[textInBytes.Length];
+                        decryptedByteCount = reader.Read(result, 0, result.Length);
                     }
                 }
                 catch (Exception)
                 {
                     return string.Empty;
                 }
-
-                aes.Clear();
+                finally
+                {
+                    aes.Clear();
+                }
             }
 
             return Encoding.UTF8.GetString(result, 0, decryptedByteCount);
@@ -148,28 +146,14 @@ namespace Translation.Common.Helpers
 
         private static void ValidateParameters(string text, byte[] key, byte[] iv)
         {
-            if (text == null || text.Length <= 0)
-            {
-                throw new ArgumentNullException(nameof(text));
-            }
-
-            if (key == null || key.Length <= 0)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
-
-            if (iv == null || iv.Length <= 0)
-            {
-                throw new ArgumentNullException(nameof(iv));
-            }
+            text.ThrowIfNullOrEmpty(nameof(text));
+            key.ThrowIfNullOrEmpty(nameof(key));
+            iv.ThrowIfNullOrEmpty(nameof(iv));
         }
 
         private static void ValidateAesInstanceCreation(Aes aes)
         {
-            if (aes == null)
-            {
-                throw new Exception("Crypto algorithm not created!");
-            }
+            aes.ThrowIfNullOrEmpty("Crypto algorithm not created!");
         }
     }
 }

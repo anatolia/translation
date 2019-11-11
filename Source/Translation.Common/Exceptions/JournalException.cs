@@ -6,7 +6,6 @@ namespace Translation.Common.Exceptions
     {
         public JournalException(string message) : base(message)
         {
-
         }
     }
 }

@@ -7,9 +7,25 @@
         public static readonly ResponseStatus Failed = new ResponseStatus(2, "Failed", "request_failed");
         public static readonly ResponseStatus Invalid = new ResponseStatus(3, "Invalid", "request_not_valid");
 
-        private ResponseStatus(int value, string displayName, string description) : base(value, displayName, description) { }
+        private ResponseStatus(int value, string displayName, string description) 
+            : base(value, displayName, description)
+        {
+        }
 
-        public bool IsSuccess { get { return Value == Success.Value && DisplayName == Success.DisplayName; } }
-        public bool IsNotSuccess { get { return !IsSuccess; } }
+        public bool IsSuccess
+        {
+            get
+            {
+                return Value == Success.Value && DisplayName == Success.DisplayName;
+            }
+        }
+
+        public bool IsNotSuccess 
+        {
+            get
+            {
+                return !IsSuccess;
+            }
+        }
     }
 }

@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-
-using Autofac;
+﻿using Autofac;
 using StandardRepository.Helpers;
 using StandardRepository.Models;
 using StandardRepository.PostgreSQL.DbGenerator;
 using StandardRepository.PostgreSQL.Factories;
 using StandardRepository.PostgreSQL.Helpers;
 using StandardRepository.PostgreSQL.Helpers.SqlExecutor;
-
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using Translation.Common.Contracts;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Organization;
@@ -29,11 +27,17 @@ namespace Translation.Client.Web.Helpers
         {
             var connectionSettings = container.Resolve<ConnectionSettings>();
             var adminSettings = container.Resolve<AdminSettings>();
-            var typeLookup = container.Resolve<PostgreSQLTypeLookup>();
             var entityUtils = container.Resolve<EntityUtils>();
 
-            var masterConnectionString = PostgreSQLConnectionFactory.GetConnectionString(connectionSettings.DbHost, connectionSettings.DbNameMaster, connectionSettings.DbUser, connectionSettings.DbPassword, connectionSettings.DbPort);
-            var masterConnectionFactory = new PostgreSQLConnectionFactory(masterConnectionString);
+            var masterConnectionFactory =
+                new PostgreSQLConnectionFactory(
+                    PostgreSQLConnectionFactory.GetConnectionString(
+                        connectionSettings.DbHost,
+                        connectionSettings.DbNameMaster,
+                        connectionSettings.DbUser,
+                        connectionSettings.DbPassword,
+                        connectionSettings.DbPort));
+
             var sqlExecutorMaster = new PostgreSQLExecutor(masterConnectionFactory, entityUtils);
 
             var connectionString = PostgreSQLConnectionFactory.GetConnectionString(connectionSettings);
@@ -42,7 +46,12 @@ namespace Translation.Client.Web.Helpers
 
             var organizationService = container.Resolve<IOrganizationService>();
 
-            var dbGenerator = new PostgreSQLDbGenerator(typeLookup, entityUtils, sqlExecutorMaster, sqlExecutor);
+            var dbGenerator = new PostgreSQLDbGenerator(
+                container.Resolve<PostgreSQLTypeLookup>(), 
+                entityUtils,
+                sqlExecutorMaster, 
+                sqlExecutor);
+
             if (!dbGenerator.IsDbExistsDb(connectionSettings.DbName))
             {
                 dbGenerator.CreateDb(connectionSettings.DbName);
@@ -52,14 +61,20 @@ namespace Translation.Client.Web.Helpers
                 var languageFactory = container.Resolve<LanguageFactory>();
                 var (turkish, english) = InsertLanguages(languageRepository, languageFactory);
 
-                var translationProviderRepository = container.Resolve<ITranslationProviderRepository>();
-                var translationProviderFactory = container.Resolve<TranslationProviderFactory>();
-                var (yandex, google) = InsertTranslationProviders(translationProviderRepository, translationProviderFactory);
+                var (yandex, google) = InsertTranslationProviders(
+                    container.Resolve<ITranslationProviderRepository>(),
+                    container.Resolve<TranslationProviderFactory>());
 
                 var organizationRepository = container.Resolve<IOrganizationRepository>();
                 var userRepository = container.Resolve<IUserRepository>();
                 var projectRepository = container.Resolve<IProjectRepository>();
-                var organizationId = InsertAdmin(adminSettings, organizationService, organizationRepository, userRepository, projectRepository, languageRepository);
+                var organizationId = InsertAdmin(
+                    adminSettings,
+                    organizationService,
+                    organizationRepository,
+                    userRepository,
+                    projectRepository,
+                    languageRepository);
 
                 var project = projectRepository.Select(x => x.OrganizationId == organizationId).Result;
 
@@ -83,10 +98,12 @@ namespace Translation.Client.Web.Helpers
         }
 
         private static long InsertAdmin(AdminSettings adminSettings, IOrganizationService organizationService,
-                                        IOrganizationRepository organizationRepository, IUserRepository userRepository, IProjectRepository projectRepository, ILanguageRepository languageRepository)
+            IOrganizationRepository organizationRepository, IUserRepository userRepository,
+            IProjectRepository projectRepository, ILanguageRepository languageRepository)
         {
-            organizationService.CreateOrganizationWithAdmin(new SignUpRequest(ConstantHelper.ORGANIZATION_NAME, adminSettings.AdminFirstName, adminSettings.AdminLastName,
-                                                            adminSettings.AdminEmail, adminSettings.AdminPassword, new ClientLogInfo())).Wait();
+            organizationService.CreateOrganizationWithAdmin(new SignUpRequest(ConstantHelper.ORGANIZATION_NAME,
+                adminSettings.AdminFirstName, adminSettings.AdminLastName,
+                adminSettings.AdminEmail, adminSettings.AdminPassword, new ClientLogInfo())).Wait();
 
             var superAdmin = userRepository.Select(x => x.Email == adminSettings.AdminEmail).Result;
             superAdmin.IsSuperAdmin = true;
@@ -110,34 +127,26 @@ namespace Translation.Client.Web.Helpers
             return organization.Id;
         }
 
-        private static (Language, Language) InsertLanguages(ILanguageRepository languageRepository, LanguageFactory languageFactory)
+        private static (Language, Language) InsertLanguages(ILanguageRepository languageRepository,
+            LanguageFactory languageFactory)
         {
             var english = languageFactory.CreateEntity("en", "eng", "English", "English");
-            var chinese = languageFactory.CreateEntity("zh", "zho", "Simplified Chinese", "简化字");
-            var spanish = languageFactory.CreateEntity("es", "spa", "Spanish", "Español");
-            var hindi = languageFactory.CreateEntity("hi", "hin", "Hindi", "हिन्दी");
-            var arabic = languageFactory.CreateEntity("ar", "ara", "Arabic", "العربية");
-            var portuguese = languageFactory.CreateEntity("pt", "por", "Portuguese", "Português");
-            var russian = languageFactory.CreateEntity("ru", "rus", "Russian", "русский");
-            var japanese = languageFactory.CreateEntity("ja", "jpn", "Japanese", "日本語");
+            english.Id = languageRepository.Insert(0, english).Result;
+            languageRepository.Insert(0, languageFactory.CreateEntity("zh", "zho", "Simplified Chinese", "简化字")).Wait();
+            languageRepository.Insert(0, languageFactory.CreateEntity("es", "spa", "Spanish", "Español")).Wait();
+            languageRepository.Insert(0, languageFactory.CreateEntity("hi", "hin", "Hindi", "हिन्दी")).Wait();
+            languageRepository.Insert(0, languageFactory.CreateEntity("ar", "ara", "Arabic", "العربية")).Wait();
+            languageRepository.Insert(0, languageFactory.CreateEntity("pt", "por", "Portuguese", "Português")).Wait();
+            languageRepository.Insert(0, languageFactory.CreateEntity("ru", "rus", "Russian", "русский")).Wait();
+            languageRepository.Insert(0, languageFactory.CreateEntity("ja", "jpn", "Japanese", "日本語")).Wait();
             var turkish = languageFactory.CreateEntity("tr", "tur", "Turkish", "Türkçe");
-
-            var englishId = languageRepository.Insert(0, english).Result;
-            english.Id = englishId;
-            languageRepository.Insert(0, chinese).Wait();
-            languageRepository.Insert(0, spanish).Wait();
-            languageRepository.Insert(0, hindi).Wait();
-            languageRepository.Insert(0, arabic).Wait();
-            languageRepository.Insert(0, portuguese).Wait();
-            languageRepository.Insert(0, russian).Wait();
-            languageRepository.Insert(0, japanese).Wait();
-            var turkishId = languageRepository.Insert(0, turkish).Result;
-            turkish.Id = turkishId;
-
+            turkish.Id = languageRepository.Insert(0, turkish).Result;
             return (turkish, english);
         }
 
-        private static (TranslationProvider, TranslationProvider) InsertTranslationProviders(ITranslationProviderRepository translationProviderRepository, TranslationProviderFactory translationProviderFactory)
+        private static (TranslationProvider, TranslationProvider) InsertTranslationProviders(
+            ITranslationProviderRepository translationProviderRepository,
+            TranslationProviderFactory translationProviderFactory)
         {
             var google = translationProviderFactory.CreateEntity("google");
             var yandex = translationProviderFactory.CreateEntity("yandex");
@@ -180,9 +189,16 @@ namespace Translation.Client.Web.Helpers
                     Translation = values[2]
                 });
             }
-            
-            var request = new LabelCreateListRequest(project.CreatedBy, project.OrganizationUid, project.Uid, false, labelListInfos);
-            var response = labelService.CreateLabelFromList(request).Result;
+
+            var response = labelService.CreateLabelFromList(
+                    new LabelCreateListRequest(
+                        project.CreatedBy,
+                        project.OrganizationUid,
+                        project.Uid,
+                        false,
+                        labelListInfos))
+                .Result;
+
             if (response.Status.IsNotSuccess)
             {
                 throw new Exception("couldn't add project translations!");

@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-
 using Translation.Common.Models.Requests.Admin;
 using Translation.Common.Models.Requests.Integration.Token;
 using Translation.Common.Models.Requests.Journal;
@@ -21,27 +20,19 @@ namespace Translation.Common.Contracts
     public interface IAdminService
     {
         Task<OrganizationReadListResponse> GetOrganizations(OrganizationReadListRequest request);
-        
         Task<AllUserReadListResponse> GetAllUsers(AllUserReadListRequest request);
         Task<SuperAdminUserReadListResponse> GetSuperAdmins(SuperAdminUserReadListRequest request);
-        
         Task<AdminInviteResponse> InviteSuperAdminUser(AdminInviteRequest request);
         Task<AdminInviteValidateResponse> ValidateSuperAdminUserInvitation(AdminInviteValidateRequest request);
         Task<AdminAcceptInviteResponse> AcceptSuperAdminUserInvite(AdminAcceptInviteRequest request);
-
         Task<UserChangeActivationResponse> ChangeActivation(UserChangeActivationRequest request);
         Task<OrganizationChangeActivationResponse> OrganizationChangeActivation(OrganizationChangeActivationRequest request);
         Task<TranslationProviderChangeActivationResponse> TranslationProviderChangeActivation(TranslationProviderChangeActivationRequest request);
         Task<AdminDemoteResponse> DemoteToUser(AdminDemoteRequest request);
         Task<AdminUpgradeResponse> UpgradeToAdmin(AdminUpgradeRequest request);
-
         Task<JournalReadListResponse> GetJournals(AllJournalReadListRequest request);
         Task<AllTokenRequestLogReadListResponse> GetTokenRequestLogs(AllTokenRequestLogReadListRequest request);
         Task<AllSendEmailReadListResponse> GetSendEmailLogs(AllSendEmailLogReadListRequest request);
         Task<AllLoginLogReadListResponse> GetAllUserLoginLogs(AllLoginLogReadListRequest request);
-        
-        
-        
-     
     }
 }
