@@ -26,43 +26,82 @@ Translation is a project that writed with c#. We kept to Patterns of Enterprice 
 1. After Git installed create a [Github](https://github.com) account.  
 2. Create a file on your PC to cloning the project  
 3. Fork project to your account from [here](https://github.com/anatolia/translation)  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/git_pictures/1_git.png)
+  
+![Image](Doc/Installation/git_pictures/1_git.png)  
+
 4. Clone the project address from your github repository  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/git_pictures/2_git.png)
-5. Open your file that created before, and right click inside the file to open the **Git Bash**  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/git_pictures/3_git.png)
+  
+![Image](Doc/Installation/git_pictures/2_git.png)  
+  
+5. Open your file that created before, and right click inside the file to open the **Git Bash**    
+  
+![Image](Doc/Installation/git_pictures/3_git.png)  
+
 6. Write **git clone** and paste the project address that had copied before on Git Bash Command Line  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/git_pictures/4_git.png)
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/git_pictures/5_git.png)
+  
+![Image](Doc/Installation/git_pictures/4_git.png)  
+  
+![Image](Doc/Installation/git_pictures/5_git.png)  
+  
 ## DataBase Setup  
 1. After PostgreSQL and PgAdmin have setuped exe files enter PgAdmin.  
 2. Right click the **Servers** and go to "Create" to "Server".  
-![image](/home/parknet/Work/anatolia/translation/Installation/db_pictures/first-pgAdmin4.png  "")
-3. Give a name for your server on **General** tab.
+  
+![image](Doc/Installation/db_pictures/first-pgAdmin4.png  "")  
+  
+3. Give a name for your server on **General** tab.  
+  
 4. Enter Host name: "localhost", Port:"5432", Maintenance database: "postgres", Username: "postgres" on **Connection** tab.  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/db_pictures/second-pgAdmin4.png)
-5. Save your server infos.
+  
+![Image](Doc/Installation/db_pictures/second-pgAdmin4.png)  
+  
+5. Save your server infos.  
+  
 6. Right click the **Login/Group** and go to "Create" to "Login/Group Role".  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/db_pictures/fourth-pgAdmin4.png)
+  
+![Image](Doc/Installation/db_pictures/fourth-pgAdmin4.png)  
+  
 7. Enter Name: "local_user" on **General** tab  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/db_pictures/fifth-pgAdmin4.png)
+  
+![Image](Doc/Installation/db_pictures/fifth-pgAdmin4.png)  
+  
 8. Enter Password: "local_user+2019*" on **Definition** tab.  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/db_pictures/sixthPgAdmin4.png)
+  
+![Image](Doc/Installation/db_pictures/sixthPgAdmin4.png)  
+  
 9. Select "Yes" for "Can login?" and "Superuser?" on **Privileges** tab.  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/db_pictures/seventh-pgAdmin4.png)
-10. Save Login/Group Role infos. 
+  
+![Image](Doc/Installation/db_pictures/seventh-pgAdmin4.png)  
+  
+10. Save Login/Group Role infos.  
+  
 ## Last Settings
 1. Open project in Visual Studio  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/set_picture/1_set.png)  
+  
+![Image](Doc/Installation/set_picture/1_set.png)  
+  
 2. Right Click to **Translation.Client.Web** and go to **Properties** at bottom  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/set_picture/2_set.png)  
+  
+![Image](Doc/Installation/set_picture/2_set.png)  
+  
 3. Select **Debug** to edit **App URL:**  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/set_picture/3_set.png)  
-4. We need to some changes to be able to **Log In** in Translation Project
+  
+![Image](Doc/Installation/set_picture/3_set.png)  
+  
+4. We need to some changes to be able to **Log In** in Translation Project  
+
 >* First, change http to https and delete last char **'/'** and  add **";"**.  
->* Second, paste "http://localhost:10005" end of your URL
+  
+>* Second, paste "http://localhost:10005" end of your URL  
+  
 >* At last **https://localhost:14435;http://localhost:10005**  
-![Image](https://raw.githubusercontent.com/anatolia/translation/master/translation/Installation/set_picture/3_set.png)  
+  
+![Image](Doc/Installation/set_picture/4_set.png)  
+
+5. Match your DataBase infos in your App.config file under the Translation.Client.Web  
+  
+  ![Image](Doc/Installation/set_picture/5_set.png)
+  
 ## Naming Conventions and Terminology  
 We built this project as enterprise application architecture. 
 Using patterns in project was described for you can comprehend as soon as possible. 
