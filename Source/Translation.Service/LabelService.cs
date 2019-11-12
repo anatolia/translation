@@ -95,7 +95,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _labelRepository.Any(x => x.Key == request.LabelKey && x.ProjectId == project.Id))
+            if (await _labelRepository.Any(x => x.LabelKey == request.LabelKey && x.ProjectId == project.Id))
             {
                 response.SetInvalidBecauseLabelKeyMustBeUnique(nameof(Label));
                 return response;
@@ -232,7 +232,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _labelRepository.Any(x => x.Key == request.LabelKey && x.ProjectId == project.Id))
+            if (await _labelRepository.Any(x => x.LabelKey == request.LabelKey && x.ProjectId == project.Id))
             {
                 response.SetInvalidBecauseLabelKeyMustBeUnique(nameof(Label));
                 return response;
@@ -253,7 +253,7 @@ namespace Translation.Service
             {
                 var projectLanguage = await _languageRepository.SelectById(project.LanguageId);
                 var addedLabel =
-                    await _labelRepository.Select(x => x.Key == request.LabelKey && x.ProjectId == project.Id);
+                    await _labelRepository.Select(x => x.LabelKey == request.LabelKey && x.ProjectId == project.Id);
 
                 var languages = new List<Language>();
                 for (int i = 0; i < request.LanguageIsoCode2s.Length; i++)
@@ -383,7 +383,7 @@ namespace Translation.Service
             {
                 var translationInfo = labels[i];
 
-                if (labelsToInsert.Any(x => x.Key == translationInfo.LabelKey))
+                if (labelsToInsert.Any(x => x.LabelKey == translationInfo.LabelKey))
                 {
                     continue;
                 }
@@ -393,7 +393,7 @@ namespace Translation.Service
                     continue;
                 }
 
-                if (oldLabels.Any(x => x.Key == translationInfo.LabelKey))
+                if (oldLabels.Any(x => x.LabelKey == translationInfo.LabelKey))
                 {
                     response.CanNotAddedLabelCount++;
                     canOldLabels.Add(translationInfo.LabelKey);
@@ -436,7 +436,7 @@ namespace Translation.Service
                     continue;
                 }
 
-                var label = labelsToAdd.Find(x => x.Key == translationInfo.LabelKey);
+                var label = labelsToAdd.Find(x => x.LabelKey == translationInfo.LabelKey);
 
                 if (label != null)
                 {
@@ -491,9 +491,9 @@ namespace Translation.Service
                     continue;
                 }
 
-                var label = labelsToAdd.Find(x => x.Key == translationInfo.LabelKey);
+                var label = labelsToAdd.Find(x => x.LabelKey == translationInfo.LabelKey);
 
-                var oldLabel = oldLabels.FirstOrDefault(x => x.Key == translationInfo.LabelKey);
+                var oldLabel = oldLabels.FirstOrDefault(x => x.LabelKey == translationInfo.LabelKey);
 
                 if (label != null)
                 {
@@ -580,7 +580,7 @@ namespace Translation.Service
 
             var label = await _labelRepository.Select(x => x.OrganizationId == currentUser.OrganizationId
                                                            && x.ProjectName == request.ProjectName
-                                                           && x.Key == request.LabelKey);
+                                                           && x.LabelKey == request.LabelKey);
             if (label.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(Label));
@@ -796,7 +796,7 @@ namespace Translation.Service
                     var dto = new LabelFatDto
                     {
                         Uid = entity.Uid,
-                        Key = entity.Key
+                        Key = entity.LabelKey
                     };
 
                     for (var j = 0; j < labelTranslations.Count; j++)
@@ -848,14 +848,14 @@ namespace Translation.Service
                 return response;
             }
 
-            if (label.Key == request.LabelKey && label.Description == request.Description)
+            if (label.LabelKey == request.LabelKey && label.Description == request.Description)
             {
                 response.Item = _labelFactory.CreateDtoFromEntity(label);
                 response.Status = ResponseStatus.Success;
                 return response;
             }
 
-            if (await _labelRepository.Any(x => x.Key == request.LabelKey
+            if (await _labelRepository.Any(x => x.LabelKey == request.LabelKey
                                                 && x.ProjectId == label.ProjectId
                                                 && x.Uid != request.LabelUid))
             {
@@ -1004,7 +1004,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _labelRepository.Any(x => x.Key == request.LabelKey && x.ProjectUid == request.ProjectUid))
+            if (await _labelRepository.Any(x => x.LabelKey == request.LabelKey && x.ProjectUid == request.ProjectUid))
             {
                 response.SetInvalidBecauseLabelKeyMustBeUnique(nameof(Label));
                 return response;

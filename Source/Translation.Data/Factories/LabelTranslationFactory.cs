@@ -25,7 +25,7 @@ namespace Translation.Data.Factories
 
             entity.LabelId = label.Id;
             entity.LabelUid = label.Uid;
-            entity.LabelName = label.Key;
+            entity.LabelName = label.LabelKey;
 
             entity.LanguageId = language.Id;
             entity.LanguageUid = language.Uid;

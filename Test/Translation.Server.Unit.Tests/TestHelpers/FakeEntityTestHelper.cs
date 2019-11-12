@@ -755,7 +755,7 @@ namespace Translation.Server.Unit.Tests.TestHelpers
             label.Id = LongOne;
             label.Uid = UidOne;
             label.Name = StringOne;
-            label.Key = StringOne;
+            label.LabelKey = StringOne;
 
             label.IsActive = BooleanTrue;
 
@@ -776,7 +776,7 @@ namespace Translation.Server.Unit.Tests.TestHelpers
             label.Id = OrganizationOneProjectOneLabelOneId;
             label.Uid = OrganizationOneProjectOneLabelOneUid;
             label.Name = OrganizationOneProjectOneLabelOneName;
-            label.Key = OrganizationOneProjectOneLabelOneKey;
+            label.LabelKey = OrganizationOneProjectOneLabelOneKey;
             label.Description = StringOne;
             label.IsActive = BooleanTrue;
 
@@ -797,7 +797,7 @@ namespace Translation.Server.Unit.Tests.TestHelpers
             label.Id = OrganizationTwoProjectOneLabelOneId;
             label.Uid = OrganizationTwoProjectOneLabelOneUid;
             label.Name = OrganizationTwoProjectOneLabelOneName;
-            label.Key = OrganizationTwoProjectOneLabelOneKey;
+            label.LabelKey = OrganizationTwoProjectOneLabelOneKey;
 
             label.IsActive = BooleanTrue;
 

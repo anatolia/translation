@@ -111,7 +111,7 @@ namespace Translation.Data.UnitOfWorks
                 for (var i = 0; i < labelList.Count; i++)
                 {
                     var label = labelList[i];
-                    var labelsTranslations = labelTranslationsToInsert.Where(x => x.LabelName == label.Key).ToList();
+                    var labelsTranslations = labelTranslationsToInsert.Where(x => x.LabelName == label.LabelKey).ToList();
                     var labelId = label.Id;
 
                     for (var j = 0; j < labelsTranslations.Count; j++)

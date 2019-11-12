@@ -1134,7 +1134,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static LabelCreateRequest GetLabelCreateRequest(Label label, Project project)
         {
             var request = new LabelCreateRequest(CurrentUserId, label.OrganizationUid, project.Uid,
-                                                 label.Key, label.Description, GuidArrayOne);
+                                                 label.LabelKey, label.Description, GuidArrayOne);
 
             return request;
         }
@@ -1361,7 +1361,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static LabelEditRequest GetLabelEditRequest(Label label)
         {
             var request = new LabelEditRequest(CurrentUserId, label.OrganizationUid, label.ProjectUid, label.Uid,
-                label.Key, label.Description);
+                label.LabelKey, label.Description);
 
             return request;
         }
@@ -1414,7 +1414,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static LabelCloneRequest GetLabelCloneRequest(Label label)
         {
             var request = new LabelCloneRequest(CurrentUserId, label.OrganizationUid, label.OrganizationUid,
-                label.ProjectUid, label.Key, label.Description);
+                label.ProjectUid, label.LabelKey, label.Description);
 
             return request;
         }
