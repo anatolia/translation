@@ -86,7 +86,7 @@ namespace Translation.Client.Web
         {
             AutofacContainer = app.ApplicationServices.GetAutofacRoot();
 
-            DbGeneratorHelper.Generate(AutofacContainer, env.WebRootPath);
+            new DbGeneratorHelper().Generate(AutofacContainer, env.WebRootPath);
 
             var forwardingOptions = new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto };
             forwardingOptions.KnownNetworks.Clear();

@@ -1575,7 +1575,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static LabelTranslationEditRequest GetLabelTranslationEditRequest(LabelTranslation labelTranslation)
         {
             var request = new LabelTranslationEditRequest(CurrentUserId, labelTranslation.OrganizationUid, labelTranslation.LabelUid,
-                labelTranslation.Translation);
+                labelTranslation.TranslationText);
 
             return request;
         }

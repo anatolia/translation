@@ -22,7 +22,7 @@ namespace Translation.Server.Unit.Tests.Data.Entities
             entityType.BaseType.Name.ShouldBe(nameof(BaseEntity));
             entityType.GetInterface(nameof(ISchemaDomain)).ShouldNotBeNull();
 
-            AssertStringProperty(properties, "Value", entity.Value);
+            AssertStringProperty(properties, "CredentialValue", entity.CredentialValue);
             AssertStringProperty(properties, "Description", entity.Description);
             AssertBooleanProperty(properties, "IsActive", entity.IsActive);
 

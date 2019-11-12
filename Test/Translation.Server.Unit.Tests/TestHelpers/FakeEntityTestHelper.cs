@@ -20,7 +20,7 @@ namespace Translation.Server.Unit.Tests.TestHelpers
         {
             var model = new TranslationProvider();
             model.Id = LongOne;
-            model.Value = StringOne;
+            model.CredentialValue = StringOne;
             model.IsActive = BooleanTrue;
             return model;
         }
@@ -29,7 +29,7 @@ namespace Translation.Server.Unit.Tests.TestHelpers
         {
             var model = new TranslationProvider();
             model.Id = LongTwo;
-            model.Value = StringTwo;
+            model.CredentialValue = StringTwo;
             model.IsActive = BooleanTrue;
             return model;
         }
@@ -38,7 +38,7 @@ namespace Translation.Server.Unit.Tests.TestHelpers
         {
             var model = new TranslationProvider();
             model.Id = LongOne;
-            model.Value = EmptyString;
+            model.CredentialValue = EmptyString;
             return model;
         }
 
@@ -838,7 +838,7 @@ namespace Translation.Server.Unit.Tests.TestHelpers
             labelTranslation.Id = LongOne;
             labelTranslation.Uid = UidOne;
             labelTranslation.Name = StringOne;
-            labelTranslation.Translation = StringOne;
+            labelTranslation.TranslationText = StringOne;
             labelTranslation.IsActive = BooleanTrue;
             labelTranslation.LanguageId = LongOne;
             labelTranslation.LanguageName = StringOne;
@@ -873,7 +873,7 @@ namespace Translation.Server.Unit.Tests.TestHelpers
             labelTranslation.Id = OrganizationOneProjectOneLabelOneLabelTranslationOneId;
             labelTranslation.Uid = UidTwo;
             labelTranslation.Name = OrganizationOneProjectOneLabelOneLabelTranslationOneName;
-            labelTranslation.Translation = OrganizationOneProjectOneLabelOneLabelTranslationOneName;
+            labelTranslation.TranslationText = OrganizationOneProjectOneLabelOneLabelTranslationOneName;
             labelTranslation.Description = StringOne;
             labelTranslation.IsActive = BooleanTrue;
 

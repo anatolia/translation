@@ -142,7 +142,7 @@ namespace Translation.Service
                             if (!demandedTranslations.ContainsKey(allExistingTranslations[i].LanguageName)
                                 && languages.Any(x => x.Name == allExistingTranslations[i].LanguageName))
                             {
-                                demandedTranslations.Add(allExistingTranslations[i].LanguageName, allExistingTranslations[i].Translation);
+                                demandedTranslations.Add(allExistingTranslations[i].LanguageName, allExistingTranslations[i].TranslationText);
                             }
                         }
 
@@ -511,7 +511,7 @@ namespace Translation.Service
                 }
                 else
                 {
-                    if (await _labelTranslationRepository.Any(x => x.Translation == translationInfo.Translation
+                    if (await _labelTranslationRepository.Any(x => x.TranslationText == translationInfo.Translation
                                                                    && x.LanguageId == language.Id
                                                                    && x.LabelId == oldLabel.Id))
                     {
@@ -538,7 +538,7 @@ namespace Translation.Service
                             continue;
                         }
 
-                        translationForExistingLabel.Translation = translationInfo.Translation;
+                        translationForExistingLabel.TranslationText = translationInfo.Translation;
                         translationsToUpdate.Add(translationForExistingLabel);
                         response.UpdatedLabelTranslationCount++;
                     }
@@ -810,7 +810,7 @@ namespace Translation.Service
 
                         dto.Translations.Add(new LabelTranslationSlimDto
                         {
-                            Translation = labelTranslation.Translation,
+                            Translation = labelTranslation.TranslationText,
                             LanguageIsoCode2 = language.IsoCode2Char
                         });
                     }
@@ -1266,7 +1266,7 @@ namespace Translation.Service
                     continue;
                 }
 
-                if (await _labelTranslationRepository.Any(x => x.Translation == translationInfo.Translation
+                if (await _labelTranslationRepository.Any(x => x.TranslationText == translationInfo.Translation
                                                                && x.LanguageId == language.Id
                                                                && x.LabelId == label.Id))
                 {
@@ -1287,7 +1287,7 @@ namespace Translation.Service
                         continue;
                     }
 
-                    translationForExistingLabel.Translation = translationInfo.Translation;
+                    translationForExistingLabel.TranslationText = translationInfo.Translation;
                     translationsToUpdate.Add(translationForExistingLabel);
                     response.UpdatedTranslationCount++;
                 }
@@ -1445,7 +1445,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (labelTranslation.Translation == request.NewTranslation)
+            if (labelTranslation.TranslationText == request.NewTranslation)
             {
                 response.Item = _labelTranslationFactory.CreateDtoFromEntity(labelTranslation);
                 response.Status = ResponseStatus.Success;

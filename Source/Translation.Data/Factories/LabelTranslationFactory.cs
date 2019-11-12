@@ -12,7 +12,7 @@ namespace Translation.Data.Factories
         public LabelTranslation CreateEntity(string translation, Label label, Language language)
         {
             var entity = new LabelTranslation();
-            entity.Translation = translation;
+            entity.TranslationText = translation;
             entity.IsActive = true;
 
             entity.OrganizationId = label.OrganizationId;
@@ -36,7 +36,7 @@ namespace Translation.Data.Factories
 
         public LabelTranslation CreateEntityFromRequest(LabelTranslationEditRequest request, LabelTranslation entity)
         {
-            entity.Translation = request.NewTranslation;
+            entity.TranslationText = request.NewTranslation;
 
             return entity;
         }
@@ -55,7 +55,7 @@ namespace Translation.Data.Factories
         {
             var dto = new LabelTranslationDto();
             dto.Uid = entity.Uid;
-            dto.Translation = entity.Translation;
+            dto.Translation = entity.TranslationText;
             dto.CreatedAt = entity.CreatedAt;
             dto.UpdatedAt = entity.UpdatedAt;
             entity.IsActive = entity.IsActive;
