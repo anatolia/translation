@@ -236,6 +236,7 @@ function createSelectElement(name, urlOrData, typeClass, contentType, value, tex
 
         selectItem.setAttribute('value', item.value);
         selectContent.appendChild(selectItem);
+
         return selectItem;
     }
 
@@ -305,6 +306,7 @@ function createSelectElement(name, urlOrData, typeClass, contentType, value, tex
 
     function updateSelectContent(theSelect, updateItem) {
         let selectContent = theSelect.querySelector('.select-content');
+       
 
         if (updateItem.length === 0 && selectContent.childElementCount === 0) {
             selectContent.innerHTML = ' ';
@@ -324,6 +326,9 @@ function createSelectElement(name, urlOrData, typeClass, contentType, value, tex
                 };
             }
         }
+
+        //reposition selectContent
+        repositionSelectContent();
     }
 
     function searchSelectContent(selectInput, event) {
@@ -398,6 +403,7 @@ function createSelectElement(name, urlOrData, typeClass, contentType, value, tex
                 clearSelect(theSelect);
             }
         });
+
     };
 
     resetSingleSelect = function (theSelect) {
@@ -443,7 +449,7 @@ function createSelectElement(name, urlOrData, typeClass, contentType, value, tex
         let selectButtonInput = createElement('div');
         selectButtonInput.className = 'select-button-input';
         selectButtonInput.setAttribute('contenteditable', theTrue);
-        let clearSelectButton = createButton('x', onClearButtonClick);
+        let clearSelectButton = createButton('X', onClearButtonClick);
         clearSelectButton.className = 'clear-select-button';
         selectButton.innerHTML = '';
         selectButton.appendChild(uidInput);
@@ -676,10 +682,10 @@ function createSelectElement(name, urlOrData, typeClass, contentType, value, tex
         textInput.name = theSelect.dataset.textField;
         textInput.value = theSelect.dataset.text;
 
-        let clearSelectButton = createButton('x', clearMultipleSelect);
-        clearSelectButton.className = "clear-select-button";
+        //let clearSelectButton = createButton('x', clearMultipleSelect);
+        //clearSelectButton.className = "clear-select-button";
 
-        selectButton.appendChild(clearSelectButton);
+        //selectButton.appendChild(clearSelectButton);
 
         selectButton.appendChild(uidInput);
         selectButton.appendChild(textInput);
@@ -697,7 +703,7 @@ function createSelectElement(name, urlOrData, typeClass, contentType, value, tex
                 activeItemText.innerHTML = theText;
                 activeItem.id = theSelect.dataset.valueField + '-' + activeItemText.innerHTML;
 
-                let removeItem = createButton('x', removeMultipleItem);
+                let removeItem = createButton('X', removeMultipleItem);
                 removeItem.className = 'remove-active-item';
                 activeItem.appendChild(activeItemText);
                 activeItem.appendChild(removeItem);
@@ -787,7 +793,7 @@ function createSelectElement(name, urlOrData, typeClass, contentType, value, tex
         }
         activeItem.id = theSelect.dataset.valueField + '-' + activeItemText.innerHTML;
         activeItem.value = item.getAttribute('value');
-        let removeItem = createButton('x', removeMultipleItem);
+        let removeItem = createButton('X', removeMultipleItem);
         removeItem.className = 'remove-active-item';
         activeItem.appendChild(activeItemText);
         activeItem.appendChild(removeItem);
@@ -797,6 +803,17 @@ function createSelectElement(name, urlOrData, typeClass, contentType, value, tex
         let selectedItemText = item.innerText;
 
         appendValueToSelect(theSelect, selectedItemValue, selectedItemText);
+
+        //reposition the select content
+        repositionSelectContent();
+    }
+
+    function repositionSelectContent() {
+        const selectContentDOM = document.querySelector('.select-content');
+        const selectDOM = document.querySelector('.custom-select');
+        selectContentDOM.style.top = selectDOM.offsetHeight - 2 + "px";
+
+        console.log('inside initSelectItems', selectContentDOM);
     }
 
     function appendValueToSelect(theSelect, selectedItemValue, selectedItemText) {
@@ -841,6 +858,9 @@ function createSelectElement(name, urlOrData, typeClass, contentType, value, tex
                 }
             }
         }
+
+        //reposition selectContent
+        repositionSelectContent();
     }
     
     function clearContent(theSelect) {
@@ -1099,6 +1119,10 @@ function createSelectElement(name, urlOrData, typeClass, contentType, value, tex
         clearChildren(theSelect);
         return theSelect;
     };
+
+
+    //reposition selectContent on resize
+    window.addEventListener("resize", repositionSelectContent);
 
     initSelects();
 })();

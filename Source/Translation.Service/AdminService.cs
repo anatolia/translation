@@ -430,7 +430,7 @@ namespace Translation.Service
             }
 
             var selectedTranslationProvider = await _translationProviderRepository.Select(x => x.Uid == request.TranslationProviderUid);
-            if (selectedTranslationProvider.Value == "" )
+            if (selectedTranslationProvider.CredentialValue == "" )
             {
                 response.Status = ResponseStatus.Invalid;
                 response.ErrorMessages.Add("please_edit_translation_api_value");
@@ -441,7 +441,7 @@ namespace Translation.Service
             {
                 var translationProvider = allTranslationProviders[i];
 
-                if (translationProvider.Value == selectedTranslationProvider.Value)
+                if (translationProvider.CredentialValue == selectedTranslationProvider.CredentialValue)
                 {
                     selectedTranslationProvider.IsActive = !selectedTranslationProvider.IsActive;
                 }

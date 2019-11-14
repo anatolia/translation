@@ -15,12 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCaching" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
     <PackageReference Include="StandardCache" Version="1.0.2" />
-    <PackageReference Include="StandardRepository" Version="1.0.2" />
-    <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.2" />
+    <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.4.2" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
   </ItemGroup>
 

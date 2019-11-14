@@ -23,7 +23,7 @@ namespace Translation.Client.Web.Unit.Tests.Helpers.Mappers
             result.ShouldBeAssignableTo<TranslationProviderEditModel>();
 
             result.TranslationProviderUid.ShouldBe(dto.Uid);
-            result.Value.ShouldBe(dto.Value);
+            result.Value.ShouldBe(dto.CredentialValue);
             result.Name.ShouldBe(dto.Name);
             result.Description.ShouldBe(dto.Description);
         }
@@ -41,7 +41,7 @@ namespace Translation.Client.Web.Unit.Tests.Helpers.Mappers
             result.ShouldBeAssignableTo<TranslationProviderDetailModel>();
 
             result.TranslationProviderUid.ShouldBe(dto.Uid);
-            result.Value.ShouldBe(dto.Value);
+            result.Value.ShouldBe(dto.CredentialValue);
             result.Name.ShouldBe(dto.Name);
             result.Description.ShouldBe(dto.Description);
         }

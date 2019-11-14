@@ -1,7 +1,9 @@
 ﻿using NUnit.Framework;
 using Shouldly;
+
 using Translation.Common.Models.Base;
 using Translation.Common.Models.DataTransferObjects;
+
 using static Translation.Common.Tests.TestHelpers.AssertPropertyTestHelper;
 
 namespace Translation.Common.Tests.Models.DataTransferObjects
@@ -19,10 +21,9 @@ namespace Translation.Common.Tests.Models.DataTransferObjects
 
             dtoType.BaseType.Name.ShouldBe(nameof(BaseDto));
 
-            AssertStringProperty(properties, "Value", dto.Value);
+            AssertStringProperty(properties, "CredentialValue", dto.CredentialValue);
             AssertStringProperty(properties, "Description", dto.Description);
             AssertBooleanProperty(properties, "IsActive", dto.IsActive);
-
         }
     }
 }
