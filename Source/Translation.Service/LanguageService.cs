@@ -6,17 +6,20 @@ using System.Threading.Tasks;
 
 using StandardRepository.Helpers;
 using StandardRepository.Models;
+using StandardUtils.Enumerations;
+using StandardUtils.Helpers;
+using StandardUtils.Models.DataTransferObjects;
+
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
-using Translation.Common.Helpers;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Language;
 using Translation.Common.Models.Responses.Language;
 using Translation.Data.Entities.Main;
-using Translation.Data.Entities.Parameter;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
 using Translation.Service.Managers;
+
+using Language = Translation.Data.Entities.Parameter.Language;
 
 namespace Translation.Service
 {
@@ -55,12 +58,12 @@ namespace Translation.Service
             var response = new LanguageReadListResponse();
 
             Expression<Func<Language, bool>> filter = null;
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm)
-                              || x.IsoCode2Char.Contains(request.SearchTerm)
-                              || x.IsoCode3Char.Contains(request.SearchTerm)
-                              || x.OriginalName.Contains(request.SearchTerm);
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm)
+                              || x.IsoCode2Char.Contains(request.PagingInfo.SearchTerm)
+                              || x.IsoCode3Char.Contains(request.PagingInfo.SearchTerm)
+                              || x.OriginalName.Contains(request.PagingInfo.SearchTerm);
             }
 
             List<Language> entities;
@@ -148,7 +151,7 @@ namespace Translation.Service
                                                             || x.IsoCode3Char == request.IsoCode3);
             if (result)
             {
-                response.SetInvalidBecauseNameMustBeUnique(nameof(Language));
+                response.SetInvalidBecauseMustBeUnique(nameof(Language));
                 return response;
             }
 

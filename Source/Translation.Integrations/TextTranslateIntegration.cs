@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using StandardUtils.Enumerations;
+
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Responses.Label;
 using Translation.Common.Models.Shared;

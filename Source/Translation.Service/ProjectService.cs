@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 
 using StandardRepository.Helpers;
 using StandardRepository.Models;
+using StandardUtils.Enumerations;
+using StandardUtils.Helpers;
+using StandardUtils.Models.DataTransferObjects;
+
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
-using Translation.Common.Helpers;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Project;
 using Translation.Common.Models.Responses.Project;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
-using Translation.Data.Entities.Parameter;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
 using Translation.Data.UnitOfWorks.Contracts;
 using Translation.Service.Managers;
+using Language = Translation.Data.Entities.Parameter.Language;
 
 namespace Translation.Service
 {
@@ -64,9 +66,9 @@ namespace Translation.Service
 
             Expression<Func<Project, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
 
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
             }
 
             List<Project> entities;
@@ -273,7 +275,7 @@ namespace Translation.Service
                                                        && x.OrganizationId == project.OrganizationId
                                                        && x.Id != project.Id))
             {
-                response.SetInvalidBecauseNameMustBeUnique(nameof(Project));
+                response.SetInvalidBecauseMustBeUnique(nameof(Project));
                 return response;
             }
 
@@ -376,7 +378,7 @@ namespace Translation.Service
 
             if (await _projectRepository.IsProjectNameMustBeUnique(request.Name, currentUser.OrganizationId))
             {
-                response.SetInvalidBecauseNameMustBeUnique(nameof(Project));
+                response.SetInvalidBecauseMustBeUnique(nameof(Project));
                 return response;
             }
 
@@ -507,9 +509,9 @@ namespace Translation.Service
             Expression<Func<Label, bool>> filter = x => x.ProjectId == project.Id
                                                         && x.LabelTranslationCount == 0;
 
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm)
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm)
                               && x.ProjectId == project.Id
                               && x.LabelTranslationCount == 0;
             }

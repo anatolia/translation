@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Threading.Tasks;
+
 using StandardCache;
 using StandardRepository.Helpers;
-using Translation.Common.Helpers;
+using StandardUtils.Helpers;
+
 using Translation.Common.Models.Shared;
-using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
-using Translation.Data.Entities.Parameter;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
 
@@ -19,7 +18,7 @@ namespace Translation.Service.Managers
         private const string CACHE_NAME_ORGANIZATION = nameof(Organization);
         private const string CACHE_NAME_CURRENT_ORGANIZATION = nameof(CurrentOrganization);
         private const string CACHE_NAME_ACTIVE_PROVIDER = nameof(ActiveTranslationProvider);
-        private const string CACHE_NAME_CURRENT_USER_LANGUAGE_ISO_CODE2_CHAR = nameof(CurrentUser.LanguageIsoCode2Char);
+        private const string CACHE_NAME_CURRENT_USER_LANGUAGE_ISO_CODE2_CHAR = nameof(CurrentUser.LanguageCode);
 
         private readonly ILanguageRepository _languageRepository;
         private readonly IUserRepository _userRepository;
