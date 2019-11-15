@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using Shouldly;
+using StandardUtils.Models.DataTransferObjects;
 
-using Translation.Common.Models.Base;
 using Translation.Common.Models.DataTransferObjects;
 using static Translation.Common.Tests.TestHelpers.AssertPropertyTestHelper;
 

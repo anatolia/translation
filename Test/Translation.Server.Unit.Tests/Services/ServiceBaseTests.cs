@@ -4,7 +4,7 @@ using Castle.Windsor;
 using Moq;
 
 using Translation.Common.Contracts;
-using Translation.Common.Helpers;
+using StandardUtils.Helpers;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
 using Translation.Data.UnitOfWorks.Contracts;

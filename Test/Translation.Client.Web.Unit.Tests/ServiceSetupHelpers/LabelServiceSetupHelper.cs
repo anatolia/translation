@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
 
 using Moq;
+using StandardUtils.Enumerations;
+using StandardUtils.Models.DataTransferObjects;
 
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
 using Translation.Common.Models.Responses.Label;
 using Translation.Common.Models.Responses.Label.LabelTranslation;
 using Translation.Data.Repositories.Contracts;
+
 using static Translation.Common.Tests.TestHelpers.FakeDtoTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 

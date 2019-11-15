@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Translation.Common.Helpers;
+using StandardUtils.Helpers;
 
 namespace Translation.Common.Tests.TestHelpers
 {

@@ -5,7 +5,7 @@ using NUnit.Framework;
 using Shouldly;
 
 using Translation.Client.Web.Models.Admin;
-using Translation.Common.Helpers;
+using StandardUtils.Helpers;
 
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Client.Web.Unit.Tests.TestHelpers.FakeModelTestHelper;

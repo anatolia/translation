@@ -1,8 +1,9 @@
 ﻿using Moq;
 
+using StandardUtils.Enumerations;
+
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
-using Translation.Common.Models.Base;
+using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Responses.Label;
 
@@ -14,7 +15,7 @@ namespace Translation.Common.Tests.CommonForServiceAndController
     {
         public static void Setup_GetTranslatedText_Returns_LabelGetTranslatedTextResponse_Success(this Mock<ITextTranslateIntegration> service)
         {
-            var item = new BaseDto() { Name = StringTwo };
+            var item = new LabelGetTranslated { Name = StringTwo };
             service.Setup(x => x.GetTranslatedText(It.IsAny<LabelGetTranslatedTextRequest>()))
                    .ReturnsAsync(new LabelGetTranslatedTextResponse { Status = ResponseStatus.Success, Item =item});
         }
