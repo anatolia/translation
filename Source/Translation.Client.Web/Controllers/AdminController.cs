@@ -28,14 +28,17 @@ namespace Translation.Client.Web.Controllers
     public class AdminController : BaseController
     {
         private readonly IAdminService _adminService;
+        private readonly AdminMapper _adminMapper;
 
-        public AdminController(IOrganizationService organizationService, 
-                               IJournalService journalService, 
-                               ILanguageService languageService, 
-                               ITranslationProviderService translationProviderService, 
-                               IAdminService adminService) : base(organizationService, journalService, languageService, translationProviderService)
+        public AdminController(IOrganizationService organizationService,
+                               IJournalService journalService,
+                               ILanguageService languageService,
+                               ITranslationProviderService translationProviderService,
+                               IAdminService adminService,
+                               AdminMapper adminMapper) : base(organizationService, journalService, languageService, translationProviderService)
         {
             _adminService = adminService;
+            _adminMapper = adminMapper;
         }
 
         [HttpGet]
@@ -81,7 +84,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -125,7 +128,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -167,7 +170,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -214,7 +217,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -256,7 +259,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -301,7 +304,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -344,7 +347,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -353,7 +356,7 @@ namespace Translation.Client.Web.Controllers
         public IActionResult Invite()
         {
             var organizationUid = CurrentUser.OrganizationUid;
-            var model = AdminMapper.MapAdminInviteModel(organizationUid);
+            var model = _adminMapper.MapAdminInviteModel(organizationUid);
             return View(model);
         }
 
@@ -505,7 +508,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = AdminMapper.MapAdminAcceptInviteModel(response.Item, token, email);
+            var model = _adminMapper.MapAdminAcceptInviteModel(response.Item, token, email);
             return View(model);
         }
 

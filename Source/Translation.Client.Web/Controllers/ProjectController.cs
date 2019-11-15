@@ -24,6 +24,7 @@ namespace Translation.Client.Web.Controllers
     public class ProjectController : BaseController
     {
         private readonly IProjectService _projectService;
+        private readonly ProjectMapper _projectMapper;
         private readonly ILabelService _labelService;
 
         public ProjectController(IOrganizationService organizationService,
@@ -31,10 +32,12 @@ namespace Translation.Client.Web.Controllers
                                  ILanguageService languageService,
                                  ITranslationProviderService translationProviderService,
                                  ILabelService labelService,
-                                 IProjectService projectService) : base(organizationService, journalService, languageService, translationProviderService)
+                                 IProjectService projectService,
+                                 ProjectMapper projectMapper) : base(organizationService, journalService, languageService, translationProviderService)
         {
             _labelService = labelService;
             _projectService = projectService;
+            _projectMapper = projectMapper;
         }
 
         [HttpGet]
@@ -53,7 +56,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = ProjectMapper.MapProjectCreateModel(response.Item.Uid);
+            var model = _projectMapper.MapProjectCreateModel(response.Item.Uid);
 
             return View(model);
         }
@@ -99,7 +102,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = ProjectMapper.MapProjectDetailModel(response.Item);
+            var model = _projectMapper.MapProjectDetailModel(response.Item);
 
             return View(model);
         }
@@ -120,7 +123,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = ProjectMapper.MapProjectEditModel(response.Item);
+            var model = _projectMapper.MapProjectEditModel(response.Item);
 
             return View(model);
         }
@@ -188,7 +191,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = ProjectMapper.MapProjectCloneModel(response.Item);
+            var model = _projectMapper.MapProjectCloneModel(response.Item);
 
             return View(model);
         }

@@ -23,13 +23,17 @@ namespace Translation.Client.Web.Controllers
     public class IntegrationController : BaseController
     {
         private readonly IIntegrationService _integrationService;
+        private readonly IntegrationMapper _integrationMapper;
+
         public IntegrationController(IOrganizationService organizationService,
                                      IJournalService journalService,
                                      ILanguageService languageService,
                                      ITranslationProviderService translationProviderService,
-                                     IIntegrationService integrationService) : base(organizationService, journalService, languageService, translationProviderService)
+                                     IIntegrationService integrationService,
+                                     IntegrationMapper integrationMapper) : base(organizationService, journalService, languageService, translationProviderService)
         {
             _integrationService = integrationService;
+            _integrationMapper = integrationMapper;
         }
 
         [HttpGet]
@@ -48,7 +52,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = IntegrationMapper.MapIntegrationCreateModel(organizationUid);
+            var model = _integrationMapper.MapIntegrationCreateModel(organizationUid);
             return View(model);
         }
 
@@ -92,7 +96,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = IntegrationMapper.MapIntegrationDetailModel(response.Item);
+            var model = _integrationMapper.MapIntegrationDetailModel(response.Item);
             return View(model);
         }
 
@@ -112,7 +116,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = IntegrationMapper.MapIntegrationEditModel(response.Item);
+            var model = _integrationMapper.MapIntegrationEditModel(response.Item);
             return View(model);
         }
 
@@ -414,7 +418,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = IntegrationMapper.MapIntegrationClientActiveTokensModel(response.Item);
+            var model = _integrationMapper.MapIntegrationClientActiveTokensModel(response.Item);
             return View(model);
         }
 
@@ -474,7 +478,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = IntegrationMapper.MapIntegrationActiveTokensModel(response.Item);
+            var model = _integrationMapper.MapIntegrationActiveTokensModel(response.Item);
 
             return View(model);
         }

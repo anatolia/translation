@@ -23,12 +23,15 @@ namespace Translation.Client.Web.Controllers
 {
     public class UserController : BaseController
     {
+        private readonly UserMapper _userMapper;
+
         public UserController(IOrganizationService organizationService, 
                               IJournalService journalService, 
                               ILanguageService languageService, 
-                              ITranslationProviderService translationProviderService) : base(organizationService, journalService, languageService, translationProviderService)
+                              ITranslationProviderService translationProviderService,
+                              UserMapper userMapper) : base(organizationService, journalService, languageService, translationProviderService)
         {
-
+            _userMapper = userMapper;
         }
 
         [HttpGet, AllowAnonymous]
@@ -234,7 +237,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = UserMapper.MapUserDetailModel(response.Item);
+            var model = _userMapper.MapUserDetailModel(response.Item);
 
             return View(model);
         }

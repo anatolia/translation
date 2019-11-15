@@ -27,6 +27,7 @@ namespace Translation.Client.Web.Controllers
         private readonly ITextTranslateIntegration _textTranslateIntegration;
         private readonly IProjectService _projectService;
         private readonly ILabelService _labelService;
+        private readonly LabelMapper _labelMapper;
 
         public LabelController(IOrganizationService organizationService,
                                IJournalService journalService,
@@ -34,11 +35,13 @@ namespace Translation.Client.Web.Controllers
                                ITranslationProviderService translationProviderService,
                                ITextTranslateIntegration textTranslateIntegration,
                                IProjectService projectService,
-                               ILabelService labelService) : base(organizationService, journalService, languageService, translationProviderService)
+                               ILabelService labelService,
+                               LabelMapper labelMapper) : base(organizationService, journalService, languageService, translationProviderService)
         {
             _textTranslateIntegration = textTranslateIntegration;
             _projectService = projectService;
             _labelService = labelService;
+            _labelMapper = labelMapper;
         }
         #region Label
 
@@ -58,7 +61,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LabelMapper.MapLabelCreateModel(response.Item, ActiveTranslationProvider);
+            var model = _labelMapper.MapLabelCreateModel(response.Item, ActiveTranslationProvider);
 
             return View(model);
         }
@@ -113,7 +116,7 @@ namespace Translation.Client.Web.Controllers
                     return RedirectToAccessDenied();
                 }
 
-                var labelDetailModel = LabelMapper.MapLabelDetailModel(labelReadResponse.Item);
+                var labelDetailModel = _labelMapper.MapLabelDetailModel(labelReadResponse.Item);
 
                 return View(labelDetailModel);
             }
@@ -144,7 +147,7 @@ namespace Translation.Client.Web.Controllers
                     return RedirectToAccessDenied();
                 }
 
-                var model = LabelMapper.MapLabelDetailModel(response.Item);
+                var model = _labelMapper.MapLabelDetailModel(response.Item);
 
                 return View(model);
             }
@@ -166,7 +169,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LabelMapper.MapLabelEditModel(response.Item);
+            var model = _labelMapper.MapLabelEditModel(response.Item);
 
             return View(model);
         }
@@ -232,7 +235,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LabelMapper.MapLabelCloneModel(response.Item);
+            var model = _labelMapper.MapLabelCloneModel(response.Item);
 
             return View(model);
         }
@@ -325,7 +328,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -471,7 +474,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LabelMapper.MapLabelUploadFromCSVModel(project.Item);
+            var model = _labelMapper.MapLabelUploadFromCSVModel(project.Item);
 
             return View(model);
         }
@@ -542,7 +545,7 @@ namespace Translation.Client.Web.Controllers
             CurrentUser.IsActionSucceed = true;
             return View("UploadLabelFromCSVFileDone", doneModel);
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> CreateBulkLabel(Guid id)
         {
@@ -559,7 +562,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LabelMapper.MapCreateBulkLabelModel(project.Item);
+            var model = _labelMapper.MapCreateBulkLabelModel(project.Item);
 
             return View(model);
         }
@@ -689,7 +692,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LabelMapper.MapLabelTranslationCreateModel(response.Item, projectReadResponse.Item);
+            var model = _labelMapper.MapLabelTranslationCreateModel(response.Item, projectReadResponse.Item);
 
             return View(model);
         }
@@ -735,7 +738,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LabelMapper.MapLabelTranslationDetailModel(response.Item);
+            var model = _labelMapper.MapLabelTranslationDetailModel(response.Item);
 
             return View(model);
         }
@@ -756,7 +759,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LabelMapper.MapLabelTranslationEditModel(response.Item);
+            var model = _labelMapper.MapLabelTranslationEditModel(response.Item);
 
             return View(model);
         }
@@ -850,7 +853,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -871,7 +874,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LabelMapper.MapUploadLabelTranslationFromCSVFileModel(label.Item);
+            var model = _labelMapper.MapUploadLabelTranslationFromCSVFileModel(label.Item);
 
             return View(model);
         }

@@ -25,16 +25,19 @@ namespace Translation.Client.Web.Controllers
 {
     public class OrganizationController : BaseController
     {
+        private readonly OrganizationMapper _organizationMapper;
         private readonly IIntegrationService _integrationService;
         private readonly IProjectService _projectService;
 
         public OrganizationController(IOrganizationService organizationService,
+                                      OrganizationMapper organizationMapper,
                                       IJournalService journalService,
                                       ILanguageService languageService,
                                       ITranslationProviderService translationProviderService,
                                       IIntegrationService integrationService,
                                       IProjectService projectService) : base(organizationService, journalService, languageService, translationProviderService)
         {
+            _organizationMapper = organizationMapper;
             _integrationService = integrationService;
             _projectService = projectService;
         }
@@ -55,7 +58,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = OrganizationMapper.MapOrganizationDetailModel(response.Item);
+            var model = _organizationMapper.MapOrganizationDetailModel(response.Item);
 
             return View(model);
         }
@@ -76,7 +79,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = OrganizationMapper.MapOrganizationEditModel(response.Item);
+            var model = _organizationMapper.MapOrganizationEditModel(response.Item);
 
             return View(model);
         }
@@ -247,7 +250,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -307,7 +310,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -349,7 +352,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -387,7 +390,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -428,7 +431,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -487,7 +490,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -559,9 +562,9 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
-        }       
+        }
     }
 }
