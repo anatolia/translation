@@ -1,16 +1,13 @@
-﻿using System;
-
-using Translation.Client.Web.Models.Label;
+﻿using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Shared;
-using Translation.Data.Entities.Domain;
 
 namespace Translation.Client.Web.Helpers.Mappers
 {
     public class LabelMapper
     {
-        public static LabelCreateModel MapLabelCreateModel(ProjectDto dto, ActiveTranslationProvider activeTranslationProvider)
+        public  LabelCreateModel MapLabelCreateModel(ProjectDto dto, ActiveTranslationProvider activeTranslationProvider)
         {
             var model = new LabelCreateModel();
             model.OrganizationUid = dto.OrganizationUid;
@@ -28,7 +25,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static LabelDetailModel MapLabelDetailModel(LabelDto dto)
+        public  LabelDetailModel MapLabelDetailModel(LabelDto dto)
         {
             var model = new LabelDetailModel();
             model.OrganizationUid = dto.OrganizationUid;
@@ -49,7 +46,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static LabelEditModel MapLabelEditModel(LabelDto dto)
+        public  LabelEditModel MapLabelEditModel(LabelDto dto)
         {
             var model = new LabelEditModel();
             model.OrganizationUid = dto.OrganizationUid;
@@ -63,7 +60,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static LabelCloneModel MapLabelCloneModel(LabelDto dto)
+        public  LabelCloneModel MapLabelCloneModel(LabelDto dto)
         {
             var model = new LabelCloneModel();
             model.OrganizationUid = dto.OrganizationUid;
@@ -76,7 +73,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static LabelUploadFromCSVModel MapLabelUploadFromCSVModel(ProjectDto project)
+        public  LabelUploadFromCSVModel MapLabelUploadFromCSVModel(ProjectDto project)
         {
             var model = new LabelUploadFromCSVModel();
             model.OrganizationUid = project.OrganizationUid;
@@ -87,7 +84,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static CreateBulkLabelModel MapCreateBulkLabelModel(ProjectDto project)
+        public  CreateBulkLabelModel MapCreateBulkLabelModel(ProjectDto project)
         {
             var model = new CreateBulkLabelModel();
             model.OrganizationUid = project.OrganizationUid;
@@ -98,7 +95,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static UploadLabelTranslationFromCSVFileModel MapUploadLabelTranslationFromCSVFileModel(LabelDto label)
+        public  UploadLabelTranslationFromCSVFileModel MapUploadLabelTranslationFromCSVFileModel(LabelDto label)
         {
             var model = new UploadLabelTranslationFromCSVFileModel();
             model.OrganizationUid = label.OrganizationUid;
@@ -109,7 +106,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static LabelTranslationCreateModel MapLabelTranslationCreateModel(LabelDto label, ProjectDto project)
+        public  LabelTranslationCreateModel MapLabelTranslationCreateModel(LabelDto label, ProjectDto project)
         {
             var model = new LabelTranslationCreateModel();
             model.OrganizationUid = label.OrganizationUid;
@@ -126,7 +123,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static LabelTranslationEditModel MapLabelTranslationEditModel(LabelTranslationDto dto)
+        public  LabelTranslationEditModel MapLabelTranslationEditModel(LabelTranslationDto dto)
         {
             var model = new LabelTranslationEditModel();
             model.Translation = dto.Translation;
@@ -145,7 +142,7 @@ namespace Translation.Client.Web.Helpers.Mappers
         }
 
 
-        public static LabelTranslationDetailModel MapLabelTranslationDetailModel(LabelTranslationDto dto)
+        public  LabelTranslationDetailModel MapLabelTranslationDetailModel(LabelTranslationDto dto)
         {
             var model = new LabelTranslationDetailModel();
             model.LabelTranslationUid = dto.Uid;

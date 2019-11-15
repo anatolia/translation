@@ -5,9 +5,9 @@ using Translation.Common.Models.DataTransferObjects;
 
 namespace Translation.Client.Web.Helpers.Mappers
 {
-    public static class ProjectMapper
+    public class ProjectMapper
     {
-        public static ProjectCreateModel MapProjectCreateModel(Guid organizationUid)
+        public ProjectCreateModel MapProjectCreateModel(Guid organizationUid)
         {
             var model = new ProjectCreateModel();
             model.OrganizationUid = organizationUid;
@@ -17,7 +17,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static ProjectDetailModel MapProjectDetailModel(ProjectDto dto)
+        public ProjectDetailModel MapProjectDetailModel(ProjectDto dto)
         {
             var model = new ProjectDetailModel();
             model.OrganizationUid = dto.OrganizationUid;
@@ -38,7 +38,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static ProjectEditModel MapProjectEditModel(ProjectDto dto)
+        public ProjectEditModel MapProjectEditModel(ProjectDto dto)
         {
             var model = new ProjectEditModel();
 
@@ -56,7 +56,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static ProjectCloneModel MapProjectCloneModel(ProjectDto dto)
+        public ProjectCloneModel MapProjectCloneModel(ProjectDto dto)
         {
             var model = new ProjectCloneModel();
             model.OrganizationUid = dto.OrganizationUid;

@@ -7,7 +7,7 @@ namespace Translation.Client.Web.Helpers.Mappers
 {
     public class IntegrationMapper
     {
-        public static IntegrationCreateModel MapIntegrationCreateModel(Guid organizationUid)
+        public IntegrationCreateModel MapIntegrationCreateModel(Guid organizationUid)
         {
             var model = new IntegrationCreateModel();
             model.OrganizationUid = organizationUid;
@@ -17,7 +17,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static IntegrationDetailModel MapIntegrationDetailModel(IntegrationDto dto)
+        public IntegrationDetailModel MapIntegrationDetailModel(IntegrationDto dto)
         {
             var model = new IntegrationDetailModel();
             model.OrganizationUid = dto.OrganizationUid;
@@ -30,7 +30,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static IntegrationClientActiveTokensModel MapIntegrationClientActiveTokensModel(IntegrationClientDto dto)
+        public IntegrationClientActiveTokensModel MapIntegrationClientActiveTokensModel(IntegrationClientDto dto)
         {
             var model = new IntegrationClientActiveTokensModel();
             model.IntegrationUid = dto.IntegrationUid;
@@ -40,7 +40,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static IntegrationActiveTokensModel MapIntegrationActiveTokensModel(IntegrationDto dto)
+        public IntegrationActiveTokensModel MapIntegrationActiveTokensModel(IntegrationDto dto)
         {
             var model = new IntegrationActiveTokensModel();
             model.IntegrationUid = dto.Uid;
@@ -49,7 +49,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static IntegrationEditModel MapIntegrationEditModel(IntegrationDto dto)
+        public IntegrationEditModel MapIntegrationEditModel(IntegrationDto dto)
         {
             var model = new IntegrationEditModel();
             model.IntegrationUid = dto.Uid;
@@ -60,7 +60,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static IntegrationClientTokenRequestLogsModel MapIntegrationClientTokenRequestLogsModel(Guid id)
+        public IntegrationClientTokenRequestLogsModel MapIntegrationClientTokenRequestLogsModel(Guid id)
         {
             var model = new IntegrationClientTokenRequestLogsModel();
             model.IntegrationClientUid = id;

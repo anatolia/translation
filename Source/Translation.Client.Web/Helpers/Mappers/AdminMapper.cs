@@ -7,7 +7,7 @@ namespace Translation.Client.Web.Helpers.Mappers
 {
     public class AdminMapper
     {
-        public static AdminAcceptInviteModel MapAdminAcceptInviteModel(UserDto userDto, Guid tokenUid, string email)
+        public AdminAcceptInviteModel MapAdminAcceptInviteModel(UserDto userDto, Guid tokenUid, string email)
         {
             var model = new AdminAcceptInviteModel();
             model.FirstName = userDto.FirstName;
@@ -19,7 +19,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static AdminInviteModel MapAdminInviteModel(Guid organizationUid)
+        public AdminInviteModel MapAdminInviteModel(Guid organizationUid)
         {
             var model = new AdminInviteModel();
             model.OrganizationUid = organizationUid;

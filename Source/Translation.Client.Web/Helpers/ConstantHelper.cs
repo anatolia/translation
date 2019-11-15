@@ -1,6 +1,6 @@
 ﻿namespace Translation.Client.Web.Helpers
 {
-    public static class ConstantHelper
+    public class ConstantHelper
     {
         public const string ORGANIZATION_NAME = "Anatolia";
         public const string APP_NAME = "Translation";
