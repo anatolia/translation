@@ -11,6 +11,7 @@ using StandardRepository.PostgreSQL.DbGenerator;
 using StandardRepository.PostgreSQL.Factories;
 using StandardRepository.PostgreSQL.Helpers;
 using StandardRepository.PostgreSQL.Helpers.SqlExecutor;
+using StandardUtils.Models.Shared;
 
 using Translation.Common.Contracts;
 using Translation.Common.Models.Requests.Label;

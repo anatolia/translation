@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
+using StandardUtils.Helpers;
+using StandardUtils.Models.Shared;
 
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
@@ -9,13 +12,11 @@ using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.Integration;
 using Translation.Common.Contracts;
-using Translation.Common.Helpers;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Integration;
 using Translation.Common.Models.Requests.Integration.IntegrationClient;
 using Translation.Common.Models.Requests.Integration.Token;
 using Translation.Common.Models.Requests.Organization;
-using Translation.Common.Models.Shared;
 
 namespace Translation.Client.Web.Controllers
 {
@@ -65,7 +66,8 @@ namespace Translation.Client.Web.Controllers
             var response = await _integrationService.CreateIntegration(request);
             if (response.Status.IsNotSuccess)
             {
-                model.MapMessages(response);
+                model.MapMessages(
+                    response);
                 model.SetInputModelValues();
                 return View(model);
             }
@@ -128,7 +130,8 @@ namespace Translation.Client.Web.Controllers
             var response = await _integrationService.EditIntegration(request);
             if (response.Status.IsNotSuccess)
             {
-                model.MapMessages(response);
+                model.MapMessages(
+                    response);
                 model.SetInputModelValues();
                 return View(model);
             }
@@ -283,7 +286,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -450,7 +453,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -512,9 +515,9 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
-        }      
+        }
     }
 }

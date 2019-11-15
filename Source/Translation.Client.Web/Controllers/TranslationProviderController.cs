@@ -2,14 +2,15 @@
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
+using StandardUtils.Helpers;
+using StandardUtils.Models.Shared;
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
 using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.TranslationProvider;
 using Translation.Common.Contracts;
-using Translation.Common.Helpers;
+
 using Translation.Common.Models.Requests.Admin;
 using Translation.Common.Models.Requests.TranslationProvider;
 using Translation.Common.Models.Shared;
@@ -69,7 +70,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
