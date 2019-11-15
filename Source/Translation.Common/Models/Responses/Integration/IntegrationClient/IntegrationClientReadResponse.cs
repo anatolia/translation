@@ -3,8 +3,7 @@ using Translation.Common.Models.DataTransferObjects;
 
 namespace Translation.Common.Models.Responses.Integration.IntegrationClient
 {
-    public class IntegrationClientReadResponse : BaseResponse<IntegrationClientDto>
+    public class IntegrationClientReadResponse : TranslationGenericBaseResponse<IntegrationClientDto>
     {
-
     }
 }

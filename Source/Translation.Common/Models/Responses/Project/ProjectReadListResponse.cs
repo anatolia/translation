@@ -3,7 +3,7 @@ using Translation.Common.Models.DataTransferObjects;
 
 namespace Translation.Common.Models.Responses.Project
 {
-    public class ProjectReadListResponse : BaseResponse<ProjectDto>
+    public class ProjectReadListResponse : TranslationGenericBaseResponse<ProjectDto>
     {
     }
 }

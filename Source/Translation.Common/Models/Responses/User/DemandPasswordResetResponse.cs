@@ -2,8 +2,7 @@
 
 namespace Translation.Common.Models.Responses.User
 {
-    public class DemandPasswordResetResponse : BaseResponse
+    public class DemandPasswordResetResponse : TranslationBaseResponse
     {
-
     }
 }

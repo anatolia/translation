@@ -2,8 +2,7 @@
 
 namespace Translation.Common.Models.Responses.Integration.Token
 {
-    public class TokenValidateResponse : BaseResponse
+    public class TokenValidateResponse : TranslationBaseResponse
     {
-
     }
 }

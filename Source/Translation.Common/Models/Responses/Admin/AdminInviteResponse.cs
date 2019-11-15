@@ -2,8 +2,7 @@
 
 namespace Translation.Common.Models.Responses.Admin
 {
-    public class AdminInviteResponse : BaseResponse
+    public class AdminInviteResponse : TranslationBaseResponse
     {
-        
     }
 }
