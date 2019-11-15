@@ -1,6 +1,7 @@
-﻿using Translation.Common.Models.DataTransferObjects;
+﻿using StandardUtils.Models.Shared;
+
+using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Project;
-using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
 using Translation.Data.Entities.Parameter;
@@ -25,7 +26,7 @@ namespace Translation.Data.Factories
             return entity;
         }
 
-        public Project CreateEntityFromRequest(ProjectCreateRequest request, CurrentOrganization organization, Language language)
+        public Project CreateEntityFromRequest(ProjectCreateRequest request, BaseCurrentOrganization organization, Language language)
         {
             var entity = new Project();
             entity.OrganizationId = organization.Id;
