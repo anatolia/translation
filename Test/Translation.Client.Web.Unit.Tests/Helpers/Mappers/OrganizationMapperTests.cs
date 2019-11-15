@@ -10,6 +10,14 @@ namespace Translation.Client.Web.Unit.Tests.Helpers.Mappers
     [TestFixture]
     public class OrganizationMapperTests
     {
+        public OrganizationMapper OrganizationMapper { get; set; }
+
+        [SetUp]
+        public void run_before_every_test()
+        {
+            OrganizationMapper = new OrganizationMapper();
+        }
+
         [Test]
         public void OrganizationMapper_MapOrganizationDetailModel()
         {
