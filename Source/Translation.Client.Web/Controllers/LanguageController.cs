@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using StandardUtils.Helpers;
+using StandardUtils.Models.Shared;
 
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
@@ -12,9 +15,7 @@ using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.Language;
 using Translation.Common.Contracts;
-using Translation.Common.Helpers;
 using Translation.Common.Models.Requests.Language;
-using Translation.Common.Models.Shared;
 
 namespace Translation.Client.Web.Controllers
 {
@@ -22,14 +23,17 @@ namespace Translation.Client.Web.Controllers
     {
         private readonly IWebHostEnvironment _environment;
         private readonly ILanguageService _languageService;
+        private readonly LanguageMapper _languageMapper;
 
         public LanguageController(IOrganizationService organizationService,
                                   IJournalService journalService,
                                   ILanguageService languageService,
+                                  LanguageMapper languageMapper,
                                   ITranslationProviderService translationProviderService,
                                   IWebHostEnvironment environment) : base(organizationService, journalService, languageService, translationProviderService)
         {
             _languageService = languageService;
+            _languageMapper = languageMapper;
             _environment = environment;
         }
 
@@ -89,7 +93,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LanguageMapper.MapLanguageDetailModel(response.Item);
+            var model = _languageMapper.MapLanguageDetailModel(response.Item);
 
             return View(model);
         }
@@ -110,7 +114,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = LanguageMapper.MapLanguageEditModel(response.Item);
+            var model = _languageMapper.MapLanguageEditModel(response.Item);
 
             return View(model);
         }
@@ -197,7 +201,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -211,7 +215,7 @@ namespace Translation.Client.Web.Controllers
             var searchTerm = q?.ToLowerInvariant();
             if (searchTerm.IsNotEmpty())
             {
-                request.SearchTerm = searchTerm;
+                request.PagingInfo.SearchTerm= searchTerm;
             }
 
             if (lastUid.IsNotEmptyGuid())

@@ -10,6 +10,14 @@ namespace Translation.Client.Web.Unit.Tests.Helpers.Mappers
     [TestFixture]
     public class LanguageMapperTests
     {
+        public LanguageMapper LanguageMapper { get; set; }
+
+        [SetUp]
+        public void run_before_every_test()
+        {
+            LanguageMapper = new LanguageMapper();
+        }
+
         [Test]
         public void LanguageMapper_MapLanguageEditModel()
         {

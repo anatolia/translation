@@ -163,8 +163,8 @@ namespace Translation.Server.Unit.Tests.Data.Factories
             result.ObfuscationSalt.ShouldBe(StringOne);
             result.IsActive.ShouldBe( BooleanTrue);
 
-            result.OrganizationId.ShouldBe( currentUser.OrganizationId);
-            result.OrganizationUid.ShouldBe( currentUser.OrganizationUid);
+            result.OrganizationId.ShouldBe( currentUser.Organization.Id);
+            result.OrganizationUid.ShouldBe( currentUser.Organization.Uid);
             result.OrganizationName.ShouldBe( currentUser.Organization.Name);
 
             result.InvitedByUserId.ShouldBe( currentUser.Id);
@@ -239,9 +239,7 @@ namespace Translation.Server.Unit.Tests.Data.Factories
             result.Organization.Uid.ShouldBe(user.OrganizationUid);
             result.Organization.Name.ShouldBe(user.OrganizationName);
 
-            result.LanguageIsoCode2Char.ShouldBe(IsoCode2Two);
-
+            result.LanguageCode.ShouldBe(IsoCode2Two);
         }
-
     }
 }

@@ -3,6 +3,7 @@ using System.IO;
 
 using Microsoft.AspNetCore.Http;
 using Moq;
+using StandardUtils.Models.Shared;
 
 using Translation.Client.Web.Models;
 using Translation.Client.Web.Models.Admin;

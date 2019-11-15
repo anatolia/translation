@@ -3,9 +3,10 @@ using System.Collections;
 
 using NUnit.Framework;
 using Shouldly;
+using StandardUtils.Helpers;
 
 using Translation.Client.Web.Models.TranslationProvider;
-using Translation.Common.Helpers;
+
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Client.Web.Unit.Tests.TestHelpers.AssertViewModelTestHelper;
 using static Translation.Client.Web.Unit.Tests.TestHelpers.FakeModelTestHelper;
@@ -28,7 +29,6 @@ namespace Translation.Client.Web.Unit.Tests.Models.ViewModels.TranslationProvide
         {
             Assert.AreEqual(SystemUnderTest.Title, "translation_provider_edit_title");
         }
-
 
         [Test]
         public void SignUpModel_TranslationProviderInput()

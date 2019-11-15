@@ -6,9 +6,11 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using StandardRepository.Helpers;
 using StandardRepository.Models;
+using StandardUtils.Enumerations;
+using StandardUtils.Helpers;
+using StandardUtils.Models.DataTransferObjects;
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
-using Translation.Common.Helpers;
+
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
@@ -16,11 +18,11 @@ using Translation.Common.Models.Responses.Label;
 using Translation.Common.Models.Responses.Label.LabelTranslation;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
-using Translation.Data.Entities.Parameter;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
 using Translation.Data.UnitOfWorks.Contracts;
 using Translation.Service.Managers;
+using Language = Translation.Data.Entities.Parameter.Language;
 
 namespace Translation.Service
 {
@@ -34,7 +36,6 @@ namespace Translation.Service
         private readonly ILabelTranslationRepository _labelTranslationRepository;
         private readonly LabelTranslationFactory _labelTranslationFactory;
         private readonly IProjectRepository _projectRepository;
-        private readonly ProjectFactory _projectFactory;
         private readonly IOrganizationRepository _organizationRepository;
         private readonly ILanguageRepository _languageRepository;
         private readonly ITokenRepository _tokenRepository;
@@ -58,7 +59,6 @@ namespace Translation.Service
             _labelTranslationRepository = labelTranslationRepository;
             _labelTranslationFactory = labelTranslationFactory;
             _projectRepository = projectRepository;
-            _projectFactory = projectFactory;
             _organizationRepository = organizationRepository;
             _languageRepository = languageRepository;
             _tokenRepository = tokenRepository;
@@ -403,7 +403,7 @@ namespace Translation.Service
                 if (!isAlphabetical.IsMatch(translationInfo.LabelKey))
                 {
                     response.CanNotAddedLabelCount++;
-                    response.WarningMessages.Add(translationInfo.LabelKey);
+                    response.CanNotAddedLabels.Add(translationInfo.LabelKey);
                     continue;
                 }
 
@@ -612,9 +612,9 @@ namespace Translation.Service
 
             Expression<Func<Label, bool>> filter = x => x.ProjectId == project.Id;
 
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm) && x.ProjectId == project.Id;
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm) && x.ProjectId == project.Id;
             }
 
             List<Label> entities;
@@ -658,7 +658,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
             Expression<Func<Label, bool>> filter = x =>
-                x.Name.Contains(request.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
+                x.Name.Contains(request.PagingInfo.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
 
             List<Label> entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip,
                 request.PagingInfo.Take, false,
@@ -1347,9 +1347,9 @@ namespace Translation.Service
 
             Expression<Func<LabelTranslation, bool>> filter = x => x.LabelId == label.Id;
 
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm) && x.ProjectId == label.Id;
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm) && x.ProjectId == label.Id;
             }
 
             List<LabelTranslation> entities;
@@ -1381,10 +1381,7 @@ namespace Translation.Service
                         var dto = _labelTranslationFactory.CreateDtoFromEntity(entity, language);
                         response.Items.Add(dto);
                     }
-                    else
-                    {
-                        response.WarningMessages.Add(entity.LanguageName + " not found!");
-                    }
+                    //todo added else info messages
                 }
             }
 

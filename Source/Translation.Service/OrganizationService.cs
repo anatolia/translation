@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 using StandardRepository.Helpers;
 using StandardRepository.Models;
+using StandardUtils.Enumerations;
+using StandardUtils.Helpers;
+using StandardUtils.Models.DataTransferObjects;
+
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
-using Translation.Common.Helpers;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Organization;
 using Translation.Common.Models.Requests.User;
@@ -19,11 +21,11 @@ using Translation.Common.Models.Responses.User.LoginLog;
 using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
-using Translation.Data.Entities.Parameter;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
 using Translation.Data.UnitOfWorks.Contracts;
 using Translation.Service.Managers;
+using Language = Translation.Data.Entities.Parameter.Language;
 
 namespace Translation.Service
 {
@@ -95,7 +97,7 @@ namespace Translation.Service
             var organization = await _organizationRepository.Select(x => x.Name == request.OrganizationName);
             if (organization.IsExist())
             {
-                response.SetInvalidBecauseNameMustBeUnique(nameof(Organization));
+                response.SetInvalidBecauseMustBeUnique(nameof(Organization));
                 return response;
             }
 
@@ -153,9 +155,9 @@ namespace Translation.Service
             var response = new OrganizationReadListResponse();
 
             Expression<Func<Organization, bool>> filter = null;
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm);
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm);
             }
 
             List<Organization> entities;
@@ -257,7 +259,7 @@ namespace Translation.Service
 
             if (await _organizationRepository.Any(x => x.Name == request.Name && x.Id != currentUser.OrganizationId))
             {
-                response.SetInvalidBecauseNameMustBeUnique(nameof(Organization));
+                response.SetInvalidBecauseMustBeUnique(nameof(Organization));
                 return response;
             }
 
@@ -333,9 +335,9 @@ namespace Translation.Service
             Expression<Func<Label, bool>> filter = x => x.OrganizationId == organization.Id
                                                         && x.LabelTranslationCount < 2;
 
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm)
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm)
                               && x.OrganizationId == organization.Id
                               && x.LabelTranslationCount < 2;
             }
@@ -853,9 +855,9 @@ namespace Translation.Service
 
             Expression<Func<User, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
 
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.OrganizationId == currentUser.OrganizationId && x.Name.Contains(request.SearchTerm);
+                filter = x => x.OrganizationId == currentUser.OrganizationId && x.Name.Contains(request.PagingInfo.SearchTerm);
             }
 
             List<User> entities;
@@ -939,9 +941,9 @@ namespace Translation.Service
 
             Expression<Func<UserLoginLog, bool>> filter = x => x.OrganizationId == user.OrganizationId && x.UserId == user.Id;
 
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm) && x.OrganizationId == user.OrganizationId && x.UserId == user.Id;
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm) && x.OrganizationId == user.OrganizationId && x.UserId == user.Id;
             }
 
             List<UserLoginLog> entities;
@@ -991,9 +993,9 @@ namespace Translation.Service
 
             Expression<Func<UserLoginLog, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
 
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
             }
 
             List<UserLoginLog> entities;

@@ -3,8 +3,7 @@ using System.Linq;
 using System.Reflection;
 
 using Shouldly;
-
-using Translation.Common.Models.Base;
+using StandardUtils.Models.DataTransferObjects;
 
 namespace Translation.Common.Tests.TestHelpers
 {

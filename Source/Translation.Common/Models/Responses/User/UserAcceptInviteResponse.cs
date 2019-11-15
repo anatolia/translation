@@ -2,8 +2,7 @@
 
 namespace Translation.Common.Models.Responses.User
 {
-    public class UserAcceptInviteResponse : BaseResponse
+    public class UserAcceptInviteResponse : TranslationBaseResponse
     {
-
     }
 }

@@ -3,8 +3,7 @@ using Translation.Common.Models.DataTransferObjects;
 
 namespace Translation.Common.Models.Responses.User.LoginLog
 {
-    public class UserLoginLogReadListResponse : BaseResponse<UserLoginLogDto>
+    public class UserLoginLogReadListResponse : TranslationGenericBaseResponse<UserLoginLogDto>
     {
-
     }
 }

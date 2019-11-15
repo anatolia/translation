@@ -3,8 +3,7 @@ using Translation.Common.Models.DataTransferObjects;
 
 namespace Translation.Common.Models.Responses.Integration.Token
 {
-    public class IntegrationClientActiveTokenReadListResponse : BaseResponse<TokenDto>
+    public class IntegrationClientActiveTokenReadListResponse : TranslationGenericBaseResponse<TokenDto>
     {
-        
     }
 }

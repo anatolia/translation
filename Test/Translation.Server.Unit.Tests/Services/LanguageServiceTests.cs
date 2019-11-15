@@ -3,7 +3,7 @@
 using NUnit.Framework;
 
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
+using StandardUtils.Enumerations;
 using Translation.Common.Models.Responses.Language;
 using Translation.Server.Unit.Tests.RepositorySetupHelpers;
 

@@ -1,5 +1,5 @@
 ﻿using System;
-
+using StandardUtils.Models.Shared;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Admin;
 using Translation.Common.Models.Requests.Organization;
@@ -82,7 +82,7 @@ namespace Translation.Data.Factories
             return entity;
         }
 
-        public User CreateEntityFromRequest(UserInviteRequest request, CurrentOrganization organization, string salt)
+        public User CreateEntityFromRequest(UserInviteRequest request, BaseCurrentOrganization organization, string salt)
         {
             var entity = new User();
             entity.FirstName = request.FirstName;
@@ -111,8 +111,8 @@ namespace Translation.Data.Factories
             entity.ObfuscationSalt = salt;
             entity.IsActive = true;
 
-            entity.OrganizationId = currentUser.OrganizationId;
-            entity.OrganizationUid = currentUser.OrganizationUid;
+            entity.OrganizationId = currentUser.Organization.Id;
+            entity.OrganizationUid = currentUser.Organization.Uid;
             entity.OrganizationName = currentUser.Organization.Name;
 
             entity.InvitedByUserId = currentUser.Id;
@@ -178,7 +178,7 @@ namespace Translation.Data.Factories
             };
             currentUser.Organization = currentOrganization;
 
-            currentUser.LanguageIsoCode2Char = isoCode2Char;
+            currentUser.LanguageCode = isoCode2Char;
 
             return currentUser;
         }

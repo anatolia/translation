@@ -5,7 +5,7 @@ namespace Translation.Client.Web.Helpers.Mappers
 {
     public class OrganizationMapper
     {
-        public static OrganizationDetailModel MapOrganizationDetailModel(OrganizationDto dto)
+        public OrganizationDetailModel MapOrganizationDetailModel(OrganizationDto dto)
         {
             var model = new OrganizationDetailModel();
 
@@ -19,7 +19,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static OrganizationEditModel MapOrganizationEditModel(OrganizationDto dto)
+        public OrganizationEditModel MapOrganizationEditModel(OrganizationDto dto)
         {
             var model = new OrganizationEditModel();
 

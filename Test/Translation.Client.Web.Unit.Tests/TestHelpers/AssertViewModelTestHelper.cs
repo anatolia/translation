@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 using Shouldly;
-
+using StandardUtils.Models.Shared;
 using Translation.Client.Web.Controllers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.InputModels;
@@ -160,7 +160,7 @@ namespace Translation.Client.Web.Unit.Tests.TestHelpers
             var pagingInfo = new PagingInfo();
 
             var resultValue = (DataResult)result.Value;
-            resultValue.PagingInfo.Type.ShouldBe(PagingInfo.PAGE_NUMBERS);
+            resultValue.PagingInfo.PagingType.ShouldBe(PagingInfo.PAGE_NUMBERS);
             resultValue.PagingInfo.Take.ShouldBe(pagingInfo.Take);
             resultValue.PagingInfo.Skip.ShouldBe(pagingInfo.Skip);
         }

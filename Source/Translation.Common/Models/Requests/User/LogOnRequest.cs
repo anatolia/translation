@@ -1,6 +1,6 @@
-﻿using Translation.Common.Helpers;
-using Translation.Common.Models.Base;
-using Translation.Common.Models.Shared;
+﻿using StandardUtils.Helpers;
+using StandardUtils.Models.Requests;
+using StandardUtils.Models.Shared;
 
 namespace Translation.Common.Models.Requests.User
 {

@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 using Shouldly;
+using StandardUtils.Models.Shared;
 
-using Translation.Common.Models.Shared;
 using static Translation.Common.Tests.TestHelpers.FakeRequestTestHelper;
 
 namespace Translation.Server.Unit.Tests.TestHelpers
@@ -73,7 +72,9 @@ namespace Translation.Server.Unit.Tests.TestHelpers
 
         public static void AssertPagingInfoForSelectAfter(PagingInfo info, int totalItemCountOfPagingInfo)
         {
-            var pagingInfo = GetPagingInfoForSelectAfter();
+            PagingInfo pagingInfo = new PagingInfo();
+            SetPagingInfoForSelectAfter(pagingInfo);
+
             pagingInfo.Skip.ShouldBe(info.Skip);
             pagingInfo.Take.ShouldBe(info.Take);
             pagingInfo.LastUid.ShouldBe(info.LastUid);
@@ -83,7 +84,9 @@ namespace Translation.Server.Unit.Tests.TestHelpers
 
         public static void AssertPagingInfoForSelectMany(PagingInfo info, int totalItemCountOfPagingInfo)
         {
-            var pagingInfo = GetPagingInfoForSelectMany();
+            PagingInfo pagingInfo = new PagingInfo();
+            SetPagingInfoForSelectMany(pagingInfo);
+
             pagingInfo.Skip.ShouldBe(info.Skip);
             pagingInfo.Take.ShouldBe(info.Take);
             pagingInfo.LastUid.ShouldBe(info.LastUid);

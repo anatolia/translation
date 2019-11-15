@@ -3,8 +3,7 @@ using Translation.Common.Models.DataTransferObjects;
 
 namespace Translation.Common.Models.Responses.Language
 {
-    public class LanguageReadListResponse : BaseResponse<LanguageDto>
+    public class LanguageReadListResponse : TranslationGenericBaseResponse<LanguageDto>
     {
-        
     }
 }

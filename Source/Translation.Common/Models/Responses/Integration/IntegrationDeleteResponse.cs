@@ -2,8 +2,7 @@
 
 namespace Translation.Common.Models.Responses.Integration
 {
-    public class IntegrationDeleteResponse : BaseResponse
+    public class IntegrationDeleteResponse : TranslationBaseResponse
     {
-
     }
 }

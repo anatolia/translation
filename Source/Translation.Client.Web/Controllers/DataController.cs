@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using StandardUtils.Helpers;
 
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.Data;
 using Translation.Common.Contracts;
-using Translation.Common.Helpers;
 using Translation.Common.Models.Requests.Integration.Token;
 using Translation.Common.Models.Requests.Label;
 
@@ -88,7 +90,7 @@ namespace Translation.Client.Web.Controllers
                 return Json(null);
             }
 
-            return Json(new { CurrentUser.Name, CurrentUser.LanguageIsoCode2Char });
+            return Json(new { CurrentUser.Name, CurrentUser.LanguageCode });
         }
 
         [HttpPost,

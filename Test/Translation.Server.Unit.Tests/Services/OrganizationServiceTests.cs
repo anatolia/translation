@@ -5,7 +5,7 @@ using NUnit.Framework;
 using Shouldly;
 
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
+using StandardUtils.Enumerations;
 using Translation.Common.Models.Responses.Organization;
 using Translation.Common.Models.Responses.User;
 using Translation.Common.Models.Responses.User.LoginLog;
@@ -1489,6 +1489,7 @@ namespace Translation.Server.Unit.Tests.Services
             // arrange
             var request = GetUserReadListRequestForSelectAfter();
             MockUserRepository.Setup_SelectAfter_Returns_Users();
+
             MockUserRepository.Setup_Count_Returns_Ten();
 
             // act

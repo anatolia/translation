@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using Translation.Common.Models.Base;
+
+using StandardUtils.Models.DataTransferObjects;
+
 using Translation.Common.Models.DataTransferObjects;
 using static Translation.Common.Tests.TestHelpers.AssertPropertyTestHelper;
 
@@ -21,14 +23,11 @@ namespace Translation.Common.Tests.Models.DataTransferObjects
 
             AssertStringProperty(properties, "Description", dto.Description);
             AssertBooleanProperty(properties, "IsActive", dto.IsActive);
-          
-
+            
             AssertIntegerProperty(properties, "UserCount", dto.UserCount);
             AssertIntegerProperty(properties, "ProjectCount", dto.ProjectCount);
             AssertIntegerProperty(properties, "LabelCount", dto.LabelCount);
             AssertIntegerProperty(properties, "LabelTranslationCount", dto.LabelTranslationCount);
-
-            
         }
     }
 }
