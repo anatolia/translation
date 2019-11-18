@@ -1,7 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Configuration;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -14,7 +14,7 @@ using Microsoft.Extensions.Hosting;
 
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.ProjectModel;
+
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.DependencyInstallers;
 using Translation.Common.Contracts;

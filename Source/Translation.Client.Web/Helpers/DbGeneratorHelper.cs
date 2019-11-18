@@ -21,6 +21,7 @@ using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Parameter;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
+using Translation.Integrations.Providers;
 
 namespace Translation.Client.Web.Helpers
 {
@@ -51,7 +52,7 @@ namespace Translation.Client.Web.Helpers
                 var translationProviderRepository = container.Resolve<ITranslationProviderRepository>();
                 var translationProviderFactory = container.Resolve<TranslationProviderFactory>();
                 var (yandex, google) = InsertTranslationProviders(translationProviderRepository, translationProviderFactory);
-                
+
                 var languageRepository = container.Resolve<ILanguageRepository>();
                 var languageFactory = container.Resolve<LanguageFactory>();
                 var (turkish, english) = InsertLanguages(languageRepository, languageFactory);
@@ -81,7 +82,7 @@ namespace Translation.Client.Web.Helpers
             organizationService.LoadUsersToCache();
         }
 
-        private long InsertAdmin(AdminSettings adminSettings, IOrganizationService organizationService, IOrganizationRepository organizationRepository, 
+        private long InsertAdmin(AdminSettings adminSettings, IOrganizationService organizationService, IOrganizationRepository organizationRepository,
                                  IUserRepository userRepository, IProjectRepository projectRepository, ILanguageRepository languageRepository)
         {
             organizationService.CreateOrganizationWithAdmin(new SignUpRequest(ConstantHelper.ORGANIZATION_NAME, adminSettings.AdminFirstName, adminSettings.AdminLastName,
@@ -122,7 +123,7 @@ namespace Translation.Client.Web.Helpers
             var turkish = languageFactory.CreateEntity("tr", "tur", "Turkish", "Türkçe");
 
             languageRepository.Insert(0, english).Wait();
-            
+
             languageRepository.Insert(0, chinese).Wait();
             languageRepository.Insert(0, spanish).Wait();
             languageRepository.Insert(0, hindi).Wait();
@@ -137,8 +138,8 @@ namespace Translation.Client.Web.Helpers
 
         private (TranslationProvider, TranslationProvider) InsertTranslationProviders(ITranslationProviderRepository translationProviderRepository, TranslationProviderFactory translationProviderFactory)
         {
-            var google = translationProviderFactory.CreateEntity("google");
-            var yandex = translationProviderFactory.CreateEntity("yandex");
+            var google = translationProviderFactory.CreateEntity(nameof(GoogleTranslateProvider));
+            var yandex = translationProviderFactory.CreateEntity(nameof(YandexTranslateProvider));
 
             translationProviderRepository.Insert(0, google).Wait();
             translationProviderRepository.Insert(0, yandex).Wait();
@@ -176,7 +177,7 @@ namespace Translation.Client.Web.Helpers
                     Translation = values[2]
                 });
             }
-            
+
             var request = new LabelCreateListRequest(project.CreatedBy, project.OrganizationUid, project.Uid, false, labelListInfos);
             var response = labelService.CreateLabelFromList(request).Result;
             if (response.Status.IsNotSuccess)
