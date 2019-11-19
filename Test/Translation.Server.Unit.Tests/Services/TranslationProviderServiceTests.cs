@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Shouldly;
 
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
+using StandardUtils.Enumerations;
 using Translation.Common.Models.Responses.TranslationProvider;
 using Translation.Common.Models.Shared;
 using Translation.Server.Unit.Tests.RepositorySetupHelpers;

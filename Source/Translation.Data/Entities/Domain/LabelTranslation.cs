@@ -23,7 +23,7 @@ namespace Translation.Data.Entities.Domain
         public Guid LanguageUid { get; set; }
         public string LanguageName { get; set; }
 
-        public string Translation { get; set; }
+        public string TranslationText { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
     }

@@ -3,8 +3,7 @@ using Translation.Common.Models.DataTransferObjects;
 
 namespace Translation.Common.Models.Responses.Integration.Token.RequestLog
 {
-    public class OrganizationTokenRequestLogReadListResponse : BaseResponse<TokenRequestLogDto>
+    public class OrganizationTokenRequestLogReadListResponse : TranslationGenericBaseResponse<TokenRequestLogDto>
     {
-
     }
 }

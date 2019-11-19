@@ -3,6 +3,7 @@ using Shouldly;
 
 using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Admin;
+
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeDtoTestHelper;
 
@@ -11,6 +12,14 @@ namespace Translation.Client.Web.Unit.Tests.Helpers.Mappers
     [TestFixture]
     public class AdminMapperTests
     {
+        public AdminMapper AdminMapper { get; set; }
+
+        [SetUp]
+        public void run_before_every_test()
+        {
+            AdminMapper = new AdminMapper();
+        }
+
         [Test]
         public void AdminMapper_MapAdminInviteModel()
         {

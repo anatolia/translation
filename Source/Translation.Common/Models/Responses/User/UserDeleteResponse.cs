@@ -2,8 +2,7 @@
 
 namespace Translation.Common.Models.Responses.User
 {
-    public class UserDeleteResponse : BaseResponse
+    public class UserDeleteResponse : TranslationBaseResponse
     {
-
     }
 }

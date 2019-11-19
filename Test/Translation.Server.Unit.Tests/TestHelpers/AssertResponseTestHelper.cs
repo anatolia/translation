@@ -1,16 +1,17 @@
 ﻿using System.Linq;
+
 using Shouldly;
-using Translation.Common.Enumerations;
-using Translation.Common.Models.Base;
+using StandardUtils.Enumerations;
+using StandardUtils.Models.Responses;
 
 namespace Translation.Server.Unit.Tests.TestHelpers
 {
     public class AssertResponseTestHelper
     {
-        public const string OrganizationNameMustBeUnique = "organization_name_must_be_unique";
-        public const string ProjectNameMustBeUnique = "project_name_must_be_unique";
-        public const string IntegrationNameMustBeUnique = "integration_name_must_be_unique";
-        public const string LanguageNameMustBeUnique = "language_name_must_be_unique";
+        public const string OrganizationNameMustBeUnique = "organization_must_be_unique";
+        public const string ProjectNameMustBeUnique = "project_must_be_unique";
+        public const string IntegrationNameMustBeUnique = "integration_must_be_unique";
+        public const string LanguageNameMustBeUnique = "language_must_be_unique";
         public const string LabelKeyMustBeUnique = "label_key_must_be_unique";
 
         public const string ProjectSlugMustBeUnique = "project_slug_must_be_unique";

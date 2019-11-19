@@ -2,8 +2,7 @@
 
 namespace Translation.Common.Models.Responses.Organization
 {
-    public class OrganizationRestoreResponse : BaseResponse
+    public class OrganizationRestoreResponse : TranslationBaseResponse
     {
-
     }
 }

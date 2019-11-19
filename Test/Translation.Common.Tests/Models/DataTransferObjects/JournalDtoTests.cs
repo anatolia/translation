@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using Translation.Common.Models.Base;
+using StandardUtils.Models.DataTransferObjects;
+
 using Translation.Common.Models.DataTransferObjects;
 using static Translation.Common.Tests.TestHelpers.AssertPropertyTestHelper;
 
@@ -29,7 +30,6 @@ namespace Translation.Common.Tests.Models.DataTransferObjects
             AssertStringProperty(properties, "UserName", dto.UserName);
 
             AssertStringProperty(properties, "Message", dto.Message);
-
         }
     }
 }

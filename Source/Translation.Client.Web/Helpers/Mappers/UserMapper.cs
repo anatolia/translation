@@ -3,9 +3,9 @@ using Translation.Common.Models.DataTransferObjects;
 
 namespace Translation.Client.Web.Helpers.Mappers
 {
-    public static class UserMapper
+    public class UserMapper
     {
-        public static UserDetailModel MapUserDetailModel(UserDto dto)
+        public UserDetailModel MapUserDetailModel(UserDto dto)
         {
             var model = new UserDetailModel();
             model.OrganizationUid = dto.OrganizationUid;

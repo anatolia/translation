@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
 
-using Translation.Common.Helpers;
-using Translation.Common.Models.Base;
+using StandardUtils.Helpers;
+using StandardUtils.Models.Requests;
 
 namespace Translation.Common.Models.Requests.Integration.Token
 {

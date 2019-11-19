@@ -12,6 +12,14 @@ namespace Translation.Client.Web.Unit.Tests.Helpers.Mappers
     [TestFixture]
     public class LabelMapperTests
     {
+        public LabelMapper LabelMapper { get; set; }
+
+        [SetUp]
+        public void run_before_every_test()
+        {
+            LabelMapper = new LabelMapper();
+        }
+
         [Test]
         public void LabelMapper_MapLabelCreateModel()
         {

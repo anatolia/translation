@@ -29,7 +29,7 @@ namespace Translation.Server.Unit.Tests.Data.Factories
             // act
             var result = LabelTranslationFactory.CreateEntity(translation, label, language);
 
-            result.Translation.ShouldBe(translation);
+            result.TranslationText.ShouldBe(translation);
             result.IsActive.ShouldBeTrue();
 
             result.OrganizationId.ShouldBe(label.OrganizationId);
@@ -60,7 +60,7 @@ namespace Translation.Server.Unit.Tests.Data.Factories
             var result = LabelTranslationFactory.CreateEntityFromRequest(request, labelTranslation);
 
             //assert
-            result.Translation.ShouldBe(labelTranslation.Translation);
+            result.TranslationText.ShouldBe(labelTranslation.TranslationText);
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace Translation.Server.Unit.Tests.Data.Factories
 
             // assert
             result.Uid.ShouldBe(labelTranslation.Uid);
-            result.Translation.ShouldBe(labelTranslation.Translation);
+            result.Translation.ShouldBe(labelTranslation.TranslationText);
             result.CreatedAt.ShouldBe(labelTranslation.CreatedAt);
             result.UpdatedAt.ShouldBe(labelTranslation.UpdatedAt);
             labelTranslation.IsActive.ShouldBe(labelTranslation.IsActive);

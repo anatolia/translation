@@ -1,4 +1,4 @@
-﻿using Translation.Common.Models.Base;
+﻿using StandardUtils.Models.Requests;
 
 namespace Translation.Common.Models.Requests.User.LoginLog
 {

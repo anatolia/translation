@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
+
+using StandardUtils.Helpers;
+using StandardUtils.Models.Shared;
 
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
@@ -11,17 +15,16 @@ using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.Project;
 using Translation.Common.Contracts;
-using Translation.Common.Helpers;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Organization;
 using Translation.Common.Models.Requests.Project;
-using Translation.Common.Models.Shared;
 
 namespace Translation.Client.Web.Controllers
 {
     public class ProjectController : BaseController
     {
         private readonly IProjectService _projectService;
+        private readonly ProjectMapper _projectMapper;
         private readonly ILabelService _labelService;
 
         public ProjectController(IOrganizationService organizationService,
@@ -29,10 +32,12 @@ namespace Translation.Client.Web.Controllers
                                  ILanguageService languageService,
                                  ITranslationProviderService translationProviderService,
                                  ILabelService labelService,
-                                 IProjectService projectService) : base(organizationService, journalService, languageService, translationProviderService)
+                                 IProjectService projectService,
+                                 ProjectMapper projectMapper) : base(organizationService, journalService, languageService, translationProviderService)
         {
             _labelService = labelService;
             _projectService = projectService;
+            _projectMapper = projectMapper;
         }
 
         [HttpGet]
@@ -51,7 +56,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = ProjectMapper.MapProjectCreateModel(response.Item.Uid);
+            var model = _projectMapper.MapProjectCreateModel(response.Item.Uid);
 
             return View(model);
         }
@@ -97,7 +102,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = ProjectMapper.MapProjectDetailModel(response.Item);
+            var model = _projectMapper.MapProjectDetailModel(response.Item);
 
             return View(model);
         }
@@ -118,7 +123,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = ProjectMapper.MapProjectEditModel(response.Item);
+            var model = _projectMapper.MapProjectEditModel(response.Item);
 
             return View(model);
         }
@@ -142,6 +147,8 @@ namespace Translation.Client.Web.Controllers
                 model.MapMessages(response);
                 return View(model);
             }
+
+
 
             CurrentUser.IsActionSucceed = true;
             return Redirect($"/Project/Detail/{response.Item.Uid}");
@@ -184,7 +191,7 @@ namespace Translation.Client.Web.Controllers
                 return RedirectToAccessDenied();
             }
 
-            var model = ProjectMapper.MapProjectCloneModel(response.Item);
+            var model = _projectMapper.MapProjectCloneModel(response.Item);
 
             return View(model);
         }
@@ -297,7 +304,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -346,7 +353,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             result.PagingInfo = response.PagingInfo;
-            result.PagingInfo.Type = PagingInfo.PAGE_NUMBERS;
+             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }

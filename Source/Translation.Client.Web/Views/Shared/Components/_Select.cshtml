@@ -12,7 +12,7 @@
             <a href="@Model.AddNewUrl" target="_blank" class="plus">+</a>
         }
     </label>
-    <div class="select @(Model.IsMultiple ? "multiple-select" : "single-select")"
+    <div class="select custom-select @(Model.IsMultiple ? "multiple-select" : "single-select")"
          id="select-@Model.Name" name="select-@Model.Name" data-value-field="@Model.Name" data-text-field="@Model.TextFieldName"
          data-type="@(Model.IsOptionTypeContent ? "content" : "text")"
          data-url="@Model.DataUrl"

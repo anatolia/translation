@@ -43,7 +43,7 @@ namespace Translation.Integrations.Providers
         public void CreateClient()
         {
             var provider = _translationProviderRepository.Select(x => x.Name == Name).Result;
-            GoogleApplicationCredentialsFile = provider.Value;
+            GoogleApplicationCredentialsFile = provider.CredentialValue;
 
             GoogleCredential googleCredential = GoogleCredential.FromJson(GoogleApplicationCredentialsFile).CreateScoped();
             Client = TranslationClient.Create(googleCredential);

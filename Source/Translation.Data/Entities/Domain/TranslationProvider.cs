@@ -7,7 +7,7 @@ namespace Translation.Data.Entities.Domain
 {
     public class TranslationProvider : BaseEntity, ISchemaDomain
     {
-        public string Value { get; set; }
+        public string CredentialValue { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
     }

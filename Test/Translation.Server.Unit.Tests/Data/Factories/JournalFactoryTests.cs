@@ -53,8 +53,8 @@ namespace Translation.Server.Unit.Tests.Data.Factories
             var result = JournalFactory.CreateEntityFromRequest(request, currentUser);
 
             // assert
-            result.OrganizationId.ShouldBe(currentUser.OrganizationId);
-            result.OrganizationUid.ShouldBe(currentUser.OrganizationUid);
+            result.OrganizationId.ShouldBe(currentUser.Organization.Id);
+            result.OrganizationUid.ShouldBe(currentUser.Organization.Uid);
             result.OrganizationName.ShouldBe(currentUser.Organization.Name);
 
             result.UserId.ShouldBe(currentUser.Id);

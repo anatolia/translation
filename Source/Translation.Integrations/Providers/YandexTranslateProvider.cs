@@ -35,7 +35,7 @@ namespace Translation.Integrations.Providers
         public void CreateClient()
         {
             var provider = _translationProviderRepository.Select(x => x.Name == Name).Result;
-            YandexTranslationApiKey = provider.Value;
+            YandexTranslationApiKey = provider.CredentialValue;
             RequestUrl = "https://translate.yandex.net/api/v1.5/tr.json/translate";
         }
 

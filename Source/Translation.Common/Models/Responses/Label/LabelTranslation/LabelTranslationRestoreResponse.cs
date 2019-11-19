@@ -2,8 +2,7 @@
 
 namespace Translation.Common.Models.Responses.Label.LabelTranslation
 {
-    public class LabelTranslationRestoreResponse : BaseResponse
+    public class LabelTranslationRestoreResponse : TranslationBaseResponse
     {
-
     }
 }

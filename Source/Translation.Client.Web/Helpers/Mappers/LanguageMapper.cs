@@ -5,7 +5,7 @@ namespace Translation.Client.Web.Helpers.Mappers
 {
     public class LanguageMapper
     {
-        public static LanguageEditModel MapLanguageEditModel(LanguageDto dto)
+        public LanguageEditModel MapLanguageEditModel(LanguageDto dto)
         {
             var model = new LanguageEditModel();
             model.LanguageUid = dto.Uid;
@@ -19,7 +19,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             return model;
         }
 
-        public static LanguageDetailModel MapLanguageDetailModel(LanguageDto dto)
+        public LanguageDetailModel MapLanguageDetailModel(LanguageDto dto)
         {
             var model = new LanguageDetailModel();
             model.LanguageUid = dto.Uid;

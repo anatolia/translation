@@ -30,7 +30,7 @@ namespace Translation.Server.Unit.Tests.Data.Entities
             AssertGuidProperty(properties, "LanguageUid", entity.LanguageUid);
             AssertStringProperty(properties, "LanguageName", entity.LanguageName);
 
-            AssertStringProperty(properties, "Translation", entity.Translation);
+            AssertStringProperty(properties, "TranslationText", entity.TranslationText);
             AssertStringProperty(properties, "Description", entity.Description);
         }
     }

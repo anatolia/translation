@@ -12,7 +12,7 @@ namespace Translation.Data.Factories
             var entity = new TranslationProvider();
             entity.Name = name;
             entity.IsActive = isActive;
-            entity.Value = value;
+            entity.CredentialValue = value;
 
             return entity;
         }
@@ -26,7 +26,7 @@ namespace Translation.Data.Factories
             dto.UpdatedAt = entity.UpdatedAt;
             dto.Name = entity.Name;
             dto.IsActive = entity.IsActive;
-            dto.Value = entity.Value;
+            dto.CredentialValue = entity.CredentialValue;
             dto.Description = entity.Description;
 
             return dto;
@@ -35,7 +35,7 @@ namespace Translation.Data.Factories
         public TranslationProvider CreateEntityFromRequest(TranslationProviderEditRequest request, TranslationProvider entity)
         {
             entity.UpdatedBy = request.CurrentUserId;
-            entity.Value = request.Value;
+            entity.CredentialValue = request.Value;
             entity.Description = request.Description;
 
             return entity;
@@ -48,7 +48,7 @@ namespace Translation.Data.Factories
             activeTranslationProvider.Uid = translationProvider.Uid;
             activeTranslationProvider.Name = translationProvider.Name;
             activeTranslationProvider.IsActive = translationProvider.IsActive;
-            activeTranslationProvider.Value = translationProvider.Value;
+            activeTranslationProvider.Value = translationProvider.CredentialValue;
 
             return activeTranslationProvider;
         }

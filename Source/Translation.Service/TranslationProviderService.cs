@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using StandardRepository.Helpers;
 using StandardRepository.Models;
+using StandardUtils.Enumerations;
+using StandardUtils.Helpers;
+
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
-using Translation.Common.Helpers;
 using Translation.Common.Models.Requests.TranslationProvider;
 using Translation.Common.Models.Responses.TranslationProvider;
 using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Factories;
-using Translation.Data.Repositories;
 using Translation.Data.Repositories.Contracts;
-using Translation.Data.UnitOfWorks.Contracts;
 using Translation.Service.Managers;
 
 namespace Translation.Service
@@ -55,21 +53,21 @@ namespace Translation.Service
             var response = new TranslationProviderReadListResponse();
 
             Expression<Func<TranslationProvider, bool>> filter = null;
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm);
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm);
             }
 
             List<TranslationProvider> entities;
             if (request.PagingInfo.Skip < 1)
             {
                 entities = await _translationProviderRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
-                                                                            new List<OrderByInfo<TranslationProvider>>() { new OrderByInfo<TranslationProvider>(x => x.Uid, request.PagingInfo.IsAscending) });
+                                                                            new List<OrderByInfo<TranslationProvider>> { new OrderByInfo<TranslationProvider>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
                 entities = await _translationProviderRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
-                                                                           new List<OrderByInfo<TranslationProvider>>() { new OrderByInfo<TranslationProvider>(x => x.Id, request.PagingInfo.IsAscending) });
+                                                                           new List<OrderByInfo<TranslationProvider>> { new OrderByInfo<TranslationProvider>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
@@ -103,15 +101,14 @@ namespace Translation.Service
                 return response;
             }
 
-            if (translationProvider.Value == request.Value)
+            if (translationProvider.CredentialValue == request.Value)
             {
                 response.Item = _translationProviderFactory.CreateDtoFromEntity(translationProvider);
                 response.Status = ResponseStatus.Success;
                 return response;
             }
 
-            if (await _translationProviderRepository.Any(x => x.Value == request.Value
-                                                         && x.Uid != request.TranslationProviderUid))
+            if (await _translationProviderRepository.Any(x => x.CredentialValue == request.Value && x.Uid != request.TranslationProviderUid))
             {
                 response.SetFailed();
                 response.ErrorMessages.Add("translation_provider_already_exist");

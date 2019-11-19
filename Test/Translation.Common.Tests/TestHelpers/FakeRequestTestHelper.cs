@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 
+using StandardUtils.Models.Shared;
+
 using Translation.Common.Models.Requests.Admin;
 using Translation.Common.Models.Requests.Integration;
 using Translation.Common.Models.Requests.Integration.IntegrationClient;
@@ -350,8 +352,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static IntegrationClientReadListRequest GetIntegrationClientReadListRequestForSelectAfter()
         {
             var request = GetIntegrationClientReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -359,8 +360,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static IntegrationClientReadListRequest GetIntegrationClientReadListRequestForSelectMany()
         {
             var request = GetIntegrationClientReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -368,8 +368,8 @@ namespace Translation.Common.Tests.TestHelpers
         public static IntegrationReadListRequest GetIntegrationReadListRequestForSelectAfter()
         {
             var request = GetIntegrationReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
+
 
             return request;
         }
@@ -377,8 +377,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static IntegrationReadListRequest GetIntegrationReadListRequestForSelectMany()
         {
             var request = GetIntegrationReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -440,7 +439,7 @@ namespace Translation.Common.Tests.TestHelpers
                                                                        string description)
         {
             var request = new IntegrationEditRequest(currentUserId, integrationUid, name,
-                description);
+                                                     description);
 
             return request;
         }
@@ -448,7 +447,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static IntegrationEditRequest GetIntegrationEditRequest(Integration integration)
         {
             var request = new IntegrationEditRequest(CurrentUserId, OrganizationOneIntegrationOneUid, StringOne,
-                StringOne);
+                                                     StringOne);
 
             return request;
         }
@@ -515,8 +514,8 @@ namespace Translation.Common.Tests.TestHelpers
         public static ProjectEditRequest GetNotDifferentProjectEditRequest()
         {
             var request = new ProjectEditRequest(CurrentUserId, OrganizationOneUid, OrganizationOneProjectOneUid,
-                OrganizationOneProjectOneName, HttpUrl, StringOne,
-                OrganizationOneProjectOneSlug, UidOne);
+                                                 OrganizationOneProjectOneName, HttpUrl, StringOne,
+                                                 OrganizationOneProjectOneSlug, UidOne);
 
             return request;
         }
@@ -591,8 +590,8 @@ namespace Translation.Common.Tests.TestHelpers
         public static ProjectReadListRequest GetProjectReadListRequestForSelectAfter()
         {
             var request = GetProjectReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
+
 
             return request;
         }
@@ -600,8 +599,8 @@ namespace Translation.Common.Tests.TestHelpers
         public static ProjectReadListRequest GetProjectReadListRequestForSelectMany()
         {
             var request = GetProjectReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
+
 
             return request;
         }
@@ -742,8 +741,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static ProjectPendingTranslationReadListRequest GetProjectPendingTranslationReadListRequestForSelectAfter()
         {
             var request = GetProjectPendingTranslationReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -751,8 +749,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static ProjectPendingTranslationReadListRequest GetProjectPendingTranslationReadListRequestForSelectMany()
         {
             var request = GetProjectPendingTranslationReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -774,16 +771,16 @@ namespace Translation.Common.Tests.TestHelpers
         public static TranslationProviderReadListRequest GetTranslationProviderReadListRequestForSelectAfter()
         {
             var request = new TranslationProviderReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
+
             return request;
         }
 
         public static TranslationProviderReadListRequest GetTranslationProviderReadListRequestForSelectMany()
         {
             var request = new TranslationProviderReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
+
             return request;
         }
 
@@ -832,8 +829,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequestForSelectAfter()
         {
             var request = GetOrganizationJournalReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -841,8 +837,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequestForSelectMany()
         {
             var request = GetOrganizationJournalReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -871,8 +866,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static UserJournalReadListRequest GetUserJournalReadListRequestForSelectAfter()
         {
             var request = GetUserJournalReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -880,8 +874,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static UserJournalReadListRequest GetUserJournalReadListRequestForSelectMany()
         {
             var request = GetUserJournalReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -896,8 +889,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static AllUserReadListRequest GetAllUserReadListRequestSelectAfter()
         {
             var request = GetAllUserReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -905,8 +897,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static AllUserReadListRequest GetAllUserReadListRequestSelectMany()
         {
             var request = GetAllUserReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -921,8 +912,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static SuperAdminUserReadListRequest GetSuperAdminUserReadListRequestForSelectAfter()
         {
             var request = GetSuperAdminUserReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -930,8 +920,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static SuperAdminUserReadListRequest GetSuperAdminUserReadListRequestForSelectMany()
         {
             var request = GetSuperAdminUserReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -1001,8 +990,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static AllJournalReadListRequest GetAllJournalReadListRequestForSelectAfter()
         {
             var request = GetAllJournalReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -1010,8 +998,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static AllJournalReadListRequest GetAllJournalReadListRequestForSelectMany()
         {
             var request = GetAllJournalReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -1026,8 +1013,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static AllTokenRequestLogReadListRequest GetAllTokenRequestLogReadListRequestForSelectAfter()
         {
             var request = GetAllTokenRequestLogReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -1035,8 +1021,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static AllTokenRequestLogReadListRequest GetAllTokenRequestLogReadListRequestForSelectMany()
         {
             var request = GetAllTokenRequestLogReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -1058,8 +1043,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static AllSendEmailLogReadListRequest GetAllSendEmailLogReadListRequestForSelectAfter()
         {
             var request = GetAllSendEmailLogReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -1067,8 +1051,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static AllSendEmailLogReadListRequest GetAllSendEmailLogReadListRequestForSelectMany()
         {
             var request = GetAllSendEmailLogReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -1083,8 +1066,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static AllLoginLogReadListRequest GetAllLoginLogReadListRequestForSelectAfter()
         {
             var request = GetAllLoginLogReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -1092,8 +1074,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static AllLoginLogReadListRequest GetAllLoginLogReadListRequestForSelectMany()
         {
             var request = GetAllLoginLogReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -1116,8 +1097,8 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static LabelCreateRequest GetLabelCreateRequestLanguagesUidsZero()
         {
-            var request = new LabelCreateRequest(CurrentUserId, UidOne, UidOne,
-                StringOne, StringOne, GuidArrayZero);
+            var request = new LabelCreateRequest(CurrentUserId, UidOne, UidOne, 
+                                                 StringOne, StringOne, GuidArrayZero);
 
             return request;
         }
@@ -1125,8 +1106,8 @@ namespace Translation.Common.Tests.TestHelpers
         public static LabelCreateRequest GetLabelCreateRequest(long currentUserId, Guid organizationUid, Guid projectUid,
                                                                string labelKey, string description, Guid[] languageGuids)
         {
-            var request = new LabelCreateRequest(currentUserId, organizationUid, projectUid,
-                labelKey, description, languageGuids);
+            var request = new LabelCreateRequest(currentUserId, organizationUid, projectUid, 
+                                                 labelKey, description, languageGuids);
 
             return request;
         }
@@ -1134,7 +1115,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static LabelCreateRequest GetLabelCreateRequest(Label label, Project project)
         {
             var request = new LabelCreateRequest(CurrentUserId, label.OrganizationUid, project.Uid,
-                                                 label.Key, label.Description, GuidArrayOne);
+                                                 label.LabelKey, label.Description, GuidArrayOne);
 
             return request;
         }
@@ -1237,8 +1218,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static LabelReadListRequest GetLabelReadListRequestForSelectAfter()
         {
             var request = GetLabelReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -1246,8 +1226,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static LabelReadListRequest GetLabelReadListRequestForSelectMany()
         {
             var request = GetLabelReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -1269,8 +1248,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static LabelSearchListRequest GetLabelSearchListRequestForSelectMany()
         {
             var request = new LabelSearchListRequest(CurrentUserId, StringOne);
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -1361,7 +1339,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static LabelEditRequest GetLabelEditRequest(Label label)
         {
             var request = new LabelEditRequest(CurrentUserId, label.OrganizationUid, label.ProjectUid, label.Uid,
-                label.Key, label.Description);
+                label.LabelKey, label.Description);
 
             return request;
         }
@@ -1414,7 +1392,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static LabelCloneRequest GetLabelCloneRequest(Label label)
         {
             var request = new LabelCloneRequest(CurrentUserId, label.OrganizationUid, label.OrganizationUid,
-                label.ProjectUid, label.Key, label.Description);
+                label.ProjectUid, label.LabelKey, label.Description);
 
             return request;
         }
@@ -1520,8 +1498,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static LabelTranslationReadListRequest GetLabelTranslationReadListRequestForSelectAfter()
         {
             var request = GetLabelTranslationReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -1529,8 +1506,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static LabelTranslationReadListRequest GetLabelTranslationReadListRequestForSelectMany()
         {
             var request = GetLabelTranslationReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -1575,7 +1551,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static LabelTranslationEditRequest GetLabelTranslationEditRequest(LabelTranslation labelTranslation)
         {
             var request = new LabelTranslationEditRequest(CurrentUserId, labelTranslation.OrganizationUid, labelTranslation.LabelUid,
-                labelTranslation.Translation);
+                labelTranslation.TranslationText);
 
             return request;
         }
@@ -1632,8 +1608,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static LanguageReadListRequest GetLanguageReadListRequestForSelectAfter()
         {
             var request = GetLanguageReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -1641,8 +1616,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static LanguageReadListRequest GetLanguageReadListRequestForSelectMany()
         {
             var request = GetLanguageReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -1764,7 +1738,7 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static SignUpRequest GetSignUpRequest(Organization organization)
         {
-            var request = new SignUpRequest(organization.Name, OrganizationOneUserOneName, 
+            var request = new SignUpRequest(organization.Name, OrganizationOneUserOneName,
                                             OrganizationOneName, OrganizationOneUserOneEmail,
                                             PasswordOne, GetClientLogInfo());
 
@@ -1788,8 +1762,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static OrganizationReadListRequest GetOrganizationReadListRequestForSelectAfter()
         {
             var request = GetOrganizationReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -1797,8 +1770,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static OrganizationReadListRequest GetOrganizationReadListRequestForSelectMany()
         {
             var request = GetOrganizationReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -1860,8 +1832,7 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static OrganizationEditRequest GetOrganizationEditRequest(Organization organization)
         {
-            var request = new OrganizationEditRequest(CurrentUserId, organization.Uid, organization.Name,
-                organization.Description);
+            var request = new OrganizationEditRequest(CurrentUserId, organization.Uid, organization.Name, organization.Description);
 
             return request;
         }
@@ -1897,7 +1868,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectAfter()
         {
             var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, UidOne);
-            request.PagingInfo = GetPagingInfoForSelectAfter();
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -1905,7 +1876,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectMany()
         {
             var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, UidOne);
-            request.PagingInfo = GetPagingInfoForSelectMany();
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -1913,8 +1884,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectAfter(Guid organizationUid)
         {
             var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, organizationUid);
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -1922,8 +1892,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectMany(Guid organizationUid)
         {
             var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, organizationUid);
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -2029,8 +1998,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static OrganizationLoginLogReadListRequest GetOrganizationLoginLogReadListRequestForSelectAfter()
         {
             var request = GetOrganizationLoginLogReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -2038,8 +2006,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static OrganizationLoginLogReadListRequest GetOrganizationLoginLogReadListRequestForSelectMany()
         {
             var request = GetOrganizationLoginLogReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -2195,8 +2162,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static UserReadListRequest GetUserReadListRequestForSelectAfter()
         {
             var request = GetUserReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -2204,8 +2170,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static UserReadListRequest GetUserReadListRequestForSelectMany()
         {
             var request = GetUserReadListRequest();
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
@@ -2248,8 +2213,7 @@ namespace Translation.Common.Tests.TestHelpers
         public static UserLoginLogReadListRequest GetUserLoginLogReadListRequestForSelectAfter()
         {
             var request = new UserLoginLogReadListRequest(CurrentUserId, UidOne);
-            request.PagingInfo = GetPagingInfoForSelectAfter();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
         }
@@ -2257,36 +2221,31 @@ namespace Translation.Common.Tests.TestHelpers
         public static UserLoginLogReadListRequest GetUserLoginLogReadListRequestForSelectMany()
         {
             var request = new UserLoginLogReadListRequest(CurrentUserId, UidOne);
-            request.PagingInfo = GetPagingInfoForSelectMany();
-            request.SearchTerm = StringOne;
+            SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
         }
 
-        public static PagingInfo GetPagingInfoForSelectAfter()
+        public static void SetPagingInfoForSelectAfter(PagingInfo pagingInfo)
         {
-            var pagingInfo = new PagingInfo();
             pagingInfo.Skip = Zero;
             pagingInfo.Take = OneHundred;
             pagingInfo.IsAscending = BooleanTrue;
             pagingInfo.LastUid = UidOne;
             pagingInfo.TotalItemCount = Ten;
+            pagingInfo.SearchTerm = StringOne;
 
-            return pagingInfo;
         }
 
-        public static PagingInfo GetPagingInfoForSelectMany()
+        public static void SetPagingInfoForSelectMany(PagingInfo pagingInfo)
         {
-            var pagingInfo = new PagingInfo();
             pagingInfo.Skip = One;
             pagingInfo.Take = OneHundred;
             pagingInfo.IsAscending = BooleanTrue;
             pagingInfo.TotalItemCount = Ten;
             pagingInfo.LastUid = UidOne;
             pagingInfo.TotalItemCount = Ten;
-
-            return pagingInfo;
-
+            pagingInfo.SearchTerm = StringOne;
         }
 
         public static LabelListInfo GetLabelListInfo()

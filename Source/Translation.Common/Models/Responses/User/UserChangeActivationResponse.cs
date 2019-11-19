@@ -2,8 +2,7 @@
 
 namespace Translation.Common.Models.Responses.User
 {
-    public class UserChangeActivationResponse : BaseResponse
+    public class UserChangeActivationResponse : TranslationBaseResponse
     {
-
     }
 }
