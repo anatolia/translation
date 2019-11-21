@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using Autofac;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using Shouldly;
@@ -10,6 +11,7 @@ using Translation.Client.Web.Controllers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.Integration;
 using Translation.Client.Web.Unit.Tests.ServiceSetupHelpers;
+
 using static Translation.Client.Web.Unit.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Client.Web.Unit.Tests.TestHelpers.AssertViewModelTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
@@ -26,7 +28,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Container.Resolve<IntegrationController>();
+            SystemUnderTest = Builder.Build().Resolve<IntegrationController>();
             SetControllerContext(SystemUnderTest);
         }
 

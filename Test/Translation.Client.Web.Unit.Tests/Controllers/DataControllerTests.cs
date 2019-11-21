@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using Autofac;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -9,6 +10,7 @@ using Shouldly;
 using Translation.Client.Web.Controllers;
 using Translation.Client.Web.Models.Data;
 using Translation.Client.Web.Unit.Tests.ServiceSetupHelpers;
+
 using static Translation.Client.Web.Unit.Tests.TestHelpers.ActionMethodNameConstantTestHelper;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Client.Web.Unit.Tests.TestHelpers.AssertViewModelTestHelper;
@@ -25,7 +27,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Container.Resolve<DataController>();
+            SystemUnderTest = Builder.Build().Resolve<DataController>();
             SetControllerContext(SystemUnderTest);
         }
 
@@ -284,14 +286,14 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
         public async Task AddLabel_POST_InvalidModel()
         {
             // arrange
-          
+
             var model = new DataAddLabelModel();
 
             // act
             var result = await SystemUnderTest.AddLabel(model);
 
             // assert
-           AssertView<JsonResult>(result);
+            AssertView<JsonResult>(result);
         }
 
 

@@ -34,11 +34,10 @@ function translateScreen() {
     setTimeout(function () {
         translateElement(document.head);
         translateElement(document.body);
-    }, 150);
+    }, 1000);
 }
 
 function translateElement(element) {
-
     if (element === null
         || element === undefined) {
         return;

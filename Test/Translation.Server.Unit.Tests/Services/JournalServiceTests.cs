@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-
+using Autofac;
 using NUnit.Framework;
 
 using Translation.Common.Contracts;
@@ -23,7 +23,7 @@ namespace Translation.Server.Unit.Tests.Services
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Container.Resolve<IJournalService>();
+            SystemUnderTest = Builder.Build().Resolve<IJournalService>();
         }
 
         [Test]

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
+using Autofac;
+using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using Shouldly;
 
@@ -12,6 +13,7 @@ using Translation.Client.Web.Models.Label;
 using Translation.Client.Web.Models.LabelTranslation;
 using Translation.Client.Web.Unit.Tests.ServiceSetupHelpers;
 using Translation.Common.Tests.CommonForServiceAndController;
+
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 using static Translation.Client.Web.Unit.Tests.TestHelpers.AssertViewModelTestHelper;
 using static Translation.Client.Web.Unit.Tests.TestHelpers.FakeModelTestHelper;
@@ -29,7 +31,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Container.Resolve<LabelController>();
+            SystemUnderTest = Builder.Build().Resolve<LabelController>();
             SetControllerContext(SystemUnderTest);
         }
 
