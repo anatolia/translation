@@ -15,7 +15,6 @@ using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Integration;
 using Translation.Common.Models.Requests.Integration.IntegrationClient;
 using Translation.Common.Models.Requests.Integration.Token;
-using Translation.Common.Models.Responses;
 using Translation.Common.Models.Responses.Integration;
 using Translation.Common.Models.Responses.Integration.IntegrationClient;
 using Translation.Common.Models.Responses.Integration.Token;
