@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Translation.Common.Helpers;
-using Translation.Common.Models.Base;
+using StandardUtils.Helpers;
+using StandardUtils.Models.Requests;
 
 namespace Translation.Common.Models.Requests.Label
 {

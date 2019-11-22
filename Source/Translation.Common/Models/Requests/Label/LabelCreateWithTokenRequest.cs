@@ -1,6 +1,7 @@
 ﻿using System;
-using Translation.Common.Helpers;
-using Translation.Common.Models.Base;
+
+using StandardUtils.Helpers;
+using StandardUtils.Models.Requests;
 
 namespace Translation.Common.Models.Requests.Label
 {
@@ -27,7 +28,6 @@ namespace Translation.Common.Models.Requests.Label
             {
                 ThrowArgumentException(nameof(labelKey), labelKey);
             }
-           
 
             Token = token;
             ProjectUid = projectUid;

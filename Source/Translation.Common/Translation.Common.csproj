@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="3.0.0" />
+    <PackageReference Include="StandardUtils" Version="1.0.0.6" />
   </ItemGroup>
 
 </Project>

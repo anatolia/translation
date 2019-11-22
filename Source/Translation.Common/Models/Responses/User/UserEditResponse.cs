@@ -3,8 +3,7 @@ using Translation.Common.Models.DataTransferObjects;
 
 namespace Translation.Common.Models.Responses.User
 {
-    public class UserEditResponse : BaseResponse<UserDto> 
+    public class UserEditResponse : TranslationGenericBaseResponse<UserDto> 
     {
-
     }
 }

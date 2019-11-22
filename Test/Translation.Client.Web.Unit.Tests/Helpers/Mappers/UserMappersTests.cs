@@ -10,6 +10,14 @@ namespace Translation.Client.Web.Unit.Tests.Helpers.Mappers
     [TestFixture]
     public class UserMapperTests
     {
+        public UserMapper UserMapper { get; set; }
+
+        [SetUp]
+        public void run_before_every_test()
+        {
+            UserMapper = new UserMapper();
+        }
+
         [Test]
         public void UserMapper_MapUserDetailModel()
         {

@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-
+using Autofac;
 using NUnit.Framework;
 
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
+using StandardUtils.Enumerations;
 using Translation.Common.Models.Responses.Project;
 using Translation.Server.Unit.Tests.RepositorySetupHelpers;
 using Translation.Server.Unit.Tests.UnitOfWorkSetupHelper;
@@ -24,7 +24,7 @@ namespace Translation.Server.Unit.Tests.Services
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Container.Resolve<IProjectService>();
+            SystemUnderTest = Builder.Build().Resolve<IProjectService>();
         }
 
         [Test]

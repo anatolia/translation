@@ -33,9 +33,11 @@ namespace Translation.Data.Factories
         public Journal CreateEntityFromRequest(JournalCreateRequest request, CurrentUser currentUser)
         {
             var entity = new Journal();
+
             entity.UserId = currentUser.Id;
             entity.UserUid = currentUser.Uid;
             entity.UserName = currentUser.Name;
+
             entity.OrganizationId = currentUser.Organization.Id;
             entity.OrganizationUid = currentUser.Organization.Uid;
             entity.OrganizationName = currentUser.Organization.Name;

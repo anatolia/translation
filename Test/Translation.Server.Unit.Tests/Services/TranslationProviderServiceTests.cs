@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
 
+using Autofac;
 using NUnit.Framework;
 using Shouldly;
 
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
+using StandardUtils.Enumerations;
 using Translation.Common.Models.Responses.TranslationProvider;
 using Translation.Common.Models.Shared;
 using Translation.Server.Unit.Tests.RepositorySetupHelpers;
@@ -25,7 +26,7 @@ namespace Translation.Server.Unit.Tests.Services
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Container.Resolve<ITranslationProviderService>();
+            SystemUnderTest = Builder.Build().Resolve<ITranslationProviderService>();
         }
 
         [Test]

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using StandardUtils.Models.DataTransferObjects;
+
 using Translation.Common.Models.DataTransferObjects;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
 

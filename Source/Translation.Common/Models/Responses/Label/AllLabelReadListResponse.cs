@@ -5,7 +5,7 @@ using Translation.Common.Models.DataTransferObjects;
 
 namespace Translation.Common.Models.Responses.Label
 {
-    public class AllLabelReadListResponse : BaseResponse
+    public class AllLabelReadListResponse : TranslationBaseResponse
     {
         public List<LabelFatDto> Labels { get; set; }
 

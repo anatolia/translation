@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using Translation.Common.Models.Shared;
+using StandardUtils.Models.Shared;
 
 namespace Translation.Client.Web.Models.Base
 {

@@ -2,8 +2,7 @@
 
 namespace Translation.Common.Models.Responses.Language
 {
-    public class LanguageRestoreResponse : BaseResponse
+    public class LanguageRestoreResponse : TranslationBaseResponse
     {
-
     }
 }

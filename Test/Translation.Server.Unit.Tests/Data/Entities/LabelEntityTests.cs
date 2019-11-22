@@ -30,7 +30,7 @@ namespace Translation.Server.Unit.Tests.Data.Entities
             AssertGuidProperty(properties, "ProjectUid", entity.ProjectUid);
             AssertStringProperty(properties, "ProjectName", entity.ProjectName);
 
-            AssertStringProperty(properties,"Key",entity.Key);
+            AssertStringProperty(properties,"LabelKey",entity.LabelKey);
             AssertStringProperty(properties, "Description", entity.Description);
             AssertBooleanProperty(properties, "IsActive", entity.IsActive);
 

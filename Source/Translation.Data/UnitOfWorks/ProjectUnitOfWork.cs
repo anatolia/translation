@@ -103,7 +103,7 @@ namespace Translation.Data.UnitOfWorks
 
                     var labelId = await _labelRepository.Insert(currentUserId, label);
 
-                    var labelsTranslations = labelTranslations.Where(x => x.LabelName == label.Key).ToList();
+                    var labelsTranslations = labelTranslations.Where(x => x.LabelName == label.LabelKey).ToList();
                     for (var lt = 0; lt < labelsTranslations.Count; lt++)
                     {
                         var labelTranslation = labelTranslations[lt];

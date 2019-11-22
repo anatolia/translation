@@ -37,23 +37,34 @@
     position: relative;
     cursor: pointer;
     display: flex;
-    overflow: scroll; }
+    flex-wrap: wrap;
+    overflow-y: unset; 
+  }
     .select .select-button .select-button-input {
       display: inline-block;
       min-width: 100px;
-      min-height: 18px;
+      height: 20px;
       border: none;
-      vertical-align: middle; }
+      vertical-align: middle;
+      align-self: center;
+      margin: 0 4px;
+      
+    }
       .select .select-button .select-button-input:focus {
         outline: 0; }
     .select .select-button .clear-select-button {
-      float: right;
+      
+      float: none;
+      position: absolute;
+      right: 0;
       background: transparent;
       border: none;
       cursor: pointer;
       transition: .2s all;
       margin: 0;
-      padding: 2px 4px; }
+      padding: 2px 4px; 
+
+    }
       .select .select-button .clear-select-button:hover {
         background: #999;
         color: #fff; }
@@ -136,7 +147,7 @@
     display: flex;
     align-items: center; }
     .select .select-item.content-item .select-item-image {
-      width: 8%;
+      width: auto;
       background: transparent; }
     .select .select-item.content-item .select-item-text {
       margin-left: 10px;
@@ -145,7 +156,9 @@
 .single-select .select-button {
   display: flex; }
   .single-select .select-button .select-button-input {
-    width: 100%; }
+    width: 100%; 
+    line-height: 20px;
+  }
   .single-select .select-button.disabled {
     pointer-events: none;
     opacity: .4;

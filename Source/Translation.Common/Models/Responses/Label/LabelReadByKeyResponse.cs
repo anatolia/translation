@@ -3,9 +3,7 @@ using Translation.Common.Models.DataTransferObjects;
 
 namespace Translation.Common.Models.Responses.Label
 {
-    public class LabelReadByKeyResponse : BaseResponse<LabelDto>
+    public class LabelReadByKeyResponse : TranslationGenericBaseResponse<LabelDto>
     {
-
-
     }
 }

@@ -11,6 +11,14 @@ namespace Translation.Client.Web.Unit.Tests.Helpers.Mappers
     [TestFixture]
     public class IntegrationMapperTests
     {
+        public IntegrationMapper IntegrationMapper { get; set; }
+
+        [SetUp]
+        public void run_before_every_test()
+        {
+            IntegrationMapper = new IntegrationMapper();
+        }
+
         [Test]
         public void IntegrationMapper_MapIntegrationCreateModel()
         {

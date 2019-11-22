@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using Autofac;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
@@ -29,7 +30,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Container.Resolve<AdminController>();
+            SystemUnderTest = Builder.Build().Resolve<AdminController>();
             SetControllerContext(SystemUnderTest);
         }
 

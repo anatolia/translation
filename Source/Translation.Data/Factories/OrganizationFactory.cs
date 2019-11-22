@@ -1,5 +1,6 @@
-﻿using Translation.Common.Models.DataTransferObjects;
-using Translation.Common.Models.Requests.Admin;
+﻿using StandardUtils.Models.Shared;
+
+using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Organization;
 using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Main;

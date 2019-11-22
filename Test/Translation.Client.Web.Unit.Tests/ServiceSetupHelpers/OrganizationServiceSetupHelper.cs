@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 
 using Moq;
+using StandardUtils.Enumerations;
+using StandardUtils.Models.DataTransferObjects;
 
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Organization;
 using Translation.Common.Models.Requests.User;

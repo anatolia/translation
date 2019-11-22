@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-using Translation.Common.Helpers;
+using StandardUtils.Helpers;
 
 namespace Translation.Client.Web.Helpers
 {

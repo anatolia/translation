@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using Translation.Common.Models.Base;
+
+using StandardUtils.Models.DataTransferObjects;
+
 using Translation.Common.Models.DataTransferObjects;
 using static Translation.Common.Tests.TestHelpers.AssertPropertyTestHelper;
 
@@ -18,8 +20,7 @@ namespace Translation.Common.Tests.Models.DataTransferObjects
             var properties = dtoType.GetProperties();
 
             dtoType.BaseType.Name.ShouldBe(nameof(BaseDto));
-        
-
+            
             AssertStringProperty(properties, "IsoCode2", dto.IsoCode2);
             AssertStringProperty(properties, "IsoCode3", dto.IsoCode3);
             AssertStringProperty(properties, "IconPath", dto.IconPath);

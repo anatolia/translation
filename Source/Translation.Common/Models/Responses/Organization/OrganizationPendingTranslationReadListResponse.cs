@@ -3,9 +3,7 @@ using Translation.Common.Models.DataTransferObjects;
 
 namespace Translation.Common.Models.Responses.Organization
 {
-    public class OrganizationPendingTranslationReadListResponse : BaseResponse<LabelDto>
+    public class OrganizationPendingTranslationReadListResponse : TranslationGenericBaseResponse<LabelDto>
     {
-
-
     }
 }

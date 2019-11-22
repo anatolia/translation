@@ -2,8 +2,7 @@
 
 namespace Translation.Common.Models.Responses.Project
 {
-    public class ProjectDeleteResponse : BaseResponse
+    public class ProjectDeleteResponse : TranslationBaseResponse
     {
-
     }
 }

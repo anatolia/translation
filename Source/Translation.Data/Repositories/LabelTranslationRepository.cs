@@ -21,7 +21,7 @@ namespace Translation.Data.Repositories
 
         private static List<string> GetUpdateableFieldsList() => new List<string>
         {
-            nameof(LabelTranslation.Translation),
+            nameof(LabelTranslation.TranslationText),
             nameof(LabelTranslation.Description)
         };
     }

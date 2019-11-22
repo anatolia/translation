@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-
+using Autofac;
 using NUnit.Framework;
 using Shouldly;
 
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
+using StandardUtils.Enumerations;
 using Translation.Common.Models.Responses.Admin;
 using Translation.Common.Models.Responses.Integration.Token.RequestLog;
 using Translation.Common.Models.Responses.Journal;
@@ -31,7 +31,7 @@ namespace Translation.Server.Unit.Tests.Services
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Container.Resolve<IAdminService>();
+            SystemUnderTest = Builder.Build().Resolve<IAdminService>();
         }
 
         [Test]

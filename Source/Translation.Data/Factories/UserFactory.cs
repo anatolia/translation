@@ -111,8 +111,8 @@ namespace Translation.Data.Factories
             entity.ObfuscationSalt = salt;
             entity.IsActive = true;
 
-            entity.OrganizationId = currentUser.OrganizationId;
-            entity.OrganizationUid = currentUser.OrganizationUid;
+            entity.OrganizationId = currentUser.Organization.Id;
+            entity.OrganizationUid = currentUser.Organization.Uid;
             entity.OrganizationName = currentUser.Organization.Name;
 
             entity.InvitedByUserId = currentUser.Id;
@@ -170,6 +170,7 @@ namespace Translation.Data.Factories
             currentUser.IsAdmin = user.IsAdmin;
             currentUser.IsSuperAdmin = user.IsSuperAdmin;
             currentUser.IsActive = user.IsActive;
+
             var currentOrganization = new CurrentOrganization
             {
                 Id = user.OrganizationId,
@@ -178,7 +179,7 @@ namespace Translation.Data.Factories
             };
             currentUser.Organization = currentOrganization;
 
-            currentUser.LanguageIsoCode2Char = isoCode2Char;
+            currentUser.LanguageCode = isoCode2Char;
 
             return currentUser;
         }

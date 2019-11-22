@@ -7,19 +7,6 @@ namespace Translation.Data.Factories
 {
     public class IntegrationFactory
     {
-        public Integration CreateEntityFromRequest(IntegrationCreateRequest request, Organization organizationEntity)
-        {
-            var entity = new Integration();
-            entity.OrganizationId = organizationEntity.Id;
-            entity.OrganizationUid = organizationEntity.Uid;
-            entity.OrganizationName = organizationEntity.Name;
-            entity.Name = request.Name;
-            entity.Description = request.Description;
-            entity.IsActive = true;
-
-            return entity;
-        }
-
         public Integration CreateEntityFromRequest(IntegrationCreateRequest request, CurrentOrganization organizationEntity)
         {
             var entity = new Integration();

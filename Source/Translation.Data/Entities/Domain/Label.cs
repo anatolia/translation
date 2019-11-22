@@ -15,7 +15,7 @@ namespace Translation.Data.Entities.Domain
         public Guid ProjectUid { get; set; }
         public string ProjectName { get; set; }
 
-        public string Key { get; set; }
+        public string LabelKey { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
 

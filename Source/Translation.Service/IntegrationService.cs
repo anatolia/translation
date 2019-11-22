@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 using StandardRepository.Helpers;
 using StandardRepository.Models;
+using StandardUtils.Enumerations;
+using StandardUtils.Helpers;
+using StandardUtils.Models.DataTransferObjects;
+
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
-using Translation.Common.Helpers;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Integration;
 using Translation.Common.Models.Requests.Integration.IntegrationClient;
@@ -72,7 +74,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
@@ -80,11 +82,11 @@ namespace Translation.Service
 
             if (await _integrationRepository.Any(x => x.Name == request.Name && x.OrganizationId == currentUser.OrganizationId))
             {
-                response.SetInvalidBecauseNameMustBeUnique(nameof(Integration));
+                response.SetInvalidBecauseMustBeUnique(nameof(Integration));
                 return response;
             }
 
-            var entity = _integrationFactory.CreateEntityFromRequest(request, currentUser.Organization);
+            var entity = _integrationFactory.CreateEntityFromRequest(request,currentUser.Organization);
             await _integrationRepository.Insert(request.CurrentUserId, entity);
 
             response.Item = _integrationFactory.CreateDtoFromEntity(entity);
@@ -124,9 +126,9 @@ namespace Translation.Service
 
             Expression<Func<Integration, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
 
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.OrganizationId == currentUser.OrganizationId && x.Name.Contains(request.SearchTerm);
+                filter = x => x.OrganizationId == currentUser.OrganizationId && x.Name.Contains(request.PagingInfo.SearchTerm);
             }
 
             List<Integration> entities;
@@ -240,7 +242,7 @@ namespace Translation.Service
                                                       && x.OrganizationId == currentUser.OrganizationId
                                                       && x.Uid != request.IntegrationUid))
             {
-                response.SetInvalidBecauseNameMustBeUnique(nameof(Integration));
+                response.SetInvalidBecauseMustBeUnique(nameof(Integration));
                 return response;
             }
 
@@ -455,9 +457,9 @@ namespace Translation.Service
             var integrationId = integration.Id;
             Expression<Func<IntegrationClient, bool>> filter = x => x.IntegrationId == integrationId;
 
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.IntegrationId == integrationId && x.Name.Contains(request.SearchTerm);
+                filter = x => x.IntegrationId == integrationId && x.Name.Contains(request.PagingInfo.SearchTerm);
             }
 
             List<IntegrationClient> entities;

@@ -1,10 +1,9 @@
-﻿using Castle.MicroKernel.Registration;
-using Castle.Windsor;
-
+﻿using Autofac;
 using Moq;
 
+using StandardUtils.Helpers;
+
 using Translation.Common.Contracts;
-using Translation.Common.Helpers;
 using Translation.Data.Factories;
 using Translation.Data.Repositories.Contracts;
 using Translation.Data.UnitOfWorks.Contracts;
@@ -16,7 +15,7 @@ namespace Translation.Server.Unit.Tests.Services
 {
     public class ServiceBaseTests
     {
-        public IWindsorContainer Container { get; set; }
+        public ContainerBuilder Builder { get; set; }
 
         protected Mock<IIntegrationClientRepository> MockIntegrationClientRepository { get; set; }
         protected Mock<IIntegrationRepository> MockIntegrationRepository { get; set; }
@@ -42,7 +41,7 @@ namespace Translation.Server.Unit.Tests.Services
 
         protected void InitializeComponents()
         {
-            Container = new WindsorContainer();
+            Builder = new ContainerBuilder();
 
             #region Repository
             MockIntegrationClientRepository = new Mock<IIntegrationClientRepository>();
@@ -73,33 +72,35 @@ namespace Translation.Server.Unit.Tests.Services
 
         public void ConfigureIocContainer()
         {
-
-            Container.Register(Component.For<CryptoHelper>());
+      
+            Builder.RegisterType<CryptoHelper>();
 
             #region Repository
-            Container.Register(Component.For<IIntegrationClientRepository>().Instance(MockIntegrationClientRepository.Object));
-            Container.Register(Component.For<IIntegrationRepository>().Instance(MockIntegrationRepository.Object));
-            Container.Register(Component.For<IJournalRepository>().Instance(MockJournalRepository.Object));
-            Container.Register(Component.For<ILabelRepository>().Instance(MockLabelRepository.Object));
-            Container.Register(Component.For<ILabelTranslationRepository>().Instance(MockLabelTranslationRepository.Object));
-            Container.Register(Component.For<ILanguageRepository>().Instance(MockLanguageRepository.Object));
-            Container.Register(Component.For<IOrganizationRepository>().Instance(MockOrganizationRepository.Object));
-            Container.Register(Component.For<IProjectRepository>().Instance(MockProjectRepository.Object));
-            Container.Register(Component.For<ISendEmailLogRepository>().Instance(MockSendEmailLogRepository.Object));
-            Container.Register(Component.For<ITokenRepository>().Instance(MockTokenRepository.Object));
-            Container.Register(Component.For<ITokenRequestLogRepository>().Instance(MockTokenRequestLogRepository.Object));
-            Container.Register(Component.For<IUserLoginLogRepository>().Instance(MockUserLoginLogRepository.Object));
-            Container.Register(Component.For<IUserRepository>().Instance(MockUserRepository.Object));
-            Container.Register(Component.For<ITranslationProviderRepository>().Instance(MockTranslationProviderRepository.Object));
+            Builder.RegisterInstance(MockIntegrationClientRepository.Object).As<IIntegrationClientRepository>();
+            Builder.RegisterInstance(MockIntegrationRepository.Object).As<IIntegrationRepository>();
+            Builder.RegisterInstance(MockJournalRepository.Object).As<IJournalRepository>();
+            Builder.RegisterInstance(MockLabelRepository.Object).As<ILabelRepository>();
+            Builder.RegisterInstance(MockLabelTranslationRepository.Object).As<ILabelTranslationRepository>();
+            Builder.RegisterInstance(MockLanguageRepository.Object).As<ILanguageRepository>();
+            Builder.RegisterInstance(MockOrganizationRepository.Object).As<IOrganizationRepository>();
+            Builder.RegisterInstance(MockProjectRepository.Object).As<IProjectRepository>();
+            Builder.RegisterInstance(MockSendEmailLogRepository.Object).As<ISendEmailLogRepository>();
+            Builder.RegisterInstance(MockTokenRepository.Object).As<ITokenRepository>();
+            Builder.RegisterInstance(MockTokenRequestLogRepository.Object).As<ITokenRequestLogRepository>();
+            Builder.RegisterInstance(MockUserLoginLogRepository.Object).As<IUserLoginLogRepository>();
+            Builder.RegisterInstance(MockUserRepository.Object).As<IUserRepository>();
+            Builder.RegisterInstance(MockTranslationProviderRepository.Object).As<ITranslationProviderRepository>();
             #endregion
 
-            Container.Register(Component.For<ITextTranslateIntegration>().Instance(MockTextTranslateIntegration.Object));
+            Builder.RegisterInstance(MockTextTranslateIntegration.Object).As<ITextTranslateIntegration>();
 
             #region UnitOfWork
-            Container.Register(Component.For<ILabelUnitOfWork>().Instance(MockLabelUnitOfWork.Object));
-            Container.Register(Component.For<ILogOnUnitOfWork>().Instance(MockLogOnUnitOfWork.Object));
-            Container.Register(Component.For<IProjectUnitOfWork>().Instance(MockProjectUnitOfWork.Object));
-            Container.Register(Component.For<ISignUpUnitOfWork>().Instance(MockSignUpUnitOfWork.Object));
+
+            Builder.RegisterInstance(MockLabelUnitOfWork.Object).As<ILabelUnitOfWork>();
+            Builder.RegisterInstance(MockLogOnUnitOfWork.Object).As<ILogOnUnitOfWork>();
+            Builder.RegisterInstance(MockProjectUnitOfWork.Object).As<IProjectUnitOfWork>();
+            Builder.RegisterInstance(MockSignUpUnitOfWork.Object).As<ISignUpUnitOfWork>();
+            
             #endregion
         }
 
@@ -109,34 +110,34 @@ namespace Translation.Server.Unit.Tests.Services
             ConfigureIocContainer();
 
             #region Services
-            Container.Register(Component.For<IAdminService>().ImplementedBy<AdminService>());
-            Container.Register(Component.For<IIntegrationService>().ImplementedBy<IntegrationService>());
-            Container.Register(Component.For<IJournalService>().ImplementedBy<JournalService>());
-            Container.Register(Component.For<ILabelService>().ImplementedBy<LabelService>());
-            Container.Register(Component.For<ILanguageService>().ImplementedBy<LanguageService>());
-            Container.Register(Component.For<IOrganizationService>().ImplementedBy<OrganizationService>());
-            Container.Register(Component.For<IProjectService>().ImplementedBy<ProjectService>());
-            Container.Register(Component.For<ITranslationProviderService>().ImplementedBy<TranslationProviderService>());
+            Builder.RegisterType<AdminService>().As<IAdminService>();
+            Builder.RegisterType<IntegrationService>().As<IIntegrationService>();
+            Builder.RegisterType<JournalService>().As<IJournalService>();
+            Builder.RegisterType<LabelService>().As<ILabelService>();
+            Builder.RegisterType<LanguageService>().As<ILanguageService>();
+            Builder.RegisterType<OrganizationService>().As<IOrganizationService>();
+            Builder.RegisterType<ProjectService>().As<IProjectService>();
+            Builder.RegisterType<TranslationProviderService>().As<ITranslationProviderService>();
             #endregion
 
             #region Factory
-            Container.Register(Component.For<IntegrationClientFactory>());
-            Container.Register(Component.For<IntegrationFactory>());
-            Container.Register(Component.For<JournalFactory>());
-            Container.Register(Component.For<LabelFactory>());
-            Container.Register(Component.For<LabelTranslationFactory>());
-            Container.Register(Component.For<LanguageFactory>());
-            Container.Register(Component.For<OrganizationFactory>());
-            Container.Register(Component.For<ProjectFactory>());
-            Container.Register(Component.For<SendEmailLogFactory>());
-            Container.Register(Component.For<TokenFactory>());
-            Container.Register(Component.For<TokenRequestLogFactory>());
-            Container.Register(Component.For<UserFactory>());
-            Container.Register(Component.For<UserLoginLogFactory>());
-            Container.Register(Component.For<TranslationProviderFactory>());
+            Builder.RegisterType<IntegrationClientFactory>();
+            Builder.RegisterType<IntegrationFactory>();
+            Builder.RegisterType<JournalFactory>();
+            Builder.RegisterType<LabelFactory>();
+            Builder.RegisterType<LabelTranslationFactory>();
+            Builder.RegisterType<LanguageFactory>();
+            Builder.RegisterType<OrganizationFactory>();
+            Builder.RegisterType<ProjectFactory>();
+            Builder.RegisterType<SendEmailLogFactory>();
+            Builder.RegisterType<TokenFactory>();
+            Builder.RegisterType<TokenRequestLogFactory>();
+            Builder.RegisterType<UserFactory>();
+            Builder.RegisterType<UserLoginLogFactory>();
+            Builder.RegisterType<TranslationProviderFactory>();
             #endregion
 
-            Container.Register(Component.For<CacheManager>());
+            Builder.RegisterType<CacheManager>();
 
             #region Setup For Cache
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();

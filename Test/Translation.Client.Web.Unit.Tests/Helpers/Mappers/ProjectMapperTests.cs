@@ -11,6 +11,14 @@ namespace Translation.Client.Web.Unit.Tests.Helpers.Mappers
     [TestFixture]
     public class ProjectMapperTests
     {
+        public ProjectMapper ProjectMapper { get; set; }
+
+        [SetUp]
+        public void run_before_every_test()
+        {
+            ProjectMapper = new ProjectMapper();
+        }
+
         [Test]
         public void ProjectMapper_MapProjectCreateModel()
         {

@@ -14,7 +14,7 @@ namespace Translation.Client.Web.Helpers.Mappers
             var model = new TranslationProviderEditModel();
 
             model.TranslationProviderUid = translationProvider.Uid;
-            model.Value = translationProvider.Value;
+            model.Value = translationProvider.CredentialValue;
             model.Name = translationProvider.Name;
             model.Description = translationProvider.Description;
 
@@ -27,7 +27,7 @@ namespace Translation.Client.Web.Helpers.Mappers
         {
             var model = new TranslationProviderDetailModel();
             model.TranslationProviderUid = dto.Uid;
-            model.Value = dto.Value;
+            model.Value = dto.CredentialValue;
             model.Name = dto.Name;
             model.Description = dto.Description;
 

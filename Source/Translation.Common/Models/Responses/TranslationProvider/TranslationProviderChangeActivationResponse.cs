@@ -2,7 +2,7 @@
 
 namespace Translation.Common.Models.Responses.TranslationProvider
 {
-    public class TranslationProviderChangeActivationResponse : BaseResponse
+    public class TranslationProviderChangeActivationResponse : TranslationBaseResponse
     {
     }
 }

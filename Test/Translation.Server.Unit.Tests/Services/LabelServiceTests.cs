@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-
+using Autofac;
 using NUnit.Framework;
 
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
+using StandardUtils.Enumerations;
 using Translation.Common.Models.Responses.Label;
 using Translation.Common.Models.Responses.Label.LabelTranslation;
 using Translation.Common.Tests.CommonForServiceAndController;
@@ -26,7 +26,7 @@ namespace Translation.Server.Unit.Tests.Services
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Container.Resolve<ILabelService>();
+            SystemUnderTest = Builder.Build().Resolve<ILabelService>();
         }
 
         [Test]

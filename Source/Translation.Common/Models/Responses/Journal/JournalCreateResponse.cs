@@ -2,8 +2,7 @@
 
 namespace Translation.Common.Models.Responses.Journal
 {
-    public class JournalCreateResponse : BaseResponse
+    public class JournalCreateResponse : TranslationBaseResponse
     {
-        
     }
 }

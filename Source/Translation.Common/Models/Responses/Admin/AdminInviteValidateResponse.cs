@@ -3,8 +3,7 @@ using Translation.Common.Models.DataTransferObjects;
 
 namespace Translation.Common.Models.Responses.Admin
 {
-    public class AdminInviteValidateResponse : BaseResponse<UserDto>
+    public class AdminInviteValidateResponse : TranslationGenericBaseResponse<UserDto>
     {
-
     }
 }

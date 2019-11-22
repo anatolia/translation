@@ -3,8 +3,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using Castle.MicroKernel.Registration;
-using Castle.Windsor;
+using Autofac;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +16,7 @@ using Microsoft.AspNetCore.Routing;
 using Moq;
 
 using Translation.Client.Web.Controllers;
+using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Unit.Tests.TestHelpers;
 using Translation.Common.Contracts;
 using Translation.Common.Models.Requests.User;
@@ -29,7 +29,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
 {
     public class ControllerBaseTests
     {
-        public IWindsorContainer Container { get; set; }
+        public ContainerBuilder Builder { get; set; }
 
         protected Mock<IWebHostEnvironment> MockHostingEnvironment { get; set; }
 
@@ -46,7 +46,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
 
         protected void InitializeComponents()
         {
-            Container = new WindsorContainer();
+            Builder = new ContainerBuilder();
 
             MockHostingEnvironment = new Mock<IWebHostEnvironment>();
 
@@ -66,17 +66,19 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
 
         public void ConfigureIocContainer()
         {
-            Container.Register(Component.For<IWebHostEnvironment>().Instance(MockHostingEnvironment.Object).LifestyleTransient());
+            Builder.RegisterInstance(MockHostingEnvironment.Object).As<IWebHostEnvironment>();
 
-            Container.Register(Component.For<IOrganizationService>().Instance(MockOrganizationService.Object).LifestyleTransient());
-            Container.Register(Component.For<IIntegrationService>().Instance(MockIntegrationService.Object).LifestyleTransient());
-            Container.Register(Component.For<ILanguageService>().Instance(MockLanguageService.Object).LifestyleTransient());
-            Container.Register(Component.For<IAdminService>().Instance(MockAdminService.Object).LifestyleTransient());
-            Container.Register(Component.For<IProjectService>().Instance(MockProjectService.Object).LifestyleTransient());
-            Container.Register(Component.For<ILabelService>().Instance(MockLabelService.Object).LifestyleTransient());
-            Container.Register(Component.For<IJournalService>().Instance(MockJournalService.Object).LifestyleTransient());
-            Container.Register(Component.For<ITranslationProviderService>().Instance(MockTranslationProviderService.Object).LifestyleTransient());
-            Container.Register(Component.For<ITextTranslateIntegration>().Instance(MockTextTranslateIntegration.Object).LifestyleTransient());
+            Builder.RegisterInstance(MockOrganizationService.Object).As<IOrganizationService>();
+            Builder.RegisterInstance(MockIntegrationService.Object).As<IIntegrationService>();
+            Builder.RegisterInstance(MockAdminService.Object).As<IAdminService>();
+            Builder.RegisterInstance(MockLabelService.Object).As<ILabelService>();
+            Builder.RegisterInstance(MockLanguageService.Object).As<ILanguageService>();
+            Builder.RegisterInstance(MockProjectService.Object).As<IProjectService>();
+            Builder.RegisterInstance(MockJournalService.Object).As<IJournalService>();
+            Builder.RegisterInstance(MockTranslationProviderService.Object).As<ITranslationProviderService>();
+
+            Builder.RegisterInstance(MockTextTranslateIntegration.Object).As<ITextTranslateIntegration>();
+
         }
 
         protected void Refresh()
@@ -85,19 +87,28 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             ConfigureIocContainer();
             SetupCurrentUser();
 
-            Container.Register(Component.For<AdminController>().LifestyleTransient());
-            Container.Register(Component.For<DataController>().LifestyleTransient());
-            Container.Register(Component.For<HomeController>().LifestyleTransient());
-            Container.Register(Component.For<IntegrationController>().LifestyleTransient());
-            Container.Register(Component.For<LabelController>().LifestyleTransient());
-            Container.Register(Component.For<LanguageController>().LifestyleTransient());
-            Container.Register(Component.For<OrganizationController>().LifestyleTransient());
-            Container.Register(Component.For<ProjectController>().LifestyleTransient());
-            Container.Register(Component.For<TokenController>().LifestyleTransient());
-            Container.Register(Component.For<UserController>().LifestyleTransient());
-            Container.Register(Component.For<TranslationProviderController>().LifestyleTransient());
+            Builder.RegisterType<AdminController>();
+            Builder.RegisterType<DataController>();
+            Builder.RegisterType<HomeController>();
+            Builder.RegisterType<IntegrationController>();
+            Builder.RegisterType<LabelController>(); 
+            Builder.RegisterType<LanguageController>();
+            Builder.RegisterType<OrganizationController>();
+            Builder.RegisterType<ProjectController>();
+            Builder.RegisterType<TokenController>();
+            Builder.RegisterType<UserController>();
+            Builder.RegisterType<TranslationProviderController>();
 
-            Container.Register(Component.For<CacheManager>());
+            Builder.RegisterType<CacheManager>();
+
+            Builder.RegisterType<AdminMapper>();
+            Builder.RegisterType<IntegrationMapper>();
+            Builder.RegisterType<LabelMapper>();
+            Builder.RegisterType<LanguageMapper>();
+            Builder.RegisterType<OrganizationMapper>();
+            Builder.RegisterType<ProjectMapper>();
+            Builder.RegisterType<TranslationProviderMapper>();
+            Builder.RegisterType<UserMapper>();
         }
 
         private void SetupCurrentUser()

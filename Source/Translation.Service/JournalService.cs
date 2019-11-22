@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using StandardRepository.Models;
+using StandardUtils.Enumerations;
 
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
 using Translation.Common.Models.Requests.Journal;
 using Translation.Common.Models.Responses.Journal;
 using Translation.Data.Entities.Main;

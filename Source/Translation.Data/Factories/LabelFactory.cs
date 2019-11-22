@@ -10,7 +10,7 @@ namespace Translation.Data.Factories
         {
             var entity = new Label();
             entity.Name = key;
-            entity.Key = key;
+            entity.LabelKey = key;
             entity.IsActive = true;
 
             entity.ProjectId = projectEntity.Id;
@@ -36,7 +36,7 @@ namespace Translation.Data.Factories
             entity.ProjectName =project.Name;
 
             entity.Description = request.Description;
-            entity.Key = request.LabelKey;
+            entity.LabelKey = request.LabelKey;
             entity.Name = request.LabelKey;
             entity.LabelTranslationCount = label.LabelTranslationCount;
 
@@ -48,7 +48,7 @@ namespace Translation.Data.Factories
         public Label CreateEntityFromRequest(LabelEditRequest request, Label entity)
         {
             entity.UpdatedBy = request.CurrentUserId;
-            entity.Key = request.LabelKey;
+            entity.LabelKey = request.LabelKey;
             entity.Name = request.LabelKey;
             entity.Description = request.Description;
 
@@ -59,7 +59,7 @@ namespace Translation.Data.Factories
         {
             var entity = new Label();
 
-            entity.Key = request.LabelKey;
+            entity.LabelKey = request.LabelKey;
             entity.Name = request.LabelKey;
             entity.Description = request.Description;
 
@@ -80,7 +80,7 @@ namespace Translation.Data.Factories
             dto.Uid = entity.Uid;
             dto.CreatedAt = entity.CreatedAt;
             dto.UpdatedAt = entity.UpdatedAt;
-            dto.Key = entity.Key;
+            dto.Key = entity.LabelKey;
             dto.Name = entity.Name;
             dto.Description = entity.Description;
             dto.LabelTranslationCount = entity.LabelTranslationCount;

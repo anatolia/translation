@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 using StandardRepository.Helpers;
 using StandardRepository.Models;
+using StandardUtils.Enumerations;
+using StandardUtils.Helpers;
+
 using Translation.Common.Contracts;
-using Translation.Common.Enumerations;
-using Translation.Common.Helpers;
 using Translation.Common.Models.Requests.Admin;
 using Translation.Common.Models.Requests.Integration.Token;
 using Translation.Common.Models.Requests.Journal;
@@ -97,9 +98,9 @@ namespace Translation.Service
             }
 
             Expression<Func<Organization, bool>> filter = null;
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm);
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm);
             }
 
             List<Organization> entities;
@@ -146,9 +147,9 @@ namespace Translation.Service
             }
 
             Expression<Func<User, bool>> filter = null;
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm);
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm);
             }
 
             List<User> entities;
@@ -196,9 +197,9 @@ namespace Translation.Service
 
             Expression<Func<User, bool>> filter = x => x.IsAdmin;
 
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm) && x.IsAdmin;
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm) && x.IsAdmin;
             }
 
             List<User> entities;
@@ -430,7 +431,7 @@ namespace Translation.Service
             }
 
             var selectedTranslationProvider = await _translationProviderRepository.Select(x => x.Uid == request.TranslationProviderUid);
-            if (selectedTranslationProvider.Value == "" )
+            if (selectedTranslationProvider.CredentialValue == "" )
             {
                 response.Status = ResponseStatus.Invalid;
                 response.ErrorMessages.Add("please_edit_translation_api_value");
@@ -441,7 +442,7 @@ namespace Translation.Service
             {
                 var translationProvider = allTranslationProviders[i];
 
-                if (translationProvider.Value == selectedTranslationProvider.Value)
+                if (translationProvider.CredentialValue == selectedTranslationProvider.CredentialValue)
                 {
                     selectedTranslationProvider.IsActive = !selectedTranslationProvider.IsActive;
                 }
@@ -547,9 +548,9 @@ namespace Translation.Service
             }
 
             Expression<Func<Journal, bool>> filter = null;
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm);
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm);
             }
 
             List<Journal> entities;
@@ -596,9 +597,9 @@ namespace Translation.Service
             }
 
             Expression<Func<TokenRequestLog, bool>> filter = null;
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm);
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm);
             }
 
             List<TokenRequestLog> entities;
@@ -645,9 +646,9 @@ namespace Translation.Service
             }
 
             Expression<Func<SendEmailLog, bool>> filter = null;
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm);
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm);
             }
 
             List<SendEmailLog> entities;
@@ -694,9 +695,9 @@ namespace Translation.Service
             }
 
             Expression<Func<UserLoginLog, bool>> filter = null;
-            if (request.SearchTerm.IsNotEmpty())
+            if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.SearchTerm);
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm);
             }
 
             List<UserLoginLog> entities;

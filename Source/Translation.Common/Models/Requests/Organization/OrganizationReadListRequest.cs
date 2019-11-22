@@ -1,4 +1,4 @@
-﻿using Translation.Common.Models.Base;
+﻿using StandardUtils.Models.Requests;
 
 namespace Translation.Common.Models.Requests.Organization
 {
@@ -6,7 +6,6 @@ namespace Translation.Common.Models.Requests.Organization
     {
         public OrganizationReadListRequest(long currentUserId) : base(currentUserId)
         {
-
         }
     }
 }

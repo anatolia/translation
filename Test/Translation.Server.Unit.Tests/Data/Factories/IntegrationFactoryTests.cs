@@ -18,27 +18,27 @@ namespace Translation.Server.Unit.Tests.Data.Factories
             IntegrationFactory = new IntegrationFactory();
         }
 
-        [Test]
-        public void IntegrationFactory_CreateEntityFromRequest_IntegrationCreateRequest_Organization()
-        {
-            // arrange
-            var organization = GetOrganizationOne();
-            var integration = GetOrganizationOneIntegrationOne();
-            var request = GetIntegrationCreateRequest(integration, organization);
+        //[Test]
+        //public void IntegrationFactory_CreateEntityFromRequest_IntegrationCreateRequest_Organization()
+        //{
+        //    // arrange
+        //    var organization = GetOrganizationOne();
+        //    var integration = GetOrganizationOneIntegrationOne();
+        //    var request = GetIntegrationCreateRequest(integration, organization);
 
-            // act
-            var result = IntegrationFactory.CreateEntityFromRequest(request, organization);
+        //    // act
+        //    var result = IntegrationFactory.CreateEntityFromRequest(request, organization);
 
-            // assert
-            result.OrganizationId.ShouldBe(organization.Id);
-            result.OrganizationUid.ShouldBe(organization.Uid);
-            result.OrganizationName.ShouldBe(organization.Name);
+        //    // assert
+        //    result.OrganizationId.ShouldBe(organization.Id);
+        //    result.OrganizationUid.ShouldBe(organization.Uid);
+        //    result.OrganizationName.ShouldBe(organization.Name);
 
 
-            result.Name.ShouldBe(request.Name);
-            result.Description.ShouldBe(request.Description);
-            result.IsActive.ShouldBeTrue();
-        }
+        //    result.Name.ShouldBe(request.Name);
+        //    result.Description.ShouldBe(request.Description);
+        //    result.IsActive.ShouldBeTrue();
+        //}
 
         [Test]
         public void IntegrationFactory_CreateEntityFromRequest_IntegrationCreateRequest_CurrentOrganization()

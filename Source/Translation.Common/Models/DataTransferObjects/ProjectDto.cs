@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Translation.Common.Models.Base;
+using StandardUtils.Models.DataTransferObjects;
 
 namespace Translation.Common.Models.DataTransferObjects
 {
