@@ -1,4 +1,7 @@
 label_key,language_char_code_2,translation
+account,en,account
+account,ru,Счет
+account,tr,hesap
 project_pending_translations_title,en,project pending translations title
 project_pending_translations_title,ru,в ожидании проекта название перевод 
 project_pending_translations_title,tr,proje bekleyen çeviriler başlık
