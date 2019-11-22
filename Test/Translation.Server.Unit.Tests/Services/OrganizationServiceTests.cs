@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-
+using Autofac;
 using NUnit.Framework;
 using Shouldly;
 
@@ -29,7 +29,7 @@ namespace Translation.Server.Unit.Tests.Services
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Container.Resolve<IOrganizationService>();
+            SystemUnderTest = Builder.Build().Resolve<IOrganizationService>();
         }
 
         [Test]
