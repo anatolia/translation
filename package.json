@@ -1,0 +1,32 @@
+{
+  "name": "translation",
+  "version": "1.0.0",
+  "description": "1. Presentation   2. Installs   3. Cloning Project   4. DataBase Setup   5. Last Settings   6. Naming Conventions and Terminology ## Presentation Translation is a project that writed with c#. We kept to Patterns of Enterprice Application Architecture on this project. ... ## Installs for Windows Envinroment 1. Visual Studio  2019 Community - https://visualstudio.microsoft.com (required) > >* Choose ASP.NET and wep development in VS Workloads during installation >* Choose .NET Core cross-platform development in VS Workloads during installation   >   2. [Git](https://git-scm.com/downloads) (required)   3. [Web Compiler](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.WebCompiler) 4. [Bundler & Minifier](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.BundlerMinifier) (required)   5. [PgAdmin 4](https://www.pgadmin.org/download/pgadmin-4-windows/) (required) 6. [PostgreSQL](https://www.postgresql.org/download/) (required)   7. [WinMerge](https://winmerge.org/) 8. [ReSharper](https://www.jetbrains.com/resharper/]) and [JetBrains account](https://account.jetbrains.com) 9. [GitKraken](https://www.gitkraken.com) or other git app   ## Cloning Project   1. After Git installed create a [Github](https://github.com) account.   2. Create a file on your PC to cloning the project   3. Fork project to your account from [here](https://github.com/anatolia/translation)",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cmakyz/translation.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cmakyz/translation/issues"
+  },
+  "homepage": "https://github.com/cmakyz/translation#readme",
+  "dependencies": {
+    "gulp-sass": "^4.0.2",
+    "node-sass": "^4.13.0"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-csso": "^4.0.1",
+    "gulp-if": "^3.0.0",
+    "gulp-minify": "^3.1.0",
+    "gulp-terser": "^1.2.0",
+    "gulp-uglify": "^3.0.2"
+  }
+}
