@@ -9,14 +9,14 @@ function createButton(attributes, text) {
     return createElement('button', attributes, text);
 }
 
-function createElement(tag) { return document.createElement(tag); }
 function createElement(tag, attributes, text) {
     let $element = document.createElement(tag);
-    if (attributes) {
+    if (attributes !== undefined && attributes !== null) {
         for (let key of Object.keys(attributes)) {
             $element.setAttribute(key, attributes[key]);
         }
     }
+    
     if (text !== undefined && text !== null) {
         $element.innerHTML = text;
     }

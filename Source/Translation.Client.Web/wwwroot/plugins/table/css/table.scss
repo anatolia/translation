@@ -13,12 +13,17 @@
     }
 
     a {
-        display: inline;
-        color: #37BFF2;
-        background-color: white;
-
+        padding: 7px;
+        display: inline-block;
+        color: #fff;
+        background-color: #37bff2;
+        text-decoration: none;
+        border-radius: 10px;
+        min-width: 164px;
+        text-align: center;
+        
         &:hover {
-            color: #007BA4;
+            background-color: #3698d9;
         }
     }
 

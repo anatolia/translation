@@ -79,7 +79,7 @@ footer {
 .header {
     background-color: #007BA4;
     height: 30px;
-    padding: 0.5%;
+    padding: 10px;
     margin: 0;    
 
     a {
@@ -101,9 +101,6 @@ footer {
 
 .account {
     background-color: transparent;
-    position: absolute;
-    right: 255px;
-    top: 5px;
     color: white;
     border-bottom: 1px solid;
 
@@ -112,8 +109,31 @@ footer {
     }
 }
 
-.header-components li {
-    display: inline-block;
+.header-components {
+    display: flex;
+    height: 30px;
+
+    :first-child {
+        position: relative;
+
+        div {
+            position: absolute;
+            top: 100%;
+            left: 0;
+        }
+    }
+
+    li {   
+        
+        display: inline-block;
+        background-color: #007ba4;
+        margin-left: 10px;
+        margin-right: 20px;
+
+        form {
+            background-color: inherit;
+        }
+    }
 }
 
 .register-links {
@@ -178,13 +198,16 @@ footer {
     padding: 6px 12px;
     background-color: white;
     border-top: none;
+
+    &:first-child{
+        display: block;
+    }
 }
 
 .tab-header {
     background-color: #F0F8FE !important;
     height: 51px;
     margin-top: 1%;
-    border-bottom: 2px solid #007BA4;
 }
 
 .tab-body {
@@ -308,10 +331,14 @@ input {
     display: inline-block;
 
     a {
-        background-color: white;
         display: block;
-        color: #37BFF2;
-        text-decoration: underline;
+        color: #fff;
+        background-color: #37bff2;
+        padding: 7px;
+        text-decoration: none;
+        border-radius: 10px;
+        min-width: 150px;
+        text-align: center;
     }
 
     button {
@@ -324,7 +351,8 @@ input {
     }
 
     a:hover {
-        color: #007BA4;
+        background-color: #3698d9;
+
     }
 }
 

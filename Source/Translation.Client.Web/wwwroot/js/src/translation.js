@@ -1,7 +1,7 @@
 ﻿let currentUser = null;
 let labels = JSON.parse(localStorage.getItem('labels'));
-
-let promise1 = new Promise ((resolve, reject) => {
+console.log('55555')
+let currentUserPromise = new Promise ((resolve, reject) => {
     doGet('/Data/GetCurrentUser', function (req) {
         if (199 < req.status && req.status < 300) {
             if (req.status === 200

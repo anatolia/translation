@@ -13,14 +13,12 @@
     padding: 14px 20px 12px 45px;
     border: none;
     border-bottom: 1px solid #ddd;
-    position: absolute;
-    top: 7px;
-    right: 4px;
     margin-top: -3px;
-    height: 37px;    
+    height: 35px;
+    border-radius: 4px;
 
     &:focus {
-        outline: 3px solid #ddd;
+        outline: none;
     }
 }
 
@@ -46,11 +44,8 @@
 }
 
 #searchResults {
-    display: none;
-    position: absolute;
-    right: 4px;
-    top: 41px;
-    min-width: 400px;
+    display: none;;
+    min-width: 266px;
     overflow: auto;
     border: 1px solid #F2F2F2;
     z-index: 1;
@@ -61,7 +56,6 @@
         padding: 12px 16px;
         text-decoration: none;
         background-color: white;
-        text-align: right;
         text-transform: lowercase;
         display: block;
         margin: 0;
