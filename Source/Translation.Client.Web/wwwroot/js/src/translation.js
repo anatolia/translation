@@ -1,24 +1,26 @@
 ﻿let currentUser = null;
-doGet('/Data/GetCurrentUser', function (req) {
-    if (199 < req.status && req.status < 300) {
-        if (req.status === 200
-            && req.responseText !== null) {
-            localStorage.setItem('currentUser', req.responseText);
-            currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        } else if (req.status === 200
-            && req.responseText === null) {
-            currentUser = null;
-            window.redirect('/Login');
-        }
-        else if (req.status === 500) {
-            localStorage.clear();
-            window.redirect('/Login');
-        }
-    }
-});
-
 let labels = JSON.parse(localStorage.getItem('labels'));
-if (labels == null
+
+let currentUserPromise = new Promise ((resolve, reject) => {
+    doGet('/Data/GetCurrentUser', function (req) {
+        if (199 < req.status && req.status < 300) {
+            if (req.status === 200
+                && req.responseText !== null) {
+                resolve(req.responseText);
+                localStorage.setItem('currentUser', req.responseText);
+                currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            } else if (req.status === 200
+                && req.responseText === null) {
+                currentUser = null;
+                window.redirect('/Login');
+            } else if (req.status === 500) {
+                localStorage.clear();
+                window.redirect('/Login');
+            }
+        }
+    });
+}).then(res => {
+    if (labels == null
     || labels.length === 0) {
     doGet('/Data/GetMainLabels', function (req) {
         if (199 < req.status && req.status < 300) {
@@ -28,13 +30,11 @@ if (labels == null
     });
 } else {
     translateScreen();
-}
+}}).catch(e => {});
 
 function translateScreen() {
-    setTimeout(function () {
         translateElement(document.head);
         translateElement(document.body);
-    }, 1000);
 }
 
 function translateElement(element) {
