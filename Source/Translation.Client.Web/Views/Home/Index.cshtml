@@ -1,13 +1,16 @@
 ﻿@model HomeModel
 
-<h1 data-translation="@Model.Title">@Model.Title</h1>
+<div class="main-page">
+    <h1 data-translation="@Model.Title">@Model.Title</h1>
+    
+    @if (Model.IsAuthenticated)
+    {
+        <a href="/Organization/Detail" class="btn-red-light" style="" id="org_link" data-translation="organization_link">organization_link</a>
+        <a href="/Organization/PendingTranslations" class="btn-red-light" data-translation="pending_translations_link">pending_translations_link</a>
+        <a href="/Label/SearchList?search=" class="btn-red-light" data-translation="search_list_link">search_list_link</a>
+    }
+</div>
 
-@if (Model.IsAuthenticated)
-{
-    <a href="/Organization/Detail" style="" id="org_link" data-translation="organization_link">organization_link</a>
-    <a href="/Organization/PendingTranslations" data-translation="pending_translations_link">pending_translations_link</a>
-    <a href="/Label/SearchList?search=" data-translation="search_list_link">search_list_link</a>
-}
 
 @if (Model.IsSuperAdmin)
 {

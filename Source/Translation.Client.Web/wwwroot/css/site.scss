@@ -1,4 +1,6 @@
-﻿* {
+﻿@import "src/variables";
+
+* {
     margin: 0;
     padding: 0;
     border: 0;
@@ -38,10 +40,78 @@ main {
     background-color: white;
     padding: 2%;
     box-shadow: 3px 4px 5px #888888;
+    
+    .main-page {
+        text-align: center;
+        margin-bottom: 30px;
+        
+        h1 {
+            padding: 15px 10px;
+            margin-bottom: 40px;
+            
+            animation-name: moveInDown;
+            animation-duration: 1s;
+        }
+        
+        a:link,
+        a:visited{
+            display: inline-block;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 100px;
+            transition: all .2s;
+            color: white;
+            position: relative;
+            
+        
+            animation-name: moveInDown;
+            animation-duration: 1s;
+            
+            &:not(:last-child){
+                margin-right: 15px;
+            }
+            
+            &::after {
+                content: "";
+                display: inline-block;
+                height: 100%;
+                width: 100%;
+                border-radius: 100px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: -1;
+                transition: all .4s;
+            }
+        }
+        
+        a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0 ,0 , 0, .2);
+            
+            &::after{
+                transform: scaleX(1.4) scaleY(1.6);
+                opacity: 0;
+            }
+        }
+        
+        a:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(0 ,0 , 0, .2);
+        }
+    }
+    
+    form {
+        
+        div {
+            margin-bottom: 20px;
+        }
+    }
 
     div {
         min-height: 39px;
-        color: #278FB2;
+        color: $color-primary;
         background-color: white;
     }
 
@@ -77,7 +147,7 @@ footer {
 }
 
 .header {
-    background-color: #007BA4;
+    background-color: $color-primary;
     height: 30px;
     padding: 10px;
     margin: 0;    
@@ -85,7 +155,7 @@ footer {
     a {
         margin: 21px auto;
         color: whitesmoke;
-        background-color: #007BA4;
+        background-color: inherit;
         text-decoration: none;
         text-transform: uppercase;
         font-weight: bold;
@@ -105,7 +175,13 @@ footer {
     border-bottom: 1px solid;
 
     option {
+        
         color: black;
+        background-color: #fff;
+        
+        &:hover {
+            background-color: $color-primary-light;
+        }
     }
 }
 
@@ -142,6 +218,7 @@ footer {
     margin-right: 55px;
 
     a {
+        background-color: $color-primary;
         color: white;
         text-decoration: none;
         margin: 0 9px;
@@ -155,12 +232,12 @@ footer {
 }
 
 .nav-brand {
-    background-color: #007BA4;
+    background-color: inherit;
     color: white;
 }
 
-.background-blue {
-    background-color: #007BA4;
+.background-primary {
+    background-color: $color-primary;
 }
 
 /* Style the buttons inside the tab */
@@ -175,7 +252,7 @@ footer {
     padding: 14px 16px;
     transition: 0.3s;
     font-size: 17px;
-    color: #007BA4;
+    color: $color-primary;
 }
 
 /* Change background color of buttons on hover */
@@ -187,7 +264,7 @@ footer {
 /* Create an active/current tablink class */
 
 .tab-header button.active {
-    background-color: #007BA4;
+    background-color: $color-secondary;
     color: white;
 }
 
@@ -205,7 +282,7 @@ footer {
 }
 
 .tab-header {
-    background-color: #F0F8FE !important;
+    background-color: $color-primary-lightest !important;
     height: 51px;
     margin-top: 1%;
 }
@@ -331,14 +408,28 @@ input {
     display: inline-block;
 
     a {
-        display: block;
+        display: inline-block;
         color: #fff;
-        background-color: #37bff2;
-        padding: 7px;
+        background-color: $color-primary;
+        padding: 7px 10px;
         text-decoration: none;
         border-radius: 10px;
         min-width: 150px;
         text-align: center;
+        
+        &:not(:last-child) {
+            margin-right: 20px;
+        }
+        
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0 ,0 , 0, .2);
+        }
+        
+        &:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(0 ,0 , 0, .2);
+        }
     }
 
     button {
@@ -349,11 +440,7 @@ input {
     form {
         background-color: white;
     }
-
-    a:hover {
-        background-color: #3698d9;
-
-    }
+    
 }
 
 .login-form {
@@ -362,6 +449,24 @@ input {
 
 button[type=submit] {
     margin-bottom: 8px;
+    color: $color-primary;
+    background-color: #fff;
+    padding: 7px 10px;
+    text-decoration: none;
+    border-radius: 10px;
+    min-width: 150px;
+    text-align: center;
+    border: 1px solid #c96567;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0 ,0 , 0, .2);
+    }
+
+    &:active {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 10px rgba(0 ,0 , 0, .2);
+    }
 }
 
 .btnGreen {
@@ -374,6 +479,28 @@ button[type=submit] {
     color: #fff;
 }
 
+.btn-red-light {
+    background-color: $color-primary;
+
+    &::after {
+
+        background-color: $color-primary;
+    }
+}
+
 .show {
     display: block;
+}
+
+@keyframes moveInDown {
+    
+    0% {
+        opacity: 0;
+        transform: translateY(-80px);
+    }
+    
+    100% {
+        opacity: 1;
+        transform: translate(0);
+    }
 }
