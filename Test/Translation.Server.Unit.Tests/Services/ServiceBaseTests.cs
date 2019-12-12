@@ -72,10 +72,9 @@ namespace Translation.Server.Unit.Tests.Services
 
         public void ConfigureIocContainer()
         {
-      
             Builder.RegisterType<CryptoHelper>();
 
-            #region Repository
+            #region Repositories
             Builder.RegisterInstance(MockIntegrationClientRepository.Object).As<IIntegrationClientRepository>();
             Builder.RegisterInstance(MockIntegrationRepository.Object).As<IIntegrationRepository>();
             Builder.RegisterInstance(MockJournalRepository.Object).As<IJournalRepository>();

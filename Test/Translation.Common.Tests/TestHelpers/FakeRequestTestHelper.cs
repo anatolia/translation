@@ -389,14 +389,12 @@ namespace Translation.Common.Tests.TestHelpers
             return request;
         }
 
-
         public static IntegrationRevisionReadListRequest GetIntegrationRevisionReadListRequest()
         {
             var request = new IntegrationRevisionReadListRequest(CurrentUserId, OrganizationOneIntegrationOneUid);
 
             return request;
         }
-
 
         public static IntegrationRevisionReadListRequest GetIntegrationRevisionReadListRequest(long currentUserId, Guid integrationUid)
         {
@@ -2083,7 +2081,6 @@ namespace Translation.Common.Tests.TestHelpers
             return request;
         }
 
-
         public static UserDeleteRequest GetUserDeleteRequest()
         {
             var request = new UserDeleteRequest(CurrentUserId, UidOne);
@@ -2097,7 +2094,6 @@ namespace Translation.Common.Tests.TestHelpers
 
             return request;
         }
-
 
         public static UserInviteRequest GetUserInviteRequest(long currentUserId, Guid organizationUid, string email,
                                                              string firstName, string lastName)
@@ -2150,7 +2146,6 @@ namespace Translation.Common.Tests.TestHelpers
 
             return request;
         }
-
 
         public static UserReadListRequest GetUserReadListRequest()
         {
