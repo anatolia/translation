@@ -26,7 +26,7 @@ namespace Translation.Server.Unit.Tests.Services
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Builder.Build().Resolve<ILabelService>();
+            SystemUnderTest = Container.Resolve<ILabelService>();
         }
 
         [Test]
