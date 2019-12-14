@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="StandardCache" Version="1.0.2" />
-    <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.4.4" />
+    <PackageReference Include="StandardCache" Version="1.0.2.1" />
+    <PackageReference Include="StandardRepository.PostgreSQL" Version="1.0.4.5" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
   </ItemGroup>
 

@@ -46,7 +46,7 @@ namespace Translation.Client.Web.Controllers
             var organizationUid = id;
             if (organizationUid.IsEmptyGuid())
             {
-                organizationUid = CurrentUser.OrganizationUid;
+                organizationUid = CurrentUser.Organization.Uid;
             }
 
             var request = new OrganizationReadRequest(CurrentUser.Id, organizationUid);
@@ -225,7 +225,7 @@ namespace Translation.Client.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> SelectData()
         {
-            var request = new ProjectReadListRequest(CurrentUser.Id, CurrentUser.OrganizationUid);
+            var request = new ProjectReadListRequest(CurrentUser.Id, CurrentUser.Organization.Uid);
             var response = await _projectService.GetProjects(request);
             if (response.Status.IsNotSuccess)
             {

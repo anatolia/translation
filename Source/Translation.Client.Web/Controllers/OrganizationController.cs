@@ -48,7 +48,7 @@ namespace Translation.Client.Web.Controllers
             var organizationUid = id;
             if (organizationUid.IsEmptyGuid())
             {
-                organizationUid = CurrentUser.OrganizationUid;
+                organizationUid = CurrentUser.Organization.Uid;
             }
 
             var request = new OrganizationReadRequest(CurrentUser.Id, organizationUid);
@@ -69,7 +69,7 @@ namespace Translation.Client.Web.Controllers
             var organizationUid = id;
             if (organizationUid.IsEmptyGuid())
             {
-                organizationUid = CurrentUser.OrganizationUid;
+                organizationUid = CurrentUser.Organization.Uid;
             }
 
             var request = new OrganizationReadRequest(CurrentUser.Id, organizationUid);
@@ -209,7 +209,7 @@ namespace Translation.Client.Web.Controllers
         public IActionResult PendingTranslations()
         {
             var model = new OrganizationPendingTranslationReadListModel();
-            model.OrganizationUid = CurrentUser.OrganizationUid;
+            model.OrganizationUid = CurrentUser.Organization.Uid;
             model.OrganizationName = CurrentUser.Organization.Name;
 
             return View(model);
@@ -261,7 +261,7 @@ namespace Translation.Client.Web.Controllers
             var organizationUid = id;
             if (organizationUid.IsEmptyGuid())
             {
-                organizationUid = CurrentUser.OrganizationUid;
+                organizationUid = CurrentUser.Organization.Uid;
             }
 
             var model = new OrganizationUserLoginLogListModel();
@@ -442,7 +442,7 @@ namespace Translation.Client.Web.Controllers
             var organizationUid = id;
             if (organizationUid.IsEmptyGuid())
             {
-                organizationUid = CurrentUser.OrganizationUid;
+                organizationUid = CurrentUser.Organization.Uid;
             }
 
             var model = new OrganizationTokenRequestLogListModel();
@@ -501,7 +501,7 @@ namespace Translation.Client.Web.Controllers
             var organizationUid = id;
             if (organizationUid.IsEmptyGuid())
             {
-                organizationUid = CurrentUser.OrganizationUid;
+                organizationUid = CurrentUser.Organization.Uid;
             }
 
             var model = new OrganizationJournalListModel();
@@ -516,7 +516,7 @@ namespace Translation.Client.Web.Controllers
             var organizationUid = id;
             if (organizationUid.IsEmptyGuid())
             {
-                organizationUid = CurrentUser.OrganizationUid;
+                organizationUid = CurrentUser.Organization.Uid;
             }
 
             var request = new OrganizationJournalReadListRequest(CurrentUser.Id, organizationUid);

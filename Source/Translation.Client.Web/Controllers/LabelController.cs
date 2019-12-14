@@ -798,7 +798,7 @@ namespace Translation.Client.Web.Controllers
                 return Forbid();
             }
 
-            var request = new LabelTranslationDeleteRequest(CurrentUser.Id, CurrentUser.OrganizationUid, labelTranslationUid);
+            var request = new LabelTranslationDeleteRequest(CurrentUser.Id, CurrentUser.Organization.Uid, labelTranslationUid);
             var response = await _labelService.DeleteTranslation(request);
             if (response.Status.IsNotSuccess)
             {

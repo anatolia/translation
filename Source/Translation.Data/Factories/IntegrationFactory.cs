@@ -1,13 +1,14 @@
-﻿using Translation.Common.Models.DataTransferObjects;
+﻿using StandardUtils.Models.Shared;
+
+using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Integration;
-using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Main;
 
 namespace Translation.Data.Factories
 {
     public class IntegrationFactory
     {
-        public Integration CreateEntityFromRequest(IntegrationCreateRequest request, CurrentOrganization organizationEntity)
+        public Integration CreateEntityFromRequest(IntegrationCreateRequest request, BaseCurrentOrganization organizationEntity)
         {
             var entity = new Integration();
             entity.OrganizationId = organizationEntity.Id;
