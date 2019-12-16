@@ -1,5 +1,5 @@
 ﻿using System;
-using StandardUtils.Models.Shared;
+
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Admin;
 using Translation.Common.Models.Requests.Organization;
@@ -82,7 +82,7 @@ namespace Translation.Data.Factories
             return entity;
         }
 
-        public User CreateEntityFromRequest(UserInviteRequest request, BaseCurrentOrganization organization, string salt)
+        public User CreateEntityFromRequest(UserInviteRequest request, CurrentOrganization organization, string salt)
         {
             var entity = new User();
             entity.FirstName = request.FirstName;
