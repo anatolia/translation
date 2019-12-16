@@ -27,7 +27,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Builder.Build().Resolve<UserController>();
+            SystemUnderTest = Container.Resolve<UserController>();
             SetControllerContext(SystemUnderTest);
         }
 
@@ -706,7 +706,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
 
             // assert
             AssertView<InviteModel>(result);
-            ((InviteModel)result.Model).OrganizationUid.ShouldBe(SystemUnderTest.CurrentUser.OrganizationUid);
+            ((InviteModel)result.Model).OrganizationUid.ShouldBe(SystemUnderTest.CurrentUser.Organization.Uid);
         }
 
         [Test]

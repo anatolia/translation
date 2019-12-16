@@ -27,7 +27,7 @@ namespace Translation.Server.Unit.Tests.Services
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Builder.Build().Resolve<IIntegrationService>();
+            SystemUnderTest = Container.Resolve<IIntegrationService>();
         }
 
         [Test]

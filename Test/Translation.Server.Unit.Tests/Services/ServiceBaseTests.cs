@@ -15,7 +15,8 @@ namespace Translation.Server.Unit.Tests.Services
 {
     public class ServiceBaseTests
     {
-        public ContainerBuilder Builder { get; set; }
+        private ContainerBuilder Builder { get; set; }
+        protected IContainer Container { get; set; }
 
         protected Mock<IIntegrationClientRepository> MockIntegrationClientRepository { get; set; }
         protected Mock<IIntegrationRepository> MockIntegrationRepository { get; set; }
@@ -99,7 +100,7 @@ namespace Translation.Server.Unit.Tests.Services
             Builder.RegisterInstance(MockLogOnUnitOfWork.Object).As<ILogOnUnitOfWork>();
             Builder.RegisterInstance(MockProjectUnitOfWork.Object).As<IProjectUnitOfWork>();
             Builder.RegisterInstance(MockSignUpUnitOfWork.Object).As<ISignUpUnitOfWork>();
-            
+
             #endregion
         }
 
@@ -137,6 +138,8 @@ namespace Translation.Server.Unit.Tests.Services
             #endregion
 
             Builder.RegisterType<CacheManager>();
+
+            Container = Builder.Build();
 
             #region Setup For Cache
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();

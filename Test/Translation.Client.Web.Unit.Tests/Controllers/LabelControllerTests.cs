@@ -31,7 +31,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Builder.Build().Resolve<LabelController>();
+            SystemUnderTest = Container.Resolve<LabelController>();
             SetControllerContext(SystemUnderTest);
         }
 

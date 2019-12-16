@@ -2242,52 +2242,5 @@ namespace Translation.Common.Tests.TestHelpers
             pagingInfo.TotalItemCount = Ten;
             pagingInfo.SearchTerm = StringOne;
         }
-
-        public static LabelListInfo GetLabelListInfo()
-        {
-            var labelListInfo = new LabelListInfo();
-            labelListInfo.LabelKey = StringOne;
-            labelListInfo.LanguageIsoCode2 = IsoCode2One;
-            labelListInfo.Translation = StringOne;
-
-            return labelListInfo;
-        }
-
-        public static List<LabelListInfo> GetLabelListInfoList()
-        {
-
-            var labelListInfoList = new List<LabelListInfo>();
-            labelListInfoList.Add(GetLabelListInfo());
-
-            return labelListInfoList;
-        }
-
-        public static List<TranslationListInfo> GetTranslationListInfoList()
-        {
-
-            var labelListInfoList = new List<TranslationListInfo>();
-            labelListInfoList.Add(GetTranslationListInfo());
-
-            return labelListInfoList;
-        }
-
-        public static TranslationListInfo GetTranslationListInfo()
-        {
-            var translationListInfo = new TranslationListInfo();
-            translationListInfo.LanguageIsoCode2 = IsoCode2One;
-            translationListInfo.Translation = StringOne;
-
-            return translationListInfo;
-        }
-
-        public static ClientLogInfo GetClientLogInfo()
-        {
-            var clientLogInfo = new ClientLogInfo();
-            clientLogInfo.Country = StringOne;
-            clientLogInfo.City = StringOne;
-            clientLogInfo.Ip = IpOne;
-
-            return clientLogInfo;
-        }
     }
 }

@@ -83,7 +83,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (project.OrganizationId != currentUser.OrganizationId)
+            if (project.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -325,7 +325,7 @@ namespace Translation.Service
             }
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (project.OrganizationId != currentUser.OrganizationId)
+            if (project.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -561,7 +561,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (label.OrganizationId != currentUser.OrganizationId)
+            if (label.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetFailed();
                 return response;
@@ -578,7 +578,7 @@ namespace Translation.Service
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
-            var label = await _labelRepository.Select(x => x.OrganizationId == currentUser.OrganizationId
+            var label = await _labelRepository.Select(x => x.OrganizationId == currentUser.Organization.Id
                                                            && x.ProjectName == request.ProjectName
                                                            && x.LabelKey == request.LabelKey);
             if (label.IsNotExist())
@@ -604,7 +604,7 @@ namespace Translation.Service
             }
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (project.OrganizationId != currentUser.OrganizationId)
+            if (project.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -658,7 +658,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
             Expression<Func<Label, bool>> filter = x =>
-                x.Name.Contains(request.PagingInfo.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
+                x.Name.Contains(request.PagingInfo.SearchTerm) && x.OrganizationId == currentUser.Organization.Id;
 
             List<Label> entities = await _labelRepository.SelectMany(filter, request.PagingInfo.Skip,
                 request.PagingInfo.Take, false,
@@ -738,7 +738,7 @@ namespace Translation.Service
                     var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
                     if (currentUser != null)
                     {
-                        if (currentUser.OrganizationId != project.OrganizationId)
+                        if (currentUser.Organization.Id != project.OrganizationId)
                         {
                             response.SetInvalid();
                             return response;
@@ -835,7 +835,7 @@ namespace Translation.Service
             }
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (label.OrganizationId != currentUser.OrganizationId)
+            if (label.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -889,7 +889,7 @@ namespace Translation.Service
             }
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (label.OrganizationId != currentUser.OrganizationId)
+            if (label.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -932,7 +932,7 @@ namespace Translation.Service
             }
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (label.OrganizationId != currentUser.OrganizationId)
+            if (label.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -978,7 +978,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
@@ -998,7 +998,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (label.OrganizationId != currentUser.OrganizationId)
+            if (label.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -1028,7 +1028,7 @@ namespace Translation.Service
             var response = new LabelRestoreResponse();
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
@@ -1077,7 +1077,7 @@ namespace Translation.Service
             }
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (label.OrganizationId != currentUser.OrganizationId)
+            if (label.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -1140,7 +1140,7 @@ namespace Translation.Service
             }
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (label.OrganizationId != currentUser.OrganizationId)
+            if (label.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -1309,7 +1309,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (labelTranslation.OrganizationId != currentUser.OrganizationId)
+            if (labelTranslation.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetFailed();
                 return response;
@@ -1339,7 +1339,7 @@ namespace Translation.Service
             }
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (label.OrganizationId != currentUser.OrganizationId)
+            if (label.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -1450,7 +1450,7 @@ namespace Translation.Service
             }
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (labelTranslation.OrganizationId != currentUser.OrganizationId)
+            if (labelTranslation.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -1499,7 +1499,7 @@ namespace Translation.Service
             }
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (labelTranslation.OrganizationId != currentUser.OrganizationId)
+            if (labelTranslation.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -1539,7 +1539,7 @@ namespace Translation.Service
             var response = new LabelTranslationRestoreResponse();
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;

@@ -29,7 +29,7 @@ namespace Translation.Server.Unit.Tests.Services
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Builder.Build().Resolve<IOrganizationService>();
+            SystemUnderTest = Container.Resolve<IOrganizationService>();
         }
 
         [Test]
@@ -453,7 +453,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task OrganizationService_GetPendingTranslations_Invalid_OrganizationNotActive()
+        public async Task OrganizationService_GetPendingTranslations_Invalid_OrganizationNotFound()
         {
             // arrange
             var request = GetOrganizationPendingTranslationReadListRequestForSelectAfter(OrganizationOneUid);
@@ -464,7 +464,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.GetPendingTranslations(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, OrganizationNotActive);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Failed, OrganizationNotFound);
             AssertReturnType<OrganizationPendingTranslationReadListResponse>(result);
             MockUserRepository.Verify_SelectById();
             MockOrganizationRepository.Verify_Select();
