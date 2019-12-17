@@ -389,14 +389,12 @@ namespace Translation.Common.Tests.TestHelpers
             return request;
         }
 
-
         public static IntegrationRevisionReadListRequest GetIntegrationRevisionReadListRequest()
         {
             var request = new IntegrationRevisionReadListRequest(CurrentUserId, OrganizationOneIntegrationOneUid);
 
             return request;
         }
-
 
         public static IntegrationRevisionReadListRequest GetIntegrationRevisionReadListRequest(long currentUserId, Guid integrationUid)
         {
@@ -2083,7 +2081,6 @@ namespace Translation.Common.Tests.TestHelpers
             return request;
         }
 
-
         public static UserDeleteRequest GetUserDeleteRequest()
         {
             var request = new UserDeleteRequest(CurrentUserId, UidOne);
@@ -2097,7 +2094,6 @@ namespace Translation.Common.Tests.TestHelpers
 
             return request;
         }
-
 
         public static UserInviteRequest GetUserInviteRequest(long currentUserId, Guid organizationUid, string email,
                                                              string firstName, string lastName)
@@ -2150,7 +2146,6 @@ namespace Translation.Common.Tests.TestHelpers
 
             return request;
         }
-
 
         public static UserReadListRequest GetUserReadListRequest()
         {
@@ -2246,53 +2241,6 @@ namespace Translation.Common.Tests.TestHelpers
             pagingInfo.LastUid = UidOne;
             pagingInfo.TotalItemCount = Ten;
             pagingInfo.SearchTerm = StringOne;
-        }
-
-        public static LabelListInfo GetLabelListInfo()
-        {
-            var labelListInfo = new LabelListInfo();
-            labelListInfo.LabelKey = StringOne;
-            labelListInfo.LanguageIsoCode2 = IsoCode2One;
-            labelListInfo.Translation = StringOne;
-
-            return labelListInfo;
-        }
-
-        public static List<LabelListInfo> GetLabelListInfoList()
-        {
-
-            var labelListInfoList = new List<LabelListInfo>();
-            labelListInfoList.Add(GetLabelListInfo());
-
-            return labelListInfoList;
-        }
-
-        public static List<TranslationListInfo> GetTranslationListInfoList()
-        {
-
-            var labelListInfoList = new List<TranslationListInfo>();
-            labelListInfoList.Add(GetTranslationListInfo());
-
-            return labelListInfoList;
-        }
-
-        public static TranslationListInfo GetTranslationListInfo()
-        {
-            var translationListInfo = new TranslationListInfo();
-            translationListInfo.LanguageIsoCode2 = IsoCode2One;
-            translationListInfo.Translation = StringOne;
-
-            return translationListInfo;
-        }
-
-        public static ClientLogInfo GetClientLogInfo()
-        {
-            var clientLogInfo = new ClientLogInfo();
-            clientLogInfo.Country = StringOne;
-            clientLogInfo.City = StringOne;
-            clientLogInfo.Ip = IpOne;
-
-            return clientLogInfo;
         }
     }
 }

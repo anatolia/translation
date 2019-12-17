@@ -29,20 +29,21 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
 {
     public class ControllerBaseTests
     {
-        public ContainerBuilder Builder { get; set; }
+        private ContainerBuilder Builder { get; set; }
+        protected IContainer Container { get; set; }
 
         protected Mock<IWebHostEnvironment> MockHostingEnvironment { get; set; }
 
-        public Mock<IOrganizationService> MockOrganizationService { get; set; }
-        public Mock<IIntegrationService> MockIntegrationService { get; set; }
-        public Mock<IAdminService> MockAdminService { get; set; }
-        public Mock<ILanguageService> MockLanguageService { get; set; }
-        public Mock<IProjectService> MockProjectService { get; set; }
-        public Mock<ILabelService> MockLabelService { get; set; }
-        public Mock<IJournalService> MockJournalService { get; set; }
-        public Mock<ITranslationProviderService> MockTranslationProviderService { get; set; }
+        protected Mock<IOrganizationService> MockOrganizationService { get; set; }
+        protected Mock<IIntegrationService> MockIntegrationService { get; set; }
+        protected Mock<IAdminService> MockAdminService { get; set; }
+        protected Mock<ILanguageService> MockLanguageService { get; set; }
+        protected Mock<IProjectService> MockProjectService { get; set; }
+        protected Mock<ILabelService> MockLabelService { get; set; }
+        protected Mock<IJournalService> MockJournalService { get; set; }
+        protected Mock<ITranslationProviderService> MockTranslationProviderService { get; set; }
 
-        public Mock<ITextTranslateIntegration> MockTextTranslateIntegration { get; set; }
+        protected Mock<ITextTranslateIntegration> MockTextTranslateIntegration { get; set; }
 
         protected void InitializeComponents()
         {
@@ -64,7 +65,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockTextTranslateIntegration = new Mock<ITextTranslateIntegration>();
         }
 
-        public void ConfigureIocContainer()
+        private void ConfigureIocContainer()
         {
             Builder.RegisterInstance(MockHostingEnvironment.Object).As<IWebHostEnvironment>();
 
@@ -91,7 +92,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             Builder.RegisterType<DataController>();
             Builder.RegisterType<HomeController>();
             Builder.RegisterType<IntegrationController>();
-            Builder.RegisterType<LabelController>(); 
+            Builder.RegisterType<LabelController>();
             Builder.RegisterType<LanguageController>();
             Builder.RegisterType<OrganizationController>();
             Builder.RegisterType<ProjectController>();
@@ -109,6 +110,8 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             Builder.RegisterType<ProjectMapper>();
             Builder.RegisterType<TranslationProviderMapper>();
             Builder.RegisterType<UserMapper>();
+
+            Container = Builder.Build();
         }
 
         private void SetupCurrentUser()
@@ -116,7 +119,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup(x => x.GetCurrentUser(It.IsAny<CurrentUserRequest>())).Returns(FakeModelTestHelper.GetOrganizationOneCurrentUserOne());
         }
 
-        public static void SetControllerContext(Controller controller)
+        protected static void SetControllerContext(Controller controller)
         {
             var authenticationServiceMock = new Mock<IAuthenticationService>();
             authenticationServiceMock.Setup(a => a.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(), It.IsAny<AuthenticationProperties>()))

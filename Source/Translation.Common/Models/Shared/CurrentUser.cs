@@ -1,6 +1,5 @@
 ﻿using StandardUtils.Models.Shared;
 
-
 namespace Translation.Common.Models.Shared
 {
     public class CurrentUser : BaseCurrentUser<CurrentOrganization>

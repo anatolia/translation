@@ -338,7 +338,7 @@ namespace Translation.Client.Web.Controllers
             var organizationUid = id;
             if (organizationUid.IsEmptyGuid())
             {
-                organizationUid = CurrentUser.OrganizationUid;
+                organizationUid = CurrentUser.Organization.Uid;
             }
 
             var model = new InviteModel();

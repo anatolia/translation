@@ -23,7 +23,7 @@ namespace Translation.Server.Unit.Tests.Services
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Builder.Build().Resolve<IJournalService>();
+            SystemUnderTest = Container.Resolve<IJournalService>();
         }
 
         [Test]

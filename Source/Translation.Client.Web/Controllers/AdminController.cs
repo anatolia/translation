@@ -355,7 +355,7 @@ namespace Translation.Client.Web.Controllers
         [HttpGet]
         public IActionResult Invite()
         {
-            var organizationUid = CurrentUser.OrganizationUid;
+            var organizationUid = CurrentUser.Organization.Uid;
             var model = _adminMapper.MapAdminInviteModel(organizationUid);
             return View(model);
         }

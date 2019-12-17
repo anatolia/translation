@@ -3,7 +3,6 @@
 using StandardUtils.Helpers;
 
 using Translation.Common.Exceptions;
-
 using Translation.Common.Models.Requests.Journal;
 
 namespace Translation.Client.Web.Helpers.ActionFilters

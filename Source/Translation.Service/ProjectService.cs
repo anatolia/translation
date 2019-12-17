@@ -58,17 +58,17 @@ namespace Translation.Service
             var response = new ProjectReadListResponse();
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (request.OrganizationUid != currentUser.OrganizationUid)
+            if (request.OrganizationUid != currentUser.Organization.Uid)
             {
                 response.SetInvalid();
                 return response;
             }
 
-            Expression<Func<Project, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
+            Expression<Func<Project, bool>> filter = x => x.OrganizationId == currentUser.Organization.Id;
 
             if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm) && x.OrganizationId == currentUser.Organization.Id;
             }
 
             List<Project> entities;
@@ -150,7 +150,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (project.OrganizationId != currentUser.OrganizationId)
+            if (project.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -174,7 +174,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (project.OrganizationId != currentUser.OrganizationId)
+            if (project.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -196,7 +196,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
@@ -204,7 +204,7 @@ namespace Translation.Service
 
             if (await _projectRepository.Any(x => (x.Name == request.ProjectName
                                                   || x.Slug == request.ProjectSlug)
-                                                  && x.OrganizationId == currentUser.OrganizationId))
+                                                  && x.OrganizationId == currentUser.Organization.Id))
             {
                 response.SetFailed();
                 response.ErrorMessages.Add("project_name_and_slug_must_be_unique");
@@ -242,7 +242,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
@@ -255,7 +255,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (project.OrganizationId != currentUser.OrganizationId)
+            if (project.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -317,7 +317,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (project.OrganizationId != currentUser.OrganizationId)
+            if (project.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -364,7 +364,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (project.OrganizationId != currentUser.OrganizationId)
+            if (project.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -376,14 +376,14 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _projectRepository.IsProjectNameMustBeUnique(request.Name, currentUser.OrganizationId))
+            if (await _projectRepository.IsProjectNameMustBeUnique(request.Name, currentUser.Organization.Id))
             {
                 response.SetInvalidBecauseMustBeUnique(nameof(Project));
                 return response;
             }
 
             if (await _projectRepository.Any(x => x.Slug == request.Slug
-                                                  && x.OrganizationId == currentUser.OrganizationId))
+                                                  && x.OrganizationId == currentUser.Organization.Id))
             {
                 response.SetInvalidBecauseSlugMustBeUnique(nameof(Project));
                 return response;
@@ -427,7 +427,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (project.OrganizationId != currentUser.OrganizationId)
+            if (project.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
@@ -457,7 +457,7 @@ namespace Translation.Service
             var response = new ProjectRestoreResponse();
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
             {
                 response.SetInvalid();
                 return response;
@@ -500,7 +500,7 @@ namespace Translation.Service
             }
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (project.OrganizationId != currentUser.OrganizationId)
+            if (project.OrganizationId != currentUser.Organization.Id)
             {
                 response.SetInvalid();
                 return response;
