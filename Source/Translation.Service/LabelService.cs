@@ -4,13 +4,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 using StandardRepository.Helpers;
 using StandardRepository.Models;
 using StandardUtils.Enumerations;
 using StandardUtils.Helpers;
 using StandardUtils.Models.DataTransferObjects;
-using Translation.Common.Contracts;
 
+using Translation.Common.Contracts;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
@@ -43,9 +44,11 @@ namespace Translation.Service
 
         public LabelService(CacheManager cacheManager,
             ILabelUnitOfWork labelUnitOfWork,
-            ILabelRepository labelRepository, LabelFactory labelFactory,
-            ILabelTranslationRepository labelTranslationRepository, LabelTranslationFactory labelTranslationFactory,
-            IProjectRepository projectRepository, ProjectFactory projectFactory,
+            ILabelRepository labelRepository,
+            LabelFactory labelFactory,
+            ILabelTranslationRepository labelTranslationRepository,
+            LabelTranslationFactory labelTranslationFactory,
+            IProjectRepository projectRepository,
             IOrganizationRepository organizationRepository,
             ILanguageRepository languageRepository,
             ITokenRepository tokenRepository,
@@ -1252,15 +1255,13 @@ namespace Translation.Service
                     continue;
                 }
 
-                if (translationsToInsert.Any(x => x.LanguageId == language.Id
-                                                  && x.LabelId == label.Id))
+                if (translationsToInsert.Any(x => x.LanguageId == language.Id && x.LabelId == label.Id))
                 {
                     response.CanNotAddedTranslationCount++;
                     continue;
                 }
 
-                if (translationsToUpdate.Any(x => x.LanguageId == language.Id
-                                                  && x.LabelId == label.Id))
+                if (translationsToUpdate.Any(x => x.LanguageId == language.Id && x.LabelId == label.Id))
                 {
                     response.CanNotAddedTranslationCount++;
                     continue;
@@ -1355,17 +1356,13 @@ namespace Translation.Service
             List<LabelTranslation> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _labelTranslationRepository.SelectAfter(filter, request.PagingInfo.LastUid,
-                    request.PagingInfo.Take, false,
-                    new List<OrderByInfo<LabelTranslation>>
-                        {new OrderByInfo<LabelTranslation>(x => x.Uid, request.PagingInfo.IsAscending)});
+                entities = await _labelTranslationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                                         new List<OrderByInfo<LabelTranslation>> { new OrderByInfo<LabelTranslation>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _labelTranslationRepository.SelectMany(filter, request.PagingInfo.Skip,
-                    request.PagingInfo.Take, false,
-                    new List<OrderByInfo<LabelTranslation>>
-                        {new OrderByInfo<LabelTranslation>(x => x.Id, request.PagingInfo.IsAscending)});
+                entities = await _labelTranslationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                         new List<OrderByInfo<LabelTranslation>> { new OrderByInfo<LabelTranslation>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
