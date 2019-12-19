@@ -37,13 +37,16 @@ namespace Translation.Client.Web.Controllers
         [HttpGet, AllowAnonymous]
         public IActionResult SignUp()
         {
-            var model = new SignUpModel();
+            if (User.Identity.IsAuthenticated)
+            {
+                return Redirect("/User/Detail");
+            }
 
+            var model = new SignUpModel();
             return View(model);
         }
 
-        [HttpPost,
-         AllowAnonymous]
+        [HttpPost, AllowAnonymous]
         public async Task<IActionResult> SignUp(SignUpModel model)
         {
             if (model.IsNotValid())

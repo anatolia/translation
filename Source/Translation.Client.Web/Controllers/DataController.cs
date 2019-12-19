@@ -31,8 +31,7 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet,
-         AllowAnonymous,
-         ResponseCache(Duration = 60, VaryByQueryKeys = new[] { "projectUid" })]
+         AllowAnonymous]
         public async Task<IActionResult> GetLabels(Guid token, Guid projectUid)
         {
             var result = new CommonResult();

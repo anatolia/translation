@@ -225,7 +225,7 @@ namespace Translation.Client.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> SelectData()
         {
-            var request = new ProjectReadListRequest(CurrentUser.Id, CurrentUser.Organization.Uid);
+            var request = new ProjectReadListRequest(CurrentUser.Id);
             var response = await _projectService.GetProjects(request);
             if (response.Status.IsNotSuccess)
             {

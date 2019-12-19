@@ -11,6 +11,7 @@ using StandardUtils.Models.Shared;
 
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
+using Translation.Client.Web.Helpers.DataResultHelpers;
 using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.Label;
@@ -76,10 +77,10 @@ namespace Translation.Client.Web.Controllers
                 return View(model);
             }
 
-            Guid[] labelTranslationLanguageUidArray = new Guid[] { };
+            var labelTranslationLanguageUidArray = new Guid[] { };
             if (model.LabelTranslationLanguageUid.IsNotEmpty())
             {
-                var languageUids = model.LabelTranslationLanguageUid.ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
+                var languageUids = model.LabelTranslationLanguageUid.Split(",", StringSplitOptions.RemoveEmptyEntries);
                 labelTranslationLanguageUidArray = new Guid[languageUids.Length];
                 for (int i = 0; i < languageUids.Length; i++)
                 {
@@ -378,8 +379,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var result = new DataResult();
-            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "label_name", "is_active", "created_at",
-                "");
+            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "label_name", "is_active", "created_at", "");
 
             for (var i = 0; i < response.Items.Count; i++)
             {
@@ -390,12 +390,10 @@ namespace Translation.Client.Web.Controllers
                 stringBuilder.Append($"{revisionItem.Revision}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{GetDateTimeAsString(revisionItem.RevisionedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append(
-                    $"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append(
-                    $"{result.PrepareRestoreButton("restore", "/Label/Restore/", "/Label/Detail")}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Label/Restore/", "/Label/Detail")}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
             }
@@ -827,31 +825,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("language", "translation", "");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareImage($"{item.LanguageIconUrl}", item.LanguageName)} {item.LanguageName}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Translation}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationEdit/{item.Uid}", "edit", true)}");
-
-                if (CurrentUser.IsSuperAdmin)
-                {
-                    stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", "revisions_link", true)}");
-                    stringBuilder.Append($"{result.PrepareDeleteButton($"/Label/LabelTranslationDelete")}{DataResult.SEPARATOR}");
-                }
-                else
-                {
-                    stringBuilder.Append($"{result.PrepareLink($"/Label/LabelTranslationRevisions/{item.Uid}", "revisions_link", true)}{DataResult.SEPARATOR}");
-                }
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetLabelTranslationListData(response.Items,CurrentUser.IsSuperAdmin);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -1046,27 +1020,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "label_translation", "created_at", "");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var revisionItem = response.Items[i];
-                var item = revisionItem.Item;
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{revisionItem.Revision}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(revisionItem.RevisionedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append(
-                    $"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Translation)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append(
-                    $"{result.PrepareRestoreButton("restore", "/Label/RestoreLabelTranslation/", "/Label/LabelTranslationDetail")}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetLabelTranslationRevisionsData(response.Items);
             return Json(result);
         }
 

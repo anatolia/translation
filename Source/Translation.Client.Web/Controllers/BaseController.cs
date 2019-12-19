@@ -40,6 +40,9 @@ namespace Translation.Client.Web.Controllers
             LanguageService = languageService;
         }
 
+        public static string RedirectToAccessDeniedPath = "/Home/AccessDenied";
+        public static string RedirectToHomePath = "/";
+
         private List<LanguageDto> _languages;
         public List<LanguageDto> Languages
         {
@@ -88,12 +91,12 @@ namespace Translation.Client.Web.Controllers
 
         public RedirectResult RedirectToHome()
         {
-            return Redirect("/");
+            return Redirect(RedirectToHomePath);
         }
 
         public RedirectResult RedirectToAccessDenied()
         {
-            return Redirect("/Home/AccessDenied");
+            return Redirect(RedirectToAccessDeniedPath);
         }
 
         public ClientLogInfo GetClientInfoLog()
