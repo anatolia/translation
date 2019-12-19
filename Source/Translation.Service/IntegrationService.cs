@@ -31,10 +31,10 @@ namespace Translation.Service
     {
         private readonly CacheManager _cacheManager;
         private readonly IOrganizationRepository _organizationRepository;
-        private readonly IIntegrationRepository _integrationRepository;
-        private readonly IntegrationFactory _integrationFactory;
-        private readonly IIntegrationClientRepository _integrationClientRepository;
-        private readonly IntegrationClientFactory _integrationClientFactory;
+        private readonly IIntegrationRepository _IntegrationRepository;
+        private readonly IntegrationFactory _IntegrationFactory;
+        private readonly IIntegrationClientRepository _IntegrationClientRepository;
+        private readonly IntegrationClientFactory _IntegrationClientFactory;
         private readonly ITokenRepository _tokenRepository;
         private readonly TokenFactory _tokenFactory;
         private readonly ITokenRequestLogRepository _tokenRequestLogRepository;
@@ -43,18 +43,22 @@ namespace Translation.Service
 
         public IntegrationService(CacheManager cacheManager,
                                   IOrganizationRepository organizationRepository,
-                                  IIntegrationRepository integrationRepository, IntegrationFactory integrationFactory,
-                                  IIntegrationClientRepository integrationClientRepository, IntegrationClientFactory integrationClientFactory,
-                                  ITokenRepository tokenRepository, TokenFactory tokenFactory,
-                                  ITokenRequestLogRepository tokenRequestLogRepository, TokenRequestLogFactory tokenRequestLogFactory,
+                                  IIntegrationRepository IntegrationRepository,
+                                  IntegrationFactory IntegrationFactory,
+                                  IIntegrationClientRepository IntegrationClientRepository,
+                                  IntegrationClientFactory IntegrationClientFactory,
+                                  ITokenRepository tokenRepository, 
+                                  TokenFactory tokenFactory,
+                                  ITokenRequestLogRepository tokenRequestLogRepository, 
+                                  TokenRequestLogFactory tokenRequestLogFactory,
                                   IProjectRepository projectRepository)
         {
             _cacheManager = cacheManager;
             _organizationRepository = organizationRepository;
-            _integrationRepository = integrationRepository;
-            _integrationFactory = integrationFactory;
-            _integrationClientRepository = integrationClientRepository;
-            _integrationClientFactory = integrationClientFactory;
+            _IntegrationRepository = IntegrationRepository;
+            _IntegrationFactory = IntegrationFactory;
+            _IntegrationClientRepository = IntegrationClientRepository;
+            _IntegrationClientFactory = IntegrationClientFactory;
             _tokenRepository = tokenRepository;
             _tokenFactory = tokenFactory;
             _tokenRequestLogRepository = tokenRequestLogRepository;
@@ -74,22 +78,22 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
-            if (await _integrationRepository.Any(x => x.Name == request.Name && x.OrganizationId == currentUser.Organization.Id))
+            if (await _IntegrationRepository.Any(x => x.Name == request.Name && x.OrganizationId == currentUser.OrganizationId))
             {
                 response.SetInvalidBecauseMustBeUnique(nameof(Integration));
                 return response;
             }
 
-            var entity = _integrationFactory.CreateEntityFromRequest(request, currentUser.Organization);
-            await _integrationRepository.Insert(request.CurrentUserId, entity);
+            var entity = _IntegrationFactory.CreateEntityFromRequest(request, currentUser.Organization);
+            await _IntegrationRepository.Insert(request.CurrentUserId, entity);
 
-            response.Item = _integrationFactory.CreateDtoFromEntity(entity);
+            response.Item = _IntegrationFactory.CreateDtoFromEntity(entity);
             response.Status = ResponseStatus.Success;
             return response;
         }
@@ -100,20 +104,20 @@ namespace Translation.Service
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
-            var entity = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
+            var entity = await _IntegrationRepository.Select(x => x.Uid == request.IntegrationUid);
             if (entity.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(Integration));
                 return response;
             }
 
-            if (entity.OrganizationId != currentUser.Organization.Id)
+            if (entity.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetFailed();
                 return response;
             }
 
-            response.Item = _integrationFactory.CreateDtoFromEntity(entity);
+            response.Item = _IntegrationFactory.CreateDtoFromEntity(entity);
             response.Status = ResponseStatus.Success;
             return response;
         }
@@ -124,22 +128,22 @@ namespace Translation.Service
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
-            Expression<Func<Integration, bool>> filter = x => x.OrganizationId == currentUser.Organization.Id;
+            Expression<Func<Integration, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
 
             if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.OrganizationId == currentUser.Organization.Id && x.Name.Contains(request.PagingInfo.SearchTerm);
+                filter = x => x.OrganizationId == currentUser.OrganizationId && x.Name.Contains(request.PagingInfo.SearchTerm);
             }
 
             List<Integration> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _integrationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                entities = await _IntegrationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
                                                                     new List<OrderByInfo<Integration>>() { new OrderByInfo<Integration>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _integrationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                entities = await _IntegrationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
                                                                    new List<OrderByInfo<Integration>>() { new OrderByInfo<Integration>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
@@ -148,7 +152,7 @@ namespace Translation.Service
                 for (var i = 0; i < entities.Count; i++)
                 {
                     var entity = entities[i];
-                    var dto = _integrationFactory.CreateDtoFromEntity(entity);
+                    var dto = _IntegrationFactory.CreateDtoFromEntity(entity);
                     response.Items.Add(dto);
                 }
             }
@@ -157,7 +161,7 @@ namespace Translation.Service
             response.PagingInfo.Take = request.PagingInfo.Take;
             response.PagingInfo.LastUid = request.PagingInfo.LastUid;
             response.PagingInfo.IsAscending = request.PagingInfo.IsAscending;
-            response.PagingInfo.TotalItemCount = await _integrationRepository.Count(filter);
+            response.PagingInfo.TotalItemCount = await _IntegrationRepository.Count(filter);
 
             response.Status = ResponseStatus.Success;
             return response;
@@ -169,16 +173,16 @@ namespace Translation.Service
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
-            var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
-            if (integration.IsNotExist())
+            var Integration = await _IntegrationRepository.Select(x => x.Uid == request.IntegrationUid);
+            if (Integration.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(Integration));
                 return response;
             }
 
-            var revisions = await _integrationRepository.SelectRevisions(integration.Id);
+            var revisions = await _IntegrationRepository.SelectRevisions(Integration.Id);
 
-            for (int i = 0; i < revisions.Count; i++)
+            for (var i = 0; i < revisions.Count; i++)
             {
                 var revision = revisions[i];
 
@@ -190,7 +194,7 @@ namespace Translation.Service
                 revisionDto.RevisionedByUid = user.Uid;
                 revisionDto.RevisionedByName = user.Name;
 
-                revisionDto.Item = _integrationFactory.CreateDtoFromEntity(revision.Entity);
+                revisionDto.Item = _IntegrationFactory.CreateDtoFromEntity(revision.Entity);
 
                 response.Items.Add(revisionDto);
             }
@@ -210,47 +214,47 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
-            var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
-            if (integration.IsNotExist())
+            var Integration = await _IntegrationRepository.Select(x => x.Uid == request.IntegrationUid);
+            if (Integration.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(Integration));
                 return response;
             }
 
             var trimName = request.Name.Trim();
-            if (integration.Name == trimName && integration.Description == request.Description)
+            if (Integration.Name == trimName && Integration.Description == request.Description)
             {
-                response.Item = _integrationFactory.CreateDtoFromEntity(integration);
+                response.Item = _IntegrationFactory.CreateDtoFromEntity(Integration);
                 response.Status = ResponseStatus.Success;
                 return response;
             }
 
-            if (integration.OrganizationId != currentUser.Organization.Id)
+            if (Integration.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
             }
 
 
-            if (await _integrationRepository.Any(x => x.Name == trimName
-                                                      && x.OrganizationId == currentUser.Organization.Id
+            if (await _IntegrationRepository.Any(x => x.Name == trimName
+                                                      && x.OrganizationId == currentUser.OrganizationId
                                                       && x.Uid != request.IntegrationUid))
             {
                 response.SetInvalidBecauseMustBeUnique(nameof(Integration));
                 return response;
             }
 
-            var updatedEntity = _integrationFactory.CreateEntityFromRequest(request, integration);
-            var result = await _integrationRepository.Update(request.CurrentUserId, updatedEntity);
+            var updatedEntity = _IntegrationFactory.CreateEntityFromRequest(request, Integration);
+            var result = await _IntegrationRepository.Update(request.CurrentUserId, updatedEntity);
             if (result)
             {
-                response.Item = _integrationFactory.CreateDtoFromEntity(updatedEntity);
+                response.Item = _IntegrationFactory.CreateDtoFromEntity(updatedEntity);
                 response.Status = ResponseStatus.Success;
                 return response;
             }
@@ -270,33 +274,33 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
-            var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
-            if (integration.IsNotExist())
+            var Integration = await _IntegrationRepository.Select(x => x.Uid == request.IntegrationUid);
+            if (Integration.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(Integration));
                 return response;
             }
 
-            if (integration.OrganizationId != currentUser.Organization.Id)
+            if (Integration.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
             }
 
-            var integrationId = integration.Id;
-            if (await _integrationClientRepository.Any(x => x.IntegrationId == integrationId))
+            var IntegrationId = Integration.Id;
+            if (await _IntegrationClientRepository.Any(x => x.IntegrationId == IntegrationId))
             {
                 response.SetInvalidBecauseHasChildren(nameof(Integration));
                 return response;
             }
 
-            var result = await _integrationRepository.Delete(request.CurrentUserId, integration.Id);
+            var result = await _IntegrationRepository.Delete(request.CurrentUserId, Integration.Id);
             if (result)
             {
                 response.Status = ResponseStatus.Success;
@@ -318,30 +322,30 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
-            var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
-            if (integration.IsNotExist())
+            var Integration = await _IntegrationRepository.Select(x => x.Uid == request.IntegrationUid);
+            if (Integration.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(Integration));
                 return response;
             }
 
-            if (integration.OrganizationId != currentUser.Organization.Id)
+            if (Integration.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
             }
 
-            _integrationFactory.UpdateEntityForChangeActivation(integration);
-            var result = await _integrationRepository.Update(request.CurrentUserId, integration);
+            _IntegrationFactory.UpdateEntityForChangeActivation(Integration);
+            var result = await _IntegrationRepository.Update(request.CurrentUserId, Integration);
             if (result)
             {
-                response.Item = _integrationFactory.CreateDtoFromEntity(integration);
+                response.Item = _IntegrationFactory.CreateDtoFromEntity(Integration);
                 response.Status = ResponseStatus.Success;
                 return response;
             }
@@ -355,27 +359,27 @@ namespace Translation.Service
             var response = new IntegrationRestoreResponse();
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
-            var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
-            if (integration.IsNotExist())
+            var Integration = await _IntegrationRepository.Select(x => x.Uid == request.IntegrationUid);
+            if (Integration.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(Integration));
                 return response;
             }
 
-            var revisions = await _integrationRepository.SelectRevisions(integration.Id);
+            var revisions = await _IntegrationRepository.SelectRevisions(Integration.Id);
             if (revisions.All(x => x.Revision != request.Revision))
             {
                 response.SetFailedBecauseRevisionNotFound(nameof(Integration));
                 return response;
             }
 
-            var result = await _integrationRepository.RestoreRevision(request.CurrentUserId, integration.Id, request.Revision);
+            var result = await _IntegrationRepository.RestoreRevision(request.CurrentUserId, Integration.Id, request.Revision);
             if (result)
             {
                 response.Status = ResponseStatus.Success;
@@ -400,29 +404,29 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
-            var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
-            if (integration.IsNotExist())
+            var Integration = await _IntegrationRepository.Select(x => x.Uid == request.IntegrationUid);
+            if (Integration.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(Integration));
                 return response;
             }
 
-            if (integration.OrganizationId != currentUser.Organization.Id)
+            if (Integration.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
             }
 
-            var entity = _integrationClientFactory.CreateEntity(integration);
-            await _integrationClientRepository.Insert(request.CurrentUserId, entity);
+            var entity = _IntegrationClientFactory.CreateEntity(Integration);
+            await _IntegrationClientRepository.Insert(request.CurrentUserId, entity);
 
-            response.Item = _integrationClientFactory.CreateDtoFromEntity(entity);
+            response.Item = _IntegrationClientFactory.CreateDtoFromEntity(entity);
             response.Status = ResponseStatus.Success;
             return response;
         }
@@ -431,14 +435,14 @@ namespace Translation.Service
         {
             var response = new IntegrationClientReadResponse();
 
-            var integrationClient = await _integrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
-            if (integrationClient.IsNotExist())
+            var IntegrationClient = await _IntegrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
+            if (IntegrationClient.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(IntegrationClient));
                 return response;
             }
 
-            response.Item = _integrationClientFactory.CreateDtoFromEntity(integrationClient);
+            response.Item = _IntegrationClientFactory.CreateDtoFromEntity(IntegrationClient);
             response.Status = ResponseStatus.Success;
             return response;
         }
@@ -447,30 +451,30 @@ namespace Translation.Service
         {
             var response = new IntegrationClientReadListResponse();
 
-            var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
-            if (integration.IsNotExist())
+            var Integration = await _IntegrationRepository.Select(x => x.Uid == request.IntegrationUid);
+            if (Integration.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(Integration));
                 return response;
             }
 
-            var integrationId = integration.Id;
-            Expression<Func<IntegrationClient, bool>> filter = x => x.IntegrationId == integrationId;
+            var IntegrationId = Integration.Id;
+            Expression<Func<IntegrationClient, bool>> filter = x => x.IntegrationId == IntegrationId;
 
             if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.IntegrationId == integrationId && x.Name.Contains(request.PagingInfo.SearchTerm);
+                filter = x => x.IntegrationId == IntegrationId && x.Name.Contains(request.PagingInfo.SearchTerm);
             }
 
             List<IntegrationClient> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _integrationClientRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                entities = await _IntegrationClientRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
                                                                           new List<OrderByInfo<IntegrationClient>>() { new OrderByInfo<IntegrationClient>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _integrationClientRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                entities = await _IntegrationClientRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
                                                                          new List<OrderByInfo<IntegrationClient>>() { new OrderByInfo<IntegrationClient>(x => x.Id, request.PagingInfo.IsAscending) });
 
             }
@@ -480,7 +484,7 @@ namespace Translation.Service
                 for (var i = 0; i < entities.Count; i++)
                 {
                     var entity = entities[i];
-                    var dto = _integrationClientFactory.CreateDtoFromEntity(entity);
+                    var dto = _IntegrationClientFactory.CreateDtoFromEntity(entity);
                     response.Items.Add(dto);
                 }
             }
@@ -489,7 +493,7 @@ namespace Translation.Service
             response.PagingInfo.Take = request.PagingInfo.Take;
             response.PagingInfo.LastUid = request.PagingInfo.LastUid;
             response.PagingInfo.IsAscending = request.PagingInfo.IsAscending;
-            response.PagingInfo.TotalItemCount = await _integrationClientRepository.Count(filter);
+            response.PagingInfo.TotalItemCount = await _IntegrationClientRepository.Count(filter);
 
             response.Status = ResponseStatus.Success;
             return response;
@@ -506,43 +510,43 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
-            var integrationClient = await _integrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
-            if (integrationClient.IsNotExist())
+            var IntegrationClient = await _IntegrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
+            if (IntegrationClient.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(IntegrationClient));
                 return response;
             }
 
-            if (integrationClient.OrganizationId != currentUser.Organization.Id)
+            if (IntegrationClient.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
             }
 
-            var integration = await _integrationRepository.SelectById(integrationClient.IntegrationId);
-            if (integration.IsNotExist())
+            var Integration = await _IntegrationRepository.SelectById(IntegrationClient.IntegrationId);
+            if (Integration.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(Integration));
                 return response;
             }
 
-            if (!integration.IsActive
-                || !integrationClient.IsActive)
+            if (!Integration.IsActive
+                || !IntegrationClient.IsActive)
             {
                 response.SetInvalidBecauseNotActive(nameof(Integration));
                 return response;
             }
 
-            _integrationClientFactory.UpdateEntityForRefresh(integrationClient);
-            await _integrationClientRepository.Update(request.CurrentUserId, integrationClient);
+            _IntegrationClientFactory.UpdateEntityForRefresh(IntegrationClient);
+            await _IntegrationClientRepository.Update(request.CurrentUserId, IntegrationClient);
 
-            response.Item = _integrationClientFactory.CreateDtoFromEntity(integrationClient);
+            response.Item = _IntegrationClientFactory.CreateDtoFromEntity(IntegrationClient);
             response.Status = ResponseStatus.Success;
             return response;
         }
@@ -558,33 +562,33 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
-            var integrationClient = await _integrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
-            if (integrationClient.IsNotExist())
+            var IntegrationClient = await _IntegrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
+            if (IntegrationClient.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(IntegrationClient));
                 return response;
             }
 
-            if (integrationClient.OrganizationId != currentUser.Organization.Id)
+            if (IntegrationClient.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
             }
 
-            var integration = await _integrationRepository.SelectById(integrationClient.IntegrationId);
-            if (integration.IsNotExist())
+            var Integration = await _IntegrationRepository.SelectById(IntegrationClient.IntegrationId);
+            if (Integration.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(Integration));
                 return response;
             }
 
-            var result = await _integrationClientRepository.Delete(request.CurrentUserId, integrationClient.Id);
+            var result = await _IntegrationClientRepository.Delete(request.CurrentUserId, IntegrationClient.Id);
             if (result)
             {
                 response.Status = ResponseStatus.Success;
@@ -606,43 +610,43 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
-            var integrationClient = await _integrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
-            if (integrationClient.IsNotExist())
+            var IntegrationClient = await _IntegrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
+            if (IntegrationClient.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(IntegrationClient));
                 return response;
             }
 
-            if (integrationClient.OrganizationId != currentUser.Organization.Id)
+            if (IntegrationClient.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
             }
 
-            var integration = await _integrationRepository.SelectById(integrationClient.IntegrationId);
-            if (integration.IsNotExist())
+            var Integration = await _IntegrationRepository.SelectById(IntegrationClient.IntegrationId);
+            if (Integration.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(Integration));
                 return response;
             }
 
-            if (!integration.IsActive)
+            if (!Integration.IsActive)
             {
                 response.SetInvalidBecauseNotActive(nameof(Integration));
                 return response;
             }
 
-            _integrationClientFactory.UpdateEntityForChangeActivation(integrationClient);
-            var result = await _integrationClientRepository.Update(request.CurrentUserId, integrationClient);
+            _IntegrationClientFactory.UpdateEntityForChangeActivation(IntegrationClient);
+            var result = await _IntegrationClientRepository.Update(request.CurrentUserId, IntegrationClient);
             if (result)
             {
-                response.Item = _integrationClientFactory.CreateDtoFromEntity(integrationClient);
+                response.Item = _IntegrationClientFactory.CreateDtoFromEntity(IntegrationClient);
                 response.Status = ResponseStatus.Success;
                 return response;
             }
@@ -659,22 +663,22 @@ namespace Translation.Service
         {
             var response = new TokenCreateResponse();
 
-            var integrationClient = await _integrationClientRepository.Select(x => x.ClientId == request.ClientId && x.ClientSecret == request.ClientSecret);
-            if (integrationClient.IsNotExist())
+            var IntegrationClient = await _IntegrationClientRepository.Select(x => x.ClientId == request.ClientId && x.ClientSecret == request.ClientSecret);
+            if (IntegrationClient.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(IntegrationClient));
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == integrationClient.OrganizationId && !x.IsActive)
-                || await _integrationRepository.Any(x => x.Id == integrationClient.IntegrationId && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == IntegrationClient.OrganizationId && !x.IsActive)
+                || await _IntegrationRepository.Any(x => x.Id == IntegrationClient.IntegrationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(IntegrationClient));
                 return response;
             }
 
-            var token = _tokenFactory.CreateEntityFromRequest(request, integrationClient);
-            var id = await _tokenRepository.Insert(integrationClient.Id, token);
+            var token = _tokenFactory.CreateEntityFromRequest(request, IntegrationClient);
+            var id = await _tokenRepository.Insert(IntegrationClient.Id, token);
             if (id > 0)
             {
                 response.Item = _tokenFactory.CreateDtoFromEntity(token);
@@ -697,22 +701,22 @@ namespace Translation.Service
                 return response;
             }
 
-            var integrationClient = await _integrationClientRepository.Select(x => x.OrganizationId == currentUser.Organization.Id && x.IsActive);
-            if (integrationClient.IsNotExist())
+            var IntegrationClient = await _IntegrationClientRepository.Select(x => x.OrganizationId == currentUser.OrganizationId && x.IsActive);
+            if (IntegrationClient.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(IntegrationClient));
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == integrationClient.OrganizationId && !x.IsActive)
-                || await _integrationRepository.Any(x => x.Id == integrationClient.IntegrationId && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == IntegrationClient.OrganizationId && !x.IsActive)
+                || await _IntegrationRepository.Any(x => x.Id == IntegrationClient.IntegrationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Integration));
                 return response;
             }
 
-            var token = _tokenFactory.CreateEntity(integrationClient);
-            var id = await _tokenRepository.Insert(integrationClient.Id, token);
+            var token = _tokenFactory.CreateEntity(IntegrationClient);
+            var id = await _tokenRepository.Insert(IntegrationClient.Id, token);
             if (id > 0)
             {
                 response.Item = _tokenFactory.CreateDtoFromEntity(token);
@@ -735,14 +739,14 @@ namespace Translation.Service
                 return response;
             }
 
-            var integrationClient = await _integrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
-            if (integrationClient.IsNotExist())
+            var IntegrationClient = await _IntegrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
+            if (IntegrationClient.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(IntegrationClient));
                 return response;
             }
 
-            if (integrationClient.OrganizationId != currentUser.Organization.Id)
+            if (IntegrationClient.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
@@ -808,7 +812,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
             var now = DateTime.UtcNow;
-            var entities = await _tokenRepository.SelectMany(x => x.OrganizationId == currentUser.Organization.Id && x.ExpiresAt > now,
+            var entities = await _tokenRepository.SelectMany(x => x.OrganizationId == currentUser.OrganizationId && x.ExpiresAt > now,
                                                              request.PagingInfo.Skip, request.PagingInfo.Take, false,
                                                              new List<OrderByInfo<Token>>() { new OrderByInfo<Token>(x => x.Id, request.PagingInfo.IsAscending) });
 
@@ -834,7 +838,7 @@ namespace Translation.Service
 
             var now = DateTime.UtcNow;
             var entities = await _tokenRepository.SelectMany(x => x.IntegrationUid == request.IntegrationUid
-                                                                  && x.OrganizationId == currentUser.Organization.Id
+                                                                  && x.OrganizationId == currentUser.OrganizationId
                                                                   && x.ExpiresAt > now, request.PagingInfo.Skip, request.PagingInfo.Take, false,
                                                                   new List<OrderByInfo<Token>>() { new OrderByInfo<Token>(x => x.Id, request.PagingInfo.IsAscending) });
 
@@ -860,7 +864,7 @@ namespace Translation.Service
 
             var now = DateTime.UtcNow;
             var entities = await _tokenRepository.SelectMany(x => x.IntegrationClientUid == request.IntegrationClientUid
-                                                                       && x.OrganizationId == currentUser.Organization.Id
+                                                                       && x.OrganizationId == currentUser.OrganizationId
                                                                        && x.ExpiresAt > now, request.PagingInfo.Skip, request.PagingInfo.Take, false,
                                                                        new List<OrderByInfo<Token>>() { new OrderByInfo<Token>(x => x.Id, request.PagingInfo.IsAscending) });
             if (entities != null)
@@ -883,7 +887,7 @@ namespace Translation.Service
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
-            var entities = await _tokenRequestLogRepository.SelectMany(x => x.OrganizationId == currentUser.Organization.Id,
+            var entities = await _tokenRequestLogRepository.SelectMany(x => x.OrganizationId == currentUser.OrganizationId,
                                                                        request.PagingInfo.Skip, request.PagingInfo.Take, false,
                                                                        new List<OrderByInfo<TokenRequestLog>>() { new OrderByInfo<TokenRequestLog>(x => x.Id, request.PagingInfo.IsAscending) });
             if (entities != null)
@@ -904,8 +908,8 @@ namespace Translation.Service
         {
             var response = new IntegrationTokenRequestLogReadListResponse();
 
-            var integration = await _integrationRepository.Select(x => x.Uid == request.IntegrationUid);
-            if (integration.IsNotExist())
+            var Integration = await _IntegrationRepository.Select(x => x.Uid == request.IntegrationUid);
+            if (Integration.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(Integration));
                 return response;

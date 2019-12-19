@@ -113,7 +113,7 @@ namespace Translation.Service
 
             var revisions = await _languageRepository.SelectRevisions(language.Id);
 
-            for (int i = 0; i < revisions.Count; i++)
+            for (var i = 0; i < revisions.Count; i++)
             {
                 var revision = revisions[i];
 
