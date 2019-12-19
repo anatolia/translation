@@ -68,6 +68,20 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             Assert.AreEqual(attributes.Length, 1);
         }
 
+        [TestCase(DemandPasswordResetDoneAction)]
+        [TestCase(ChangePasswordDoneAction)]
+        [TestCase(InviteDoneAction)]
+        [TestCase(AcceptInviteDoneAction)]
+        public void Methods_Returning_ViewResult_Has_Model_With_Title(string methodName)
+        {
+            var methodInfo = SystemUnderTest.GetType().GetMethod(methodName);
+            var result = (ViewResult)methodInfo.Invoke(SystemUnderTest, null);
+
+            result.ShouldSatisfyAllConditions(() => result.ShouldNotBeNull(),
+                () => result.ViewName.ShouldBeNullOrEmpty(),
+                () => result.Model.ShouldNotBeNull());
+        }
+
         [Test]
         public void Controller_Derived_From_BaseController()
         {
@@ -75,6 +89,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             type.BaseType.Name.StartsWith("BaseController").ShouldBeTrue();
         }
 
+        [Ignore("User.Identity.IsAuthenticated sounds true")]
         [Test]
         public void SignUp_GET()
         {

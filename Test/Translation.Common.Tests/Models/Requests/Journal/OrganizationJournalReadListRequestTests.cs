@@ -15,24 +15,9 @@ namespace Translation.Common.Tests.Models.Requests.Journal
         [Test]
         public void ProjectReadRequest_Constructor()
         {
-            var request = GetOrganizationJournalReadListRequest(CurrentUserId, UidOne);
+            var request = GetOrganizationJournalReadListRequest(CurrentUserId);
 
             request.CurrentUserId.ShouldBe(CurrentUserId);
-            request.OrganizationUid.ShouldBe(UidOne);
-        }
-
-        public static IEnumerable ArgumentTestCases
-        {
-            get
-            {
-                yield return new TestCaseData(CurrentUserId, EmptyUid);
-            }
-        }
-
-        [TestCaseSource(nameof(ArgumentTestCases))]
-        public void ProjectReadRequest_Argument_Validations(long currentUserId, Guid organizationUid)
-        {
-            Assert.Throws<ArgumentException>(() => { new OrganizationJournalReadListRequest(currentUserId, organizationUid); });
         }
     }
 }

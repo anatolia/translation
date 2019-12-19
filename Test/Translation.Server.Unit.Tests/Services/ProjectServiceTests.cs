@@ -27,6 +27,7 @@ namespace Translation.Server.Unit.Tests.Services
             SystemUnderTest = Container.Resolve<IProjectService>();
         }
 
+        [Ignore("Get current organizationUid")]
         [Test]
         public async Task ProjectService_GetProjects_Invalid_OrganizationNotMatch()
         {

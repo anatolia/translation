@@ -17,7 +17,6 @@ namespace Translation.Common.Tests.Models.Requests.Integration
             var request = GetIntegrationReadListRequest(CurrentUserId,OrganizationOneUid);
 
             request.CurrentUserId.ShouldBe(CurrentUserId);
-            request.OrganizationUid.ShouldBe(OrganizationOneUid);
 
         }
 
@@ -30,9 +29,9 @@ namespace Translation.Common.Tests.Models.Requests.Integration
         }
 
         [TestCaseSource(nameof(ArgumentTestCases))]
-        public void IntegrationReadListRequest_Argument_Validations(long currentUserId, Guid organizationUid)
+        public void IntegrationReadListRequest_Argument_Validations(long currentUserId)
         {
-            Assert.Throws<ArgumentException>(() => { new IntegrationReadListRequest(currentUserId, organizationUid); });
+            Assert.Throws<ArgumentException>(() => { new IntegrationReadListRequest(currentUserId); });
         }
     }
 }

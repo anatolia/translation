@@ -172,6 +172,12 @@ namespace Translation.Server.Unit.Tests.RepositorySetupHelpers
                       .ReturnsAsync(GetOrganizationOneUserOne());
         }
 
+        public static void Setup_Select_Returns_OrganizationOneAdminUserOne(this Mock<IUserRepository> repository)
+        {
+            repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false))
+                      .ReturnsAsync(GetOrganizationOneAdminUserOne());
+        }
+
         public static void Setup_Select_Returns_OrganizationOneUserOneInvitedAtOneWeekBefore(this Mock<IUserRepository> repository)
         {
             repository.Setup(x => x.Select(It.IsAny<Expression<Func<User, bool>>>(), false))

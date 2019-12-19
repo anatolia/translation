@@ -491,6 +491,7 @@ namespace Translation.Server.Unit.Tests.Services
             MockLabelRepository.Verify_SelectMany();
         }
 
+        [Ignore("Get organization Uid")]
         [Test]
         public async Task OrganizationService_GetPendingTranslations_Invalid_OrganizationNotMatch()
         {
