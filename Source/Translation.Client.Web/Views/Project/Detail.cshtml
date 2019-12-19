@@ -29,8 +29,12 @@
 <div class="detail-checkbox">
     <partial name="Components/_Checkbox" model="@Model.IsActiveInput" />
 </div>
-<button type="submit" data-translation="download_labels_button">download_labels_button</button>
+<form action="/Project/DownloadLabels" method="post">
+    <input type="hidden" id="id" name="id" value=@Model.ProjectUid />
+    <button type="submit" data-translation="download_labels_button">download_labels_button</button>
 
+    @Html.AntiForgeryToken()
+</form>
 <div class="bottom-links">
     <a href="/Project/PendingTranslations/@Model.ProjectUid" data-translation="pending_translations_link">pending_translations_link</a>
     <a href="/Project/Edit/@Model.ProjectUid" data-translation="edit_project_link">edit_project_link</a>
@@ -54,10 +58,6 @@
             data-translation="change_activation_button">
         change_activation_button
     </button>
-    <form action="/Project/DownloadLabels" method="post">
-        <input type="hidden" id="id" name="id" value=@Model.ProjectUid />
-        @Html.AntiForgeryToken()
-    </form>
 </div>
 
 <div class="tab-header">
