@@ -19,19 +19,5 @@ namespace Translation.Common.Tests.Models.Requests.Integration
             request.CurrentUserId.ShouldBe(CurrentUserId);
 
         }
-
-        public static IEnumerable ArgumentTestCases
-        {
-            get
-            {
-                yield return new TestCaseData(CurrentUserId, EmptyUid);
-            }
-        }
-
-        [TestCaseSource(nameof(ArgumentTestCases))]
-        public void IntegrationReadListRequest_Argument_Validations(long currentUserId)
-        {
-            Assert.Throws<ArgumentException>(() => { new IntegrationReadListRequest(currentUserId); });
-        }
     }
 }
