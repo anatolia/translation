@@ -1563,8 +1563,8 @@ namespace Translation.Server.Unit.Tests.Services
         {
             // arrange
             var request = GetUserLoginLogReadListRequestForSelectAfter();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneAdminUserOne();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockUserLoginLogRepository.Setup_SelectAfter_Returns_UserLoginLogs();
             MockUserLoginLogRepository.Setup_Count_Returns_Ten();
 
@@ -1579,7 +1579,6 @@ namespace Translation.Server.Unit.Tests.Services
             MockUserRepository.Verify_SelectById();
             MockUserLoginLogRepository.Verify_SelectAfter();
             MockUserLoginLogRepository.Verify_Count();
-
         }
 
         [Test]
@@ -1587,6 +1586,8 @@ namespace Translation.Server.Unit.Tests.Services
         {
             // arrange
             var request = GetUserLoginLogReadListRequestForSelectMany();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneAdminUserOne();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockUserLoginLogRepository.Setup_SelectMany_Returns_UserLoginLogs();
             MockUserRepository.Setup_Count_Returns_Ten();
 
@@ -1597,9 +1598,10 @@ namespace Translation.Server.Unit.Tests.Services
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<UserLoginLogReadListResponse>(result);
             AssertPagingInfoForSelectMany(request.PagingInfo, Ten);
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_SelectById();
             MockUserLoginLogRepository.Verify_SelectMany();
             MockUserLoginLogRepository.Verify_Count();
-
         }
 
         [Test]

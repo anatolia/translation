@@ -419,8 +419,9 @@ namespace Translation.Service
         }
 
         public async Task<List<LabelTranslation>> AddedLabelAddLabelTranslation(Project project,
-            List<LabelListInfo> labels, List<Label> labelsToAdd,
-            LabelCreateListResponse response)
+                                                                                List<LabelListInfo> labels, 
+                                                                                List<Label> labelsToAdd,
+                                                                                LabelCreateListResponse response)
         {
             var languages = await _languageRepository.SelectAll(null, false);
 
@@ -470,9 +471,10 @@ namespace Translation.Service
             return translationsToInsert;
         }
 
-        public async Task<Tuple<List<LabelTranslation>, List<LabelTranslation>>> AddedLabelUpdateAndAddLabelTranslation(
-            Project project, List<LabelListInfo> labels, List<Label> labelsToAdd,
-            LabelCreateListResponse response)
+        public async Task<Tuple<List<LabelTranslation>, List<LabelTranslation>>> AddedLabelUpdateAndAddLabelTranslation(Project project,
+                                                                                                                        List<LabelListInfo> labels,
+                                                                                                                        List<Label> labelsToAdd,
+                                                                                                                        LabelCreateListResponse response)
         {
             var languages = await _languageRepository.SelectAll(null, false);
 
@@ -786,6 +788,14 @@ namespace Translation.Service
             var entities = await _labelRepository.SelectAll(x => x.ProjectId == project.Id && x.IsActive, false);
             if (translations != null)
             {
+
+                if (entities.Count<=0)
+                {
+                   response.SetInvalid();
+                   response.ErrorMessages.Add("no_labels_to_download");
+                   return response;
+                }
+
                 for (var i = 0; i < entities.Count; i++)
                 {
                     var entity = entities[i];
