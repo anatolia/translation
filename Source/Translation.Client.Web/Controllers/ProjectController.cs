@@ -46,7 +46,7 @@ namespace Translation.Client.Web.Controllers
             var organizationUid = id;
             if (organizationUid.IsEmptyGuid())
             {
-                organizationUid = CurrentUser.Organization.Uid;
+                organizationUid = CurrentUser.OrganizationUid;
             }
 
             var request = new OrganizationReadRequest(CurrentUser.Id, organizationUid);

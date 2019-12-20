@@ -199,7 +199,7 @@ namespace Translation.Client.Web.Controllers
         public IActionResult PendingTranslations()
         {
             var model = new OrganizationPendingTranslationReadListModel();
-            model.OrganizationUid = CurrentUser.Organization.Uid;
+            model.OrganizationUid = CurrentUser.OrganizationUid;
             model.OrganizationName = CurrentUser.Organization.Name;
 
             return View(model);
