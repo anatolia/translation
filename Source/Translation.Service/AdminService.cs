@@ -495,8 +495,7 @@ namespace Translation.Service
                 return response;
             }
 
-            user.IsSuperAdmin = false;
-            user.IsAdmin = false;
+            user = _userFactory.CreateEntityFromRequest(request, user);
             var result = await _userRepository.Update(request.CurrentUserId, user);
             if (result)
             {
@@ -541,7 +540,7 @@ namespace Translation.Service
                 return response;
             }
 
-            user.IsAdmin = true;
+            user = _userFactory.CreateEntityFromRequest(request, user);
             var result = await _userRepository.Update(request.CurrentUserId, user);
             if (result)
             {
