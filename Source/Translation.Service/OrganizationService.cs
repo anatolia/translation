@@ -740,7 +740,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalidBecauseNotAdmin(nameof(CurrentUser));
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 

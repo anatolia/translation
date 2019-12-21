@@ -766,7 +766,7 @@ namespace Translation.Server.Unit.Tests.Services
         }
 
         [Test]
-        public async Task IntegrationService_CreateIntegrationClient__Invalid_CurrentUserNotAdmin()
+        public async Task IntegrationService_CreateIntegrationClient_Invalid_CurrentUserNotAdmin()
         {
             //arrange
             var request = GetIntegrationClientCreateRequest();

@@ -250,7 +250,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.EditOrganization(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<OrganizationEditResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -933,7 +933,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.ChangeActivationForUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<UserChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -1027,7 +1027,7 @@ namespace Translation.Server.Unit.Tests.Services
             var request = GetNotDifferentUserEditRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
-            
+
             // act
             var result = await SystemUnderTest.EditUser(request);
 
@@ -1070,7 +1070,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.EditUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<UserEditResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -1184,7 +1184,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.DeleteUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<UserDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -1260,7 +1260,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.InviteUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<UserInviteResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
