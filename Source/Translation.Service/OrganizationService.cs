@@ -43,9 +43,9 @@ namespace Translation.Service
         private readonly OrganizationFactory _organizationFactory;
         private readonly IUserLoginLogRepository _userLoginLogRepository;
         private readonly UserLoginLogFactory _userLoginLogFactory;
-        private readonly IntegrationFactory _IntegrationFactory;
+        private readonly IntegrationFactory _integrationFactory;
         private readonly ILabelRepository _labelRepository;
-        private readonly IntegrationClientFactory _IntegrationClientFactory;
+        private readonly IntegrationClientFactory _integrationClientFactory;
         private readonly ProjectFactory _projectFactory;
         private readonly ILanguageRepository _languageRepository;
 
@@ -57,9 +57,9 @@ namespace Translation.Service
                                    LabelFactory labelFactory,
                                    OrganizationFactory organizationFactory,
                                    IUserLoginLogRepository userLoginLogRepository, UserLoginLogFactory userLoginLogFactory,
-                                   IntegrationFactory IntegrationFactory,
+                                   IntegrationFactory integrationFactory,
                                    ILabelRepository labelRepository,
-                                   IntegrationClientFactory IntegrationClientFactory,
+                                   IntegrationClientFactory integrationClientFactory,
                                    ProjectFactory projectFactory,
                                    ILanguageRepository languageRepository)
         {
@@ -75,9 +75,9 @@ namespace Translation.Service
             _organizationFactory = organizationFactory;
             _userLoginLogRepository = userLoginLogRepository;
             _userLoginLogFactory = userLoginLogFactory;
-            _IntegrationFactory = IntegrationFactory;
+            _integrationFactory = integrationFactory;
             _labelRepository = labelRepository;
-            _IntegrationClientFactory = IntegrationClientFactory;
+            _integrationClientFactory = integrationClientFactory;
             _projectFactory = projectFactory;
             _languageRepository = languageRepository;
         }
@@ -114,8 +114,8 @@ namespace Translation.Service
             user.LanguageIconUrl = language.IconUrl;
 
             var loginLog = _userLoginLogFactory.CreateEntityFromRequest(request, user);
-            var Integration = _IntegrationFactory.CreateDefault(organization);
-            var IntegrationClient = _IntegrationClientFactory.CreateEntity(Integration);
+            var Integration = _integrationFactory.CreateDefault(organization);
+            var IntegrationClient = _integrationClientFactory.CreateEntity(Integration);
             var project = _projectFactory.CreateDefault(organization, language);
 
             var (uowResult,
@@ -233,7 +233,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalidBecauseNotAdmin(nameof(CurrentUser));
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
@@ -319,7 +319,7 @@ namespace Translation.Service
             var response = new OrganizationPendingTranslationReadListResponse();
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            
+
             var organization = await _organizationRepository.Select(x => x.Uid == currentUser.OrganizationUid);
             if (organization.IsNotExist())
             {
@@ -609,7 +609,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalidBecauseNotAdmin(nameof(CurrentUser));
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
@@ -649,7 +649,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
@@ -703,7 +703,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
@@ -740,7 +740,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(CurrentUser));
                 return response;
             }
 
