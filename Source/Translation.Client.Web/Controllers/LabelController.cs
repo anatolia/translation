@@ -378,25 +378,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "label_name", "is_active", "created_at", "");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var revisionItem = response.Items[i];
-                var item = revisionItem.Item;
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{revisionItem.Revision}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(revisionItem.RevisionedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Label/Restore/", "/Label/Detail")}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
+            var result = DataResultHelper.GetLabelRevisionsData(response.Items);
 
             return Json(result);
         }

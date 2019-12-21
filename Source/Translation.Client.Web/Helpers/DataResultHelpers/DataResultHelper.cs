@@ -305,6 +305,31 @@ namespace Translation.Client.Web.Helpers.DataResultHelpers
             return result;
         }
 
+        public static DataResult GetLabelRevisionsData(List<RevisionDto<LabelDto>> items)
+        {
+            var result = new DataResult();
+            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "label_name", "is_active", "created_at", "");
+
+            for (var i = 0; i < items.Count; i++)
+            {
+                var revisionItem = items[i];
+                var item = revisionItem.Item;
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.Revision}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.RevisionedAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.CurrentUICulture)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.CreatedAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.CurrentUICulture)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Label/Restore/", "/Label/Detail")}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            return result;
+        }
+
         public static DataResult GetLabelTranslationListData(List<LabelTranslationDto> items, bool isSuperAdmin)
         {
             var result = new DataResult();
