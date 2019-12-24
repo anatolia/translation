@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+
 using StandardUtils.Helpers;
 using StandardUtils.Models.DataTransferObjects;
+
 using Translation.Client.Web.Models.Base;
-using Translation.Common.Models.Base;
 using Translation.Common.Models.DataTransferObjects;
 
 namespace Translation.Client.Web.Helpers.DataResultHelpers
@@ -14,14 +15,15 @@ namespace Translation.Client.Web.Helpers.DataResultHelpers
         public static DataResult GetUserLoginLogDataResult(List<UserLoginLogDto> items)
         {
             var result = new DataResult();
-            result.AddHeaders("user", "ip", "country", "city", "browser", "browser_version", "platform", "platform_version", "created_at");
+            result.AddHeaders("organization", "user", "ip", "country", "city", "browser", "browser_version", "platform", "platform_version", "created_at");
 
             for (var i = 0; i < items.Count; i++)
             {
                 var item = items[i];
                 var stringBuilder = new StringBuilder();
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.UserUid}", item.UserName)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Organization/Detail/{item.OrganizationUid}", item.OrganizationName)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.Uid}", item.UserName)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Ip}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.Country}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.City}{DataResult.SEPARATOR}");
@@ -50,7 +52,7 @@ namespace Translation.Client.Web.Helpers.DataResultHelpers
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.Uid}", item.FirstName)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareChangeActivationButton("change_activation", "/Admin/ChangeActivation/")}");
+                stringBuilder.Append($"{result.PrepareChangeActivationButton("/Admin/ChangeActivation/")}");
                 stringBuilder.Append($"{result.PrepareButton("degrade_to_user", "handleDegradeToUser(this, \"/Admin/DegradeToUser/\")", "btn-secondary", "are_you_sure_you_want_to_degrade_to_user_title", "are_you_sure_you_want_to_degrade_to_user_content")}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
@@ -62,17 +64,20 @@ namespace Translation.Client.Web.Helpers.DataResultHelpers
         public static DataResult GetOrganizationListDataResult(List<OrganizationDto> items)
         {
             var result = new DataResult();
-            result.AddHeaders("organization_name", "user_count", "is_active", "");
+            result.AddHeaders("organization_name", "user_count", "project_count", "label_count", "label_translation_count", "is_active", "");
 
             for (var i = 0; i < items.Count; i++)
             {
                 var item = items[i];
                 var stringBuilder = new StringBuilder();
                 stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Organization/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Organization/Detail/{item.Uid}", item.Name, true)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.UserCount}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.ProjectCount}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.LabelCount}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareChangeActivationButton("change_activation", "/Admin/OrganizationChangeActivation/")}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareChangeActivationButton("/Admin/OrganizationChangeActivation/")}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
             }
@@ -93,7 +98,7 @@ namespace Translation.Client.Web.Helpers.DataResultHelpers
                 stringBuilder.Append($"{result.PrepareLink($"/Organization/Detail/{item.OrganizationUid}", item.OrganizationName)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
                 stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareChangeActivationButton("change_activation", "/Admin/ChangeActivation/")}");
+                stringBuilder.Append($"{result.PrepareChangeActivationButton("/Admin/ChangeActivation/")}");
                 stringBuilder.Append($"{result.PrepareButton("upgrade_to_admin", "handleUpgradeToAdmin(this, \"/Admin/UserUpgradeToAdmin/\")", "btn-secondary", "are_you_sure_you_want_to_upgrade_to_admin_title", "are_you_sure_you_want_to_upgrade_to_admin_content")}{DataResult.SEPARATOR}");
 
                 result.Data.Add(stringBuilder.ToString());
@@ -164,7 +169,7 @@ namespace Translation.Client.Web.Helpers.DataResultHelpers
             return result;
         }
 
-        public static DataResult GetTokenRequestLogListData(List<TokenRequestLogDto> items)
+        public static DataResult GetTokenRequestLogListDataResult(List<TokenRequestLogDto> items)
         {
             var result = new DataResult();
             result.AddHeaders("organization_name", "user_name", "ip", "country", "city", "http_method", "response_code", "created_at");
@@ -189,7 +194,7 @@ namespace Translation.Client.Web.Helpers.DataResultHelpers
             return result;
         }
 
-        public static DataResult GetOrganizationTokenRequestLogListData(List<TokenRequestLogDto> items)
+        public static DataResult GetOrganizationTokenRequestLogListDataResult(List<TokenRequestLogDto> items)
         {
             var result = new DataResult();
             result.AddHeaders("integration", "integration_client", "ip", "country", "city", "http_method", "response_code", "created_at");
@@ -214,7 +219,7 @@ namespace Translation.Client.Web.Helpers.DataResultHelpers
             return result;
         }
 
-        public static DataResult GetSendEmailLogListData(List<SendEmailLogDto> items)
+        public static DataResult GetSendEmailLogListDataResult(List<SendEmailLogDto> items)
         {
             var result = new DataResult();
             result.AddHeaders("organization_name", "mail_uid", "send_to", "subject", "send_at", "is_opened");
@@ -237,7 +242,7 @@ namespace Translation.Client.Web.Helpers.DataResultHelpers
             return result;
         }
 
-        public static DataResult GetIntegrationListData(List<IntegrationDto> items)
+        public static DataResult GetIntegrationListDataResult(List<IntegrationDto> items)
         {
             var result = new DataResult();
             result.AddHeaders("integration_name", "description", "is_active", "created_at");
@@ -258,7 +263,29 @@ namespace Translation.Client.Web.Helpers.DataResultHelpers
             return result;
         }
 
-        public static DataResult GetIntegrationClientData(List<IntegrationClientDto> items)
+        public static DataResult GetActiveTokensDataResult(List<TokenDto> items)
+        {
+            var result = new DataResult();
+            result.AddHeaders("integration_client_uid", "access_token", "ip", "created_at", "expires_at", "");
+
+            for (var i = 0; i < items.Count; i++)
+            {
+                var item = items[i];
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IntegrationClientUid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.AccessToken}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IP}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.ExpiresAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.CurrentUICulture)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.CreatedAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.CurrentUICulture)}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            return result;
+        }
+
+        public static DataResult GetIntegrationClientDataResult(List<IntegrationClientDto> items)
         {
             var result = new DataResult();
             result.AddHeaders("client_id", "client_secret", "is_active", "");
@@ -283,7 +310,7 @@ namespace Translation.Client.Web.Helpers.DataResultHelpers
             return result;
         }
 
-        public static DataResult GetProjectListData(List<ProjectDto> items)
+        public static DataResult GetProjectListDataResult(List<ProjectDto> items)
         {
             var result = new DataResult();
             result.AddHeaders("project_name", "url", "label_count", "is_active", "created_at");
@@ -305,7 +332,7 @@ namespace Translation.Client.Web.Helpers.DataResultHelpers
             return result;
         }
 
-        public static DataResult GetLabelRevisionsData(List<RevisionDto<LabelDto>> items)
+        public static DataResult GetLabelRevisionsDataResult(List<RevisionDto<LabelDto>> items)
         {
             var result = new DataResult();
             result.AddHeaders("revision", "revisioned_by", "revisioned_at", "label_name", "is_active", "created_at", "");
@@ -330,7 +357,32 @@ namespace Translation.Client.Web.Helpers.DataResultHelpers
             return result;
         }
 
-        public static DataResult GetLabelTranslationListData(List<LabelTranslationDto> items, bool isSuperAdmin)
+        public static DataResult GetIntegrationRevisionsDataResult(List<RevisionDto<IntegrationDto>> items)
+        {
+            var result = new DataResult();
+            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "integration_name", "is_active", "created_at", "");
+
+            for (var i = 0; i < items.Count; i++)
+            {
+                var revisionItem = items[i];
+                var item = revisionItem.Item;
+                var stringBuilder = new StringBuilder();
+                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.Revision}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{revisionItem.RevisionedAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.CurrentUICulture)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareLink($"/Integration/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{item.CreatedAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.CurrentUICulture)}{DataResult.SEPARATOR}");
+                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Integration/Restore/", "/Integration/Detail")}{DataResult.SEPARATOR}");
+
+                result.Data.Add(stringBuilder.ToString());
+            }
+
+            return result;
+        }
+
+        public static DataResult GetLabelTranslationListDataResult(List<LabelTranslationDto> items, bool isSuperAdmin)
         {
             var result = new DataResult();
             result.AddHeaders("language", "translation", "");
@@ -360,7 +412,7 @@ namespace Translation.Client.Web.Helpers.DataResultHelpers
             return result;
         }
 
-        public static DataResult GetLabelTranslationRevisionsData(List<RevisionDto<LabelTranslationDto>> items)
+        public static DataResult GetLabelTranslationRevisionsDataResult(List<RevisionDto<LabelTranslationDto>> items)
         {
             var result = new DataResult();
             result.AddHeaders("revision", "revisioned_by", "revisioned_at", "label_translation", "created_at", "");
@@ -385,7 +437,7 @@ namespace Translation.Client.Web.Helpers.DataResultHelpers
             return result;
         }
 
-        public static DataResult GetLabelTranslationRevisionsData(List<LabelDto> items)
+        public static DataResult GetLabelTranslationRevisionsDataResult(List<LabelDto> items)
         {
             var result = new DataResult();
             result.AddHeaders("label_key", "label_translation_count", "description", "is_active");

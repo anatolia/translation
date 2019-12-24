@@ -378,7 +378,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = DataResultHelper.GetLabelRevisionsData(response.Items);
+            var result = DataResultHelper.GetLabelRevisionsDataResult(response.Items);
 
             return Json(result);
         }
@@ -807,7 +807,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = DataResultHelper.GetLabelTranslationListData(response.Items,CurrentUser.IsSuperAdmin);
+            var result = DataResultHelper.GetLabelTranslationListDataResult(response.Items,CurrentUser.IsSuperAdmin);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -1002,7 +1002,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = DataResultHelper.GetLabelTranslationRevisionsData(response.Items);
+            var result = DataResultHelper.GetLabelTranslationRevisionsDataResult(response.Items);
             return Json(result);
         }
 

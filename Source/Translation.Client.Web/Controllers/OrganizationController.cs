@@ -217,7 +217,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = DataResultHelper.GetLabelTranslationRevisionsData(response.Items);
+            var result = DataResultHelper.GetLabelTranslationRevisionsDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -281,7 +281,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = DataResultHelper.GetIntegrationListData(response.Items);
+            var result = DataResultHelper.GetIntegrationListDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -300,7 +300,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = DataResultHelper.GetProjectListData(response.Items);
+            var result = DataResultHelper.GetProjectListDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -329,7 +329,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = DataResultHelper.GetTokenRequestLogListData(response.Items);
+            var result = DataResultHelper.GetTokenRequestLogListDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
