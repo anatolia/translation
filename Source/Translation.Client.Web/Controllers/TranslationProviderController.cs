@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
+
 using StandardUtils.Helpers;
 using StandardUtils.Models.Shared;
+
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
 using Translation.Client.Web.Helpers.DataResultHelpers;
@@ -11,10 +13,8 @@ using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.TranslationProvider;
 using Translation.Common.Contracts;
-
 using Translation.Common.Models.Requests.Admin;
 using Translation.Common.Models.Requests.TranslationProvider;
-using Translation.Common.Models.Shared;
 
 namespace Translation.Client.Web.Controllers
 {
