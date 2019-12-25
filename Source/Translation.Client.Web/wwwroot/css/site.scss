@@ -48,6 +48,7 @@ main {
         h1 {
             padding: 15px 10px;
             margin-bottom: 40px;
+            text-transform: capitalize;
             
             animation-name: moveInDown;
             animation-duration: 1s;
@@ -118,6 +119,10 @@ main {
     span, label, h1, a, ul {
         background-color: white;
         margin: 5px 0px 0px 0px;
+    }
+
+    h1 {
+        text-transform: capitalize;
     }
 
     img {
@@ -266,6 +271,7 @@ footer {
 .tab-header button.active {
     background-color: $color-secondary;
     color: white;
+    height: 100%;
 }
 
 /* Style the tab content */
@@ -406,6 +412,7 @@ input {
 .bottom-links {
     background-color: white;
     display: inline-block;
+    margin-top: 15px;
 
     a {
         display: inline-block;
@@ -486,6 +493,29 @@ button[type=submit] {
 
         background-color: $color-primary;
     }
+}
+
+.btn-admin {
+    background-color: $color-primary;
+    color: #fff;
+    padding: 7px;
+    display: inline-block;
+    text-decoration: none;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    min-width: 164px;
+    text-align: center;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0 ,0 , 0, .2);
+    }
+
+    &:active {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 10px rgba(0 ,0 , 0, .2);
+    }
+
 }
 
 .show {
