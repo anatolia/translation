@@ -11,6 +11,7 @@ using StandardUtils.Models.Shared;
 
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
+using Translation.Client.Web.Helpers.DataResultHelpers;
 using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.User;
@@ -25,9 +26,9 @@ namespace Translation.Client.Web.Controllers
     {
         private readonly UserMapper _userMapper;
 
-        public UserController(IOrganizationService organizationService, 
-                              IJournalService journalService, 
-                              ILanguageService languageService, 
+        public UserController(IOrganizationService organizationService,
+                              IJournalService journalService,
+                              ILanguageService languageService,
                               ITranslationProviderService translationProviderService,
                               UserMapper userMapper) : base(organizationService, journalService, languageService, translationProviderService)
         {
@@ -504,22 +505,9 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("message", "created_at");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Message}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetUserJournalListDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -622,6 +610,6 @@ namespace Translation.Client.Web.Controllers
             return Json(model);
         }
 
-      
+
     }
 }

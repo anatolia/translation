@@ -83,6 +83,20 @@ namespace Translation.Client.Web.Models.Base
         {
             return PrepareButton(name, $"handleChangeActivationRow(this, \"{postUrl}\")", "btn-secondary", confirmTitle, confirmContent);
         }
+        
+        public string PrepareUpgradeToAdminButton(string postUrl, string name = "upgrade_to_admin", 
+                                                    string confirmTitle = "are_you_sure_you_want_to_upgrade_to_admin_title", 
+                                                    string confirmContent = "are_you_sure_you_want_to_upgrade_to_admin_content")
+        {
+            return PrepareButton(name, $"handleUpgradeToAdmin(this, \"{postUrl}\")", "btn-secondary", confirmTitle, confirmContent);
+        }
+  
+        public string PrepareDegradeToUserButton(string postUrl, string name = "degrade_to_user", 
+                                                    string confirmTitle = "are_you_sure_you_want_to_degrade_to_user_title", 
+                                                    string confirmContent = "are_you_sure_you_want_to_degrade_to_user_content")
+        {
+            return PrepareButton(name, $"handleDegradeToUser(this, \"{postUrl}\")", "btn-secondary", confirmTitle, confirmContent);
+        }
 
         public string PrepareChangeAllActivationButton(string postUrl, string name = "change_all_activation",
             string confirmTitle = "are_you_sure_you_want_to_change_activation_title",

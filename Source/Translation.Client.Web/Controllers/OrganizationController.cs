@@ -329,7 +329,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = DataResultHelper.GetTokenRequestLogListDataResult(response.Items);
+            var result = DataResultHelper.GetOrganizationTokenRequestLogListDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
