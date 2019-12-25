@@ -658,27 +658,39 @@ namespace Translation.Service
         #endregion
 
         #region Token
-
         public async Task<TokenCreateResponse> CreateToken(TokenCreateRequest request)
         {
             var response = new TokenCreateResponse();
 
-            var IntegrationClient = await _integrationClientRepository.Select(x => x.ClientId == request.ClientId && x.ClientSecret == request.ClientSecret);
-            if (IntegrationClient.IsNotExist())
+            var integrationClient = await _integrationClientRepository.Select(x => x.ClientId == request.ClientId && x.ClientSecret == request.ClientSecret);
+            if (integrationClient.IsNotExist())
             {
-                response.SetFailedBecauseNotFound(nameof(IntegrationClient));
+                response.SetFailedBecauseNotFound(nameof(integrationClient));
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == IntegrationClient.OrganizationId && !x.IsActive)
-                || await _integrationRepository.Any(x => x.Id == IntegrationClient.IntegrationId && !x.IsActive))
+            var organizationId = integrationClient.OrganizationId;
+            if (await _organizationRepository.Any(x => x.Id == organizationId && !x.IsActive))
+            {
+                response.SetInvalidBecauseNotActive(nameof(Organization));
+                return response;
+            }
+
+            var integrationId = integrationClient.IntegrationId;
+            if (await _integrationRepository.Any(x => x.Id == integrationId && !x.IsActive))
+            {
+                response.SetInvalidBecauseNotActive(nameof(Integration));
+                return response;
+            }
+
+            if (!integrationClient.IsActive)
             {
                 response.SetInvalidBecauseNotActive(nameof(IntegrationClient));
                 return response;
             }
 
-            var token = _tokenFactory.CreateEntityFromRequest(request, IntegrationClient);
-            var id = await _tokenRepository.Insert(IntegrationClient.Id, token);
+            var token = _tokenFactory.CreateEntityFromRequest(request, integrationClient);
+            var id = await _tokenRepository.Insert(integrationClient.Id, token);
             if (id > 0)
             {
                 response.Item = _tokenFactory.CreateDtoFromEntity(token);

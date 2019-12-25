@@ -78,10 +78,12 @@ namespace Translation.Data.UnitOfWorks
                 await _userRepository.Update(userId, user);
 
                 integration.OrganizationId = organizationId;
+                integration.CreatedBy = userId;
                 var integrationId = await _integrationRepository.Insert(userId, integration);
 
                 integrationClient.OrganizationId = organizationId;
                 integrationClient.IntegrationId = integrationId;
+                integrationClient.CreatedBy = userId;
                 await _integrationClientRepository.Insert(userId, integrationClient);
 
                 project.OrganizationId = organizationId;

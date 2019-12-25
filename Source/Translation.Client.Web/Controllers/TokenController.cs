@@ -47,9 +47,7 @@ namespace Translation.Client.Web.Controllers
             return Json(response.Status);
         }
 
-        [HttpPost,
-         AllowAnonymous, 
-         IgnoreAntiforgeryToken]
+        [HttpPost, AllowAnonymous, IgnoreAntiforgeryToken]
         public async Task<IActionResult> Create(Guid clientId, Guid clientSecret)
         {
             var result = new CommonResult();
@@ -57,7 +55,7 @@ namespace Translation.Client.Web.Controllers
             if (clientId.IsEmptyGuid()
                 || clientSecret.IsEmptyGuid())
             {
-                result.Messages.Add("some parameters are missing! (token, projectUid, labelKey)");
+                result.Messages.Add("some parameters are missing! (clientId, clientSecret)");
                 return Json(result);
             }
 
