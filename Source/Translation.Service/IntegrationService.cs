@@ -713,22 +713,35 @@ namespace Translation.Service
                 return response;
             }
 
-            var IntegrationClient = await _integrationClientRepository.Select(x => x.OrganizationId == currentUser.OrganizationId && x.IsActive);
-            if (IntegrationClient.IsNotExist())
+            var integrationClient = await _integrationClientRepository.Select(x => x.OrganizationId == currentUser.OrganizationId && x.IsActive);
+            if (integrationClient.IsNotExist())
             {
-                response.SetFailedBecauseNotFound(nameof(IntegrationClient));
+                response.SetFailedBecauseNotFound(nameof(integrationClient));
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == IntegrationClient.OrganizationId && !x.IsActive)
-                || await _integrationRepository.Any(x => x.Id == IntegrationClient.IntegrationId && !x.IsActive))
+            var organizationId = integrationClient.OrganizationId;
+            if (await _organizationRepository.Any(x => x.Id == organizationId && !x.IsActive))
+            {
+                response.SetInvalidBecauseNotActive(nameof(Organization));
+                return response;
+            }
+
+            var integrationId = integrationClient.IntegrationId;
+            if (await _integrationRepository.Any(x => x.Id == integrationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Integration));
                 return response;
             }
 
-            var token = _tokenFactory.CreateEntity(IntegrationClient);
-            var id = await _tokenRepository.Insert(IntegrationClient.Id, token);
+            if (!integrationClient.IsActive)
+            {
+                response.SetInvalidBecauseNotActive(nameof(integrationClient));
+                return response;
+            }
+
+            var token = _tokenFactory.CreateEntity(integrationClient);
+            var id = await _tokenRepository.Insert(integrationClient.Id, token);
             if (id > 0)
             {
                 response.Item = _tokenFactory.CreateDtoFromEntity(token);
@@ -751,14 +764,14 @@ namespace Translation.Service
                 return response;
             }
 
-            var IntegrationClient = await _integrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
-            if (IntegrationClient.IsNotExist())
+            var integrationClient = await _integrationClientRepository.Select(x => x.Uid == request.IntegrationClientUid);
+            if (integrationClient.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(IntegrationClient));
                 return response;
             }
 
-            if (IntegrationClient.OrganizationId != currentUser.OrganizationId)
+            if (integrationClient.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
@@ -767,7 +780,7 @@ namespace Translation.Service
             var token = await _tokenRepository.Select(x => x.AccessToken == request.Token);
             if (token.IsNotExist())
             {
-                response.SetFailedBecauseNotFound("token");
+                response.SetFailedBecauseNotFound(nameof(Token));
                 return response;
             }
 
@@ -797,7 +810,7 @@ namespace Translation.Service
             var token = await _tokenRepository.Select(x => x.AccessToken == request.Token && x.ExpiresAt > now);
             if (token.IsNotExist())
             {
-                response.SetFailedBecauseNotFound("token");
+                response.SetFailedBecauseNotFound(nameof(Token));
                 return response;
             }
 
