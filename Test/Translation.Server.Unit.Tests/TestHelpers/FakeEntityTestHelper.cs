@@ -701,7 +701,7 @@ namespace Translation.Server.Unit.Tests.TestHelpers
         {
             var user = GetOrganizationOneUserOne();
             user.IsSuperAdmin = BooleanTrue;
-
+            user.IsAdmin = BooleanTrue;
             return user;
         }
 

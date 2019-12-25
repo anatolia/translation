@@ -9,6 +9,7 @@ using StandardUtils.Models.Shared;
 
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
+using Translation.Client.Web.Helpers.DataResultHelpers;
 using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.Organization;
@@ -43,15 +44,10 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detail(Guid id)
+        public IActionResult Detail()
         {
-            var organizationUid = id;
-            if (organizationUid.IsEmptyGuid())
-            {
-                organizationUid = CurrentUser.Organization.Uid;
-            }
+            var request = new OrganizationReadRequest(CurrentUser.Id, CurrentUser.OrganizationUid);
 
-            var request = new OrganizationReadRequest(CurrentUser.Id, organizationUid);
             var response = OrganizationService.GetOrganization(request);
             if (response.Status.IsNotSuccess)
             {
@@ -64,15 +60,9 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(Guid id)
+        public IActionResult Edit()
         {
-            var organizationUid = id;
-            if (organizationUid.IsEmptyGuid())
-            {
-                organizationUid = CurrentUser.Organization.Uid;
-            }
-
-            var request = new OrganizationReadRequest(CurrentUser.Id, organizationUid);
+            var request = new OrganizationReadRequest(CurrentUser.Id, CurrentUser.OrganizationUid);
             var response = OrganizationService.GetOrganization(request);
             if (response.Status.IsNotSuccess)
             {
@@ -209,22 +199,16 @@ namespace Translation.Client.Web.Controllers
         public IActionResult PendingTranslations()
         {
             var model = new OrganizationPendingTranslationReadListModel();
-            model.OrganizationUid = CurrentUser.Organization.Uid;
+            model.OrganizationUid = CurrentUser.OrganizationUid;
             model.OrganizationName = CurrentUser.Organization.Name;
 
             return View(model);
         }
 
         [HttpGet]
-        public async Task<IActionResult> PendingTranslationsData(Guid id, int skip, int take)
+        public async Task<IActionResult> PendingTranslationsData( int skip, int take)
         {
-            var organizationUid = id;
-            if (organizationUid.IsEmptyGuid())
-            {
-                return Forbid();
-            }
-
-            var request = new OrganizationPendingTranslationReadListRequest(CurrentUser.Id, organizationUid);
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUser.Id);
             SetPaging(skip, take, request);
 
             var response = await OrganizationService.GetPendingTranslations(request);
@@ -233,22 +217,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("label_key", "label_translation_count", "description", "is_active");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Key)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetLabelTranslationRevisionsDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -256,30 +225,17 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult UserLoginLogList(Guid id)
+        public IActionResult UserLoginLogList()
         {
-            var organizationUid = id;
-            if (organizationUid.IsEmptyGuid())
-            {
-                organizationUid = CurrentUser.Organization.Uid;
-            }
-
             var model = new OrganizationUserLoginLogListModel();
-            model.OrganizationUid = organizationUid;
-
+            model.OrganizationUid = CurrentUser.OrganizationUid;
             return View(model);
         }
 
         [HttpGet]
-        public async Task<IActionResult> UserLoginLogListData(Guid id, int skip, int take)
+        public async Task<IActionResult> UserLoginLogListData( int skip, int take)
         {
-            var organizationUid = id;
-            if (organizationUid.IsEmptyGuid())
-            {
-                return Forbid();
-            }
-
-            var request = new OrganizationLoginLogReadListRequest(CurrentUser.Id, organizationUid);
+            var request = new OrganizationLoginLogReadListRequest(CurrentUser.Id, CurrentUser.OrganizationUid);
             SetPaging(skip, take, request);
 
             var response = await OrganizationService.GetUserLoginLogsOfOrganization(request);
@@ -288,27 +244,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("user", "ip", "country", "city", "browser", "browser_version", "platform", "platform_version", "created_at");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.UserUid}", item.UserName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Ip}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Country}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.City}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Browser}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.BrowserVersion}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Platform}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.PlatformVersion}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetUserLoginLogDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -316,15 +252,9 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> UserListData(Guid id, int skip, int take)
+        public async Task<IActionResult> UserListData(int skip, int take)
         {
-            var organizationUid = id;
-            if (organizationUid.IsEmptyGuid())
-            {
-                return Forbid();
-            }
-
-            var request = new UserReadListRequest(CurrentUser.Id, organizationUid);
+            var request = new UserReadListRequest(CurrentUser.Id, CurrentUser.OrganizationUid);
             SetPaging(skip, take, request);
             var response = await OrganizationService.GetUsers(request);
             if (response.Status.IsNotSuccess)
@@ -332,25 +262,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("user_name", "email", "invited_at", "invitation_accepted_at", "last_logged_in_at", "is_active", "created_at");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Email}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.InvitedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.InvitationAcceptedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.LastLoggedInAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetOrganizationUserListDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -358,15 +270,9 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> IntegrationListData(Guid id, int skip, int take)
+        public async Task<IActionResult> IntegrationListData( int skip, int take)
         {
-            var organizationUid = id;
-            if (organizationUid.IsEmptyGuid())
-            {
-                return Forbid();
-            }
-
-            var request = new IntegrationReadListRequest(CurrentUser.Id, organizationUid);
+            var request = new IntegrationReadListRequest(CurrentUser.Id);
             SetPaging(skip, take, request);
 
             var response = await _integrationService.GetIntegrations(request);
@@ -375,20 +281,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("integration_name", "is_active", "created_at");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Integration/Detail/{item.Uid}", item.Name, false)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetIntegrationListDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -396,15 +289,9 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ProjectListData(Guid id, int skip, int take)
+        public async Task<IActionResult> ProjectListData(int skip, int take)
         {
-            var organizationUid = id;
-            if (organizationUid.IsEmptyGuid())
-            {
-                return Forbid();
-            }
-
-            var request = new ProjectReadListRequest(CurrentUser.Id, organizationUid);
+            var request = new ProjectReadListRequest(CurrentUser.Id);
             SetPaging(skip, take, request);
 
             var response = await _projectService.GetProjects(request);
@@ -413,23 +300,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("project_name", "url", "label_count", "is_active", "created_at");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Project/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink(item.Url)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.LabelCount}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetProjectListDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -437,30 +308,19 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult TokenRequestLogList(Guid id)
+        public IActionResult TokenRequestLogList()
         {
-            var organizationUid = id;
-            if (organizationUid.IsEmptyGuid())
-            {
-                organizationUid = CurrentUser.Organization.Uid;
-            }
-
+           
             var model = new OrganizationTokenRequestLogListModel();
-            model.OrganizationUid = organizationUid;
+            model.OrganizationUid = CurrentUser.OrganizationUid;
 
             return View(model);
         }
 
         [HttpGet]
-        public async Task<IActionResult> TokenRequestLogListData(Guid id, int skip, int take)
+        public async Task<IActionResult> TokenRequestLogListData(int skip, int take)
         {
-            var organizationUid = id;
-            if (organizationUid.IsEmptyGuid())
-            {
-                return Forbid();
-            }
-
-            var request = new OrganizationTokenRequestLogReadListRequest(CurrentUser.Id, organizationUid);
+            var request = new OrganizationTokenRequestLogReadListRequest(CurrentUser.Id, CurrentUser.OrganizationUid);
             SetPaging(skip, take, request);
 
             var response = await _integrationService.GetTokenRequestLogsOfOrganization(request);
@@ -469,26 +329,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("integration", "integration_client", "ip", "country", "city", "http_method", "response_code", "created_at");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Integration/Detail/{item.IntegrationUid}", item.IntegrationName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IntegrationClientUid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Ip}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Country}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.City}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.HttpMethod}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.ResponseCode}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetOrganizationTokenRequestLogListDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -496,30 +337,19 @@ namespace Translation.Client.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult JournalList(Guid id)
+        public IActionResult JournalList()
         {
-            var organizationUid = id;
-            if (organizationUid.IsEmptyGuid())
-            {
-                organizationUid = CurrentUser.Organization.Uid;
-            }
-
             var model = new OrganizationJournalListModel();
-            model.OrganizationUid = organizationUid;
+            model.OrganizationUid = CurrentUser.OrganizationUid;
 
             return View(model);
         }
 
         [HttpGet]
-        public async Task<IActionResult> JournalListData(Guid id, int skip, int take)
+        public async Task<IActionResult> JournalListData( int skip, int take)
         {
-            var organizationUid = id;
-            if (organizationUid.IsEmptyGuid())
-            {
-                organizationUid = CurrentUser.Organization.Uid;
-            }
-
-            var request = new OrganizationJournalReadListRequest(CurrentUser.Id, organizationUid);
+          
+            var request = new OrganizationJournalReadListRequest(CurrentUser.Id);
             SetPaging(skip, take, request);
 
             var response = await JournalService.GetJournalsOfOrganization(request);
@@ -528,39 +358,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("user_name", "integration_name", "message", "created_at");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-
-                if (item.UserUid.IsNotEmptyGuid())
-                {
-                    stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.UserUid}", item.UserName)}{DataResult.SEPARATOR}");
-                }
-                else
-                {
-                    stringBuilder.Append($"-{DataResult.SEPARATOR}");
-                }
-
-                if (item.IntegrationUid.IsNotEmptyGuid())
-                {
-                    stringBuilder.Append($"{result.PrepareLink($"/Integration/Detail/{item.IntegrationUid}", item.IntegrationName)}{DataResult.SEPARATOR}");
-                }
-                else
-                {
-                    stringBuilder.Append($"-{DataResult.SEPARATOR}");
-                }
-
-                stringBuilder.Append($"{item.Message}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetJournalListDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 

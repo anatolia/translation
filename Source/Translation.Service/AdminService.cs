@@ -24,6 +24,7 @@ using Translation.Common.Models.Responses.SendEmailLog;
 using Translation.Common.Models.Responses.TranslationProvider;
 using Translation.Common.Models.Responses.User;
 using Translation.Common.Models.Responses.User.LoginLog;
+using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
 using Translation.Data.Factories;
@@ -438,7 +439,7 @@ namespace Translation.Service
                 return response;
             }
 
-            for (int i = 0; i < allTranslationProviders.Count; i++)
+            for (var i = 0; i < allTranslationProviders.Count; i++)
             {
                 var translationProvider = allTranslationProviders[i];
 
@@ -488,7 +489,13 @@ namespace Translation.Service
                 return response;
             }
 
-            user.IsSuperAdmin = false;
+            if (!user.IsAdmin)
+            {
+                response.SetInvalidBecauseNotAdmin(nameof(User));
+                return response;
+            }
+
+            user = _userFactory.CreateEntityFromRequest(request, user);
             var result = await _userRepository.Update(request.CurrentUserId, user);
             if (result)
             {
@@ -510,7 +517,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsSuperAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotSuperAdmin(nameof(CurrentUser));
                 return response;
             }
 
@@ -521,7 +528,19 @@ namespace Translation.Service
                 return response;
             }
 
-            user.IsAdmin = true;
+            if (user.IsAdmin)
+            {
+                response.SetInvalidBecauseAdmin(nameof(User));
+                return response;
+            }
+
+            if (await _organizationRepository.Any(x => x.Id == user.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalidBecauseNotActive(nameof(Organization));
+                return response;
+            }
+
+            user = _userFactory.CreateEntityFromRequest(request, user);
             var result = await _userRepository.Update(request.CurrentUserId, user);
             if (result)
             {

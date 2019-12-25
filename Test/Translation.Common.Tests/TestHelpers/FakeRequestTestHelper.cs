@@ -331,13 +331,13 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static IntegrationReadListRequest GetIntegrationReadListRequest()
         {
-            var request = new IntegrationReadListRequest(CurrentUserId, OrganizationOneUid);
+            var request = new IntegrationReadListRequest(CurrentUserId);
             return request;
         }
 
         public static IntegrationReadListRequest GetIntegrationReadListRequest(long currentUserId, Guid organizationUid)
         {
-            var request = new IntegrationReadListRequest(CurrentUserId, OrganizationOneUid);
+            var request = new IntegrationReadListRequest(CurrentUserId);
 
             return request;
         }
@@ -573,14 +573,14 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static ProjectReadListRequest GetProjectReadListRequest()
         {
-            var request = new ProjectReadListRequest(CurrentUserId, OrganizationOneUid);
+            var request = new ProjectReadListRequest(CurrentUserId);
 
             return request;
         }
 
         public static ProjectReadListRequest GetProjectReadListRequest(long currentUserId, Guid organizationUi)
         {
-            var request = new ProjectReadListRequest(currentUserId, organizationUi);
+            var request = new ProjectReadListRequest(currentUserId);
 
             return request;
         }
@@ -812,14 +812,14 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequest()
         {
-            var request = new OrganizationJournalReadListRequest(CurrentUserId, OrganizationOneUid);
+            var request = new OrganizationJournalReadListRequest(CurrentUserId);
 
             return request;
         }
 
-        public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequest(long currentUserId, Guid organizationUid)
+        public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequest(long currentUserId)
         {
-            var request = new OrganizationJournalReadListRequest(currentUserId, organizationUid);
+            var request = new OrganizationJournalReadListRequest(currentUserId);
 
             return request;
         }
@@ -1803,9 +1803,9 @@ namespace Translation.Common.Tests.TestHelpers
             return request;
         }
 
-        public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequest(long currentUserId, Guid organizationUid)
+        public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequest(long currentUserId)
         {
-            var request = new OrganizationPendingTranslationReadListRequest(currentUserId, organizationUid);
+            var request = new OrganizationPendingTranslationReadListRequest(currentUserId);
 
             return request;
         }
@@ -1858,14 +1858,14 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequest()
         {
-            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, UidOne);
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId);
 
             return request;
         }
 
         public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectAfter()
         {
-            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, UidOne);
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId);
             SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
@@ -1873,7 +1873,7 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectMany()
         {
-            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, UidOne);
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId);
             SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
@@ -1881,7 +1881,7 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectAfter(Guid organizationUid)
         {
-            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, organizationUid);
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId);
             SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
@@ -1889,7 +1889,7 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectMany(Guid organizationUid)
         {
-            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, organizationUid);
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId);
             SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;

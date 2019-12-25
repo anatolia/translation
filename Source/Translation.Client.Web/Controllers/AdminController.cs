@@ -8,6 +8,7 @@ using StandardUtils.Helpers;
 using StandardUtils.Models.Shared;
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
+using Translation.Client.Web.Helpers.DataResultHelpers;
 using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Admin;
 using Translation.Client.Web.Models.Base;
@@ -67,22 +68,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("user_name", "is_active", "");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.Uid}", item.FirstName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareChangeActivationButton("/Admin/ChangeActivation/")}");
-                stringBuilder.Append($"{result.PrepareButton("degrade_to_user", "handleDegradeToUser(this, \"/Admin/DegradeToUser/\")", "btn-secondary", "are_you_sure_you_want_to_degrade_to_user_title", "are_you_sure_you_want_to_degrade_to_user_content")}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetAdminListDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -108,25 +94,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("organization_name", "user_count", "project_count", "label_count", "label_translation_count", "is_active", "");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Organization/Detail/{item.Uid}", item.Name, true)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.UserCount}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.ProjectCount}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.LabelCount}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareChangeActivationButton("/Admin/OrganizationChangeActivation/")}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetOrganizationListDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -152,23 +120,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("organization_name", "user_name", "is_active", "");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Organization/Detail/{item.OrganizationUid}", item.OrganizationName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareChangeActivationButton("/Admin/ChangeActivation/")}");
-                stringBuilder.Append($"{result.PrepareButton("upgrade_to_admin", "handleUpgradeToAdmin(this, \"/Admin/UserUpgradeToAdmin/\")", "btn-secondary", "are_you_sure_you_want_to_upgrade_to_admin_title", "are_you_sure_you_want_to_upgrade_to_admin_content")}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetUserListDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -194,27 +146,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("organization", "user", "ip", "country", "city", "browser", "browser_version", "platform", "platform_version", "created_at");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Organization/Detail/{item.OrganizationUid}", item.OrganizationName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.Uid}", item.UserName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Ip}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Country}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.City}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Browser}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.BrowserVersion}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Platform}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.PlatformVersion}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
+            var result = DataResultHelper.GetUserLoginLogDataResult(response.Items);
 
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
@@ -241,23 +173,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("organization_name", "user_name", "integration_name", "message", "created_at");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Organization/Detail/{item.OrganizationUid}", item.OrganizationName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/User/Detail/{item.UserUid}", item.UserName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Integration/Detail/{item.IntegrationUid}", item.IntegrationName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Message}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetJournalListDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -283,25 +199,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("organization_name", "user_name", "ip", "country", "city", "http_method", "response_code", "created_at");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Organization/Detail/{item.OrganizationUid}", item.OrganizationName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Integration/Detail/{item.IntegrationUid}", item.IntegrationName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Ip}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Country}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.City}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.HttpMethod}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.ResponseCode}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
+            var result = DataResultHelper.GetTokenRequestLogListDataResult(response.Items);
 
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
@@ -328,23 +226,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("organization_name", "mail_uid", "send_to", "subject", "send_at", "is_opened");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Organization/Detail/{item.OrganizationUid}", item.OrganizationName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.MailUid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.EmailTo}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Subject}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsOpened}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
+            var result = DataResultHelper.GetSendEmailLogListDataResult(response.Items);
 
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
@@ -355,7 +237,7 @@ namespace Translation.Client.Web.Controllers
         [HttpGet]
         public IActionResult Invite()
         {
-            var organizationUid = CurrentUser.Organization.Uid;
+            var organizationUid = CurrentUser.OrganizationUid;
             var model = _adminMapper.MapAdminInviteModel(organizationUid);
             return View(model);
         }

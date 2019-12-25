@@ -102,7 +102,7 @@ namespace Translation.Client.Web.Unit.Tests.TestHelpers
             dataResult.ShouldNotBeNull();
             headers.Length.ShouldBe(dataResult.Headers.Count);
 
-            for (int i = 0; i < dataResult.Headers.Count; i++)
+            for (var i = 0; i < dataResult.Headers.Count; i++)
             {
                 headers[i].ShouldBe(dataResult.Headers[i].Key);
             }
@@ -134,7 +134,7 @@ namespace Translation.Client.Web.Unit.Tests.TestHelpers
 
         public static void AssertViewAccessDenied(IActionResult result)
         {
-            var controller = new BaseController(null, null, null,null);
+            var controller = new BaseController(null, null, null, null);
             var redirectAccessDenied = controller.RedirectToAccessDenied();
 
             result.ShouldNotBeNull();
@@ -143,7 +143,7 @@ namespace Translation.Client.Web.Unit.Tests.TestHelpers
 
         public static void AssertViewRedirectToHome(IActionResult result)
         {
-            var controller = new BaseController(null, null, null,null);
+            var controller = new BaseController(null, null, null, null);
             var redirectToHome = controller.RedirectToHome();
 
             result.ShouldNotBeNull();

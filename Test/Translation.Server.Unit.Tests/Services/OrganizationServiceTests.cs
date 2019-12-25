@@ -250,7 +250,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.EditOrganization(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<OrganizationEditResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -491,6 +491,7 @@ namespace Translation.Server.Unit.Tests.Services
             MockLabelRepository.Verify_SelectMany();
         }
 
+        [Ignore("Get organization Uid")]
         [Test]
         public async Task OrganizationService_GetPendingTranslations_Invalid_OrganizationNotMatch()
         {
@@ -932,7 +933,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.ChangeActivationForUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<UserChangeActivationResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -1026,7 +1027,7 @@ namespace Translation.Server.Unit.Tests.Services
             var request = GetNotDifferentUserEditRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockOrganizationRepository.Setup_Any_Returns_False();
-            
+
             // act
             var result = await SystemUnderTest.EditUser(request);
 
@@ -1069,7 +1070,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.EditUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<UserEditResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -1183,7 +1184,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.DeleteUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<UserDeleteResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -1259,7 +1260,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.InviteUser(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<UserInviteResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -1562,8 +1563,8 @@ namespace Translation.Server.Unit.Tests.Services
         {
             // arrange
             var request = GetUserLoginLogReadListRequestForSelectAfter();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
-            MockUserRepository.Setup_SelectById_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneAdminUserOne();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockUserLoginLogRepository.Setup_SelectAfter_Returns_UserLoginLogs();
             MockUserLoginLogRepository.Setup_Count_Returns_Ten();
 
@@ -1578,7 +1579,6 @@ namespace Translation.Server.Unit.Tests.Services
             MockUserRepository.Verify_SelectById();
             MockUserLoginLogRepository.Verify_SelectAfter();
             MockUserLoginLogRepository.Verify_Count();
-
         }
 
         [Test]
@@ -1586,6 +1586,8 @@ namespace Translation.Server.Unit.Tests.Services
         {
             // arrange
             var request = GetUserLoginLogReadListRequestForSelectMany();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneAdminUserOne();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneAdminUserOne();
             MockUserLoginLogRepository.Setup_SelectMany_Returns_UserLoginLogs();
             MockUserRepository.Setup_Count_Returns_Ten();
 
@@ -1596,9 +1598,10 @@ namespace Translation.Server.Unit.Tests.Services
             AssertResponseStatusAndErrorMessages(result, ResponseStatus.Success);
             AssertReturnType<UserLoginLogReadListResponse>(result);
             AssertPagingInfoForSelectMany(request.PagingInfo, Ten);
+            MockUserRepository.Verify_Select();
+            MockUserRepository.Verify_SelectById();
             MockUserLoginLogRepository.Verify_SelectMany();
             MockUserLoginLogRepository.Verify_Count();
-
         }
 
         [Test]

@@ -1,6 +1,6 @@
 ﻿@model AllUserListModel
 
-    <a href="/Admin/Dashboard" data-translation="admin_dashboard_link">admin_dashboard_link</a>
+<a href="/Admin/Dashboard" data-translation="admin_dashboard_link">admin_dashboard_link</a>
 <h1 data-translation="@Model.Title">@Model.Title</h1>
 
 <div class="tbl">
@@ -14,7 +14,7 @@
             function (req) {
                 let response = JSON.parse(req.response);
                 if (response.isOk === true) {
-                    hidePopup();    
+                    hidePopup();
                 } else {
                     let messages = JSON.parse(req.response).join('<br/>');
                     showPopupMessage(messages);

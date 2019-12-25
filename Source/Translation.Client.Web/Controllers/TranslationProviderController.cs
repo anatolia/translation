@@ -6,6 +6,7 @@ using StandardUtils.Helpers;
 using StandardUtils.Models.Shared;
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
+using Translation.Client.Web.Helpers.DataResultHelpers;
 using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.TranslationProvider;
@@ -53,24 +54,9 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("provider_name", "is_active", "");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/TranslationProvider/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareChangeAllActivationButton("/Admin/TranslationProviderChangeActivation/")}");
-                stringBuilder.Append($"{result.PrepareLink($"/TranslationProvider/Edit/{item.Uid}", "Edit", true)}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetTranslationProviderListDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -137,7 +123,7 @@ namespace Translation.Client.Web.Controllers
 
             CurrentUser.IsActionSucceed = true;
             return Redirect($"/TranslationProvider/Detail/{response.Item.Uid}");
-    }
+        }
 
         [HttpGet]
         public async Task<IActionResult> Detail(Guid id)
@@ -157,6 +143,6 @@ namespace Translation.Client.Web.Controllers
 
             var model = TranslationProviderMapper.MapTranslationProviderDetailModel(response.Item);
             return View(model);
-        }       
+        }
     }
 }

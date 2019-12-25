@@ -34,5 +34,12 @@ namespace Translation.Common.Models.Base
             Status = ResponseStatus.Failed;
             ErrorMessages.Add(entityName.ToLowerInvariant() + "_revision_not_found");
         }
+
+        public void SetInvalidBecauseAdmin(string entityName = "entity")
+        {
+            Status = ResponseStatus.Invalid;
+            ErrorMessages.Add(entityName.ToLowerInvariant() + "_already_admin");
+        }
+
     }
 }

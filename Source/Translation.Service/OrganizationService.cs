@@ -114,14 +114,14 @@ namespace Translation.Service
             user.LanguageIconUrl = language.IconUrl;
 
             var loginLog = _userLoginLogFactory.CreateEntityFromRequest(request, user);
-            var integration = _integrationFactory.CreateDefault(organization);
-            var integrationClient = _integrationClientFactory.CreateEntity(integration);
+            var Integration = _integrationFactory.CreateDefault(organization);
+            var IntegrationClient = _integrationClientFactory.CreateEntity(Integration);
             var project = _projectFactory.CreateDefault(organization, language);
 
             var (uowResult,
                  insertedOrganization,
                  insertedUser) = await _signUpUnitOfWork.DoWork(organization, user, loginLog,
-                                                                integration, integrationClient, project);
+                                                                Integration, IntegrationClient, project);
             if (uowResult)
             {
                 // todo:send welcome email
@@ -205,7 +205,7 @@ namespace Translation.Service
 
             var revisions = await _organizationRepository.SelectRevisions(organization.Id);
 
-            for (int i = 0; i < revisions.Count; i++)
+            for (var i = 0; i < revisions.Count; i++)
             {
                 var revision = revisions[i];
 
@@ -233,18 +233,18 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalidBecauseNotAdmin(nameof(CurrentUser));
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
-            if (await _organizationRepository.IsOrganizationActive(currentUser.Organization.Id))
+            if (await _organizationRepository.IsOrganizationActive(currentUser.OrganizationId))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
             var entity = _cacheManager.GetCachedOrganization(currentUser.Organization.Uid);
-            if (entity.Id != currentUser.Organization.Id)
+            if (entity.Id != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
@@ -257,7 +257,7 @@ namespace Translation.Service
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Name == request.Name && x.Id != currentUser.Organization.Id))
+            if (await _organizationRepository.Any(x => x.Name == request.Name && x.Id != currentUser.OrganizationId))
             {
                 response.SetInvalidBecauseMustBeUnique(nameof(Organization));
                 return response;
@@ -283,7 +283,7 @@ namespace Translation.Service
             var response = new OrganizationRestoreResponse();
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
@@ -319,13 +319,8 @@ namespace Translation.Service
             var response = new OrganizationPendingTranslationReadListResponse();
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (request.OrganizationUid != currentUser.Organization.Uid)
-            {
-                response.SetInvalid();
-                return response;
-            }
 
-            var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
+            var organization = await _organizationRepository.Select(x => x.Uid == currentUser.OrganizationUid);
             if (organization.IsNotExist())
             {
                 response.SetFailedBecauseNotFound(nameof(Organization));
@@ -614,18 +609,18 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
             var entity = _cacheManager.GetCachedUser(request.UserUid);
-            if (entity.OrganizationId != currentUser.Organization.Id)
+            if (entity.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
@@ -654,18 +649,18 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
             var entity = _cacheManager.GetCachedUser(request.UserUid);
-            if (entity.OrganizationId != currentUser.Organization.Id)
+            if (entity.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
@@ -708,18 +703,18 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
             }
 
             var entity = _cacheManager.GetCachedUser(request.UserUid);
-            if (entity.OrganizationId != currentUser.Organization.Id)
+            if (entity.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
@@ -745,11 +740,11 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
-            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;
@@ -854,7 +849,7 @@ namespace Translation.Service
             var entity = _cacheManager.GetCachedUser(request.UserUid);
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
-            if (entity.OrganizationId != currentUser.Organization.Id)
+            if (entity.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
@@ -871,11 +866,11 @@ namespace Translation.Service
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
-            Expression<Func<User, bool>> filter = x => x.OrganizationId == currentUser.Organization.Id;
+            Expression<Func<User, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
 
             if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.OrganizationId == currentUser.Organization.Id && x.Name.Contains(request.PagingInfo.SearchTerm);
+                filter = x => x.OrganizationId == currentUser.OrganizationId && x.Name.Contains(request.PagingInfo.SearchTerm);
             }
 
             List<User> entities;
@@ -923,7 +918,7 @@ namespace Translation.Service
 
             var revisions = await _userRepository.SelectRevisions(user.Id);
 
-            for (int i = 0; i < revisions.Count; i++)
+            for (var i = 0; i < revisions.Count; i++)
             {
                 var revision = revisions[i];
 
@@ -951,7 +946,13 @@ namespace Translation.Service
             var user = _cacheManager.GetCachedUser(request.UserUid);
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
 
-            if (user.OrganizationId != currentUser.Organization.Id)
+            if (!currentUser.IsAdmin)
+            {
+                response.SetInvalidBecauseNotAdmin(nameof(CurrentUser));
+                return response;
+            }
+
+            if (user.OrganizationId != currentUser.OrganizationId)
             {
                 response.SetInvalid();
                 return response;
@@ -1003,17 +1004,17 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             var organization = _cacheManager.GetCachedOrganization(request.OrganizationUid);
 
-            if (currentUser.Organization.Id != organization.Id)
+            if (currentUser.OrganizationId != organization.Id)
             {
                 response.SetInvalid();
                 return response;
             }
 
-            Expression<Func<UserLoginLog, bool>> filter = x => x.OrganizationId == currentUser.Organization.Id;
+            Expression<Func<UserLoginLog, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
 
             if (request.PagingInfo.SearchTerm.IsNotEmpty())
             {
-                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm) && x.OrganizationId == currentUser.Organization.Id;
+                filter = x => x.Name.Contains(request.PagingInfo.SearchTerm) && x.OrganizationId == currentUser.OrganizationId;
             }
 
             List<UserLoginLog> entities;
@@ -1053,7 +1054,7 @@ namespace Translation.Service
             var response = new UserRestoreResponse();
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (await _organizationRepository.Any(x => x.Id == currentUser.Organization.Id && !x.IsActive))
+            if (await _organizationRepository.Any(x => x.Id == currentUser.OrganizationId && !x.IsActive))
             {
                 response.SetInvalidBecauseNotActive(nameof(Organization));
                 return response;

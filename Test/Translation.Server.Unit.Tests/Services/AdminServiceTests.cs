@@ -724,7 +724,7 @@ namespace Translation.Server.Unit.Tests.Services
             // arrange
             var request = GetAdminDemoteRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneAdminUserOne();
             MockUserRepository.Setup_Update_Success();
 
             // act
@@ -736,6 +736,24 @@ namespace Translation.Server.Unit.Tests.Services
             MockUserRepository.Verify_SelectById();
             MockUserRepository.Verify_Select();
             MockUserRepository.Verify_Update();
+        }
+
+        [Test]
+        public async Task AdminService_DemoteToUser_Invalid_UserNotAdmin()
+        {
+            // arrange
+            var request = GetAdminDemoteRequest();
+            MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            
+            // act
+            var result = await SystemUnderTest.DemoteToUser(request);
+
+            // assert
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
+            AssertReturnType<AdminDemoteResponse>(result);
+            MockUserRepository.Verify_SelectById();
+            MockUserRepository.Verify_Select();
         }
 
         [Test]
@@ -778,7 +796,7 @@ namespace Translation.Server.Unit.Tests.Services
             // arrange
             var request = GetAdminDemoteRequest();
             MockUserRepository.Setup_SelectById_Returns_OrganizationOneSuperAdminUserOne();
-            MockUserRepository.Setup_Select_Returns_OrganizationOneUserOne();
+            MockUserRepository.Setup_Select_Returns_OrganizationOneAdminUserOne();
             MockUserRepository.Setup_Update_Failed();
 
             // act

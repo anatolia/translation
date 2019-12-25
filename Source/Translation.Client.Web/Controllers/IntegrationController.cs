@@ -8,6 +8,7 @@ using StandardUtils.Models.Shared;
 
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
+using Translation.Client.Web.Helpers.DataResultHelpers;
 using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.Integration;
@@ -42,7 +43,7 @@ namespace Translation.Client.Web.Controllers
             var organizationUid = id;
             if (organizationUid.IsEmptyGuid())
             {
-                organizationUid = CurrentUser.Organization.Uid;
+                organizationUid = CurrentUser.OrganizationUid;
             }
 
             var request = new OrganizationReadRequest(CurrentUser.Id, organizationUid);
@@ -70,8 +71,7 @@ namespace Translation.Client.Web.Controllers
             var response = await _integrationService.CreateIntegration(request);
             if (response.Status.IsNotSuccess)
             {
-                model.MapMessages(
-                    response);
+                model.MapMessages(response);
                 model.SetInputModelValues();
                 return View(model);
             }
@@ -209,25 +209,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "integration_name", "is_active", "created_at", "");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var revisionItem = response.Items[i];
-                var item = revisionItem.Item;
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{revisionItem.Revision}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(revisionItem.RevisionedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Integration/Detail/{item.Uid}", item.Name)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Integration/Restore/", "/Integration/Detail")}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
+            var result = DataResultHelper.GetIntegrationRevisionsDataResult(response.Items);
 
             return Json(result);
         }
@@ -440,22 +422,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("access_token", "ip", "created_at", "expires_at", "");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.AccessToken}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IP}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.ExpiresAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetClientActiveTokensDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
@@ -501,23 +468,7 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("integration_client_uid", "access_token", "ip", "created_at", "expires_at", "");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IntegrationClientUid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.AccessToken}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IP}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.ExpiresAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetActiveTokensDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 

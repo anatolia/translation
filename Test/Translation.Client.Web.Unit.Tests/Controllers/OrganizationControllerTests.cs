@@ -31,23 +31,23 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             SetControllerContext(SystemUnderTest);
         }
 
-        [TestCase(DetailAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
-         TestCase(EditAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
+        [TestCase(DetailAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(EditAction, new Type[] { }, typeof(HttpGetAttribute)),
          TestCase(EditAction, new[] { typeof(OrganizationEditModel) }, typeof(HttpPostAttribute)),
          TestCase(RevisionsAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(RevisionsDataAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
          TestCase(RestoreAction, new[] { typeof(Guid), typeof(int) }, typeof(HttpPostAttribute)),
          TestCase(PendingTranslationsAction, new Type[] { }, typeof(HttpGetAttribute)),
-         TestCase(PendingTranslationsDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
-         TestCase(UserLoginLogListAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
-         TestCase(UserLoginLogListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
-         TestCase(UserListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
-         TestCase(IntegrationListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
-         TestCase(ProjectListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
-         TestCase(TokenRequestLogListAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
-         TestCase(TokenRequestLogListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
-         TestCase(JournalListAction, new[] { typeof(Guid) }, typeof(HttpGetAttribute)),
-         TestCase(JournalListDataAction, new[] { typeof(Guid), typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
+         TestCase(PendingTranslationsDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(UserLoginLogListAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(UserLoginLogListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(UserListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(IntegrationListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(ProjectListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(TokenRequestLogListAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(TokenRequestLogListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute)),
+         TestCase(JournalListAction, new Type[] { }, typeof(HttpGetAttribute)),
+         TestCase(JournalListDataAction, new[] { typeof(int), typeof(int) }, typeof(HttpGetAttribute))]
         public void Methods_Has_Http_Verb_Attributes(string actionMethod, Type[] parameters, Type httpVerbAttribute)
         {
             var type = SystemUnderTest.GetType();
@@ -70,7 +70,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Success();
 
             // act
-            var result = SystemUnderTest.Detail(UidOne);
+            var result = SystemUnderTest.Detail();
 
             // assert
             AssertViewWithModel<OrganizationDetailModel>(result);
@@ -84,7 +84,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Failed();
 
             // act
-            var result = SystemUnderTest.Detail(UidOne);
+            var result = SystemUnderTest.Detail();
 
             // assert
             AssertViewAccessDenied(result);
@@ -98,7 +98,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Invalid();
 
             // act
-            var result = SystemUnderTest.Detail(UidOne);
+            var result = SystemUnderTest.Detail();
 
             // assert
             AssertViewAccessDenied(result);
@@ -112,7 +112,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Success();
 
             // act
-            var result = SystemUnderTest.Detail(EmptyUid);
+            var result = SystemUnderTest.Detail();
 
             // assert
             AssertViewWithModel<OrganizationDetailModel>(result);
@@ -126,7 +126,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Success();
 
             // act
-            var result = SystemUnderTest.Edit(UidOne);
+            var result = SystemUnderTest.Edit();
 
             // assert
             AssertViewWithModel<OrganizationEditModel>(result);
@@ -140,7 +140,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Failed();
 
             // act
-            var result = SystemUnderTest.Edit(UidOne);
+            var result = SystemUnderTest.Edit();
 
             // assert
             AssertViewAccessDenied(result);
@@ -154,7 +154,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Invalid();
 
             // act
-            var result = SystemUnderTest.Edit(UidOne);
+            var result = SystemUnderTest.Edit();
 
             // assert
             AssertViewAccessDenied(result);
@@ -168,7 +168,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetOrganization_Returns_OrganizationReadResponse_Invalid();
 
             // act
-            var result = SystemUnderTest.Edit(EmptyUid);
+            var result = SystemUnderTest.Edit();
 
             // assert
             AssertView<OrganizationEditModel>(result);
@@ -411,7 +411,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
         public void PendingTranslations_GET()
         {
             // arrange
-            
+
             // act
             var result = SystemUnderTest.PendingTranslations();
 
@@ -426,7 +426,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetPendingTranslations_Returns_OrganizationPendingTranslationReadListResponse_Success();
 
             // act
-            var result = SystemUnderTest.PendingTranslationsData(OrganizationOneProjectOneUid, One, Two);
+            var result = SystemUnderTest.PendingTranslationsData(One, Two);
 
             // assert
             AssertView<JsonResult>(result);
@@ -440,7 +440,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetPendingTranslations_Returns_OrganizationPendingTranslationReadListResponse_Failed();
 
             // act
-            var result = SystemUnderTest.PendingTranslationsData(OrganizationOneProjectOneUid, One, Two);
+            var result = SystemUnderTest.PendingTranslationsData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -454,7 +454,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetPendingTranslations_Returns_OrganizationPendingTranslationReadListResponse_Invalid();
 
             // act
-            var result = SystemUnderTest.PendingTranslationsData(OrganizationOneProjectOneUid, One, Two);
+            var result = SystemUnderTest.PendingTranslationsData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -467,7 +467,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.PendingTranslationsData(EmptyUid, One, Two);
+            var result = SystemUnderTest.PendingTranslationsData(One, Two);
 
             // assert
             AssertView<ForbidResult>(result);
@@ -484,7 +484,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetPendingTranslations_Returns_OrganizationPendingTranslationReadListResponse_Success();
 
             // act
-            var result = (JsonResult)await SystemUnderTest.PendingTranslationsData(OrganizationOneProjectOneUid, skip, take);
+            var result = (JsonResult)await SystemUnderTest.PendingTranslationsData(skip, take);
 
             // assert
             AssertView<DataResult>(result);
@@ -498,7 +498,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.UserLoginLogList(UidOne);
+            var result = SystemUnderTest.UserLoginLogList();
 
             // assert
             AssertViewWithModel<OrganizationUserLoginLogListModel>(result);
@@ -510,7 +510,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.UserLoginLogList(EmptyUid);
+            var result = SystemUnderTest.UserLoginLogList();
 
             // assert
             AssertViewWithModel<OrganizationUserLoginLogListModel>(result);
@@ -523,7 +523,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetUserLoginLogsOfOrganization_Returns_OrganizationLoginLogReadListResponse_Success();
 
             // act
-            var result = SystemUnderTest.UserLoginLogListData(UidOne, One, Two);
+            var result = SystemUnderTest.UserLoginLogListData(One, Two);
 
             // assert
             AssertView<JsonResult>(result);
@@ -541,7 +541,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetUserLoginLogsOfOrganization_Returns_OrganizationLoginLogReadListResponse_Success();
 
             // act
-            var result = (JsonResult)await SystemUnderTest.UserLoginLogListData(UidOne, skip, take);
+            var result = (JsonResult)await SystemUnderTest.UserLoginLogListData(skip, take);
 
             // assert
             AssertView<DataResult>(result);
@@ -555,7 +555,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetUserLoginLogsOfOrganization_Returns_OrganizationLoginLogReadListResponse_Failed();
 
             // act
-            var result = SystemUnderTest.UserLoginLogListData(UidOne, One, Two);
+            var result = SystemUnderTest.UserLoginLogListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -569,7 +569,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetUserLoginLogsOfOrganization_Returns_OrganizationLoginLogReadListResponse_Invalid();
 
             // act
-            var result = SystemUnderTest.UserLoginLogListData(UidOne, One, Two);
+            var result = SystemUnderTest.UserLoginLogListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -582,7 +582,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.UserLoginLogListData(EmptyUid, One, Two);
+            var result = SystemUnderTest.UserLoginLogListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -595,7 +595,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetUsers_Returns_UserReadListResponse_Success();
 
             // act
-            var result = SystemUnderTest.UserListData(UidOne, One, Two);
+            var result = SystemUnderTest.UserListData(One, Two);
 
             // assert
             AssertView<JsonResult>(result);
@@ -613,7 +613,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetUsers_Returns_UserReadListResponse_Success();
 
             // act
-            var result = (JsonResult)await SystemUnderTest.UserListData(UidOne, skip, take);
+            var result = (JsonResult)await SystemUnderTest.UserListData(skip, take);
 
             // assert
             AssertView<DataResult>(result);
@@ -627,7 +627,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetUsers_Returns_UserReadListResponse_Failed();
 
             // act
-            var result = SystemUnderTest.UserListData(UidOne, One, Two);
+            var result = SystemUnderTest.UserListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -641,7 +641,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockOrganizationService.Setup_GetUsers_Returns_UserReadListResponse_Invalid();
 
             // act
-            var result = SystemUnderTest.UserListData(UidOne, One, Two);
+            var result = SystemUnderTest.UserListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -654,7 +654,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.UserListData(EmptyUid, One, Two);
+            var result = SystemUnderTest.UserListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -667,7 +667,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockIntegrationService.Setup_GetIntegrations_Returns_IntegrationReadListResponse_Success();
 
             // act
-            var result = SystemUnderTest.IntegrationListData(UidOne, One, Two);
+            var result = SystemUnderTest.IntegrationListData( One, Two);
 
             // assert
             AssertView<JsonResult>(result);
@@ -685,7 +685,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockIntegrationService.Setup_GetIntegrations_Returns_IntegrationReadListResponse_Success();
 
             // act
-            var result = (JsonResult)await SystemUnderTest.IntegrationListData(UidOne, skip, take);
+            var result = (JsonResult)await SystemUnderTest.IntegrationListData( skip, take);
 
             // assert
             AssertView<DataResult>(result);
@@ -699,7 +699,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockIntegrationService.Setup_GetIntegrations_Returns_IntegrationReadListResponse_Failed();
 
             // act
-            var result = SystemUnderTest.IntegrationListData(UidOne, One, Two);
+            var result = SystemUnderTest.IntegrationListData( One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -713,7 +713,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockIntegrationService.Setup_GetIntegrations_Returns_IntegrationReadListResponse_Invalid();
 
             // act
-            var result = SystemUnderTest.IntegrationListData(UidOne, One, Two);
+            var result = SystemUnderTest.IntegrationListData( One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -726,7 +726,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.IntegrationListData(EmptyUid, One, Two);
+            var result = SystemUnderTest.IntegrationListData( One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -739,7 +739,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockProjectService.Setup_GetProjects_Returns_ProjectReadListResponse_Success();
 
             // act
-            var result = SystemUnderTest.ProjectListData(UidOne, One, Two);
+            var result = SystemUnderTest.ProjectListData(One, Two);
 
             // assert
             AssertView<JsonResult>(result);
@@ -757,7 +757,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockProjectService.Setup_GetProjects_Returns_ProjectReadListResponse_Success();
 
             // act
-            var result = (JsonResult)await SystemUnderTest.ProjectListData(UidOne, skip, take);
+            var result = (JsonResult)await SystemUnderTest.ProjectListData(skip, take);
 
             // assert
             AssertView<DataResult>(result);
@@ -771,7 +771,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockProjectService.Setup_GetProjects_Returns_ProjectReadListResponse_Failed();
 
             // act
-            var result = SystemUnderTest.ProjectListData(UidOne, One, Two);
+            var result = SystemUnderTest.ProjectListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -785,7 +785,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockProjectService.Setup_GetProjects_Returns_ProjectReadListResponse_Invalid();
 
             // act
-            var result = SystemUnderTest.ProjectListData(UidOne, One, Two);
+            var result = SystemUnderTest.ProjectListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -798,7 +798,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.ProjectListData(EmptyUid, One, Two);
+            var result = SystemUnderTest.ProjectListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -810,7 +810,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.TokenRequestLogList(UidOne);
+            var result = SystemUnderTest.TokenRequestLogList();
 
             // assert
             AssertViewWithModel<OrganizationTokenRequestLogListModel>(result);
@@ -822,7 +822,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.TokenRequestLogList(EmptyUid);
+            var result = SystemUnderTest.TokenRequestLogList();
 
             // assert
             AssertViewWithModel<OrganizationTokenRequestLogListModel>(result);
@@ -835,7 +835,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockIntegrationService.Setup_GetTokenRequestLogsOfOrganization_Returns_OrganizationTokenRequestLogReadListResponse_Success();
 
             // act
-            var result = SystemUnderTest.TokenRequestLogListData(UidOne, One, Two);
+            var result = SystemUnderTest.TokenRequestLogListData(One, Two);
 
             // assert
             AssertView<JsonResult>(result);
@@ -854,7 +854,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockIntegrationService.Setup_GetTokenRequestLogsOfOrganization_Returns_OrganizationTokenRequestLogReadListResponse_Success();
 
             // act
-            var result = (JsonResult)await SystemUnderTest.TokenRequestLogListData(UidOne, skip, take);
+            var result = (JsonResult)await SystemUnderTest.TokenRequestLogListData(skip, take);
 
             // assert
             AssertView<DataResult>(result);
@@ -868,7 +868,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockIntegrationService.Setup_GetTokenRequestLogsOfOrganization_Returns_OrganizationTokenRequestLogReadListResponse_Failed();
 
             // act
-            var result = SystemUnderTest.TokenRequestLogListData(UidOne, One, Two);
+            var result = SystemUnderTest.TokenRequestLogListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -882,7 +882,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockIntegrationService.Setup_GetTokenRequestLogsOfOrganization_Returns_OrganizationTokenRequestLogReadListResponse_Invalid();
 
             // act
-            var result = SystemUnderTest.TokenRequestLogListData(UidOne, One, Two);
+            var result = SystemUnderTest.TokenRequestLogListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -895,7 +895,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.TokenRequestLogListData(EmptyUid, One, Two);
+            var result = SystemUnderTest.TokenRequestLogListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -907,7 +907,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.JournalList(OrganizationOneProjectOneUid);
+            var result = SystemUnderTest.JournalList();
 
             // assert
             AssertViewWithModel<OrganizationJournalListModel>(result);
@@ -919,7 +919,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.JournalList(EmptyUid);
+            var result = SystemUnderTest.JournalList();
 
             // assert
             AssertViewWithModel<OrganizationJournalListModel>(result);
@@ -932,10 +932,10 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockJournalService.Setup_GetJournalsOfOrganization_Returns_OrganizationJournalReadListResponse_Success();
 
             // act
-            var result = SystemUnderTest.JournalListData(OrganizationOneProjectOneUid, One, Two);
+            var result = SystemUnderTest.JournalListData(One, Two);
 
             // assert
-            AssertViewAndHeaders(result, new[] { "user_name", "integration_name", "message", "created_at" });
+            AssertViewAndHeaders(result, new[] { "organization_name", "user_name", "integration_name", "message", "created_at" });
             MockJournalService.Verify_GetJournalsOfOrganization();
         }
 
@@ -946,10 +946,10 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockJournalService.Setup_GetJournalsOfOrganization_Returns_OrganizationJournalReadListResponse_UserUidAndIntegrationUidEmpty_Success();
 
             // act
-            var result = SystemUnderTest.JournalListData(OrganizationOneProjectOneUid, One, Two);
+            var result = SystemUnderTest.JournalListData(One, Two);
 
             // assert
-            AssertViewAndHeaders(result, new[] { "user_name", "integration_name", "message", "created_at" });
+            AssertViewAndHeaders(result, new[] { "organization_name", "user_name", "integration_name", "message", "created_at" });
             MockJournalService.Verify_GetJournalsOfOrganization();
         }
 
@@ -960,7 +960,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockJournalService.Setup_GetJournalsOfOrganization_Returns_OrganizationJournalReadListResponse_Failed();
 
             // act
-            var result = SystemUnderTest.JournalListData(OrganizationOneProjectOneUid, One, Two);
+            var result = SystemUnderTest.JournalListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -974,7 +974,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockJournalService.Setup_GetJournalsOfOrganization_Returns_OrganizationJournalReadListResponse_Invalid();
 
             // act
-            var result = SystemUnderTest.JournalListData(OrganizationOneProjectOneUid, One, Two);
+            var result = SystemUnderTest.JournalListData(One, Two);
 
             // assert
             AssertView<NotFoundResult>(result);
@@ -987,7 +987,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             // arrange
 
             // act
-            var result = SystemUnderTest.JournalListData(EmptyUid, One, Two);
+            var result = SystemUnderTest.JournalListData(One, Two);
 
             // assert
             AssertView<ForbidResult>(result);
@@ -1004,7 +1004,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
             MockJournalService.Setup_GetJournalsOfOrganization_Returns_OrganizationJournalReadListResponse_Success();
 
             // act
-            var result = (JsonResult)await SystemUnderTest.JournalListData(OrganizationOneProjectOneUid, skip, take);
+            var result = (JsonResult)await SystemUnderTest.JournalListData(skip, take);
 
             // assert
             AssertView<DataResult>(result);
