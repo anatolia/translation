@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +10,7 @@ using StandardUtils.Models.Shared;
 
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
+using Translation.Client.Web.Helpers.DataResultHelpers;
 using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.Language;
@@ -183,25 +183,10 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("language_name", "2_char_code", "3_char_code", "icon", "");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink("/Language/Detail/" + item.Uid, item.Name, true)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsoCode2}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsoCode3}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareImage($"{item.IconPath}", item.OriginalName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink("/Language/Edit/" + item.Uid, "edit", true)}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
+            var result = DataResultHelper.GetLanguageListDataResult(response.Items);
 
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -215,7 +200,7 @@ namespace Translation.Client.Web.Controllers
             var searchTerm = q?.ToLowerInvariant();
             if (searchTerm.IsNotEmpty())
             {
-                request.PagingInfo.SearchTerm= searchTerm;
+                request.PagingInfo.SearchTerm = searchTerm;
             }
 
             if (lastUid.IsNotEmptyGuid())
@@ -315,29 +300,9 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("revision", "revisioned_by", "revisioned_at", "language_name", "2_char_code", "3_char_code", "icon", "created_at", "");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var revisionItem = response.Items[i];
-                var item = revisionItem.Item;
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{revisionItem.Revision}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{revisionItem.RevisionedByName}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(revisionItem.RevisionedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Name}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsoCode2}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsoCode3}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareImage($"{item.IconPath}", item.OriginalName)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{GetDateTimeAsString(item.CreatedAt)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareRestoreButton("restore", "/Language/Restore/", "/Language/Detail")}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
+            var result = DataResultHelper.GetLanguageRevisionsDataResult(response.Items);
 
             return Json(result);
-        }       
+        }
     }
 }

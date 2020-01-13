@@ -1,6 +1,9 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using StandardUtils.Helpers;
+using StandardUtils.Models.Shared;
+using Translation.Common.Models.Requests.Label;
+using Translation.Common.Models.Requests.Label.LabelTranslation;
 
 namespace Translation.Common.Tests.TestHelpers
 {
@@ -166,5 +169,52 @@ namespace Translation.Common.Tests.TestHelpers
         public const string GoogleKey = "{ type project_id private_key_id private_key client_email client_id auth_uri token_uri auth_provider_x509_cert_url client_x509_cert_url }";
         public const string YandexKey = "trns";
 
+
+        public static LabelListInfo GetLabelListInfo()
+        {
+            var labelListInfo = new LabelListInfo();
+            labelListInfo.LabelKey = StringOne;
+            labelListInfo.LanguageIsoCode2 = IsoCode2One;
+            labelListInfo.Translation = StringOne;
+
+            return labelListInfo;
+        }
+
+        public static List<LabelListInfo> GetLabelListInfoList()
+        {
+
+            var labelListInfoList = new List<LabelListInfo>();
+            labelListInfoList.Add(GetLabelListInfo());
+
+            return labelListInfoList;
+        }
+
+        public static List<TranslationListInfo> GetTranslationListInfoList()
+        {
+
+            var labelListInfoList = new List<TranslationListInfo>();
+            labelListInfoList.Add(GetTranslationListInfo());
+
+            return labelListInfoList;
+        }
+
+        public static TranslationListInfo GetTranslationListInfo()
+        {
+            var translationListInfo = new TranslationListInfo();
+            translationListInfo.LanguageIsoCode2 = IsoCode2One;
+            translationListInfo.Translation = StringOne;
+
+            return translationListInfo;
+        }
+
+        public static ClientLogInfo GetClientLogInfo()
+        {
+            var clientLogInfo = new ClientLogInfo();
+            clientLogInfo.Country = StringOne;
+            clientLogInfo.City = StringOne;
+            clientLogInfo.Ip = IpOne;
+
+            return clientLogInfo;
+        }
     }
 }

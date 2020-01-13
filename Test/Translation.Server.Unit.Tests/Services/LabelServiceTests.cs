@@ -26,7 +26,7 @@ namespace Translation.Server.Unit.Tests.Services
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Builder.Build().Resolve<ILabelService>();
+            SystemUnderTest = Container.Resolve<ILabelService>();
         }
 
         [Test]
@@ -195,7 +195,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CreateLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<LabelCreateResponse>(result);
             MockUserRepository.Verify_SelectById();
         }
@@ -1561,7 +1561,7 @@ namespace Translation.Server.Unit.Tests.Services
             var result = await SystemUnderTest.CloneLabel(request);
 
             // assert
-            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid);
+            AssertResponseStatusAndErrorMessages(result, ResponseStatus.Invalid, UserNotAdmin);
             AssertReturnType<LabelCloneResponse>(result);
             MockUserRepository.Verify_SelectById();
         }

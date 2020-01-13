@@ -11,6 +11,7 @@ using StandardUtils.Models.Shared;
 
 using Translation.Client.Web.Helpers;
 using Translation.Client.Web.Helpers.ActionFilters;
+using Translation.Client.Web.Helpers.DataResultHelpers;
 using Translation.Client.Web.Helpers.Mappers;
 using Translation.Client.Web.Models.Base;
 using Translation.Client.Web.Models.Project;
@@ -72,7 +73,7 @@ namespace Translation.Client.Web.Controllers
             }
 
             var request = new ProjectCreateRequest(CurrentUser.Id, model.OrganizationUid, model.Name,
-                                                   model.Url, model.Description, model.Slug, 
+                                                   model.Url, model.Description, model.Slug,
                                                    model.LanguageUid);
             var response = await _projectService.CreateProject(request);
             if (response.Status.IsNotSuccess)
@@ -225,7 +226,7 @@ namespace Translation.Client.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> SelectData()
         {
-            var request = new ProjectReadListRequest(CurrentUser.Id, CurrentUser.OrganizationUid);
+            var request = new ProjectReadListRequest(CurrentUser.Id);
             var response = await _projectService.GetProjects(request);
             if (response.Status.IsNotSuccess)
             {
@@ -287,24 +288,9 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("label_key", "label_translation_count", "description", "is_active");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Key)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetLabelTranslationRevisionsDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -336,24 +322,9 @@ namespace Translation.Client.Web.Controllers
                 return NotFound();
             }
 
-            var result = new DataResult();
-            result.AddHeaders("label_key", "label_translation_count", "description", "is_active");
-
-            for (var i = 0; i < response.Items.Count; i++)
-            {
-                var item = response.Items[i];
-                var stringBuilder = new StringBuilder();
-                stringBuilder.Append($"{item.Uid}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{result.PrepareLink($"/Label/Detail/{item.Uid}", item.Key)}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.LabelTranslationCount}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.Description}{DataResult.SEPARATOR}");
-                stringBuilder.Append($"{item.IsActive}{DataResult.SEPARATOR}");
-
-                result.Data.Add(stringBuilder.ToString());
-            }
-
+            var result = DataResultHelper.GetLabelTranslationRevisionsDataResult(response.Items);
             result.PagingInfo = response.PagingInfo;
-             result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
+            result.PagingInfo.PagingType = PagingInfo.PAGE_NUMBERS;
 
             return Json(result);
         }
@@ -518,6 +489,6 @@ namespace Translation.Client.Web.Controllers
             model.IsOk = true;
             CurrentUser.IsActionSucceed = true;
             return Json(model);
-        }        
+        }
     }
 }

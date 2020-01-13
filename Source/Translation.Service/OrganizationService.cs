@@ -90,7 +90,7 @@ namespace Translation.Service
             if (user.IsExist())
             {
                 response.ErrorMessages.Add("email_already_exist");
-                response.Status = ResponseStatus.Invalid;
+                response.SetInvalid();
                 return response;
             }
 
@@ -114,14 +114,14 @@ namespace Translation.Service
             user.LanguageIconUrl = language.IconUrl;
 
             var loginLog = _userLoginLogFactory.CreateEntityFromRequest(request, user);
-            var integration = _integrationFactory.CreateDefault(organization);
-            var integrationClient = _integrationClientFactory.CreateEntity(integration);
+            var Integration = _integrationFactory.CreateDefault(organization);
+            var IntegrationClient = _integrationClientFactory.CreateEntity(Integration);
             var project = _projectFactory.CreateDefault(organization, language);
 
             var (uowResult,
                  insertedOrganization,
                  insertedUser) = await _signUpUnitOfWork.DoWork(organization, user, loginLog,
-                                                                integration, integrationClient, project);
+                                                                Integration, IntegrationClient, project);
             if (uowResult)
             {
                 // todo:send welcome email
@@ -205,7 +205,7 @@ namespace Translation.Service
 
             var revisions = await _organizationRepository.SelectRevisions(organization.Id);
 
-            for (int i = 0; i < revisions.Count; i++)
+            for (var i = 0; i < revisions.Count; i++)
             {
                 var revision = revisions[i];
 
@@ -233,7 +233,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
@@ -243,7 +243,7 @@ namespace Translation.Service
                 return response;
             }
 
-            var entity = _cacheManager.GetCachedOrganization(currentUser.OrganizationUid);
+            var entity = _cacheManager.GetCachedOrganization(currentUser.Organization.Uid);
             if (entity.Id != currentUser.OrganizationId)
             {
                 response.SetInvalid();
@@ -319,16 +319,11 @@ namespace Translation.Service
             var response = new OrganizationPendingTranslationReadListResponse();
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (request.OrganizationUid != currentUser.OrganizationUid)
-            {
-                response.SetInvalid();
-                return response;
-            }
 
-            var organization = await _organizationRepository.Select(x => x.Uid == request.OrganizationUid);
+            var organization = await _organizationRepository.Select(x => x.Uid == currentUser.OrganizationUid);
             if (organization.IsNotExist())
             {
-                response.SetInvalidBecauseNotActive(nameof(Organization));
+                response.SetFailedBecauseNotFound(nameof(Organization));
                 return response;
             }
 
@@ -372,6 +367,7 @@ namespace Translation.Service
 
             response.Status = ResponseStatus.Success;
             return response;
+
         }
 
         public async Task<ValidateEmailResponse> ValidateEmail(ValidateEmailRequest request)
@@ -379,6 +375,14 @@ namespace Translation.Service
             var response = new ValidateEmailResponse();
 
             var user = await _userRepository.Select(x => x.EmailValidationToken == request.Token && x.Email == request.Email);
+
+
+            if (await _organizationRepository.Any(x => x.Id == user.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalidBecauseNotActive(nameof(Organization));
+                return response;
+            }
+
             if (user != null
                 && user.Id > 0)
             {
@@ -554,6 +558,14 @@ namespace Translation.Service
                 return response;
             }
 
+            if (await _organizationRepository.Any(x => x.Id == user.OrganizationId && !x.IsActive))
+            {
+                response.SetInvalidBecauseNotActive(nameof(Organization));
+
+                return response;
+            }
+
+
             if (user.PasswordHash != _cryptoHelper.Hash(request.OldPassword, user.ObfuscationSalt))
             {
                 response.ErrorMessages.Add("old_password_is_not_right");
@@ -597,7 +609,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
@@ -615,6 +627,7 @@ namespace Translation.Service
             }
 
             entity.IsActive = !entity.IsActive;
+            entity.UpdatedBy = request.CurrentUserId;
 
             var result = await _userRepository.Update(request.CurrentUserId, entity);
             if (result)
@@ -636,7 +649,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
@@ -690,7 +703,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
@@ -727,7 +740,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
@@ -905,7 +918,7 @@ namespace Translation.Service
 
             var revisions = await _userRepository.SelectRevisions(user.Id);
 
-            for (int i = 0; i < revisions.Count; i++)
+            for (var i = 0; i < revisions.Count; i++)
             {
                 var revision = revisions[i];
 
@@ -932,6 +945,12 @@ namespace Translation.Service
 
             var user = _cacheManager.GetCachedUser(request.UserUid);
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+
+            if (!currentUser.IsAdmin)
+            {
+                response.SetInvalidBecauseNotAdmin(nameof(CurrentUser));
+                return response;
+            }
 
             if (user.OrganizationId != currentUser.OrganizationId)
             {

@@ -11,14 +11,14 @@
 </head>
 <body>
     <header class="header">
-        <div class="background-blue">
-            <a href="/" class="background-blue">
+        <div class="background-primary">
+            <a href="/" class="background-primary">
                 <span class="nav-brand">@ConstantHelper.APP_NAME</span>
             </a>
 
             @if (User.Identity.IsAuthenticated)
             {
-                <ul class="header-components background-blue">
+                <ul class="header-components background-primary">
                      <li>
                         <input type="text" id="txtSearch" name="txtSearch" placeholder="" value="" onkeyup="searchWork()" />
                         <div id="searchResults" name="searchResults">
@@ -28,7 +28,7 @@
                     <li>
                         <form action="/User/LogOff" method="post">
                             @Html.AntiForgeryToken()
-                            <select class="account background-blue" id="myList" onchange="this.form.submit()">
+                            <select class="account background-primary" id="myList" onchange="this.form.submit()">
                                 <option selected data-translation="account">Account</option>
                                 <option data-translation="log_off">log_off</option>
                             </select>
@@ -42,7 +42,7 @@
 
     @if (!User.Identity.IsAuthenticated)
     {
-        <div class="register-links background-blue">
+        <div class="register-links background-primary">
             <a class="background-blue" href="/User/LogOn" data-translation="log_on_link">log on</a>
             <a class="background-blue" href="/User/SignUp" data-translation="sign_up_link">sign up</a>
         </div>

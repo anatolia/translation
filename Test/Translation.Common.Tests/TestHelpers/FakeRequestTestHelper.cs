@@ -331,13 +331,13 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static IntegrationReadListRequest GetIntegrationReadListRequest()
         {
-            var request = new IntegrationReadListRequest(CurrentUserId, OrganizationOneUid);
+            var request = new IntegrationReadListRequest(CurrentUserId);
             return request;
         }
 
         public static IntegrationReadListRequest GetIntegrationReadListRequest(long currentUserId, Guid organizationUid)
         {
-            var request = new IntegrationReadListRequest(CurrentUserId, OrganizationOneUid);
+            var request = new IntegrationReadListRequest(CurrentUserId);
 
             return request;
         }
@@ -389,14 +389,12 @@ namespace Translation.Common.Tests.TestHelpers
             return request;
         }
 
-
         public static IntegrationRevisionReadListRequest GetIntegrationRevisionReadListRequest()
         {
             var request = new IntegrationRevisionReadListRequest(CurrentUserId, OrganizationOneIntegrationOneUid);
 
             return request;
         }
-
 
         public static IntegrationRevisionReadListRequest GetIntegrationRevisionReadListRequest(long currentUserId, Guid integrationUid)
         {
@@ -575,14 +573,14 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static ProjectReadListRequest GetProjectReadListRequest()
         {
-            var request = new ProjectReadListRequest(CurrentUserId, OrganizationOneUid);
+            var request = new ProjectReadListRequest(CurrentUserId);
 
             return request;
         }
 
         public static ProjectReadListRequest GetProjectReadListRequest(long currentUserId, Guid organizationUi)
         {
-            var request = new ProjectReadListRequest(currentUserId, organizationUi);
+            var request = new ProjectReadListRequest(currentUserId);
 
             return request;
         }
@@ -814,14 +812,14 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequest()
         {
-            var request = new OrganizationJournalReadListRequest(CurrentUserId, OrganizationOneUid);
+            var request = new OrganizationJournalReadListRequest(CurrentUserId);
 
             return request;
         }
 
-        public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequest(long currentUserId, Guid organizationUid)
+        public static OrganizationJournalReadListRequest GetOrganizationJournalReadListRequest(long currentUserId)
         {
-            var request = new OrganizationJournalReadListRequest(currentUserId, organizationUid);
+            var request = new OrganizationJournalReadListRequest(currentUserId);
 
             return request;
         }
@@ -1805,9 +1803,9 @@ namespace Translation.Common.Tests.TestHelpers
             return request;
         }
 
-        public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequest(long currentUserId, Guid organizationUid)
+        public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequest(long currentUserId)
         {
-            var request = new OrganizationPendingTranslationReadListRequest(currentUserId, organizationUid);
+            var request = new OrganizationPendingTranslationReadListRequest(currentUserId);
 
             return request;
         }
@@ -1860,14 +1858,14 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequest()
         {
-            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, UidOne);
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId);
 
             return request;
         }
 
         public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectAfter()
         {
-            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, UidOne);
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId);
             SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
@@ -1875,7 +1873,7 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectMany()
         {
-            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, UidOne);
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId);
             SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
@@ -1883,7 +1881,7 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectAfter(Guid organizationUid)
         {
-            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, organizationUid);
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId);
             SetPagingInfoForSelectAfter(request.PagingInfo);
 
             return request;
@@ -1891,7 +1889,7 @@ namespace Translation.Common.Tests.TestHelpers
 
         public static OrganizationPendingTranslationReadListRequest GetOrganizationPendingTranslationReadListRequestForSelectMany(Guid organizationUid)
         {
-            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId, organizationUid);
+            var request = new OrganizationPendingTranslationReadListRequest(CurrentUserId);
             SetPagingInfoForSelectMany(request.PagingInfo);
 
             return request;
@@ -2083,7 +2081,6 @@ namespace Translation.Common.Tests.TestHelpers
             return request;
         }
 
-
         public static UserDeleteRequest GetUserDeleteRequest()
         {
             var request = new UserDeleteRequest(CurrentUserId, UidOne);
@@ -2097,7 +2094,6 @@ namespace Translation.Common.Tests.TestHelpers
 
             return request;
         }
-
 
         public static UserInviteRequest GetUserInviteRequest(long currentUserId, Guid organizationUid, string email,
                                                              string firstName, string lastName)
@@ -2150,7 +2146,6 @@ namespace Translation.Common.Tests.TestHelpers
 
             return request;
         }
-
 
         public static UserReadListRequest GetUserReadListRequest()
         {
@@ -2246,53 +2241,6 @@ namespace Translation.Common.Tests.TestHelpers
             pagingInfo.LastUid = UidOne;
             pagingInfo.TotalItemCount = Ten;
             pagingInfo.SearchTerm = StringOne;
-        }
-
-        public static LabelListInfo GetLabelListInfo()
-        {
-            var labelListInfo = new LabelListInfo();
-            labelListInfo.LabelKey = StringOne;
-            labelListInfo.LanguageIsoCode2 = IsoCode2One;
-            labelListInfo.Translation = StringOne;
-
-            return labelListInfo;
-        }
-
-        public static List<LabelListInfo> GetLabelListInfoList()
-        {
-
-            var labelListInfoList = new List<LabelListInfo>();
-            labelListInfoList.Add(GetLabelListInfo());
-
-            return labelListInfoList;
-        }
-
-        public static List<TranslationListInfo> GetTranslationListInfoList()
-        {
-
-            var labelListInfoList = new List<TranslationListInfo>();
-            labelListInfoList.Add(GetTranslationListInfo());
-
-            return labelListInfoList;
-        }
-
-        public static TranslationListInfo GetTranslationListInfo()
-        {
-            var translationListInfo = new TranslationListInfo();
-            translationListInfo.LanguageIsoCode2 = IsoCode2One;
-            translationListInfo.Translation = StringOne;
-
-            return translationListInfo;
-        }
-
-        public static ClientLogInfo GetClientLogInfo()
-        {
-            var clientLogInfo = new ClientLogInfo();
-            clientLogInfo.Country = StringOne;
-            clientLogInfo.City = StringOne;
-            clientLogInfo.Ip = IpOne;
-
-            return clientLogInfo;
         }
     }
 }

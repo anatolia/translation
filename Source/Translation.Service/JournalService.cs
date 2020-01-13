@@ -43,8 +43,8 @@ namespace Translation.Service
         public async Task<JournalReadListResponse> GetJournalsOfOrganization(OrganizationJournalReadListRequest request)
         {
             var response = new JournalReadListResponse();
-
-            var organization = _cacheManager.GetCachedOrganization(request.OrganizationUid);
+            var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
+            var organization = _cacheManager.GetCachedOrganization(currentUser.OrganizationUid);
             if (organization == null)
             {
                 response.SetFailedBecauseNotFound(nameof(Organization));

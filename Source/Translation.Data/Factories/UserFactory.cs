@@ -16,6 +16,7 @@ namespace Translation.Data.Factories
         {
             entity.UpdatedBy = request.CurrentUserId;
             entity.IsAdmin = false;
+            entity.IsSuperAdmin = false;
 
             return entity;
         }

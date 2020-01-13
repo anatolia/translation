@@ -1,16 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using Microsoft.AspNetCore.Http;
-using Moq;
+
 using StandardRepository.Models.Entities;
-using Translation.Common.Models.Requests.Label;
-using Translation.Common.Models.Requests.Label.LabelTranslation;
 using Translation.Common.Models.Shared;
 using Translation.Data.Entities.Domain;
 using Translation.Data.Entities.Main;
 using Translation.Data.Entities.Parameter;
 using static Translation.Common.Tests.TestHelpers.FakeConstantTestHelper;
-using static Translation.Common.Tests.TestHelpers.FakeRequestTestHelper;
 
 namespace Translation.Server.Unit.Tests.TestHelpers
 {
@@ -706,7 +701,7 @@ namespace Translation.Server.Unit.Tests.TestHelpers
         {
             var user = GetOrganizationOneUserOne();
             user.IsSuperAdmin = BooleanTrue;
-
+            user.IsAdmin = BooleanTrue;
             return user;
         }
 

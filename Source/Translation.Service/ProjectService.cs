@@ -58,12 +58,7 @@ namespace Translation.Service
             var response = new ProjectReadListResponse();
 
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
-            if (request.OrganizationUid != currentUser.OrganizationUid)
-            {
-                response.SetInvalid();
-                return response;
-            }
-
+            
             Expression<Func<Project, bool>> filter = x => x.OrganizationId == currentUser.OrganizationId;
 
             if (request.PagingInfo.SearchTerm.IsNotEmpty())
@@ -116,7 +111,7 @@ namespace Translation.Service
 
             var revisions = await _projectRepository.SelectRevisions(project.Id);
 
-            for (int i = 0; i < revisions.Count; i++)
+            for (var i = 0; i < revisions.Count; i++)
             {
                 var revision = revisions[i];
 
@@ -192,7 +187,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
@@ -238,7 +233,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
@@ -306,7 +301,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
@@ -353,7 +348,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
@@ -416,7 +411,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 

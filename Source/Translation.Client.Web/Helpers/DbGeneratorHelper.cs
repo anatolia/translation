@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 using Autofac;
+
 using StandardRepository.Helpers;
 using StandardRepository.Models;
 using StandardRepository.PostgreSQL.DbGenerator;

@@ -1,4 +1,6 @@
-﻿.tbl {
+﻿@import "../../../css/src/variables";
+
+.tbl {
     margin-bottom: 13px;
     min-height: 111px;
     background-color: white;
@@ -16,14 +18,20 @@
         padding: 7px;
         display: inline-block;
         color: #fff;
-        background-color: #37bff2;
+        background-color: $color-primary;
         text-decoration: none;
         border-radius: 10px;
         min-width: 164px;
         text-align: center;
-        
+
         &:hover {
-            background-color: #3698d9;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0 ,0 , 0, .2);
+        }
+
+        &:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(0 ,0 , 0, .2);
         }
     }
 
@@ -39,7 +47,7 @@
         background-color: white;       
 
         thead th {
-            background: #3698D9;
+            background: $color-secondary;
             color: white;
             padding: 12px;
             margin: 0;
@@ -98,6 +106,7 @@ tbody tr td {
             img {
                 width: 55px;
                 vertical-align: middle;
+                padding-left: 0px;
             }
 
             &:nth-child(even) {

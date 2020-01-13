@@ -28,7 +28,7 @@ namespace Translation.Client.Web.Unit.Tests.Controllers
         public void run_before_every_test()
         {
             Refresh();
-            SystemUnderTest = Builder.Build().Resolve<ProjectController>();
+            SystemUnderTest = Container.Resolve<ProjectController>();
             SetControllerContext(SystemUnderTest);
         }
 

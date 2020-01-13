@@ -4,13 +4,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 using StandardRepository.Helpers;
 using StandardRepository.Models;
 using StandardUtils.Enumerations;
 using StandardUtils.Helpers;
 using StandardUtils.Models.DataTransferObjects;
-using Translation.Common.Contracts;
 
+using Translation.Common.Contracts;
 using Translation.Common.Models.DataTransferObjects;
 using Translation.Common.Models.Requests.Label;
 using Translation.Common.Models.Requests.Label.LabelTranslation;
@@ -43,9 +44,11 @@ namespace Translation.Service
 
         public LabelService(CacheManager cacheManager,
             ILabelUnitOfWork labelUnitOfWork,
-            ILabelRepository labelRepository, LabelFactory labelFactory,
-            ILabelTranslationRepository labelTranslationRepository, LabelTranslationFactory labelTranslationFactory,
-            IProjectRepository projectRepository, ProjectFactory projectFactory,
+            ILabelRepository labelRepository,
+            LabelFactory labelFactory,
+            ILabelTranslationRepository labelTranslationRepository,
+            LabelTranslationFactory labelTranslationFactory,
+            IProjectRepository projectRepository,
             IOrganizationRepository organizationRepository,
             ILanguageRepository languageRepository,
             ITokenRepository tokenRepository,
@@ -72,7 +75,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
@@ -119,7 +122,7 @@ namespace Translation.Service
                 var addedLabel = await _labelRepository.Select(x => x.Uid == label.Uid);
                 var languages = new List<Language>();
 
-                for (int i = 0; i < request.LanguageUids.Length; i++)
+                for (var i = 0; i < request.LanguageUids.Length; i++)
                 {
                     var languageUid = request.LanguageUids[i];
                     var language = await _languageRepository.Select(x => x.Uid == languageUid);
@@ -256,7 +259,7 @@ namespace Translation.Service
                     await _labelRepository.Select(x => x.LabelKey == request.LabelKey && x.ProjectId == project.Id);
 
                 var languages = new List<Language>();
-                for (int i = 0; i < request.LanguageIsoCode2s.Length; i++)
+                for (var i = 0; i < request.LanguageIsoCode2s.Length; i++)
                 {
                     var languageIsoCode2s = request.LanguageIsoCode2s[i];
                     var language = await _languageRepository.Select(x => x.IsoCode2Char == languageIsoCode2s);
@@ -416,8 +419,9 @@ namespace Translation.Service
         }
 
         public async Task<List<LabelTranslation>> AddedLabelAddLabelTranslation(Project project,
-            List<LabelListInfo> labels, List<Label> labelsToAdd,
-            LabelCreateListResponse response)
+                                                                                List<LabelListInfo> labels, 
+                                                                                List<Label> labelsToAdd,
+                                                                                LabelCreateListResponse response)
         {
             var languages = await _languageRepository.SelectAll(null, false);
 
@@ -467,9 +471,10 @@ namespace Translation.Service
             return translationsToInsert;
         }
 
-        public async Task<Tuple<List<LabelTranslation>, List<LabelTranslation>>> AddedLabelUpdateAndAddLabelTranslation(
-            Project project, List<LabelListInfo> labels, List<Label> labelsToAdd,
-            LabelCreateListResponse response)
+        public async Task<Tuple<List<LabelTranslation>, List<LabelTranslation>>> AddedLabelUpdateAndAddLabelTranslation(Project project,
+                                                                                                                        List<LabelListInfo> labels,
+                                                                                                                        List<Label> labelsToAdd,
+                                                                                                                        LabelCreateListResponse response)
         {
             var languages = await _languageRepository.SelectAll(null, false);
 
@@ -693,7 +698,7 @@ namespace Translation.Service
 
             var revisions = await _labelRepository.SelectRevisions(label.Id);
 
-            for (int i = 0; i < revisions.Count; i++)
+            for (var i = 0; i < revisions.Count; i++)
             {
                 var revision = revisions[i];
 
@@ -783,6 +788,14 @@ namespace Translation.Service
             var entities = await _labelRepository.SelectAll(x => x.ProjectId == project.Id && x.IsActive, false);
             if (translations != null)
             {
+
+                if (entities.Count<=0)
+                {
+                   response.SetInvalid();
+                   response.ErrorMessages.Add("no_labels_to_download");
+                   return response;
+                }
+
                 for (var i = 0; i < entities.Count; i++)
                 {
                     var entity = entities[i];
@@ -974,7 +987,7 @@ namespace Translation.Service
             var currentUser = _cacheManager.GetCachedCurrentUser(request.CurrentUserId);
             if (!currentUser.IsAdmin)
             {
-                response.SetInvalid();
+                response.SetInvalidBecauseNotAdmin(nameof(User));
                 return response;
             }
 
@@ -1252,15 +1265,13 @@ namespace Translation.Service
                     continue;
                 }
 
-                if (translationsToInsert.Any(x => x.LanguageId == language.Id
-                                                  && x.LabelId == label.Id))
+                if (translationsToInsert.Any(x => x.LanguageId == language.Id && x.LabelId == label.Id))
                 {
                     response.CanNotAddedTranslationCount++;
                     continue;
                 }
 
-                if (translationsToUpdate.Any(x => x.LanguageId == language.Id
-                                                  && x.LabelId == label.Id))
+                if (translationsToUpdate.Any(x => x.LanguageId == language.Id && x.LabelId == label.Id))
                 {
                     response.CanNotAddedTranslationCount++;
                     continue;
@@ -1355,17 +1366,13 @@ namespace Translation.Service
             List<LabelTranslation> entities;
             if (request.PagingInfo.Skip < 1)
             {
-                entities = await _labelTranslationRepository.SelectAfter(filter, request.PagingInfo.LastUid,
-                    request.PagingInfo.Take, false,
-                    new List<OrderByInfo<LabelTranslation>>
-                        {new OrderByInfo<LabelTranslation>(x => x.Uid, request.PagingInfo.IsAscending)});
+                entities = await _labelTranslationRepository.SelectAfter(filter, request.PagingInfo.LastUid, request.PagingInfo.Take, false,
+                                                                         new List<OrderByInfo<LabelTranslation>> { new OrderByInfo<LabelTranslation>(x => x.Uid, request.PagingInfo.IsAscending) });
             }
             else
             {
-                entities = await _labelTranslationRepository.SelectMany(filter, request.PagingInfo.Skip,
-                    request.PagingInfo.Take, false,
-                    new List<OrderByInfo<LabelTranslation>>
-                        {new OrderByInfo<LabelTranslation>(x => x.Id, request.PagingInfo.IsAscending)});
+                entities = await _labelTranslationRepository.SelectMany(filter, request.PagingInfo.Skip, request.PagingInfo.Take, false,
+                                                                         new List<OrderByInfo<LabelTranslation>> { new OrderByInfo<LabelTranslation>(x => x.Id, request.PagingInfo.IsAscending) });
             }
 
             if (entities != null)
@@ -1410,7 +1417,7 @@ namespace Translation.Service
 
             var revisions = await _labelTranslationRepository.SelectRevisions(labelTranslation.Id);
 
-            for (int i = 0; i < revisions.Count; i++)
+            for (var i = 0; i < revisions.Count; i++)
             {
                 var revision = revisions[i];
 
